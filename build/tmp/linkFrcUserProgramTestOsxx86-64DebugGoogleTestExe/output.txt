@@ -1,0 +1,10 @@
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramTestOsxx86-64DebugGoogleTestExe/output.txt for all output for linkFrcUserProgramTestOsxx86-64DebugGoogleTestExe.
+linking frcUserProgramTest successful.
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest.o)) was built for newer OSX version (10.13) than being linked (10.9)
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest-test-part.o)) was built for newer OSX version (10.13) than being linked (10.9)
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest-death-test.o)) was built for newer OSX version (10.13) than being linked (10.9)
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest-port.o)) was built for newer OSX version (10.13) than being linked (10.9)
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest-printers.o)) was built for newer OSX version (10.13) than being linked (10.9)
+ld: warning: object file (/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/googletest-1.8.0-4-4e4df22-osxx86-64staticdebug.zip_4c854a873b1e9f25510d49f8f757b296/osx/x86-64/static/libgoogletestd.a(gtest-filepath.o)) was built for newer OSX version (10.13) than being linked (10.9)
+
+Finished linkFrcUserProgramTestOsxx86-64DebugGoogleTestExe, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramTestOsxx86-64DebugGoogleTestExe/output.txt.

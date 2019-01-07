@@ -1,0 +1,4 @@
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+compiling robot.cpp successful.
+
+Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.

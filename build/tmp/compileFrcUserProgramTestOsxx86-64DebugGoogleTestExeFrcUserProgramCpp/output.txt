@@ -1,0 +1,4 @@
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp.
+compiling robot.cpp successful.
+
+Finished compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt.
