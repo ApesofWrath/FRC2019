@@ -26,7 +26,7 @@ void Suction:Push() {
 }
 
 void Suction:SuctionStateMachine() {
-    switch:
+    switch(suction_state) {
         case INIT_STATE:
             break;
         case PULL_STATE:
@@ -35,4 +35,5 @@ void Suction:SuctionStateMachine() {
             break;
         case SWITCH_STATE:
             break;
+    }
 }
