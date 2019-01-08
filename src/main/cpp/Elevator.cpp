@@ -17,6 +17,7 @@
 
 #define PI 3.14159265
 
+int last_elevator_state;
 int current_state;
 const int ROCKET_TOP_CARGO = 0;
 const int ROCKET_MID_CARGO = 1;
@@ -68,8 +69,20 @@ void Elevator::ElevatorStateMachine() {
   }
 }
 
+void Elevator::CheckElevatorGoal(int current_state, double goal_pos) {
+	if (last_elevator_state != current_state) {
+		elevator_profiler->SetFinalGoalElevator(goal_pos);
+		elevator_profiler->SetInitPosElevator(GetElevatorPosition());
+	}
+	last_elevator_state = current_state;
+}
+
 void Elevator::ManualElevator() {
 
+}
+
+void Elevator::Stop() {
+  talonElevator1->Set(ControlMode::PercentOutput, 0.0);
 }
 
 // Change the height based on the

@@ -1,6 +1,11 @@
 #include <WPILib.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+// Move
+//Stuff in State machines
+  // talons initialization
+//motion profiler carry over
+
 
 class Elevator {
 
@@ -19,4 +24,5 @@ private:
   void SetVotltage(double votlage_);
   void Move();
   void PrintElevatorInfo();
+  void CheckElevatorGoal(int current_state, double goal_pos);
 };
