@@ -1,6 +1,7 @@
 -o
 /Users/gracekwak/Desktop/FRC2019/build/exe/frcUserProgram/osxx86-64/debug/frcUserProgram
 /Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/osxx86-64/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/osxx86-64/debug/frcUserProgramCpp/2vitx4uyb4pwtc065ovmjpb2z/DriveController.o
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-osxx86-64debug.zip_9a9e55b35cda9d69331362edf6996fcb/osx/x86-64/shared/libwpilibcd.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/hal-cpp-2019.1.1-osxx86-64debug.zip_d3a517dc8d52a92ce2f01a62e07a1972/osx/x86-64/shared/libwpiHald.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpiutil-cpp-2019.1.1-osxx86-64debug.zip_e0e33a3f0ab7af893c7a95cc8d5aed91/osx/x86-64/shared/libwpiutild.dylib
@@ -23,6 +24,7 @@
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64debug.zip_03f7839c10c27acce10ecb980c372809/osx/x86-64/shared/libopencv_videod.3.4.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64debug.zip_03f7839c10c27acce10ecb980c372809/osx/x86-64/shared/libopencv_videoiod.3.4.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64debug.zip_03f7839c10c27acce10ecb980c372809/osx/x86-64/shared/libopencv_videostabd.3.4.dylib
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/Pathfinder-Core-2019.1.10-osxx86-64debug.zip_c05191828c7c69a1988ff197d3140279/osxx86-64/libpathfinder.dylib
 -framework
 CoreFoundation
 -framework

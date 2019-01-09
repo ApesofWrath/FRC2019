@@ -1,4 +1,6 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
+compiling DriveController.h successful.
+
 compiling robot.cpp successful.
 
 Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.

@@ -1,7 +1,4 @@
-#include "DriveControllerMother.h"
-#include <WPILib.h>
-
-#include "ctre/Phoenix.h"
+#include "DriveBase.h"
 
 #define CORNELIUS 1
 
@@ -219,7 +216,7 @@ int LF = 0, L2 = 0, L3 = 0, LR = 0, RF = 0, R2 = 0, R3 = 0, RR = 0, KICKER = 0;
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(6)); //rows stacked on rows, all points // can't be in .h for some reason
 std::vector<std::vector<double> > auton_rows(2, std::vector<double>(6));
 
-DriveControllerMother::DriveControllerMother(int fl, int fr, int rl, int rr,
+DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 		int k, bool is_wc, bool start_low) { //not used and not complete
 
 	max_y_rpm = MAX_Y_RPM_HD;
@@ -271,7 +268,7 @@ DriveControllerMother::DriveControllerMother(int fl, int fr, int rl, int rr,
 }
 
 //We use this one
-DriveControllerMother::DriveControllerMother(int l1, int l2, int l3, int l4,
+DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		int r1, int r2, int r3, int r4, bool start_low, double time_step) {
 
 	time_step_drive = time_step;
@@ -444,7 +441,7 @@ DriveControllerMother::DriveControllerMother(int l1, int l2, int l3, int l4,
 
 }
 
-void DriveControllerMother::ShiftUp() { //high gear, inside
+void DriveBase::ShiftUp() { //high gear, inside
 
 //	SmartDashboard::PutString("GEAR", "HIGH");
 	std::cout << "shift up" << std::endl;
@@ -454,7 +451,7 @@ void DriveControllerMother::ShiftUp() { //high gear, inside
 
 }
 
-void DriveControllerMother::ShiftDown() { //low gear, outside
+void DriveBase::ShiftDown() { //low gear, outside
 
 //	SmartDashboard::PutString("GEAR", "LOW");
 
@@ -465,7 +462,7 @@ void DriveControllerMother::ShiftDown() { //low gear, outside
 
 }
 
-void DriveControllerMother::SetGainsHigh() {
+void DriveBase::SetGainsHigh() {
 
 	max_y_rpm = MAX_Y_RPM_HIGH;
 	max_yaw_rate = MAX_YAW_RATE_HIGH;
@@ -490,7 +487,7 @@ void DriveControllerMother::SetGainsHigh() {
 
 }
 
-void DriveControllerMother::SetGainsLow() {
+void DriveBase::SetGainsLow() {
 
 	max_y_rpm = MAX_Y_RPM_LOW;
 	max_yaw_rate = MAX_YAW_RATE_LOW;
@@ -515,7 +512,7 @@ void DriveControllerMother::SetGainsLow() {
 
 }
 
-void DriveControllerMother::SetAutonGains(bool same_side_scale) {
+void DriveBase::SetAutonGains(bool same_side_scale) {
 
 	if (same_side_scale) {
 		K_P_YAW_DIS = 1.68;
@@ -528,7 +525,7 @@ void DriveControllerMother::SetAutonGains(bool same_side_scale) {
 
 }
 
-void DriveControllerMother::AutoShift(bool auto_shift) { //not used
+void DriveBase::AutoShift(bool auto_shift) { //not used
 
 	double current_rpm_l = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -556,7 +553,7 @@ void DriveControllerMother::AutoShift(bool auto_shift) { //not used
 
 }
 
-void DriveControllerMother::TeleopHDrive(Joystick *JoyThrottle,
+void DriveBase::TeleopHDrive(Joystick *JoyThrottle,
 		Joystick *JoyWheel, bool *is_fc) {
 
 	double forward = -1.0 * (JoyThrottle->GetY());
@@ -647,7 +644,7 @@ void DriveControllerMother::TeleopHDrive(Joystick *JoyThrottle,
 
 }
 
-void DriveControllerMother::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
+void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
 		Joystick *JoyWheel) {
 
 	double target_l, target_r, target_yaw_rate;
@@ -708,7 +705,7 @@ void DriveControllerMother::TeleopWCDrive(Joystick *JoyThrottle, //finds targets
 
 }
 
-void DriveControllerMother::RotationController(Joystick *JoyWheel) {
+void DriveBase::RotationController(Joystick *JoyWheel) {
 
 	double target_heading = init_heading
 			+ (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0)); //scaling, conversion to radians,left should be positive
@@ -736,7 +733,7 @@ void DriveControllerMother::RotationController(Joystick *JoyWheel) {
  */
 //position controlller
 //auton targets, actually just pd
-void DriveControllerMother::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel, right vel
+void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel, right vel
 
 	double refYaw = drive_ref.at(0); //reversed in Generate
 	double refLeft = drive_ref.at(1);
@@ -859,7 +856,7 @@ void DriveControllerMother::AutonDrive() { //yaw pos, left pos, right pos, yaw v
 
 }
 
-void DriveControllerMother::Controller(double ref_kick,
+void DriveBase::Controller(double ref_kick,
 		double ref_right, //first parameter refs are for teleop
 		double ref_left, double ref_yaw, double k_p_right, double k_p_left,
 		double k_p_kick, double k_p_yaw, double k_d_yaw, double k_d_right,
@@ -1013,7 +1010,7 @@ SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 
 }
 
-void DriveControllerMother::ZeroAll(bool stop_motors) {
+void DriveBase::ZeroAll(bool stop_motors) {
 
 	if (stop_motors) {
 		StopAll();
@@ -1032,7 +1029,7 @@ void DriveControllerMother::ZeroAll(bool stop_motors) {
 }
 
 //will stop all driven motors in the drive controller
-void DriveControllerMother::StopAll() {
+void DriveBase::StopAll() {
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0); //0.0 because of the double, 0 should still work but better safe than sorry
 	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
@@ -1043,7 +1040,7 @@ void DriveControllerMother::StopAll() {
 }
 
 //sets the position of all the drive encoders to 0
-void DriveControllerMother::ZeroEncs() { //acc to 8
+void DriveBase::ZeroEncs() { //acc to 8
 
 	canTalonRight1->SetSelectedSensorPosition(0, 0, 0);
 	canTalonLeft1->SetSelectedSensorPosition(0, 0, 0);
@@ -1058,13 +1055,13 @@ void DriveControllerMother::ZeroEncs() { //acc to 8
 
 }
 
-void DriveControllerMother::ZeroYaw() {
+void DriveBase::ZeroYaw() {
 
 	ahrs->ZeroYaw();
 
 }
 
-double DriveControllerMother::GetLeftVel() {
+double DriveBase::GetLeftVel() {
 
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -1072,7 +1069,7 @@ double DriveControllerMother::GetLeftVel() {
 	return l_current;
 }
 
-double DriveControllerMother::GetRightVel() {
+double DriveBase::GetRightVel() {
 
 	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -1081,7 +1078,7 @@ double DriveControllerMother::GetRightVel() {
 }
 
 //Zeros the accumulating I
-void DriveControllerMother::ZeroI() {
+void DriveBase::ZeroI() {
 
 	i_right = 0; //20,
 	i_left = 0;
@@ -1094,7 +1091,7 @@ void DriveControllerMother::ZeroI() {
 }
 
 //profile input from the autonomous routine selector, most likely in robot.cpp
-void DriveControllerMother::SetRefs(std::vector<std::vector<double>> profile) {
+void DriveBase::SetRefs(std::vector<std::vector<double>> profile) {
 
 	auton_profile = profile;
 	set_profile = true; //cannot re-enable to restart profile
@@ -1104,7 +1101,7 @@ void DriveControllerMother::SetRefs(std::vector<std::vector<double>> profile) {
 
 }
 
-void DriveControllerMother::SetRows(
+void DriveBase::SetRows(
 		std::vector<std::vector<double>> two_rows_profile) {
 
 	auton_rows = two_rows_profile;
@@ -1114,25 +1111,25 @@ void DriveControllerMother::SetRows(
 
 }
 
-void DriveControllerMother::SetMaxRpm(double rpm) {
+void DriveBase::SetMaxRpm(double rpm) {
 
 	max_y_rpm = rpm;
 
 }
 
-double DriveControllerMother::GetMaxRpm() {
+double DriveBase::GetMaxRpm() {
 
 	return max_y_rpm;
 
 }
 
-void DriveControllerMother::StopProfile(bool stop_profile) {
+void DriveBase::StopProfile(bool stop_profile) {
 
 	continue_profile = !stop_profile;
 
 }
 
-double DriveControllerMother::GetLeftPosition() {
+double DriveBase::GetLeftPosition() {
 
 	double l_dis = ((double) canTalonLeft1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
@@ -1141,7 +1138,7 @@ double DriveControllerMother::GetLeftPosition() {
 
 }
 
-double DriveControllerMother::GetRightPosition() {
+double DriveBase::GetRightPosition() {
 
 	double r_dis = -((double) canTalonLeft1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
@@ -1150,32 +1147,32 @@ double DriveControllerMother::GetRightPosition() {
 
 }
 
-bool DriveControllerMother::IsLastIndex() {
+bool DriveBase::IsLastIndex() {
 
 	return is_last_index;
 
 }
 
-int DriveControllerMother::GetDriveIndex() {
+int DriveBase::GetDriveIndex() {
 
 	return row_index;
 
 }
 
-void DriveControllerMother::SetZeroingIndex(std::vector<int> zero_index) {
+void DriveBase::SetZeroingIndex(std::vector<int> zero_index) {
 
 	zeroing_index = zero_index;
 
 }
 
-std::vector<std::vector<double> > DriveControllerMother::GetAutonProfile() {
+std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 
 	return auton_profile;
 
 }
 
 //Increments through target points of the motion profile
-void DriveControllerMother::RunAutonDrive() {
+void DriveBase::RunAutonDrive() {
 
 	double left_enc = canTalonLeft1->GetSelectedSensorPosition(0);
 	double yaw_pos = ahrs->GetYaw();
@@ -1219,7 +1216,7 @@ void DriveControllerMother::RunAutonDrive() {
 //	SmartDashboard::PutNumber("ROW INDEX", row_index);
 }
 
-void DriveControllerMother::RunTeleopDrive(Joystick *JoyThrottle,
+void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		Joystick *JoyWheel, bool is_heading) {
 
 	if (is_heading) {
