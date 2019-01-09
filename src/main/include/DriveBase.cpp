@@ -2,143 +2,43 @@
 
 using namespace std::chrono;
 
-double P_LEFT_VEL = 0;
-double D_LEFT_VEL = 0;
-double d_left_vel = 0;
-
-double P_RIGHT_VEL = 0;
-double D_RIGHT_VEL = 0;
-double d_right_vel = 0;
-
-double P_KICK_VEL = 0;
-double D_KICK_VEL = 0;
-double d_kick_vel = 0;
-
-double P_RIGHT_DIS = 0;
-double I_RIGHT_DIS = 0;
-double D_RIGHT_DIS = 0;
-
-double P_LEFT_DIS = 0;
-double I_LEFT_DIS = 0;
-double D_LEFT_DIS = 0;
-
-double P_KICK_DIS = 0;
-double I_KICK_DIS = 0;
-double D_KICK_DIS = 0;
-
-double P_YAW_DIS = 0;
-double I_YAW_DIS = 0;
-
-double d_vision = 0;
-
-double d_right = 0;
-double i_right = 0;
-
-double d_yaw_dis = 0;
-
-double d_left = 0;
-double i_left = 0;
-
-double d_kick = 0;
-double i_kick = 0;
-
-double i_yaw = 0;
-
-double l_error_vel_au = 0;
-double l_error_dis_au = 0;
-
-double r_error_vel_au = 0;
-double r_error_dis_au = 0;
-
-double k_error_dis_au = 0;
-
-double y_error_dis_au = 0; // yaw (theta) position error
-
-double l_error_vel_t = 0;
-double l_error_dis_t = 0;
-
-double r_error_vel_t = 0;
-double r_error_dis_t = 0;
-
-double kick_error_vel = 0;
-
-double l_last_error = 0;
-double r_last_error = 0;
-double yaw_last_error = 0;
-double kick_last_error = 0;
-
-double l_last_error_vel = 0;
-double r_last_error_vel = 0;
-double kick_last_error_vel = 0;
-
-int next_zero_index = 0;
-
-int zero_counter = 0;
-int zero_wait_counter = 0;
-
-double max_y_rpm, actual_max_y_rpm, max_yaw_rate;
-
-double k_p_right_vel, k_p_left_vel, k_p_yaw_vel, k_d_right_vel,
-		k_d_left_vel, //gains vary depending on gear
-		k_p_yaw_t, k_d_yaw_t, k_p_kick_vel, k_d_kick_vel, k_p_yaw_h_vel,
-		k_p_yaw_au, k_d_yaw_au;
-
-double k_p_right_vel_au = 0.0;
-double k_p_left_vel_au = 0.0;
-double k_p_kick_vel_au = 0.0;
-double k_d_left_vel_au = 0.0;
-double k_d_right_vel_au = 0.0;
-double k_d_kick_vel_au = 0.0;
-
-double D_YAW_DIS = 0.0;
-
-double k_p_yaw_heading_pos, k_d_vision_pos;
-
-double k_f_left_vel, k_f_right_vel;
-
-bool is_last_index = false;
-
-double l_last_current;
-
-double Kv;
-
-Timer *timerTeleop = new Timer();
-
-double feed_forward_r, feed_forward_l, feed_forward_k;
-
-bool is_zero;
-
-double init_heading = 0;
-double total_heading = 0;
-
-bool tank = false;
-bool is_low_gear = true;
-
-int LF = 0, L2 = 0, L3 = 0, LR = 0, RF = 0, R2 = 0, R3 = 0, RR = 0, KICKER = 0;
-
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(6)); //rows stacked on rows, all points // can't be in .h for some reason
 std::vector<std::vector<double> > auton_rows(2, std::vector<double>(6));
 
+//HDrive
 DriveBase::DriveBase(int fl, int fr, int rl, int rr,
-		int k, bool is_wc, bool start_low) { //not used and not complete
+		int k, int pcm, int f_channel, int r_channel) {
 
-	max_y_rpm = MAX_Y_RPM_HD;
-	actual_max_y_rpm = ACTUAL_MAX_Y_RPM_HD;
-	max_yaw_rate = MAX_YAW_RATE_HD;
-	k_p_yaw_au = K_P_YAW_AU_HD;
-	k_d_yaw_au = K_D_YAW_AU_HD;
-	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS_HD;
-	k_d_vision_pos = K_D_VISION_POS_HD;
+	max_y_rpm = MAX_Y_RPM;
+	actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
+	max_yaw_rate = MAX_YAW_RATE;
+	k_p_yaw_au = K_P_YAW_AU;
+	k_d_yaw_au = K_D_YAW_AU;
+	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
+	k_d_vision_pos = K_D_VISION_POS;
+	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
+	k_d_yaw_au = K_D_YAW_AU;
 
-	if (is_wc) {
-		tank = true;
-	}
+	Kv = (1 / MAX_FPS);
+
+	k_p_right_vel = K_P_RIGHT_VEL;
+	k_p_left_vel = K_P_LEFT_VEL;
+	k_p_yaw_t = K_P_YAW_VEL;
+	k_d_yaw_t = K_D_YAW_VEL;
+	k_d_right_vel = K_D_RIGHT_VEL;
+	k_d_left_vel = K_D_LEFT_VEL;
+
+	k_f_left_vel = 1.0 / actual_max_y_rpm;
+	k_f_right_vel = 1.0 / actual_max_y_rpm;
 
 	LF = fl;
 	LR = rl;
 	RF = fr;
 	RR = rr;
 	KICKER = k;
+	PCM = pcm;
+	F_CHANNEL = f_channel;
+	R_CHANNEL = r_channel;
 
 	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
@@ -152,8 +52,8 @@ DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 	canTalonRight2 = new TalonSRX(RR);
 	canTalonRight2->Set(ControlMode::Follower, RF);
 
-//	canTalonKicker = new TalonSRX(KICKER);
-//TODO: try enabling in teleop
+  canTalonKicker = new TalonSRX(KICKER);
+
 	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
 	canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
 	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
@@ -162,11 +62,7 @@ DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 
 	ahrs = new AHRS(SPI::Port::kMXP, 200);
 
-	canTalonRight3 = new TalonSRX(-1);
-	canTalonRight4 = new TalonSRX(-1);
-	canTalonLeft3 = new TalonSRX(-1);
-	canTalonLeft4 = new TalonSRX(-1);
-	solenoid = new DoubleSolenoid(-1, -1, -1);
+	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
 
 }
 
