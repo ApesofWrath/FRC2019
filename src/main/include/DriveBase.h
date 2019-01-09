@@ -31,8 +31,8 @@ public:
 
 	//HDrive
 	DriveBase(int fl, int fr, int rl, int rr, int k, int pcm, int f_channel, int r_channel);
-	//CAN IDs of all 8 talons, whether to start in low or high gear
-	DriveBase(int l1, int l2, int l3, int l4, int r1, int r2, int r3, int r4, bool start_low);
+	//WestCoast, 2-speed transmission option
+	DriveBase(int l1, int l2, int l3, int l4, int r1, int r2, int r3, int r4, int pcm, int f_channel, int r_channel, bool two_speed);
 
 	void ShiftUp();
 	void ShiftDown();

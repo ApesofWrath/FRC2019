@@ -53,7 +53,7 @@ double K_D_YAW_DIS = 0.0;
 
 ///ROBOT DRIVE CONSTANTS///
 
-const double MAX_FPS = 19.5; //used in auton pathfinder
+const double MAX_FPS = 19.5; //used in auton pathfinder. doesn't change depending on gear because always was in high
 const double MINUTE_CONVERSION = 600.0; //part of the conversion from ticks velocity to rpm
 double FF_SCALE = 0.7;
 

@@ -62,26 +62,23 @@ DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 
 	ahrs = new AHRS(SPI::Port::kMXP, 200);
 
+  //kicker wheel
 	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
 
 }
 
-//We use this one
+//WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
-		int r1, int r2, int r3, int r4, bool start_low) {
+		int r1, int r2, int r3, int r4, int pcm, int f_channel, int r_channel, bool two_speed) {
 
-	k_p_yaw_au = K_P_YAW_AU_WC; //these get sent from AutonDrive to Controller, not used in AutonDrive
-	k_d_yaw_au = K_D_YAW_AU_WC;
+	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
+	k_d_yaw_au = K_D_YAW_AU;
 
-	if (start_low) { //CANNOT CALL OTHER FUNCTIONS IN THE CONSTRUCTOR
+	if (two_speed) { //StartLow()
 
 		max_y_rpm = MAX_Y_RPM_LOW;
 		max_yaw_rate = MAX_YAW_RATE_LOW;
-
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;
-
-		MAX_FPS = 19.5; //((actual_max_y_rpm * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
-		Kv = (1 / MAX_FPS);
 		max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL_LOW;
@@ -96,32 +93,24 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 		is_low_gear = true;
 
-	} else {
+	} else { //regular constants
 
-		max_y_rpm = MAX_Y_RPM_HIGH;
-		max_yaw_rate = MAX_YAW_RATE_HIGH;
+		max_y_rpm = MAX_Y_RPM;
+		max_yaw_rate = MAX_YAW_RATE;
+		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
+		max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
-		actual_max_y_rpm = ACTUAL_MAX_Y_RPM_HIGH;
-
-		MAX_FPS = 19.5; //((actual_max_y_rpm * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
-		Kv = (1 / MAX_FPS);
-		max_yaw_rate = (25 / actual_max_y_rpm) * max_y_rpm;
-
-		k_p_right_vel = K_P_RIGHT_VEL_HIGH;
-		k_p_left_vel = K_P_LEFT_VEL_HIGH;
-		k_p_yaw_t = K_P_YAW_VEL_HIGH;
-		k_d_yaw_t = K_P_YAW_VEL_HIGH;
-		k_d_right_vel = K_D_RIGHT_VEL_HIGH;
-		k_d_left_vel = K_D_LEFT_VEL_HIGH;
+		k_p_right_vel = K_P_RIGHT_VEL;
+		k_p_left_vel = K_P_LEFT_VEL;
+		k_p_yaw_t = K_P_YAW_VEL;
+		k_d_yaw_t = K_P_YAW_VEL
+		k_d_right_vel = K_D_RIGHT_VEL;
+		k_d_left_vel = K_D_LEFT_VEL;
 
 		k_f_left_vel = 1.0 / actual_max_y_rpm;
 		k_f_right_vel = 1.0 / actual_max_y_rpm;
 
-		is_low_gear = false;
-
 	}
-
-	tank = true;
 
 	LF = l1;
 	L2 = l2;
@@ -165,7 +154,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonRight3->EnableCurrentLimit(true);
 	canTalonRight4->EnableCurrentLimit(true);
 
-	canTalonLeft1->ConfigPeakCurrentLimit(40, 0); //40
+	canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
 	canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
 	canTalonLeft3->ConfigPeakCurrentLimit(40, 0);
 	canTalonLeft4->ConfigPeakCurrentLimit(40, 0);
@@ -175,7 +164,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonRight4->ConfigPeakCurrentLimit(40, 0);
 
 	canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
-	canTalonLeft2->ConfigContinuousCurrentLimit(30, 0); //330
+	canTalonLeft2->ConfigContinuousCurrentLimit(30, 0);
 	canTalonLeft3->ConfigContinuousCurrentLimit(30, 0);
 	canTalonLeft4->ConfigContinuousCurrentLimit(30, 0);
 	canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
@@ -184,7 +173,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonRight4->ConfigContinuousCurrentLimit(30, 0);
 
 	canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
-	canTalonLeft2->ConfigPeakCurrentDuration(10, 0); //10
+	canTalonLeft2->ConfigPeakCurrentDuration(10, 0);
 	canTalonLeft3->ConfigPeakCurrentDuration(10, 0);
 	canTalonLeft4->ConfigPeakCurrentDuration(10, 0);
 	canTalonRight1->ConfigPeakCurrentDuration(10, 0);
@@ -192,7 +181,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonRight3->ConfigPeakCurrentDuration(10, 0);
 	canTalonRight4->ConfigPeakCurrentDuration(10, 0);
 
-	canTalonLeft1->ConfigOpenloopRamp(0.15, 0); //TODO: adjust this as needed
+	canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
 	canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
 	canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
 	canTalonLeft4->ConfigOpenloopRamp(0.15, 0);
@@ -226,15 +215,12 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
 	canTalonRight1->SetStatusFramePeriod(
-			StatusFrameEnhanced::Status_2_Feedback0, 10, 0); //for getselectedsensor //getselectedsensor defaults to 10ms anyway. don't use getsensorcollection because that defaults to 160ms
+			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
 
 	ahrs = new AHRS(SerialPort::kUSB);
-#ifndef CORNELIUS
-	solenoid = new DoubleSolenoid(3, 1, 0); //101
-#else
-	solenoid = new DoubleSolenoid(0, 0, 1);
-#endif
-	canTalonKicker = new TalonSRX(-1);
+
+  //shifter
+	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
 
 }
 
