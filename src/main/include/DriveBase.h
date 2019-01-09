@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <frc/Timer.h>
 #include <pathfinder.h>
+#include "Constants.h"
 
 class DriveBase {
 public:
@@ -24,7 +25,6 @@ public:
 	DoubleSolenoid *solenoid;
 
 	std::thread DriveThread;
-	//std::thread AutonThread;
 
 	AHRS *ahrs;
 
@@ -42,11 +42,10 @@ public:
 
 	std::vector<int> zeroing_index;
 
-	//needs the CAN IDs of all the talons and whether or not this is a west coast or HDrive train, input -1 if no kicker (or really whatever you want since it wont be used)
-	DriveBase(int fl, int fr, int rl, int rr, int k, bool is_wc, bool start_low); //for HDrive or West Coast with 4 total talons
-
-	//we use this one
-	DriveBase(int l1, int l2, int l3, int l4, int r1, int r2, int r3, int r4, bool start_low, double time_step); //for West Coast with 8 total talons
+	//CAN IDs of all the talons (4, or 5 if HDrive), whether or not this is a west coast or HDrive train, whether to start in low or high gear
+	DriveBase(int fl, int fr, int rl, int rr, int k, bool is_wc, bool start_low);
+	//CAN IDs of all 8 talons, whether to start in low or high gear
+	DriveBase(int l1, int l2, int l3, int l4, int r1, int r2, int r3, int r4, bool start_low);
 
 	double time_step_drive;
 
@@ -97,8 +96,6 @@ public:
 
 	//Wrapper Functions
 	static void DriveWrapper(Joystick *JoyThrottle, Joystick *JoyWheel, bool *is_heading, bool *is_vision, bool *is_fc, DriveBase *driveController);
-	//static void DriveWrapper(Joystick *JoyThrottle, Joystick *JoyWheel, bool *is_heading, bool *is_vision, bool *is_fc, DriveBase *driveController);
-	//static void AutonWrapper(DriveBase *driveController);
 
 	//Auton functions for threads are in derived class
 
@@ -106,8 +103,6 @@ public:
 	void StartDriveThreads(Joystick *JoyThrottle, Joystick *JoyWheel,
 			bool *is_heading, bool *is_vision, bool *is_fc);
 	void EndDriveThreads();
-	//void StartAutonThreads();
-	//void EndAutonThreads();
 
 	//AutonThread functions for use in the daughter class
 	void UpdateIndex();

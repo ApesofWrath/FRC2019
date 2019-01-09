@@ -10,6 +10,4 @@ In file included from /Users/gracekwak/Desktop/FRC2019/src/main/include/DriveBas
                  ^
 1 warning generated.
 
-compiling robot.cpp successful.
-
 Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.
