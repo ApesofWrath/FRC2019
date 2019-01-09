@@ -283,14 +283,6 @@ void Arm::StopArm() {
 
 }
 
-void Arm::Down(){
-  talonArm->Set(ControlMode::PercentOutput, -0.3);
-}
-
-void Arm::Up(){
-  talonArm->Set(ControlMode::PercentOutput, 0.3);
-}
-
 void Arm::ArmStateMachine(){
 
   SmartDashboard::PutNumber("ARM ENC",
