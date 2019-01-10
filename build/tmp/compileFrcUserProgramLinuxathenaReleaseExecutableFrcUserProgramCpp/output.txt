@@ -1,4 +1,55 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
+compiling Elevator.cpp failed.
+In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/include/ElevatorMotionProfiler.h:12:0,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/../include/../cpp/ElevatorMotionProfiler.cpp:8,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/../include/Elevator.h:5,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:1:
+/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: #warning is a GCC extension
+ #warning "WPILib.h is deprecated; include frc/WPILib.h instead"
+  ^~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: #warning "WPILib.h is deprecated; include frc/WPILib.h instead" [-Wcpp]
+In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:1:0:
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/../include/Elevator.h:20:3: error: 'TalonSRX' does not name a type
+   TalonSRX *talonElevator1, *talonElevator2;
+   ^~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp: In member function 'void Elevator::SetupTalon1()':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:68:3: error: 'talonElevator1' was not declared in this scope
+   talonElevator1 = new TalonSRX(TALON_ID_1);
+   ^~~~~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:68:24: error: expected type-specifier before 'TalonSRX'
+   talonElevator1 = new TalonSRX(TALON_ID_1);
+                        ^~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp: In member function 'void Elevator::Stop()':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:147:3: error: 'talonElevator1' was not declared in this scope
+   talonElevator1->Set(ControlMode::PercentOutput, 0.0);
+   ^~~~~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:147:23: error: 'ControlMode' has not been declared
+   talonElevator1->Set(ControlMode::PercentOutput, 0.0);
+                       ^~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp: In member function 'double Elevator::GetElevatorPosition()':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:155:17: error: 'talonElevator1' was not declared in this scope
+  int elev_pos = talonElevator1->GetSelectedSensorPosition(0);
+                 ^~~~~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp: In member function 'double Elevator::GetElevatorVelocity()':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:169:3: error: 'talonElevator1' was not declared in this scope
+  (talonElevator1->GetSelectedSensorVelocity(0)
+   ^~~~~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp: In member function 'void Elevator::SetVoltage(double)':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:235:3: error: 'talonElevator1' was not declared in this scope
+   talonElevator1->Set(ControlMode: PercentOutput, voltage_);
+   ^~~~~~~~~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:235:23: error: 'ControlMode' was not declared in this scope
+   talonElevator1->Set(ControlMode: PercentOutput, voltage_);
+                       ^~~~~~~~~~~
+
+compiling ElevatorMotionProfiler.cpp successful.
+In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/include/ElevatorMotionProfiler.h:12:0,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/ElevatorMotionProfiler.cpp:8:
+/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: #warning is a GCC extension
+ #warning "WPILib.h is deprecated; include frc/WPILib.h instead"
+  ^~~~~~~
+/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: #warning "WPILib.h is deprecated; include frc/WPILib.h instead" [-Wcpp]
+
 compiling robot.cpp successful.
 
-Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.

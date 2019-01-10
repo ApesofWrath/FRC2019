@@ -224,7 +224,15 @@ void Elevator::UpdateMovingDirection(double offset_, double percent, std::vector
 }
 
 // Calculate and output to talons
-void Elevator::SetVoltage(double votlage_) {
+void Elevator::SetVoltage(double voltage_) {
+
+  // SAEFTY CHECKS
+
+  voltage_ /= 12.0;
+  voltage_ *= -1.0;
+
+  frc::SmartDashboard::PutNumber("ELEV VOLT: ", voltage_);
+  talonElevator1->Set(ControlMode: PercentOutput, voltage_);  // Talon 2 is follower to talon1 
 
 }
 

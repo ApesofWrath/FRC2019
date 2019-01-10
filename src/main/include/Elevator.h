@@ -5,10 +5,11 @@
 #include "../cpp/ElevatorMotionProfiler.cpp"
 
 // TODO:
-  // Move (almost all)
+
   // Some of SetVoltage()
   // states variables in .cpp and .h file?
 
+  // DONE Move (almost all)
   // DONE Motion profiler carry over
   //DONE Stuff in State machines
     // DONE talons initialization
@@ -41,16 +42,16 @@ private:
   const int ROCKET_MID_HATCH_H = 4;
   const int BOTTOM_HATCH_H = 5; // Same for rocket and cargo bay, only need one
   const int BAY_CARGO_H = 6;
-  // ¿¿DIFFERNET STATES FOR LOADING STATION?? (HPS_STATE)
+  // DIFFERNET STATES FOR LOADING STATION?? (HPS_STATE)
 
   std::map <int, std::string> elev_state = {
-  {ROCKET_TOP_CARGO_H, "ROCKET TOP CARGO"},
-  {ROCKET_MID_CARGO_H, "ROCKET MID CARGO"},
-  {ROCKET_BOTTOM_CARGO_H, "ROCKET BOTTOM CARGO"},
-  {ROCKET_TOP_HATCH_H, "ROCKET TOP HATCH"},
-  {ROCKET_MID_HATCH_H, "ROCKET TOP HATCH"},
-  {BOTTOM_HATCH_H, "HATCH BOTTOM"},
-  {BAY_CARGO_H, "BAY CARGO"}
+    {ROCKET_TOP_CARGO_H, "ROCKET TOP CARGO"},
+    {ROCKET_MID_CARGO_H, "ROCKET MID CARGO"},
+    {ROCKET_BOTTOM_CARGO_H, "ROCKET BOTTOM CARGO"},
+    {ROCKET_TOP_HATCH_H, "ROCKET TOP HATCH"},
+    {ROCKET_MID_HATCH_H, "ROCKET TOP HATCH"},
+    {BOTTOM_HATCH_H, "HATCH BOTTOM"},
+    {BAY_CARGO_H, "BAY CARGO"}
   };
 
   double goal_vel_e = 0.0;

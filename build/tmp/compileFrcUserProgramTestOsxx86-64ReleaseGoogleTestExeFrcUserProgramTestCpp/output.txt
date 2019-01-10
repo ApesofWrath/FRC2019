@@ -1,4 +1,4 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp.
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp.
 compiling main.cpp successful.
 
-Finished compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt.
+Finished compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt.
