@@ -25,8 +25,6 @@ public:
 
 	DoubleSolenoid *solenoid;
 
-	std::thread DriveThread;
-
 	AHRS *ahrs;
 
 	//HDrive
@@ -95,6 +93,10 @@ public:
 
 	bool IsLastIndex();
 	int GetDriveIndex();
+
+	bool set_profile = false; //check to start auton drive
+
+private:
 
 	double P_LEFT_VEL = 0;
 	double D_LEFT_VEL = 0;
@@ -197,7 +199,6 @@ public:
 	double Kv;
 
 	bool continue_profile = true;
-	bool set_profile = false;
 	bool set_refs = false;
 
 	std::vector<double> drive_ref = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; //AutonDrive, row, individual points

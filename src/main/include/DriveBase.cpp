@@ -226,7 +226,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 void DriveBase::ShiftUp() { //high gear, inside
 
-//	SmartDashboard::PutString("GEAR", "HIGH");
+//	frc::SmartDashboard::PutString("GEAR", "HIGH");
 	std::cout << "shift up" << std::endl;
 
 	solenoid->Set(DoubleSolenoid::Value::kForward);
@@ -236,7 +236,7 @@ void DriveBase::ShiftUp() { //high gear, inside
 
 void DriveBase::ShiftDown() { //low gear, outside
 
-//	SmartDashboard::PutString("GEAR", "LOW");
+//	frc::SmartDashboard::PutString("GEAR", "LOW");
 
 	solenoid->Set(DoubleSolenoid::Value::kReverse);
 	//std::cout << "DOWN" << std::endl;
@@ -529,13 +529,11 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 		refYaw -= (2 * PI);
 	}
 
-// SmartDashboard::PutNumber(":", refYaw);
-
-	 SmartDashboard::PutNumber("refLeft", refLeft);
-	// SmartDashboard::PutNumber("refRight", refRight);
-	 SmartDashboard::PutNumber("refLeftVel", tarVelLeft);
-	// SmartDashboard::PutNumber("refRightVel", tarVelRight);
-	// SmartDashboard::PutNumber("refYaw", refYaw);
+	 frc::SmartDashboard::PutNumber("refLeftPos", refLeft);
+	// frc::SmartDashboard::PutNumber("refRight", refRight);
+	 frc::SmartDashboard::PutNumber("refLeftVel", tarVelLeft);
+	// frc::SmartDashboard::PutNumber("refRightVel", tarVelRight);
+	// frc::SmartDashboard::PutNumber("refYaw", refYaw);
 
 	//fps //not needed besides check for jitter
 	double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
@@ -543,29 +541,29 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
 
-	//SmartDashboard::PutNumber("Actual left", l_current);
+	//frc::SmartDashboard::PutNumber("Actual left", l_current);
 
 	double r_dis = -((double) canTalonRight1->GetSelectedSensorPosition(0) //empirically determined ticks per foot
 	/ TICKS_PER_FOOT);
 	double l_dis = ((double) canTalonLeft1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
 
- SmartDashboard::PutNumber("actualLeftDis", l_dis);
-// SmartDashboard::PutNumber("actualRightDis", r_dis);
- SmartDashboard::PutNumber("actualLeftVel", l_current);
-// SmartDashboard::PutNumber("actualRightVel", r_current);
+ frc::SmartDashboard::PutNumber("actualLeftDis", l_dis);
+// frc::SmartDashboard::PutNumber("actualRightDis", r_dis);
+ frc::SmartDashboard::PutNumber("actualLeftVel", l_current);
+// frc::SmartDashboard::PutNumber("actualRightVel", r_current);
 
 	double y_dis = -1.0 * ahrs->GetYaw() * (double) (PI / 180); //current theta (yaw) value
 
-//	SmartDashboard::PutNumber("Target Heading", refYaw);
-//	SmartDashboard::PutNumber("Actual Heading", y_dis);
+//	frc::SmartDashboard::PutNumber("Target Heading", refYaw);
+//	frc::SmartDashboard::PutNumber("Actual Heading", y_dis);
 
 	l_error_dis_au = refLeft - l_dis;
 	r_error_dis_au = refRight - r_dis;
 
 	y_error_dis_au = refYaw - y_dis; //positive - 0
 
-	//SmartDashboard::PutNumber("Heading error", y_error_dis_au);
+	//frc::SmartDashboard::PutNumber("Heading error", y_error_dis_au);
 
 	if (std::abs(tarVelLeft - tarVelRight) < .05 && (std::abs(r_current) < 10)
 			&& (std::abs(l_current) < 10)) { //initial jitter
@@ -594,16 +592,16 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 	I_YAW_DIS = K_I_YAW_DIS * i_yaw;
 	D_YAW_DIS = K_D_YAW_DIS * (y_error_dis_au - yaw_last_error);
 
-	// SmartDashboard::PutNumber("P", P_YAW_DIS);
-	// SmartDashboard::PutNumber("I", I_YAW_DIS);
-	// SmartDashboard::PutNumber("D", D_YAW_DIS);
+	// frc::SmartDashboard::PutNumber("P", P_YAW_DIS);
+	// frc::SmartDashboard::PutNumber("I", I_YAW_DIS);
+	// frc::SmartDashboard::PutNumber("D", D_YAW_DIS);
 
 	double total_right = P_RIGHT_DIS + I_RIGHT_DIS + D_RIGHT_DIS;
 	double total_left = P_LEFT_DIS + I_LEFT_DIS + D_LEFT_DIS;
 
 	double total_yaw = P_YAW_DIS + I_YAW_DIS + D_YAW_DIS;
 
-	//SmartDashboard::PutNumber("TOTAL", total_yaw);
+	//frc::SmartDashboard::PutNumber("TOTAL", total_yaw);
 
 	double target_rpm_yaw_change = total_yaw * MAX_FPS;
 	double target_rpm_right = total_right * MAX_FPS; //max rpm* gear ratio
@@ -649,9 +647,9 @@ void DriveBase::Controller(double ref_kick,
 	double yaw_rate_current = -1.0 * (double) ahrs->GetRate()
 			* (double) ((PI) / 180.0); //left should be positive
 
-	 SmartDashboard::PutNumber("YAW POS", ahrs->GetYaw());
-	// SmartDashboard::PutNumber("LEFT ENC VEL", GetLeftVel());
-	// SmartDashboard::PutNumber("RIGHT ENC VEL", GetRightVel());
+	 frc::SmartDashboard::PutNumber("YAW POS", ahrs->GetYaw());
+	// frc::SmartDashboard::PutNumber("LEFT ENC VEL", GetLeftVel());
+	// frc::SmartDashboard::PutNumber("RIGHT ENC VEL", GetRightVel());
 
 	double target_yaw_rate = ref_yaw;
 
@@ -704,32 +702,15 @@ void DriveBase::Controller(double ref_kick,
 //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
 
-//	SmartDashboard::PutNumber("actual left vel", l_current);
 
-//	if ((std::abs(l_current) <= 0.5 && canTalonLeft1->GetOutputCurrent() > 4.0) //encoders not working
-//			|| (std::abs(r_current) <= 0.5
-//					&& canTalonRight1->GetOutputCurrent() > 4.0)) {
-//		SmartDashboard::PutString("Drive Motor Encoders", "Not working");
-//		k_p_yaw = 0.0;
-//		k_d_yaw = 0.0;
-//		feed_forward_l = 0.0;
-//		feed_forward_r = 0.0;
-//		k_p_left = 0.0;
-//		k_p_right = 0.0;
-//		k_d_left = 0.0;
-//		k_d_right = 0.0;
-//	} else {
-//		SmartDashboard::PutString("Drive Motor Encoders", "Not working");
-//	}
+frc::SmartDashboard::PutNumber("l_current", l_current);
+frc::SmartDashboard::PutNumber("r_current", r_current);
 
-SmartDashboard::PutNumber("l_current", l_current);
-SmartDashboard::PutNumber("r_current", r_current);
+frc::SmartDashboard::PutNumber("ref_left", ref_left);
+frc::SmartDashboard::PutNumber("ref_right", ref_right);
 
-SmartDashboard::PutNumber("ref_left", ref_left);
-SmartDashboard::PutNumber("ref_right", ref_right);
-
-SmartDashboard::PutNumber("l_error_vel_t", l_error_vel_t);
-SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
+frc::SmartDashboard::PutNumber("l_error_vel_t", l_error_vel_t);
+frc::SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
@@ -747,8 +728,8 @@ SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	SmartDashboard::PutNumber("D Right Vel", D_RIGHT_VEL);
-	SmartDashboard::PutNumber("P Right Vel", P_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("D Right Vel", D_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("P Right Vel", P_RIGHT_VEL);
 
 	if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
 		feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
@@ -774,8 +755,8 @@ SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 		total_left = -1.0;
 	}
 
-	SmartDashboard::PutNumber("% OUT LEFT", total_left);
-	SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
+	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
+	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right); //negative for Koba and for new drive train
@@ -789,7 +770,7 @@ SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 	kick_last_error_vel = kick_error_vel;
 	l_last_current = l_current;
 
-	SmartDashboard::PutNumber("Yaw Error", yaw_error);
+	frc::SmartDashboard::PutNumber("Yaw Error", yaw_error);
 
 }
 
@@ -960,8 +941,8 @@ void DriveBase::RunAutonDrive() {
 	double left_enc = canTalonLeft1->GetSelectedSensorPosition(0);
 	double yaw_pos = ahrs->GetYaw();
 
-	// SmartDashboard::PutNumber("enc.", left_enc);
-	// SmartDashboard::PutNumber("yaw zeroed", yaw_pos);
+	// frc::SmartDashboard::PutNumber("enc.", left_enc);
+	// frc::SmartDashboard::PutNumber("yaw zeroed", yaw_pos);
 
 	for (int i = 0; i < auton_profile[0].size(); i++) { //looks through each row and then fills drive_ref with the column here, refills each interval with next set of refs
 		drive_ref.at(i) = auton_profile.at(row_index).at(i); //from SetRef()
@@ -996,7 +977,7 @@ void DriveBase::RunAutonDrive() {
 		}
 	}
 
-//	SmartDashboard::PutNumber("ROW INDEX", row_index);
+//	frc::SmartDashboard::PutNumber("ROW INDEX", row_index);
 }
 
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
