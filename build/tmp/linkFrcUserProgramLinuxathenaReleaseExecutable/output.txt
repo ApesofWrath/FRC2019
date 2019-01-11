@@ -1,4 +1,25 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaReleaseExecutable.
-linking frcUserProgram successful.
+See file:///C:/Users/DriversStation/Downloads/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaReleaseExecutable.
+linking frcUserProgram failed.
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\2c2bycay24j67qwrmu12bfcz2\DriveController.o:(.data+0x0): multiple definition of `DYN_MAX_Y_RPM'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o:(.data+0x0): first defined here
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\2c2bycay24j67qwrmu12bfcz2\DriveController.o:(.data+0x8): multiple definition of `FF_SCALE'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o:C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:87: first defined here
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\2c2bycay24j67qwrmu12bfcz2\DriveController.o:(.bss+0x8): multiple definition of `K_D_YAW_DIS'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o:C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:87: first defined here
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\2c2bycay24j67qwrmu12bfcz2\DriveController.o:(.bss+0x10): multiple definition of `K_I_YAW_DIS'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o:C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:87: first defined here
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\2c2bycay24j67qwrmu12bfcz2\DriveController.o:(.data+0x10): multiple definition of `K_P_YAW_DIS'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o:C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:86: first defined here
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o: In function `Robot::TeleopInit()':
+C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:87: undefined reference to `DriveBase::ZeroAll(bool)'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o: In function `Robot::AutonomousPeriodic()':
+C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:82: undefined reference to `DriveBase::RunAutonDrive()'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o: In function `Robot::TeleopPeriodic()':
+C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:95: undefined reference to `DriveBase::RunTeleopDrive(frc::Joystick*, frc::Joystick*, bool)'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o: In function `Robot::AutonomousInit()':
+C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/robot.cpp:60: undefined reference to `DriveBase::ZeroAll(bool)'
+C:\Users\DriversStation\Downloads\FRC2019\build\objs\frcUserProgram\linuxathena\release\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.o: In function `Robot::RobotInit()':
+C:\Users\DriversStation\Downloads\FRC2019\src\main\cpp/DriveController.h:9: undefined reference to `DriveBase::DriveBase(int, int, int, int, int, int, int, int, int, int, int, bool)'
+collect2.exe: error: ld returned 1 exit status
 
-Finished linkFrcUserProgramLinuxathenaReleaseExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt.
+Finished linkFrcUserProgramLinuxathenaReleaseExecutable, see full log file:///C:/Users/DriversStation/Downloads/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt.

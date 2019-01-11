@@ -6,15 +6,30 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-
+#include "DriveController.h"
+#include <frc/Joystick.h>
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
+
+const int JOY_THROTTLE = 0;
+const int JOY_WHEEL = 1;
+const int JOY_OP = 2;
+
+DriveController *drive_controller;
+Joystick *joyThrottle, *joyWheel, *joyOp;
+bool is_heading, is_vision, is_fc;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  joyThrottle = new Joystick(JOY_THROTTLE);
+	joyWheel = new Joystick(JOY_WHEEL);
+	joyOp = new Joystick(JOY_OP);
+
+  drive_controller = new DriveController();
 }
 
 /**
@@ -25,7 +40,10 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+
+
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -39,6 +57,8 @@ void Robot::RobotPeriodic() {}
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
+  drive_controller->ZeroAll(true);
+
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
@@ -57,14 +77,26 @@ void Robot::AutonomousPeriodic() {
   } else {
     // Default Auto goes here
   }
+
+  if (drive_controller->set_profile) {
+    drive_controller->RunAutonDrive();
+  }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+  drive_controller->ZeroAll(true);
+}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+    is_heading = joyThrottle->GetRawButton(0);
+		is_vision = false;
+		is_fc = false;
+
+    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
+}
 
 void Robot::TestPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+//int main() { return frc::StartRobot<Robot>(); }
 #endif
