@@ -1,5 +1,6 @@
 ///DRIVE GAINS///
-
+#ifndef SRC_DRIVECONSTANTS_H_
+#define SRC_DRIVECONSTANTS_H_
 //Teleop
 
 const double K_P_YAW_HEADING_POS = 0.01;
@@ -83,3 +84,5 @@ const double DOWN_SHIFT_VEL = 200.0; //will be less than up shift vel (14/56) *9
 
 const double TICKS_PER_FOOT = 1315.0;
 const double DRIVE_WAIT_TIME = 0.05; //seconds
+
+#endif
