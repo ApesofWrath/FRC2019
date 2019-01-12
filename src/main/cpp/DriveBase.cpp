@@ -300,7 +300,7 @@ void DriveBase::SetAutonGains(bool same_side_scale) {
 	if (same_side_scale) {
 		K_P_YAW_DIS = 1.68;
 		K_I_YAW_DIS = 0.001;
-		FF_SCALE = 0.7;
+		//FF_SCALE = 0.7;
 		//zero wait counter = 50
 	} else { //if need another one
 

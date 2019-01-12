@@ -69,7 +69,6 @@ const double ACTUAL_MAX_Y_RPM_LOW = 625.0; //668 what
 const double ACTUAL_MAX_Y_RPM_HIGH = 1300.0;
 const double ACTUAL_MAX_Y_RPM = 0;
 
-double DYN_MAX_Y_RPM = 625.0; //for field-centric
 const double MAX_X_RPM = 400.0; // for HDrive
 
 const double MAX_YAW_RATE_LOW = 12.0; //max angular velocity divided by the max rpm multiplied by set max rpm

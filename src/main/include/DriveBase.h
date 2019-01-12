@@ -213,6 +213,8 @@ private:
 
 	double feed_forward_r, feed_forward_l, feed_forward_k;
 
+	double DYN_MAX_Y_RPM; //for field-centric
+
 	bool is_zero;
 
 	double init_heading = 0;

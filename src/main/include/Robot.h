@@ -7,8 +7,11 @@
 
 #pragma once
 
+#include "DriveController.h"
 #include <string>
-
+#include <frc/Joystick.h>
+#include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 

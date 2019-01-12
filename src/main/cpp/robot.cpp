@@ -6,30 +6,27 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-//#include "DriveController.h"
-#include <frc/Joystick.h>
-#include <iostream>
 
-#include <frc/smartdashboard/SmartDashboard.h>
+
 
 // const int JOY_THROTTLE = 0;
 // const int JOY_WHEEL = 1;
 // const int JOY_OP = 2;
-
-//DriveController *drive_controller;
-//Joystick *joyThrottle, *joyWheel, *joyOp;
-//bool is_heading, is_vision, is_fc;
+//
+// DriveController *drive_controller;
+// Joystick *joyThrottle, *joyWheel, *joyOp;
+// bool is_heading, is_vision, is_fc;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  // joyThrottle = new Joystick(JOY_THROTTLE);
+ //  joyThrottle = new Joystick(JOY_THROTTLE);
 	// joyWheel = new Joystick(JOY_WHEEL);
 	// joyOp = new Joystick(JOY_OP);
-
-//  drive_controller = new DriveController();
+ //
+ // drive_controller = new DriveController();
 }
 
 /**

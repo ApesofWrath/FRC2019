@@ -1,4 +1,19 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramDebugExecutable/output.txt for all output for linkFrcUserProgramDebugExecutable.
-linking frcUserProgram successful.
+linking frcUserProgram failed.
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o:(.bss+0x8): multiple definition of `DYN_MAX_Y_RPM'
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:(.bss+0x20): first defined here
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `Robot::RobotPeriodic()':
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SendableChooser.inc:76: multiple definition of `FF_SCALE'
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:9: first defined here
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `Robot::TestPeriodic()':
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SendableChooser.inc:76: multiple definition of `K_D_YAW_DIS'
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:10: first defined here
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `__static_initialization_and_destruction_0':
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SendableChooser.inc:76: multiple definition of `K_I_YAW_DIS'
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:10: first defined here
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `Robot::TeleopInit()':
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SendableChooser.inc:76: multiple definition of `K_P_YAW_DIS'
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/debug/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:9: first defined here
+collect2: error: ld returned 1 exit status
 
 Finished linkFrcUserProgramDebugExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramDebugExecutable/output.txt.
