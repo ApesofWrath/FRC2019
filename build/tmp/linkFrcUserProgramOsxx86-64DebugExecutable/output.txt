@@ -1,17 +1,23 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64DebugExecutable/output.txt for all output for linkFrcUserProgramOsxx86-64DebugExecutable.
 linking frcUserProgram failed.
 Undefined symbols for architecture x86_64:
-  "DriveBase::RunAutonDrive()", referenced from:
-      Robot::AutonomousPeriodic() in robot.o
-  "DriveBase::RunTeleopDrive(frc::Joystick*, frc::Joystick*, bool)", referenced from:
-      Robot::TeleopPeriodic() in robot.o
-  "DriveBase::ZeroAll(bool)", referenced from:
-      Robot::AutonomousInit() in robot.o
-      Robot::TeleopInit() in robot.o
-  "DriveBase::DriveBase(int, int, int, int, int, int, int, int, int, int, int, bool)", referenced from:
-      DriveController::DriveController() in robot.o
-  "_main", referenced from:
-     implicit entry/start for main executable
+  "AHRS::GetYaw()", referenced from:
+      DriveBase::Controller(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double) in DriveBase.o
+      DriveBase::RotationController(frc::Joystick*) in DriveBase.o
+      DriveBase::AutonDrive() in DriveBase.o
+      DriveBase::RunAutonDrive() in DriveBase.o
+  "AHRS::GetRate()", referenced from:
+      DriveBase::TeleopHDrive(frc::Joystick*, frc::Joystick*, bool*) in DriveBase.o
+      DriveBase::Controller(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double) in DriveBase.o
+  "AHRS::ZeroYaw()", referenced from:
+      DriveBase::ZeroYaw() in DriveBase.o
+  "AHRS::AHRS(frc::SerialPort::Port)", referenced from:
+      DriveBase::DriveBase(int, int, int, int, int, int, int, int, int, int, int, bool) in DriveBase.o
+  "AHRS::AHRS(frc::SPI::Port, unsigned char)", referenced from:
+      DriveBase::DriveBase(int, int, int, int, int, int, int, int) in DriveBase.o
+  "ctre::phoenix::motorcontrol::can::TalonSRX::TalonSRX(int)", referenced from:
+      DriveBase::DriveBase(int, int, int, int, int, int, int, int) in DriveBase.o
+      DriveBase::DriveBase(int, int, int, int, int, int, int, int, int, int, int, bool) in DriveBase.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
