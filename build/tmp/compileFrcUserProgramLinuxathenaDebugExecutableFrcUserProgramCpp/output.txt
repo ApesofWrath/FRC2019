@@ -1,4 +1,21 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
+See file:///C:/Users/kayac/eclipse-workspace/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
+compiling suction.cpp successful.
+
+compiling suction.h successful.
+
+compiling Arm.cpp failed.
+In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:0:
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
+  #include "ctre/Phoenix.h"
+                           ^
+compilation terminated.
+
+compiling Arm.h failed.
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
+  #include "ctre/Phoenix.h"
+                           ^
+compilation terminated.
+
 compiling robot.cpp successful.
 
-Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/kayac/eclipse-workspace/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.
