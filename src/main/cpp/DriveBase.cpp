@@ -5,74 +5,20 @@ using namespace std::chrono;
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(6)); //rows stacked on rows, all points // can't be in .h for some reason
 std::vector<std::vector<double> > auton_rows(2, std::vector<double>(6));
 
-//HDrive
-DriveBase::DriveBase(int fl, int fr, int rl, int rr,
-		int k, int pcm, int f_channel, int r_channel) {
-
-	max_y_rpm = MAX_Y_RPM;
-	actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-	max_yaw_rate = MAX_YAW_RATE;
-	k_p_yaw_au = K_P_YAW_AU;
-	k_d_yaw_au = K_D_YAW_AU;
-	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
-	k_d_vision_pos = K_D_VISION_POS;
-	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
-	k_d_yaw_au = K_D_YAW_AU;
-
-	Kv = (1 / MAX_FPS);
-
-	k_p_right_vel = K_P_RIGHT_VEL;
-	k_p_left_vel = K_P_LEFT_VEL;
-	k_p_yaw_t = K_P_YAW_VEL;
-	k_d_yaw_t = K_D_YAW_VEL;
-	k_d_right_vel = K_D_RIGHT_VEL;
-	k_d_left_vel = K_D_LEFT_VEL;
-
-	k_f_left_vel = 1.0 / actual_max_y_rpm;
-	k_f_right_vel = 1.0 / actual_max_y_rpm;
-
-	LF = fl;
-	LR = rl;
-	RF = fr;
-	RR = rr;
-	KICKER = k;
-	PCM = pcm;
-	F_CHANNEL = f_channel;
-	R_CHANNEL = r_channel;
-
-	canTalonLeft1 = new TalonSRX(LF);
-	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-
-	canTalonLeft2 = new TalonSRX(LR);
-	canTalonLeft2->Set(ControlMode::Follower, LF);
-
-	canTalonRight1 = new TalonSRX(RF);
-	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-
-	canTalonRight2 = new TalonSRX(RR);
-	canTalonRight2->Set(ControlMode::Follower, RF);
-
-  canTalonKicker = new TalonSRX(KICKER);
-
-	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
-	canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
-	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
-	canTalonRight2->ConfigPeakCurrentLimit(30, 0);
-	canTalonKicker->ConfigPeakCurrentLimit(30, 0);
-
-	ahrs = new AHRS(SPI::Port::kMXP, 200);
-
-  //kicker wheel
-	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
-
-}
-
 //WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		int r1, int r2, int r3, int r4, int pcm, int f_channel, int r_channel, bool two_speed) {
 
 	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
 	k_d_yaw_au = K_D_YAW_AU;
+
+	k_p_yaw_dis = K_P_YAW_DIS;
+	k_i_yaw_dis = K_I_YAW_DIS;
+	k_d_yaw_dis = K_D_YAW_DIS;
+	ff_scale = FF_SCALE;
+
+	max_y_rpm = MAX_Y_RPM;
+	DYN_MAX_Y_RPM = max_y_rpm;
 
 	if (two_speed) { //StartLow()
 
@@ -224,6 +170,72 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 }
 
+//HDrive - TODO: update from WestCoast
+DriveBase::DriveBase(int fl, int fr, int rl, int rr,
+		int k, int pcm, int f_channel, int r_channel) {
+
+	k_p_yaw_dis = K_P_YAW_DIS;
+	ff_scale = FF_SCALE;
+
+	max_y_rpm = MAX_Y_RPM;
+	DYN_MAX_Y_RPM = max_y_rpm;
+	actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
+	max_yaw_rate = MAX_YAW_RATE;
+	k_p_yaw_au = K_P_YAW_AU;
+	k_d_yaw_au = K_D_YAW_AU;
+	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
+	k_d_vision_pos = K_D_VISION_POS;
+	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
+	k_d_yaw_au = K_D_YAW_AU;
+
+	Kv = (1 / MAX_FPS);
+
+	k_p_right_vel = K_P_RIGHT_VEL;
+	k_p_left_vel = K_P_LEFT_VEL;
+	k_p_yaw_t = K_P_YAW_VEL;
+	k_d_yaw_t = K_D_YAW_VEL;
+	k_d_right_vel = K_D_RIGHT_VEL;
+	k_d_left_vel = K_D_LEFT_VEL;
+
+	k_f_left_vel = 1.0 / actual_max_y_rpm;
+	k_f_right_vel = 1.0 / actual_max_y_rpm;
+
+	LF = fl;
+	LR = rl;
+	RF = fr;
+	RR = rr;
+	KICKER = k;
+	PCM = pcm;
+	F_CHANNEL = f_channel;
+	R_CHANNEL = r_channel;
+
+	canTalonLeft1 = new TalonSRX(LF);
+	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+
+	canTalonLeft2 = new TalonSRX(LR);
+	canTalonLeft2->Set(ControlMode::Follower, LF);
+
+	canTalonRight1 = new TalonSRX(RF);
+	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+
+	canTalonRight2 = new TalonSRX(RR);
+	canTalonRight2->Set(ControlMode::Follower, RF);
+
+  canTalonKicker = new TalonSRX(KICKER);
+
+	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
+	canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
+	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
+	canTalonRight2->ConfigPeakCurrentLimit(30, 0);
+	canTalonKicker->ConfigPeakCurrentLimit(30, 0);
+
+	ahrs = new AHRS(SPI::Port::kMXP, 200);
+
+  //kicker wheel
+	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
+
+}
+
 void DriveBase::ShiftUp() { //high gear, inside
 
 //	frc::SmartDashboard::PutString("GEAR", "HIGH");
@@ -298,8 +310,8 @@ void DriveBase::SetGainsLow() {
 void DriveBase::SetAutonGains(bool same_side_scale) {
 
 	if (same_side_scale) {
-		K_P_YAW_DIS = 1.68;
-		K_I_YAW_DIS = 0.001;
+		// K_P_YAW_DIS = 1.68;
+		// K_I_YAW_DIS = 0.001;
 		//FF_SCALE = 0.7;
 		//zero wait counter = 50
 	} else { //if need another one
@@ -588,9 +600,9 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 	I_LEFT_DIS = K_I_LEFT_DIS * i_left;
 	D_LEFT_DIS = K_D_LEFT_DIS * d_left;
 
-	P_YAW_DIS = K_P_YAW_DIS * y_error_dis_au; //position
-	I_YAW_DIS = K_I_YAW_DIS * i_yaw;
-	D_YAW_DIS = K_D_YAW_DIS * (y_error_dis_au - yaw_last_error);
+	P_YAW_DIS = k_p_yaw_dis * y_error_dis_au; //position
+	I_YAW_DIS = k_i_yaw_dis * i_yaw;
+	D_YAW_DIS = k_d_yaw_dis * (y_error_dis_au - yaw_last_error);
 
 	// frc::SmartDashboard::PutNumber("P", P_YAW_DIS);
 	// frc::SmartDashboard::PutNumber("I", I_YAW_DIS);
@@ -738,9 +750,9 @@ frc::SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 	}
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
-			+ (Kv * target_vel_right * FF_SCALE); //Kv only in auton, straight from motion profile
+			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
 	double total_left = D_LEFT_VEL + P_LEFT_VEL + feed_forward_l
-			+ (Kv * target_vel_left * FF_SCALE);
+			+ (Kv * target_vel_left * ff_scale);
 //	double total_kick = D_KICK_VEL + P_KICK_VEL + feed_forward_k
 //			+ (Kv_KICK * target_vel_kick);
 

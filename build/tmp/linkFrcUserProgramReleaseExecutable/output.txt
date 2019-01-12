@@ -1,19 +1,4 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramReleaseExecutable/output.txt for all output for linkFrcUserProgramReleaseExecutable.
-linking frcUserProgram failed.
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o:(.bss+0x8): multiple definition of `DYN_MAX_Y_RPM'
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:(.bss+0x20): first defined here
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `Robot::TestPeriodic()':
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/robot.cpp:98: multiple definition of `FF_SCALE'
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:250: first defined here
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)':
-/Users/gracekwak/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/bits/basic_string.tcc:211: multiple definition of `K_D_YAW_DIS'
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:253: first defined here
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)':
-/Users/gracekwak/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/bits/basic_string.tcc:211: multiple definition of `K_I_YAW_DIS'
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:257: first defined here
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/d0zf6q5eec5ozx8ghdqphjr2g/robot.o: In function `void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)':
-/Users/gracekwak/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/bits/basic_string.tcc:211: multiple definition of `K_P_YAW_DIS'
-/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o:/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:250: first defined here
-collect2: error: ld returned 1 exit status
+linking frcUserProgram successful.
 
 Finished linkFrcUserProgramReleaseExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramReleaseExecutable/output.txt.

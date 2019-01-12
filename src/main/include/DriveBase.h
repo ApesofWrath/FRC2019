@@ -179,6 +179,10 @@ private:
 			k_p_yaw_t, k_d_yaw_t, k_p_kick_vel, k_d_kick_vel, k_p_yaw_h_vel,
 			k_p_yaw_au, k_d_yaw_au;
 
+	double DYN_MAX_Y_RPM = 0;
+
+	double k_p_yaw_dis, k_i_yaw_dis, k_d_yaw_dis;
+
 	double k_p_right_vel_au = 0.0;
 	double k_p_left_vel_au = 0.0;
 	double k_p_kick_vel_au = 0.0;
@@ -212,8 +216,6 @@ private:
 	std::vector<int> zeroing_index;
 
 	double feed_forward_r, feed_forward_l, feed_forward_k;
-
-	double DYN_MAX_Y_RPM; //for field-centric
 
 	bool is_zero;
 

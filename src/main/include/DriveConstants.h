@@ -48,15 +48,15 @@ const double K_D_RIGHT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 const double K_D_KICKER_DIS = 0.0;
 
-double K_P_YAW_DIS = 0.5;
-double K_I_YAW_DIS = 0.0;
-double K_D_YAW_DIS = 0.0;
+const double K_P_YAW_DIS = 0.5;
+const double K_I_YAW_DIS = 0.0;
+const double K_D_YAW_DIS = 0.0;
 
 ///ROBOT DRIVE CONSTANTS///
 
 const double MAX_FPS = 19.5; //used in auton pathfinder. doesn't change depending on gear because always was in high
 const double MINUTE_CONVERSION = 600.0; //part of the conversion from ticks velocity to rpm
-double FF_SCALE = 0.7;
+const double FF_SCALE = 0.7;
 
 const double WHEEL_DIAMETER = 4.0; //inches, for fps for auton
 const double TICKS_PER_ROT = 1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders

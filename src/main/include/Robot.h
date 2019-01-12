@@ -5,7 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#ifndef SRC_ROBOT_H_
+#define SRC_ROBOT_H_
 
 #include "DriveController.h"
 #include <string>
@@ -31,3 +32,5 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 };
+
+#endif
