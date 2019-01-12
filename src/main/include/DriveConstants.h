@@ -1,8 +1,10 @@
 ///DRIVE GAINS///
 #ifndef SRC_DRIVECONSTANTS_H_
 #define SRC_DRIVECONSTANTS_H_
-//Teleop
 
+//must all be const
+
+//Teleop
 const double K_P_YAW_HEADING_POS = 0.01;
 const double K_D_VISION_POS = 0.0;
 

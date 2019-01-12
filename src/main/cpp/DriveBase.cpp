@@ -494,6 +494,10 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		target_r = -max_y_rpm;
 	}
 
+	SmartDashboard::PutNumber("left targ", target_l);
+	SmartDashboard::PutNumber("right targ", target_r);
+  SmartDashboard::PutNumber("yaw targ", target_yaw_rate);
+
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
 			k_p_left_vel, 0.0, k_p_yaw_t, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
 			0.0, 0.0, 0.0);

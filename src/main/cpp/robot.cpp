@@ -9,24 +9,24 @@
 
 
 
-// const int JOY_THROTTLE = 0;
-// const int JOY_WHEEL = 1;
-// const int JOY_OP = 2;
-//
-// DriveController *drive_controller;
-// Joystick *joyThrottle, *joyWheel, *joyOp;
-// bool is_heading, is_vision, is_fc;
+const int JOY_THROTTLE = 0;
+const int JOY_WHEEL = 1;
+const int JOY_OP = 2;
+
+DriveController *drive_controller;
+Joystick *joyThrottle, *joyWheel, *joyOp;
+bool is_heading, is_vision, is_fc;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
- //  joyThrottle = new Joystick(JOY_THROTTLE);
-	// joyWheel = new Joystick(JOY_WHEEL);
-	// joyOp = new Joystick(JOY_OP);
- //
- // drive_controller = new DriveController();
+  joyThrottle = new Joystick(JOY_THROTTLE);
+	joyWheel = new Joystick(JOY_WHEEL);
+	joyOp = new Joystick(JOY_OP);
+
+ drive_controller = new DriveController();
 }
 
 /**
@@ -54,7 +54,7 @@ void Robot::RobotPeriodic() {
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-//  drive_controller->ZeroAll(true);
+  drive_controller->ZeroAll(true);
 
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
@@ -75,21 +75,21 @@ void Robot::AutonomousPeriodic() {
     // Default Auto goes here
   }
 
-  // if (drive_controller->set_profile) {
-  //   drive_controller->RunAutonDrive();
-  // }
+  if (drive_controller->set_profile) {
+    drive_controller->RunAutonDrive();
+  }
 }
 
 void Robot::TeleopInit() {
-//  drive_controller->ZeroAll(true);
+  drive_controller->ZeroAll(true);
 }
 
 void Robot::TeleopPeriodic() {
-    // is_heading = joyThrottle->GetRawButton(0);
-		// is_vision = false;
-		// is_fc = false;
+    is_heading = joyThrottle->GetRawButton(0);
+		is_vision = false;
+		is_fc = false;
 
-//    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
+   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
 }
 
 void Robot::TestPeriodic() {}

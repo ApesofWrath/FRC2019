@@ -181,7 +181,7 @@ private:
 
 	double DYN_MAX_Y_RPM = 0;
 
-	double k_p_yaw_dis, k_i_yaw_dis, k_d_yaw_dis;
+	double k_p_yaw_dis, k_i_yaw_dis, k_d_yaw_dis, ff_scale;
 
 	double k_p_right_vel_au = 0.0;
 	double k_p_left_vel_au = 0.0;
