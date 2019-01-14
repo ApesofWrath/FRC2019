@@ -7,8 +7,6 @@
 
 #include "Robot.h"
 
-
-
 const int JOY_THROTTLE = 0;
 const int JOY_WHEEL = 1;
 const int JOY_OP = 2;
@@ -17,7 +15,15 @@ DriveController *drive_controller;
 Joystick *joyThrottle, *joyWheel, *joyOp;
 bool is_heading, is_vision, is_fc;
 
+nt::NetworkTableEntry xEntry;
+
 void Robot::RobotInit() {
+
+//  nt::NetworkTableInstance::StartClient();
+//	nt::NetworkTableInstance::SetTeam(668);
+
+
+
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -39,7 +45,10 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
 
-
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto table = inst.GetTable("SmartDashboard");
+  xEntry = table->GetEntry("X");
+  //frc::SmartDashboard::PutData("nt", xEntry);
 }
 
 /**

@@ -14,6 +14,10 @@
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/TimedRobot.h>
+///#include <frc/WPILib.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableEntry.h>
+#include <networktables/NetworkTableInstance.h>
 #include <frc/smartdashboard/SendableChooser.h>
 
 class Robot : public frc::TimedRobot {
