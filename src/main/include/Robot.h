@@ -8,20 +8,20 @@
 #ifndef SRC_ROBOT_H_
 #define SRC_ROBOT_H_
 
-#include "DriveController.h"
 #include <string>
 #include <frc/Joystick.h>
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/TimedRobot.h>
-///#include <frc/WPILib.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include "DriveController.h"
 
 class Robot : public frc::TimedRobot {
  public:
+
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;
@@ -35,6 +35,16 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+
+  const int JOY_THROTTLE = 0;
+  const int JOY_WHEEL = 1;
+  const int JOY_OP = 2;
+
+  DriveController *drive_controller;
+  Joystick *joyThrottle, *joyWheel, *joyOp;
+
+  bool is_heading, is_vision, is_fc;
+
 };
 
 #endif

@@ -12,12 +12,15 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
 	k_d_yaw_au = K_D_YAW_AU;
 
+	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
+	k_d_vision_pos = K_D_VISION_POS;
+
 	k_p_yaw_dis = K_P_YAW_DIS;
 	k_i_yaw_dis = K_I_YAW_DIS;
 	k_d_yaw_dis = K_D_YAW_DIS;
+
 	ff_scale = FF_SCALE;
 
-	max_y_rpm = MAX_Y_RPM;
 	DYN_MAX_Y_RPM = max_y_rpm;
 
 	if (two_speed) { //StartLow()
@@ -29,8 +32,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 		k_p_right_vel = K_P_RIGHT_VEL_LOW;
 		k_p_left_vel = K_P_LEFT_VEL_LOW;
-		k_p_yaw_t = K_P_YAW_VEL_LOW;
-		k_d_yaw_t = K_D_YAW_VEL_LOW;
+		k_p_yaw_vel = K_P_YAW_VEL_LOW;
+		k_d_yaw_vel = K_D_YAW_VEL_LOW;
 		k_d_right_vel = K_D_RIGHT_VEL_LOW;
 		k_d_left_vel = K_D_LEFT_VEL_LOW;
 
@@ -44,12 +47,12 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-		max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
+		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
 		k_p_left_vel = K_P_LEFT_VEL;
-		k_p_yaw_t = K_P_YAW_VEL;
-		k_d_yaw_t = K_P_YAW_VEL;
+		k_p_yaw_vel = K_P_YAW_VEL;
+		k_d_yaw_vel = K_D_YAW_VEL;
 		k_d_right_vel = K_D_RIGHT_VEL;
 		k_d_left_vel = K_D_LEFT_VEL;
 
@@ -166,7 +169,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	ahrs = new AHRS(SerialPort::kUSB);
 
   //shifter
-	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
+	if (pcm != -1) solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
 
 }
 
@@ -192,8 +195,8 @@ DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 
 	k_p_right_vel = K_P_RIGHT_VEL;
 	k_p_left_vel = K_P_LEFT_VEL;
-	k_p_yaw_t = K_P_YAW_VEL;
-	k_d_yaw_t = K_D_YAW_VEL;
+	k_p_yaw_vel = K_P_YAW_VEL;
+	k_d_yaw_vel = K_D_YAW_VEL;
 	k_d_right_vel = K_D_RIGHT_VEL;
 	k_d_left_vel = K_D_LEFT_VEL;
 
@@ -270,8 +273,8 @@ void DriveBase::SetGainsHigh() {
 
 	k_p_right_vel = K_P_RIGHT_VEL_HIGH; //these are all for teleop; we don't shift gears in auton
 	k_p_left_vel = K_P_LEFT_VEL_HIGH;
-	k_p_yaw_t = K_P_YAW_VEL_HIGH;
-	k_d_yaw_t = K_P_YAW_VEL_HIGH;
+	k_p_yaw_vel = K_P_YAW_VEL_HIGH;
+	k_d_yaw_vel = K_P_YAW_VEL_HIGH;
 	k_d_right_vel = K_D_RIGHT_VEL_HIGH;
 	k_d_left_vel = K_D_LEFT_VEL_HIGH;
 
@@ -295,8 +298,8 @@ void DriveBase::SetGainsLow() {
 
 	k_p_right_vel = K_P_RIGHT_VEL_LOW;
 	k_p_left_vel = K_P_LEFT_VEL_LOW;
-	k_p_yaw_t = K_P_YAW_VEL_LOW;
-	k_d_yaw_t = K_D_YAW_VEL_LOW;
+	k_p_yaw_vel = K_P_YAW_VEL_LOW;
+	k_d_yaw_vel = K_D_YAW_VEL_LOW;
 	k_d_right_vel = K_D_RIGHT_VEL_LOW;
 	k_d_left_vel = K_D_LEFT_VEL_LOW;
 
@@ -433,7 +436,7 @@ void DriveBase::TeleopHDrive(Joystick *JoyThrottle,
 	}
 
 	Controller(target_kick, target_r, target_l, target_yaw_rate, k_p_right_vel,
-			k_p_left_vel, k_p_kick_vel, k_p_yaw_t, 0.0, k_d_left_vel,
+			k_p_left_vel, k_p_kick_vel, k_p_yaw_vel, 0.0, k_d_left_vel,
 			k_d_right_vel, k_d_kick_vel, 0.0, 0.0, 0.0);
 
 
@@ -499,7 +502,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
   SmartDashboard::PutNumber("yaw targ", target_yaw_rate);
 
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
-			k_p_left_vel, 0.0, k_p_yaw_t, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
+			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
 			0.0, 0.0, 0.0);
 
 }
@@ -532,6 +535,7 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
  */
 //position controlller
 //auton targets, actually just pd
+
 void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel, right vel
 
 	double refYaw = drive_ref.at(0); //reversed in Generate

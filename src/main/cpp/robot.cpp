@@ -7,22 +7,9 @@
 
 #include "Robot.h"
 
-const int JOY_THROTTLE = 0;
-const int JOY_WHEEL = 1;
-const int JOY_OP = 2;
-
-DriveController *drive_controller;
-Joystick *joyThrottle, *joyWheel, *joyOp;
-bool is_heading, is_vision, is_fc;
-
 nt::NetworkTableEntry xEntry;
 
 void Robot::RobotInit() {
-
-//  nt::NetworkTableInstance::StartClient();
-//	nt::NetworkTableInstance::SetTeam(668);
-
-
 
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
@@ -32,42 +19,26 @@ void Robot::RobotInit() {
 	joyWheel = new Joystick(JOY_WHEEL);
 	joyOp = new Joystick(JOY_OP);
 
- drive_controller = new DriveController();
+  drive_controller = new DriveController();
+
 }
 
-/**
- * This function is called every robot packet, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
 void Robot::RobotPeriodic() {
 
-  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
   auto table = inst.GetTable("SmartDashboard");
+
   xEntry = table->GetEntry("X");
-  //frc::SmartDashboard::PutData("nt", xEntry);
+
 }
 
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
- *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
 void Robot::AutonomousInit() {
+
   drive_controller->ZeroAll(true);
 
   m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
+  m_autoSelected = SmartDashboard::GetString("Auto Selector",
+       kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
   if (m_autoSelected == kAutoNameCustom) {
@@ -75,9 +46,11 @@ void Robot::AutonomousInit() {
   } else {
     // Default Auto goes here
   }
+
 }
 
 void Robot::AutonomousPeriodic() {
+
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
   } else {
@@ -87,18 +60,24 @@ void Robot::AutonomousPeriodic() {
   if (drive_controller->set_profile) {
     drive_controller->RunAutonDrive();
   }
+
 }
 
 void Robot::TeleopInit() {
+
   drive_controller->ZeroAll(true);
+
 }
 
 void Robot::TeleopPeriodic() {
+
     is_heading = joyThrottle->GetRawButton(0);
 		is_vision = false;
 		is_fc = false;
 
    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
+
+   //frc::SmartDashboard::PutNumber("L1", )
 }
 
 void Robot::TestPeriodic() {}

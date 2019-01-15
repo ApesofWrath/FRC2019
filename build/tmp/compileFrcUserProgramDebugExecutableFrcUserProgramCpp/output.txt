@@ -1,21 +1,4 @@
-See file:///C:/Users/DriversStation/Documents/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling robot.cpp failed.
-C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\robot.cpp: In member function 'virtual void Robot::RobotPeriodic()':
-C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\robot.cpp:51:44: error: no matching function for call to 'frc::SmartDashboard::PutData(const char [3], nt::NetworkTableEntry&)'
-   frc::SmartDashboard::PutData("nt", xEntry);
-                                            ^
-In file included from C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/WPILib.h:100:0,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\include/DriveBase.h:5,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\include/DriveController.h:4,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\include/Robot.h:11,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\robot.cpp:8:
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SmartDashboard.h:106:15: note: candidate: static void frc::SmartDashboard::PutData(wpi::StringRef, frc::Sendable*)
-   static void PutData(wpi::StringRef key, Sendable* data);
-               ^~~~~~~
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SmartDashboard.h:106:15: note:   no known conversion for argument 2 from 'nt::NetworkTableEntry' to 'frc::Sendable*'
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SmartDashboard.h:117:15: note: candidate: static void frc::SmartDashboard::PutData(frc::Sendable*)
-   static void PutData(Sendable* value);
-               ^~~~~~~
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/smartdashboard/SmartDashboard.h:117:15: note:   candidate expects 1 argument, 2 provided
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+compiling robot.cpp successful.
 
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/Documents/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

@@ -175,8 +175,7 @@ private:
 	double max_y_rpm, actual_max_y_rpm, max_yaw_rate;
 
 	double k_p_right_vel, k_p_left_vel, k_p_yaw_vel, k_d_right_vel,
-			k_d_left_vel, //gains vary depending on gear
-			k_p_yaw_t, k_d_yaw_t, k_p_kick_vel, k_d_kick_vel, k_p_yaw_h_vel,
+			k_d_left_vel, k_d_yaw_vel, k_p_kick_vel, k_d_kick_vel, k_p_yaw_h_vel,
 			k_p_yaw_au, k_d_yaw_au;
 
 	double DYN_MAX_Y_RPM = 0;
