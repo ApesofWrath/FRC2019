@@ -11,6 +11,10 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc/Joystick.h>
+
+#include "Shoulder.h"
+#include "Wrist.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -21,6 +25,15 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+
+  const int JOY_SHOULDER = 0;
+  const int JOY_WRIST = 1;
+
+  Shoulder *shoulder;
+  Wrist *wrist;
+  
+  Joystick *joyShoulder, *joyWrist;
+
 
  private:
   frc::SendableChooser<std::string> m_chooser;

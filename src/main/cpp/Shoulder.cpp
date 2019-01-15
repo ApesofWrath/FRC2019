@@ -123,18 +123,20 @@ void Shoulder::InitializeShoulder() {
 
 void Shoulder::ManualShoulder(Joystick *joyOpShoulder) {
 
-	//SmartDashboard::PutNumber("SHOULDER CUR", talonShoulder->GetOutputCurrent());
-	//double enc_shoulder = GetAngularPosition();
-	//SmartDashboard::PutNumber("SHOULDER ENC",
-	//		talonShoulder->GetSensorCollection().GetQuadraturePosition());
+	SmartDashboard::PutNumber("SHOULDER CUR", talonShoulder->GetOutputCurrent());
+	double enc_shoulder = GetAngularPosition();
+	SmartDashboard::PutNumber("SHOULDER ENC",
+			talonShoulder->GetSensorCollection().GetQuadraturePosition());
 
-	//SmartDashboard::PutNumber("SHOULDER POS", GetAngularPosition()); //left is negative, right is positive
+	SmartDashboard::PutNumber("SHOULDER POS", GetAngularPosition()); //left is negative, right is positive
 
 	double output = joyOpShoulder->GetY() * 0.5 * 1.0;
 
 	output *= MAX_VOLTAGE_S;
 
-	//SmartDashboard::PutNumber("SHOULDER OUTPUT", output);
+	SmartDashboard::PutNumber("SHOULDER OUTPUT", output);
+
+	// SmartDashboard::PutString("HasRobotVoted", "True")
 
 	SetVoltageShoulder(output);
 

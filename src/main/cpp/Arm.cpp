@@ -7,6 +7,7 @@
 
  #include "Shoulder.cpp"
  #include "Wrist.cpp"
+ #include "Arm.h"
 
  Arm::Arm(){
 
