@@ -442,6 +442,8 @@ void DriveBase::TeleopHDrive(Joystick *JoyThrottle,
 
 }
 
+//PD on left and right
+//P on yaw
 void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
 		Joystick *JoyWheel) {
 
@@ -496,10 +498,6 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 	} else if (target_r < -max_y_rpm) {
 		target_r = -max_y_rpm;
 	}
-
-	SmartDashboard::PutNumber("left targ", target_l);
-	SmartDashboard::PutNumber("right targ", target_r);
-  SmartDashboard::PutNumber("yaw targ", target_yaw_rate);
 
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
 			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
@@ -667,9 +665,8 @@ void DriveBase::Controller(double ref_kick,
 	double yaw_rate_current = -1.0 * (double) ahrs->GetRate()
 			* (double) ((PI) / 180.0); //left should be positive
 
-	 frc::SmartDashboard::PutNumber("YAW POS", ahrs->GetYaw());
-	// frc::SmartDashboard::PutNumber("LEFT ENC VEL", GetLeftVel());
-	// frc::SmartDashboard::PutNumber("RIGHT ENC VEL", GetRightVel());
+	 frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	 frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
 
 	double target_yaw_rate = ref_yaw;
 
@@ -677,7 +674,9 @@ void DriveBase::Controller(double ref_kick,
 	ref_right = ref_right + (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //ff
 
 	double yaw_error = target_yaw_rate - yaw_rate_current;
-//
+
+	frc::SmartDashboard::PutNumber("yaw vel error", yaw_error;
+
 //	if(yaw_rate_current == 0.0) {
 //		k_p_yaw = 0.0;
 //		k_d_yaw = 0.0;
@@ -693,6 +692,9 @@ void DriveBase::Controller(double ref_kick,
 
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
+
+	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
+	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
 
 	if (std::abs(ref_kick) < 25) {
 		ref_kick = 0;
@@ -723,18 +725,15 @@ void DriveBase::Controller(double ref_kick,
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
 
 
-frc::SmartDashboard::PutNumber("l_current", l_current);
-frc::SmartDashboard::PutNumber("r_current", r_current);
-
-frc::SmartDashboard::PutNumber("ref_left", ref_left);
-frc::SmartDashboard::PutNumber("ref_right", ref_right);
-
-frc::SmartDashboard::PutNumber("l_error_vel_t", l_error_vel_t);
-frc::SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
+frc::SmartDashboard::PutNumber("l vel actual", l_current);
+frc::SmartDashboard::PutNumber("r vel actual", r_current);
 
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
 	//kick_error_vel = ref_kick - kick_current;
+
+	frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
 
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
@@ -748,8 +747,10 @@ frc::SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	frc::SmartDashboard::PutNumber("D Right Vel", D_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("P Right Vel", P_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
+	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
 
 	if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
 		feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
@@ -790,7 +791,6 @@ frc::SmartDashboard::PutNumber("r_error_vel_t", r_error_vel_t);
 	kick_last_error_vel = kick_error_vel;
 	l_last_current = l_current;
 
-	frc::SmartDashboard::PutNumber("Yaw Error", yaw_error);
 
 }
 

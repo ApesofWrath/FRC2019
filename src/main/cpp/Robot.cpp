@@ -7,8 +7,6 @@
 
 #include "Robot.h"
 
-nt::NetworkTableEntry xEntry;
-
 void Robot::RobotInit() {
 
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
@@ -58,7 +56,7 @@ void Robot::AutonomousPeriodic() {
   }
 
   if (drive_controller->set_profile) {
-    drive_controller->RunAutonDrive();
+  //  drive_controller->RunAutonDrive();
   }
 
 }

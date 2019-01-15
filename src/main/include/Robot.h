@@ -31,6 +31,8 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
+
+  nt::NetworkTableEntry xEntry;
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
