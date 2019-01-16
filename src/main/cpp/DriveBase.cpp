@@ -675,7 +675,7 @@ void DriveBase::Controller(double ref_kick,
 
 	double yaw_error = target_yaw_rate - yaw_rate_current;
 
-	frc::SmartDashboard::PutNumber("yaw vel error", yaw_error;
+	frc::SmartDashboard::PutNumber("yaw vel error", yaw_error);
 
 //	if(yaw_rate_current == 0.0) {
 //		k_p_yaw = 0.0;
