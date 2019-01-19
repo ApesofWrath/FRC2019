@@ -10,11 +10,25 @@
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <WPI_TalonSRX.h>
+#include <WPI_VictorSPX.h>
+
+const int talon_id = 0;
+const int victor_id = 0;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  WPI_TalonSRX talon = new WPI_TalonSRX(talon_id);
+  WPI_VictorSPX victor = new WPI_VictorSPX(victor_id);
+
+  victor.Set(ControlMode::Follower, talon_id);
+  talon.Set(ControlMode::PercentOutput, 0.5);
+
+  frc::SmartDashboard::PutData("Output: ", talon.Get())
+
 }
 
 /**
