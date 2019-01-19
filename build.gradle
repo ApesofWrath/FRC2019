@@ -45,6 +45,9 @@ model {
         frcUserProgram(NativeExecutableSpec) {
             targetPlatform wpi.platforms.roborio
             targetPlatform wpi.platforms.desktop
+            
+            // For the pathfinder library
+            lib library: "pathfinder"
 
             sources.cpp {
                 source {
@@ -62,6 +65,7 @@ model {
             useLibrary(it, "wpilib")
             wpi.deps.vendor.cpp(it)
         }
+
     }
     testSuites {
         frcUserProgramTest(GoogleTestTestSuiteSpec) {
