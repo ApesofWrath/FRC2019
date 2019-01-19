@@ -1,4 +1,0 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64DebugExecutable/output.txt for all output for linkFrcUserProgramOsxx86-64DebugExecutable.
-linking frcUserProgram successful.
-
-Finished linkFrcUserProgramOsxx86-64DebugExecutable, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64DebugExecutable/output.txt.

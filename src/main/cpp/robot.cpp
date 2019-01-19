@@ -10,24 +10,24 @@
 #include <iostream>
 
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <WPI_TalonSRX.h>
-#include <WPI_VictorSPX.h>
 
 const int talon_id = 0;
 const int victor_id = 0;
+
+TalonSRX *talon;
+VictorSPX *victor;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  WPI_TalonSRX talon = new WPI_TalonSRX(talon_id);
-  WPI_VictorSPX victor = new WPI_VictorSPX(victor_id);
+  talon = new TalonSRX(talon_id);
+  victor = new VictorSPX(victor_id);
 
-  victor.Set(ControlMode::Follower, talon_id);
-  talon.Set(ControlMode::PercentOutput, 0.5);
+  victor->Set(ControlMode::Follower, talon_id);
 
-  frc::SmartDashboard::PutData("Output: ", talon.Get())
+  //frc::SmartDashboard::PutData("Output: ", talon.Get())
 
 }
 
@@ -39,7 +39,11 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+
+  talon->Set(ControlMode::PercentOutput, 0.5);
+
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select

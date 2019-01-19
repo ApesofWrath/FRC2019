@@ -1,4 +1,0 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramTestOsxx86-64ReleaseGoogleTestExe/output.txt for all output for linkFrcUserProgramTestOsxx86-64ReleaseGoogleTestExe.
-linking frcUserProgramTest successful.
-
-Finished linkFrcUserProgramTestOsxx86-64ReleaseGoogleTestExe, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramTestOsxx86-64ReleaseGoogleTestExe/output.txt.

@@ -44,10 +44,6 @@ model {
     components {
         frcUserProgram(NativeExecutableSpec) {
             targetPlatform wpi.platforms.roborio
-            targetPlatform wpi.platforms.desktop
-            
-            // For the pathfinder library
-            lib library: "pathfinder"
 
             sources.cpp {
                 source {
