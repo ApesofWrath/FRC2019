@@ -120,18 +120,18 @@
 
  void Wrist::ManualWrist(Joystick *joyOpWrist) {
 
- 	//SmartDashboard::PutNumber("WRIST CUR", talonWrist->GetOutputCurrent());
- 	//double enc_wrist = GetAngularPosition();
- 	//SmartDashboard::PutNumber("WRIST ENC",
- 	//		talonWrist->GetSensorCollection().GetQuadraturePosition());
+ 	SmartDashboard::PutNumber("WRIST CUR", talonWrist->GetOutputCurrent());
+ 	double enc_wrist = GetAngularPosition();
+ 	SmartDashboard::PutNumber("WRIST ENC",
+ 			talonWrist->GetSensorCollection().GetQuadraturePosition());
 
- 	//SmartDashboard::PutNumber("WRIST POS", GetAngularPosition()); //left is negative, right is positive
+ 	SmartDashboard::PutNumber("WRIST POS", GetAngularPosition()); //left is negative, right is positive
 
  	double output = joyOpWrist->GetY() * 0.5 * 1.0;
 
  	output *= MAX_VOLTAGE_W;
 
- 	//SmartDashboard::PutNumber("WRIST OUTPUT", output);
+ 	SmartDashboard::PutNumber("WRIST OUTPUT", output);
 
  	SetVoltageWrist(output);
 
