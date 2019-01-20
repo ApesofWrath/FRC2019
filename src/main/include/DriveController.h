@@ -6,14 +6,14 @@
 class DriveController : public DriveBase {
 public:
 
-	const int l1 = 0;
-	const int l2 = 0;
-	const int l3 = 0;
-	const int l4 = 0;
-	const int r1 = 0;
-	const int r2 = 0;
-	const int r3 = 0;
-	const int r4 = 0;
+	const int l1 = 18;
+	const int l2 = 23;
+	const int l3 = 30;
+	const int l4 = 36;
+	const int r1 = 24;
+	const int r2 = 21;
+	const int r3 = 22;
+	const int r4 = 29;
 
 	const int pcm = -1;
 	const int f_channel = -1;

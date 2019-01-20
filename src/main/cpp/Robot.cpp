@@ -68,7 +68,8 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-
+//std::cout << "jere" << std:endl;
+frc::SmartDashboard::PutNumber("y", 8);
     is_heading = joyThrottle->GetRawButton(0);
 		is_vision = false;
 		is_fc = false;
