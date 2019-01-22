@@ -4,7 +4,7 @@
 */
 
 #include <WPILib.h>
-
+#include <frc/DigitalOutput.h>
 
 /*Variables + constants*/
 
@@ -13,16 +13,16 @@ const int IN_STATE = 1;
 const int OUT_STATE = 2;
 
 
-Suction::Suction() {
-
+Suction::Suction(int channel) {
+  suction_out = DigitalOutput(channel);
 }
 
 void Suction::Pull() {
-
+  suction_out->Set(true);
 }
 
 void Suction:Push() {
-
+  suction_out->Set(true);
 }
 
 void Suction:SuctionStateMachine() {
