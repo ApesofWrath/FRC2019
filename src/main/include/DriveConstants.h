@@ -63,6 +63,10 @@ const double K_D_KICKER_DIS = 0.0;
 
 ///ROBOT DRIVE CONSTANTS///
 
+const double MAX_VEL_VIS = 0.0; //m/s for pathfinder
+const double MAX_ACC_VIS = 0.0;
+const double MAX_JERK_VIS = 10000.0;
+
 const double MAX_FPS = 0.0; //used in auton pathfinder
 const double FF_SCALE = 0.0;
 

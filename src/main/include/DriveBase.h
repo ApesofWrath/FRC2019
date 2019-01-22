@@ -48,6 +48,7 @@ public:
 	void TeleopWCDrive(Joystick *JoyThrottle, Joystick *JoyWheel); //creates velocity references based on joysticks, for normal west coast drive train
 	void AutonDrive(); //makes velocity references based on motion profiles
 	void RotationController(Joystick *JoyWheel);
+	void VisionTrack(double dist_to_target, double yaw_to_target);
 	void Controller(double ref_kick, double ref_right, double ref_left,
 			double ref_yaw, double k_p_right, double k_p_left, double k_p_kick,
 			double k_p_yaw, double k_d_yaw, double k_d_right, double k_d_left,
@@ -63,12 +64,12 @@ public:
 
 	double GetLeftPosition();
 	double GetRightPosition();
+	double GetYawPos();
+	double GetLeftVel();
+	double GetRightVel();
 
 	void SetMaxRpm(double rpm);
 	double GetMaxRpm();
-
-	double GetLeftVel();
-	double GetRightVel();
 
 	//Funstion to fill the profile points vector for autonomous
 	void SetRefs(std::vector<std::vector<double>> profile);

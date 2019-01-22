@@ -12,6 +12,10 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
 	k_d_yaw_au = K_D_YAW_AU;
 
+	max_vel_vis = MAX_VEL_VIS; //m/s for pathfinder
+	max_acc_vis = MAX_ACC_VIS;
+	max_jerk_vis = MAX_JERK_VIS;
+
 	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
 	k_d_vision_pos = K_D_VISION_POS;
 
@@ -528,6 +532,63 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 
 }
 
+//only to be used in teleop; auton will already have this essentially
+void DriveBase::VisionTrack(double dist_to_target, double yaw_to_target) {
+
+	drive_controller->ZeroAll(true);
+
+	int length;
+	int POINT_LENGTH = 2;
+
+	Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
+
+	Waypoint p1, p2;
+
+	p1 = {0.0, 0.0, 0.0};
+	p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
+
+	points[0] = p1;
+	points[1] = p2;
+
+	TrajectoryCandidate candidate;
+	pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
+	PATHFINDER_SAMPLES_FAST, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
+
+	length = candidate.length;
+	Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
+
+	pathfinder_generate(&candidate, trajectory);
+
+	Segment *leftTrajectory = (Segment*) malloc(sizeof(Segment) * length);
+	Segment *rightTrajectory = (Segment*) malloc(sizeof(Segment) * length);
+
+	double wheelbase_width = 2.1;
+
+	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
+			wheelbase_width);
+
+	for (int i = 0; i < length; i++) {
+
+		Segment sl = rightTrajectory[i]; //yes, going backwards requires switching the left and right profiles to have appropriate magnitudes that correspond to the yaw targets!
+		Segment sr = leftTrajectory[i];
+
+		full_refs_sc.at(i).at(0) = ((double) sl.heading) - PI; //profile tries to turn robot around and go straight, in order to go backwards?
+		full_refs_sc.at(i).at(1) = -1.0 * ((double) sl.position); //pathfinder does not give negative references; it always assumes forward
+		full_refs_sc.at(i).at(2) = -1.0 * ((double) sr.position);
+		full_refs_sc.at(i).at(3) = (0.0);
+		full_refs_sc.at(i).at(4) = -1.0 * ((double) sl.velocity);
+		full_refs_sc.at(i).at(5) = -1.0 * ((double) sr.velocity);
+
+	}
+
+	drive_controller->SetRefs(full_refs_sc);
+
+	free(trajectory);
+	free(leftTrajectory);
+	free(rightTrajectory);
+
+}
+
 /**
  * Param: Feet forward, + = forward
  */
@@ -546,12 +607,6 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 	if (refYaw > PI) { //get negative half and positive half on circle
 		refYaw -= (2 * PI);
 	}
-
-	 frc::SmartDashboard::PutNumber("refLeftPos", refLeft);
-	// frc::SmartDashboard::PutNumber("refRight", refRight);
-	 frc::SmartDashboard::PutNumber("refLeftVel", tarVelLeft);
-	// frc::SmartDashboard::PutNumber("refRightVel", tarVelRight);
-	// frc::SmartDashboard::PutNumber("refYaw", refYaw);
 
 	//fps //not needed besides check for jitter
 	double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
@@ -859,6 +914,13 @@ double DriveBase::GetRightVel() {
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
 
 	return r_current;
+}
+
+double DriveBase::GetYawPos() {
+
+	double y_dis = -1.0 * ahrs->GetYaw() * (double) (PI / 180);
+	return y_dis;
+
 }
 
 //Zeros the accumulating I
