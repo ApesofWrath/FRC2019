@@ -17,9 +17,6 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-  joyShoulder = new Joystick(JOY_SHOULDER);
-  joyWrist = new Joystick(JOY_WRIST);
-  //need to initialise the shoulder and wrist
 
 }
 
@@ -69,9 +66,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
-  shoulder->ManualShoulder(joyShoulder);
-  wrist->ManualWrist(joyWrist);
-  
+
+
 }
 
 void Robot::TestPeriodic() {}

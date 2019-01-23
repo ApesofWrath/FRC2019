@@ -4,44 +4,22 @@ compiling suction.h successful.
 compiling suction.cpp successful.
 
 compiling Arm.h failed.
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:26:1: error: expected ';' after class definition
- }
- ^
-
-compiling Shoulder.h failed.
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Shoulder.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
-  #include "ctre/Phoenix.h"
-                           ^
-compilation terminated.
-
-compiling Shoulder.cpp failed.
-In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Shoulder.cpp:8:0:
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Shoulder.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
-  #include "ctre/Phoenix.h"
-                           ^
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:23:32: fatal error: ArmMotionProfiler.h: No such file or directory
+  #include <ArmMotionProfiler.h>
+                                ^
 compilation terminated.
 
 compiling Arm.cpp failed.
-In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Shoulder.cpp:8:0,
-                 from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Shoulder.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
-  #include "ctre/Phoenix.h"
-                           ^
+In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:0:
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:23:32: fatal error: ArmMotionProfiler.h: No such file or directory
+  #include <ArmMotionProfiler.h>
+                                ^
 compilation terminated.
 
-compiling Wrist.cpp failed.
-In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Wrist.cpp:8:0:
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Wrist.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
-  #include "ctre/Phoenix.h"
-                           ^
-compilation terminated.
-
-compiling Wrist.h failed.
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Wrist.h:12:27: fatal error: ctre/Phoenix.h: No such file or directory
-  #include "ctre/Phoenix.h"
-                           ^
-compilation terminated.
+compiling ArmMotionProfiler.h successful.
 
 compiling robot.cpp successful.
+
+compiling ArmMotionProfiler.cpp successful.
 
 Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/kayac/eclipse-workspace/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.
