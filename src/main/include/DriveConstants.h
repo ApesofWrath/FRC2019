@@ -70,7 +70,7 @@ const double WHEEL_DIAMETER = 6.0; //inches, for fps for auton
 const double TICKS_PER_ROT = 1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders
 const double TICKS_PER_FOOT = 1315.0; //auton
 
-const double MAX_Y_RPM = 0;
+const double MAX_Y_RPM = 10;
 const double ACTUAL_MAX_Y_RPM = 0;
 const double MAX_YAW_RATE = 0.0;
 
@@ -79,10 +79,10 @@ const double MAX_Y_RPM_HIGH = 1250.0;
 const double ACTUAL_MAX_Y_RPM_LOW = 625.0;
 const double ACTUAL_MAX_Y_RPM_HIGH = 1300.0;
 
-const double MAX_X_RPM = 0.0; //for HDrive
+const double MAX_X_RPM = 10.0; //for HDrive
 
-const double MAX_YAW_RATE_LOW = 0.0; //max angular velocity divided by the max rpm multiplied by set max rpm
-const double MAX_YAW_RATE_HIGH = 0.0;
+const double MAX_YAW_RATE_LOW = 50.0; //max angular velocity divided by the max rpm multiplied by set max rpm
+const double MAX_YAW_RATE_HIGH = 50.0;
 
 const double MAX_KICK_FPS = ((MAX_X_RPM * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
 const int Kv_KICK = (1 / MAX_KICK_FPS);
