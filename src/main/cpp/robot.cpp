@@ -17,10 +17,11 @@ void Robot::RobotInit() {
   canTalonTopIntake = new TalonSRX(49);
   canTalonBottomIntake = new TalonSRX(26);
 
-  suction1 = new TalonSRX(18); 
+  suction1 = new TalonSRX(18);
   suction2 = new TalonSRX(7);
 
-  frc::DoubleSolenoid doubleSolenoid {0, 7};
+  doubleSolenoid = new frc::DoubleSolenoid(3,0,7);
+  //compressor = new frc::Compressor(3);
 
 
 }
@@ -81,40 +82,41 @@ void Robot::TeleopPeriodic() {
   bool suction_release = joyThrottle->GetRawButton(SUCTION_RELEASE);
   bool push_hatch = joyThrottle->GetRawButton(PUSH_HATCH);
 
+  //compressor->SetClosedLoopControl(true);
 
   if (bottom_intake_in) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
-  } else if (bottom_intake_out) {
     canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.5);
+  } else if (bottom_intake_out) {
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
   } else {
     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
   if (top_intake_in) {
-    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
-  } else if (top_intake_out) {
     canTalonTopIntake->Set(ControlMode::PercentOutput, -0.5);
+  } else if (top_intake_out) {
+    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
   } else {
     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
-  if (both_intakes_in) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
-    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
-  } else if (both_intakes_out) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.5);
-    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.5);
-  } else {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
-    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
-  }
+  // if (both_intakes_in) {
+  //   canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
+  //   canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
+  // } else if (both_intakes_out) {
+  //   canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.5);
+  //   canTalonTopIntake->Set(ControlMode::PercentOutput, -0.5);
+  // } else {
+  //   canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
+  //   canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
+  // }
 
   if (suction_in) {
     suction1->Set(ControlMode::PercentOutput, 0.5);
     suction2->Set(ControlMode::PercentOutput, 0.5);
   } else if (suction_release) {
-    suction1->Set(ControlMode::PercentOutput, -0.5);
-    suction2->Set(ControlMode::PercentOutput, -0.5);
+    suction1->Set(ControlMode::PercentOutput, 0.0);
+    suction2->Set(ControlMode::PercentOutput, 0.0);
   }
 
   if (push_hatch) {

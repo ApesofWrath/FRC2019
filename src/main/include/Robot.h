@@ -19,6 +19,7 @@
 #include <frc/IterativeRobot.h>
 #include <frc/DigitalOutput.h>
 #include <frc/DoubleSolenoid.h>
+//#include <frc/Compressor.h>
 
 
 class Robot : public frc::TimedRobot {
@@ -37,23 +38,23 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 
-  const int JOY_THROTTLE = 0`;
+  const int JOY_THROTTLE = 0;
 
-  const int BOTTOM_INTAKE_IN = 5;
-  const int BOTTOM_INTAKE_OUT = 3;
-  const int TOP_INTAKE_IN = 6;
-  const int TOP_INTAKE_OUT = 4;
-  const int BOTH_INTAKES_IN = 12;
-  const int BOTH_INTAKES_OUT = 11;
-  const int SUCTION_IN = 10;
-  const int SUCTION_RELEASE = 9;
+  const int BOTTOM_INTAKE_IN = 8;
+  const int BOTTOM_INTAKE_OUT = 9;
+  const int TOP_INTAKE_IN = 4;
+  const int TOP_INTAKE_OUT = 3;
+  const int BOTH_INTAKES_IN = 11;
+  const int BOTH_INTAKES_OUT = 10;
+  const int SUCTION_IN = 6;
+  const int SUCTION_RELEASE = 7;
   const int PUSH_HATCH = 1;
 
   frc::Joystick *joyThrottle;
 
   TalonSRX *canTalonTopIntake, *canTalonBottomIntake, *suction1, *suction2;
-
   frc::DoubleSolenoid *doubleSolenoid;
+  //frc::Compressor *compressor;
 };
 
 #endif
