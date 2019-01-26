@@ -37,23 +37,21 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 
-  const int JOY_THROTTLE = 0;
+  const int JOY_THROTTLE = 0`;
 
-  const int BOTTOM_INTAKE_IN = 1;
-  const int BOTTOM_INTAKE_OUT = 2;
-  const int TOP_INTAKE_IN = 3;
+  const int BOTTOM_INTAKE_IN = 5;
+  const int BOTTOM_INTAKE_OUT = 3;
+  const int TOP_INTAKE_IN = 6;
   const int TOP_INTAKE_OUT = 4;
-  const int BOTH_INTAKES_IN = 7;
-  const int BOTH_INTAKES_OUT = 8;
-  const int SUCTION_IN = 5;
-  const int SUCTION_RELEASE = 6;
-  const int PUSH_HATCH = 9;
+  const int BOTH_INTAKES_IN = 12;
+  const int BOTH_INTAKES_OUT = 11;
+  const int SUCTION_IN = 10;
+  const int SUCTION_RELEASE = 9;
+  const int PUSH_HATCH = 1;
 
   frc::Joystick *joyThrottle;
 
-  TalonSRX *canTalonTopIntake, *canTalonBottomIntake;
-
-  frc::DigitalOutput *suctionIn, *suctionOut;
+  TalonSRX *canTalonTopIntake, *canTalonBottomIntake, *suction1, *suction2;
 
   frc::DoubleSolenoid *doubleSolenoid;
 };

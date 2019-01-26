@@ -1,0 +1,4 @@
+See file:///C:/Users/kayac/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaReleaseExecutable.
+linking frcUserProgram successful.
+
+Finished linkFrcUserProgramLinuxathenaReleaseExecutable, see full log file:///C:/Users/kayac/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaReleaseExecutable/output.txt.

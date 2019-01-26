@@ -17,8 +17,8 @@ void Robot::RobotInit() {
   canTalonTopIntake = new TalonSRX(49);
   canTalonBottomIntake = new TalonSRX(26);
 
-  suctionIn = new frc::DigitalOutput(2); //needs values
-  suctionOut = new frc::DigitalOutput(3);
+  suction1 = new TalonSRX(18); 
+  suction2 = new TalonSRX(7);
 
   frc::DoubleSolenoid doubleSolenoid {0, 7};
 
@@ -83,36 +83,38 @@ void Robot::TeleopPeriodic() {
 
 
   if (bottom_intake_in) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.3);
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
   } else if (bottom_intake_out) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.3);
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.5);
   } else {
     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
   if (top_intake_in) {
-    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.3);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
   } else if (top_intake_out) {
-    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.3);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.5);
   } else {
     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
   if (both_intakes_in) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.3);
-    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.3);
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.5);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.5);
   } else if (both_intakes_out) {
-    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.3);
-    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.3);
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.5);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.5);
   } else {
     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
   if (suction_in) {
-    suctionIn->Set(true);
+    suction1->Set(ControlMode::PercentOutput, 0.5);
+    suction2->Set(ControlMode::PercentOutput, 0.5);
   } else if (suction_release) {
-    suctionOut->Set(true);
+    suction1->Set(ControlMode::PercentOutput, -0.5);
+    suction2->Set(ControlMode::PercentOutput, -0.5);
   }
 
   if (push_hatch) {
