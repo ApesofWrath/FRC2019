@@ -1,4 +1,88 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
-compiling robot.cpp successful.
+See file:///C:/Users/kayac/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
+compiling robot.cpp failed.
+In file included from C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:8:0:
+C:\Users\kayac\Desktop\FRC2019\src\main\include/Robot.h:35:3: error: 'Joystick' does not name a type
+   Joystick *joyThrottle;
+   ^~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\include/Robot.h:37:3: error: 'TalonSRX' does not name a type
+   TalonSRX *canTalonTopIntake, *canTalonBottomIntake;
+   ^~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\include/Robot.h:39:3: error: 'DigitalOutput' does not name a type
+   DigitalOutput *suctionIn, *suctionOut;
+   ^~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\include/Robot.h:41:3: error: 'DoubleSolenoid' does not name a type
+   DoubleSolenoid *doubleSolenoid1, *doubleSolenoid2;
+   ^~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp: In member function 'virtual void Robot::RobotInit()':
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:24:3: error: 'joyThrottle' was not declared in this scope
+   joyThrottle = new Joystick(JOY_THROTTLE);
+   ^~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:24:21: error: expected type-specifier before 'Joystick'
+   joyThrottle = new Joystick(JOY_THROTTLE);
+                     ^~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:26:3: error: 'canTalonTopIntake' was not declared in this scope
+   canTalonTopIntake = new TalonSRX(0);
+   ^~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:27:3: error: 'canTalonBottomIntake' was not declared in this scope
+   canTalonBottomIntake = new TalonSRX(1);
+   ^~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:29:3: error: 'suctionIn' was not declared in this scope
+   suctionIn = new DigitalOutput(2);
+   ^~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:29:19: error: expected type-specifier before 'DigitalOutput'
+   suctionIn = new DigitalOutput(2);
+                   ^~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:30:3: error: 'suctionOut' was not declared in this scope
+   suctionOut = new DigitalOutput(3);
+   ^~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:30:20: error: expected type-specifier before 'DigitalOutput'
+   suctionOut = new DigitalOutput(3);
+                    ^~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp: In member function 'virtual void Robot::TeleopPeriodic()':
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:87:27: error: 'joyThrottle' was not declared in this scope
+   bool bottom_intake_in = joyThrottle->GetRawButton(BOTTOM_INTAKE_IN);
+                           ^~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:95:5: error: 'canTalonBottomIntake' was not declared in this scope
+     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.3);
+     ^~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:97:5: error: 'canTalonBottomIntake' was not declared in this scope
+     canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.3);
+     ^~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:99:5: error: 'canTalonBottomIntake' was not declared in this scope
+     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
+     ^~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:103:5: error: 'canTalonTopIntake' was not declared in this scope
+     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.3);
+     ^~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:105:5: error: 'canTalonTopIntake' was not declared in this scope
+     canTalonTopIntake->Set(ControlMode::PercentOutput, -0.3);
+     ^~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:107:5: error: 'canTalonTopIntake' was not declared in this scope
+     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
+     ^~~~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:111:5: error: 'suctionIn' was not declared in this scope
+     suctionIn->Set(true);
+     ^~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:112:5: error: 'doubleSolenoid1' was not declared in this scope
+     doubleSolenoid1->Set(frc::DoubleSolenoid::kForward);
+     ^~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:113:5: error: 'doubleSolenoid2' was not declared in this scope
+     doubleSolenoid2->Set(frc::DoubleSolenoid::kForward);
+     ^~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:116:5: error: 'suctionOut' was not declared in this scope
+     suctionOut->Set(true);
+     ^~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:117:5: error: 'doubleSolenoid1' was not declared in this scope
+     doubleSolenoid1->Set(frc::DoubleSolenoid::kReverse);
+     ^~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:118:5: error: 'doubleSolenoid2' was not declared in this scope
+     doubleSolenoid2->Set(frc::DoubleSolenoid::kReverse);
+     ^~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:121:5: error: 'doubleSolenoid1' was not declared in this scope
+     doubleSolenoid1->Set(frc::DoubleSolenoid::kOff);
+     ^~~~~~~~~~~~~~~
+C:\Users\kayac\Desktop\FRC2019\src\main\cpp\robot.cpp:122:5: error: 'doubleSolenoid2' was not declared in this scope
+     doubleSolenoid2->Set(frc::DoubleSolenoid::kOff);
+     ^~~~~~~~~~~~~~~
 
-Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/kayac/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.

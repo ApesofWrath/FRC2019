@@ -12,6 +12,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 
+
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
@@ -21,6 +22,23 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+
+  const int JOY_THROTTLE = 0;
+
+  const int BOTTOM_INTAKE_IN = 1;
+  const int BOTTOM_INTAKE_OUT = 2;
+  const int TOP_INTAKE_IN = 3;
+  const int TOP_INTAKE_OUT = 4;
+  const int SUCTION_IN = 5;
+  const int SUCTION_RELEASE = 6;
+
+  Joystick *joyThrottle;
+
+  TalonSRX *canTalonTopIntake, *canTalonBottomIntake;
+
+  DigitalOutput *suctionIn, *suctionOut;
+
+  DoubleSolenoid *doubleSolenoid1, *doubleSolenoid2;
 
  private:
   frc::SendableChooser<std::string> m_chooser;
