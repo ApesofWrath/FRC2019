@@ -7,16 +7,18 @@
 #include <map>
 #include <vector>
 #include "ElevatorMotionProfiler.h"
+#include "ElevatorConstants.h"
 
 // TODO:
-  //elevatorconstants.h
   // Some of SetVoltage()
   // states variables in .cpp and .h file?
 
-  // DONE Move (almost all)
-  // DONE Motion profiler carry over
-  //DONE Stuff in State machines
-    // DONE talons initialization
+//DONE
+  // elevatorconstants.h
+  // Move (almost all)
+  // Motion profiler carry over
+  //Stuff in State machines
+  // talons initialization
 
 class Elevator {
 
@@ -28,6 +30,8 @@ public:
   int last_elevator_state = 0;
   int elevator_state = 5;
 
+  bool is_elevator_init = false;
+
   const int ROCKET_TOP_CARGO = 0;
   const int ROCKET_MID_CARGO = 1;
   const int ROCKET_BOTTOM_CARGO = 2;
@@ -36,38 +40,39 @@ public:
   const int BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
   const int BAY_CARGO = 6;
 
-  const double ROCKET_TOP_CARGO_POS = 0.0;
-  const double ROCKET_MID_CARGO_POS = 0.0;
-  const double ROCKET_BOTTOM_CARGO_POS = 0.0;
-  const double ROCKET_TOP_HATCH_POS = 0.0;
-  const double ROCKET_MID_HATCH_POS = 0.0;
-  const double BOTTOM_HATCH_POS = 0.0;
-  const double BAY_CARGO_POS = 0.0;
+  int zeroing_counter_e = 0;
 
   TalonSRX *talonElevator1, *talonElevator2;
+  frc::DigitalInput *hallEffectTop, *hallEffectBottom; // http://first.wpi.edu/FRC/roborio/release/docs/cpp/classfrc_1_1DigitalInput.html
+
   ElevatorMotionProfiler *elevator_profiler;
 
   std::vector<std::vector<double> > K_down_e = { {  -1.0, -1.0}, { -1.0, -1.0 } };
   std::vector<std::vector<double> > K_up_e = { {  -1.0, -1.0}, { -1.0, -1.0 } };
-  const double ff_percent_e = 1.0;
-  const double PULLEY_DIAMETER = -1.0;
 
   Elevator(ElevatorMotionProfiler *elevator_profiler_);
 
   void Start();
   void Stop();
   std::string GetState();
+
   void ManualElevator();
-  bool IsAtBottom();
-  bool IsAtTop();
 
   void PrintElevatorInfo();
   double GetElevatorPosition();
   double GetElevatorVelocity();
+  double GetVoltageElevator();
+
+	bool IsAtBottomElevator();
+	bool IsAtTopElevator();
+	bool ElevatorEncodersRunning();
+
+  bool ZeroEncs();
+  void SetZeroOffset();
 
 private:
 
-  const double TICKS_PER_ROT_E = 4096.0; //possibly not
+  std::string elev_type, elev_safety;
 
   std::map <int, std::string> elev_state = {
     {ROCKET_TOP_CARGO, "ROCKET TOP CARGO"},
@@ -102,6 +107,19 @@ private:
   void CheckElevatorGoal(int elevator_state, double goal_pos);
 
   void SetVoltage(double voltage_);
+  // Set voltage safeties
+  void StallSafety();
+  void UpperSoftLimit();
+  void LowerSoftLimit();
+  void TopHallEffectSafety();
+  void BottomHallEffectSafety();
+  void ArmSafety();
+  // setvoltage output helpers
+  void ZeroElevator();
+  void CapVoltage();
+  void ScaleOutput();
+  void InvertOutput();
+	void OutputToTalon();
 
   // Move functions
   void Move();

@@ -10,6 +10,9 @@ const int _ROCKET_MID_HATCH = 4;
 const int _BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
 const int _BAY_CARGO = 6;
 
+int encoder_counter_e = 0;
+double elevator_voltage = 0.0;
+
 Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
   elevator_state = BOTTOM_HATCH;
@@ -55,7 +58,6 @@ void Elevator::SetupTalon2() {
 }
 
 void Elevator::ElevatorStateMachine() {
-
   PrintElevatorInfo();
 
   switch (elevator_state) {
@@ -98,6 +100,7 @@ void Elevator::CheckElevatorGoal(int elevator_state, double goal_pos) {
 }
 
 void Elevator::ManualElevator() {
+  PrintElevatorInfo();
   // Need to implement joyOpElev joystick
       // double output = (joyOpElev->GetY()) * 0.5 * 12.0; //multiply by voltage because setvoltageelevator takes voltage
     	// SetVoltage(output);
@@ -163,14 +166,9 @@ void Elevator::UpdateMoveCoordinates() {
 	current_pos_e = GetElevatorPosition();//GetElevatorPosition(); //TAKE THIS BACK OUT
 	current_vel_e = GetElevatorVelocity();//GetElevatorVelocity();
 
-	///	SmartDashboard::PutNumber("Actual Vel", current_vel_e);
-	//	SmartDashboard::PutNumber("Actual Pos", current_pos_e);
 
 	goal_pos_e = ref_elevator[0][0];
 	goal_vel_e = ref_elevator[1][0];
-
-	//	SmartDashboard::PutNumber("Goal Vel", goal_vel_e);
-	//	SmartDashboard::PutNumber("Goal Pos", goal_pos_e);
 }
 
 void Elevator::UpdateMoveError() {
@@ -186,15 +184,28 @@ void Elevator::UpdateMovingDirection(double offset_, double percent, std::vector
 
 // Calculate and output to talons
 void Elevator::SetVoltage(double voltage_) {
-
+  elevator_voltage = voltage_;
   // SAEFTY CHECKS
+  elev_safety = "NONE"; // Default value
 
-  voltage_ /= 12.0;
-  voltage_ *= -1.0;
+  // Safeties set output voltage = 0;
+  StallSafety();
+  UpperSoftLimit();
+  LowerSoftLimit();
+  TopHallEffectSafety();
+	BottomHallEffectSafety();
+  ArmSafety();
 
-  frc::SmartDashboard::PutNumber("ELEV VOLT: ", voltage_);
-  talonElevator1->Set(ControlMode:: PercentOutput, voltage_);  // Talon 2 is follower to talon1
+  frc::SmartDashboard::PutString("ELEVATOR SAFETY", elev_safety);
 
+  // Output Voltage
+  ZeroElevator();
+  CapVoltage();
+  ScaleOutput();
+  InvertOutput();
+	OutputToTalon();
+
+  frc::SmartDashboard::PutNumber("ELEV VOLT: ", elevator_voltage);
 }
 
 std::string Elevator::GetState() {
@@ -202,7 +213,139 @@ std::string Elevator::GetState() {
 }
 
 void Elevator::PrintElevatorInfo() {
-  frc::SmartDashboard::PutString("ELEV: ", elev_state[elevator_state]);
+  frc::SmartDashboard::PutString("ELEV: ", GetState());
 
-  // Other prints here
+  frc::SmartDashboard::PutNumber("ELEV CUR 1", talonElevator1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("ELEV CUR 2", talonElevator2->GetOutputCurrent());
+
+  frc::SmartDashboard::PutNumber("ElEV ENC", talonElevator1->GetSelectedSensorPosition(0));
+
+  frc::SmartDashboard::PutNumber("ELEV HEIGHT", GetElevatorPosition());
+
+  frc::SmartDashboard::PutBoolean("TOP HALL", IsAtTopElevator());
+  frc::SmartDashboard::PutBoolean("BOT HALL", IsAtBottomElevator());
+}
+
+// converts the voltage into a percent for output
+void Elevator::ScaleOutput() {
+     elevator_voltage /= 12.0;
+}
+
+// changes the direction of the motor output
+void Elevator::InvertOutput() {
+     elevator_voltage *= -1.0; //reverse at END
+}
+
+
+void Elevator::OutputToTalon() {
+     talonElevator1->Set(ControlMode::PercentOutput, elevator_voltage);
+}
+
+void Elevator::CapVoltage() {
+     if (elevator_voltage > MAX_VOLTAGE_E) {
+		elevator_voltage = MAX_VOLTAGE_E;
+	} else if (elevator_voltage < MIN_VOLTAGE_E) {
+		elevator_voltage = MIN_VOLTAGE_E;
+	}
+}
+
+void Elevator::ZeroElevator() {
+  if (!is_elevator_init) { //changed this to just zero on start up (as it always be at the bottom at the start of the match)
+		if (ZeroEncs()) { //successfully zeroed one time
+			is_elevator_init = true;
+		}
+	}
+}
+
+void Elevator::StallSafety() {
+	if (std::abs(GetElevatorVelocity()) <= 0.05
+        && std::abs(elevator_voltage) > 3.0) { //this has to be here at the end
+		encoder_counter_e++;
+	} else {
+		encoder_counter_e = 0;
+	}
+	if (encoder_counter_e > STALLS_TILL_STOP) { //bypass the initial high voltage to accelerate from 0
+		elevator_voltage = 0.0;
+		elev_safety = "stall";
+	}
+}
+
+void Elevator::ArmSafety() {
+  //Last Year's code
+  	// if (keep_elevator_up) {
+  	// 	elevator_voltage = 1.0;
+  	// 	elev_safety = "arm safety";
+  	// }
+}
+
+void Elevator::BottomHallEffectSafety() {
+	if (IsAtBottomElevator() && elevator_voltage > 0.2) { //elevator_voltage is actually reverse
+		elev_safety = "bot hall eff";
+		elevator_voltage = 0.0;
+	}
+}
+
+void Elevator::TopHallEffectSafety() {
+	if (IsAtTopElevator() && elevator_voltage < -0.2) { //elevator_voltage is actually reverse
+		elev_safety = "top hall eff";
+		elevator_voltage = 0.0;
+	}
+}
+
+void Elevator::LowerSoftLimit() {
+     if (GetElevatorPosition() <= (-0.05) && elevator_voltage < 0.0) {  //lower soft limit
+		elevator_voltage = 0.0;
+		elev_safety = "lower soft";
+	}
+}
+
+void Elevator::UpperSoftLimit() {
+     //TODO: may need to change order
+	if (GetElevatorPosition() >= (0.92) && elevator_voltage > 0.0) { //upper soft limit //TODO: separate carr, mds top height
+		elevator_voltage = 0.0;
+		elev_safety = "upper soft";
+	}
+}
+
+
+
+
+bool Elevator::IsAtBottomElevator() {
+	if (!hallEffectBottom->Get()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool Elevator::IsAtTopElevator() {
+	if (!hallEffectTop->Get()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// something that goes in the ElevatorState?
+double Elevator::GetVoltageElevator() { //not voltage sent to the motor. the voltage the controller sends to SetVoltage()
+	return u_e;
+}
+
+void Elevator::SetZeroOffset() {
+
+	position_offset_e =
+	talonElevator1->GetSelectedSensorPosition(0);
+}
+
+bool Elevator::ZeroEncs() {
+
+	if (zeroing_counter_e < 1) {
+		//Great Robotic Actuation and Controls Execution ()
+		SetZeroOffset();
+		zeroing_counter_e++;
+		return true;
+	} else {
+		return false;
+	}
+
 }

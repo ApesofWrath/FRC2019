@@ -1,37 +1,4 @@
 See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
-compiling robot.cpp successful.
-
-compiling ElevatorMotionProfiler.cpp failed.
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/ElevatorMotionProfiler.cpp:8:
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/include/ElevatorMotionProfiler.h:12:
-/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: error: #warning is a language extension [-Werror,-Wpedantic]
-#warning "WPILib.h is deprecated; include frc/WPILib.h instead"
- ^
-/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: "WPILib.h is deprecated; include frc/WPILib.h instead" [-W#warnings]
-1 warning and 1 error generated.
-
-compiling Elevator.cpp failed.
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:1:
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/../include/Elevator.h:5:
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/include/../cpp/ElevatorMotionProfiler.cpp:8:
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/include/ElevatorMotionProfiler.h:12:
-/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: error: #warning is a language extension [-Werror,-Wpedantic]
-#warning "WPILib.h is deprecated; include frc/WPILib.h instead"
- ^
-/Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/WPILib.h:14:2: warning: "WPILib.h is deprecated; include frc/WPILib.h instead" [-W#warnings]
-In file included from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:1:
-/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/../include/Elevator.h:20:3: error: unknown type name 'TalonSRX'
-  TalonSRX *talonElevator1, *talonElevator2;
-  ^
-/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:68:24: error: unknown type name 'TalonSRX'
-  talonElevator1 = new TalonSRX(TALON_ID_1);
-                       ^
-/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:147:23: error: use of undeclared identifier 'ControlMode'
-  talonElevator1->Set(ControlMode::PercentOutput, 0.0);
-                      ^
-/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Elevator.cpp:235:23: error: use of undeclared identifier 'ControlMode'
-  talonElevator1->Set(ControlMode: PercentOutput, voltage_);
-                      ^
-1 warning and 5 errors generated.
+compiling Elevator.cpp successful.
 
 Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.
