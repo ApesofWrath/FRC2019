@@ -70,29 +70,29 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	R3 = r3;
 	RR = r4;
 
-	canTalonLeft1 = new TalonSRX(18);
+	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 
-	canTalonLeft2 = new TalonSRX(23);
-	canTalonLeft2->Set(ControlMode::Follower, 18);
+	canTalonLeft2 = new TalonSRX(L2);
+	canTalonLeft2->Set(ControlMode::Follower, LF);
 
-	canTalonLeft3 = new TalonSRX(30);
-	canTalonLeft3->Set(ControlMode::Follower, 18);
+	canTalonLeft3 = new TalonSRX(L3);
+	canTalonLeft3->Set(ControlMode::Follower, LF);
 
-	canTalonLeft4 = new TalonSRX(36);
-	canTalonLeft4->Set(ControlMode::Follower, 18);
+	canTalonLeft4 = new TalonSRX(LR);
+	canTalonLeft4->Set(ControlMode::Follower, LF);
 
-	canTalonRight1 = new TalonSRX(24);
+	canTalonRight1 = new TalonSRX(RF);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 
-	canTalonRight2 = new TalonSRX(21);
-	canTalonRight2->Set(ControlMode::Follower, 24);
+	canTalonRight2 = new TalonSRX(R2);
+	canTalonRight2->Set(ControlMode::Follower, RF);
 
-	canTalonRight3 = new TalonSRX(22);
-	canTalonRight3->Set(ControlMode::Follower, 24);
+	canTalonRight3 = new TalonSRX(R3);
+	canTalonRight3->Set(ControlMode::Follower, RF);
 
-	canTalonRight4 = new TalonSRX(29);
-	canTalonRight4->Set(ControlMode::Follower, 24);
+	canTalonRight4 = new TalonSRX(RR);
+	canTalonRight4->Set(ControlMode::Follower, RF);
 
 	canTalonLeft1->EnableCurrentLimit(true);
 	canTalonLeft2->EnableCurrentLimit(true);

@@ -1,4 +1,6 @@
-See file:///C:/Users/osgoo/Desktop/frc2019s/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling DriveBase.cpp successful.
 
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/osgoo/Desktop/frc2019s/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
