@@ -10,10 +10,10 @@
 #include "ElevatorConstants.h"
 
 // TODO:
-  // Some of SetVoltage()
   // states variables in .cpp and .h file?
 
 //DONE
+  // Some of SetVoltage()
   // elevatorconstants.h
   // Move (almost all)
   // Motion profiler carry over
