@@ -1,4 +1,12 @@
 See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp.
+compiling ElevatorConstants.h successful.
+
+compiling Elevator.h successful.
+
+compiling ElevatorMotionProfiler.cpp successful.
+
+compiling Robot.cpp successful.
+
 compiling Elevator.cpp successful.
 
 Finished compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt.

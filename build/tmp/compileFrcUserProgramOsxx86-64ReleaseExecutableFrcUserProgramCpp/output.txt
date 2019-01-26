@@ -1,4 +1,12 @@
 See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+compiling ElevatorConstants.h successful.
+
+compiling Robot.cpp successful.
+
+compiling ElevatorMotionProfiler.cpp successful.
+
+compiling Elevator.h successful.
+
 compiling Elevator.cpp successful.
 
 Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.

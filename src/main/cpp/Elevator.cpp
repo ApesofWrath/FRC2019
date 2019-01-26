@@ -9,6 +9,7 @@ const int _ROCKET_TOP_HATCH = 3;
 const int _ROCKET_MID_HATCH = 4;
 const int _BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
 const int _BAY_CARGO = 6;
+const int _STOP_STATE = 7;
 
 int encoder_counter_e = 0;
 double elevator_voltage = 0.0;
@@ -23,6 +24,8 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   SetupTalon2();
 
   talonElevator1 = new TalonSRX(TALON_ID_1);
+  hallEffectTop = new frc::DigitalInput(TOP_HALL);
+  hallEffectBottom = new frc::DigitalInput(BOT_HALL);
 
 }
 
@@ -88,6 +91,11 @@ void Elevator::ElevatorStateMachine() {
     case _BAY_CARGO:
       CheckElevatorGoal(_BAY_CARGO, BAY_CARGO_POS);
     break;
+
+    case _STOP_STATE:
+      Stop();
+      last_elevator_state = _STOP_STATE;
+    break;
   }
 }
 
@@ -99,11 +107,11 @@ void Elevator::CheckElevatorGoal(int elevator_state, double goal_pos) {
   last_elevator_state = elevator_state;
 }
 
-void Elevator::ManualElevator() {
+void Elevator::ManualElevator(frc::Joystick *joyOpElev) {
   PrintElevatorInfo();
-  // Need to implement joyOpElev joystick
-      // double output = (joyOpElev->GetY()) * 0.5 * 12.0; //multiply by voltage because setvoltageelevator takes voltage
-    	// SetVoltage(output);
+
+    double output = (joyOpElev->GetY()) * 0.5 * 12.0; //multiply by voltage because setvoltageelevator takes voltage
+  	SetVoltage(output);
 }
 
 void Elevator::Stop() {
@@ -136,23 +144,23 @@ double Elevator::GetElevatorVelocity() {
 
 }
 
-// Change the height based on the
 void Elevator::Move() {
+  if (elevator_state != _STOP_STATE) {
+    UpdateMoveCoordinates();
+    UpdateMoveError();
 
-  UpdateMoveCoordinates();
-  UpdateMoveError();
+    v_bat_e = 12.0;
 
-  v_bat_e = 12.0;
+    // Need to go down
+    if (elevator_profiler->GetFinalGoalElevator() < elevator_profiler->GetInitPosElevator()) { //can't be the next goal in case we get ahead of the profiler
+    	UpdateMovingDirection(1.0, 0.55, K_down_e);
+    } else {
+    	UpdateMovingDirection(1.0, ff_percent_e, K_up_e);
+    }
 
-  // Need to go down
-  if (elevator_profiler->GetFinalGoalElevator() < elevator_profiler->GetInitPosElevator()) { //can't be the next goal in case we get ahead of the profiler
-  	UpdateMovingDirection(1.0, 0.55, K_down_e);
-  } else {
-  	UpdateMovingDirection(1.0, ff_percent_e, K_up_e);
+    UpdateVoltage();
+    SetVoltage(u_e);
   }
-
-  UpdateVoltage();
-  SetVoltage(u_e);
 }
 
 void Elevator::UpdateVoltage() {
@@ -194,7 +202,7 @@ void Elevator::SetVoltage(double voltage_) {
   LowerSoftLimit();
   TopHallEffectSafety();
 	BottomHallEffectSafety();
-  ArmSafety();
+  ArmSafety(); // rewrite arm safety for new arm
 
   frc::SmartDashboard::PutString("ELEVATOR SAFETY", elev_safety);
 

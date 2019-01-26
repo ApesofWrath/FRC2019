@@ -27,6 +27,9 @@ public:
   const int TALON_ID_1 = -1;
   const int TALON_ID_2 = -1;
 
+  const int TOP_HALL = -1;
+  const int BOT_HALL = -1;
+
   int last_elevator_state = 0;
   int elevator_state = 5;
 
@@ -39,6 +42,7 @@ public:
   const int ROCKET_MID_HATCH = 4;
   const int BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
   const int BAY_CARGO = 6;
+  const int STOP_STATE = 7;
 
   int zeroing_counter_e = 0;
 
@@ -56,7 +60,7 @@ public:
   void Stop();
   std::string GetState();
 
-  void ManualElevator();
+  void ManualElevator(frc::Joystick *joyOpElev);
 
   void PrintElevatorInfo();
   double GetElevatorPosition();
@@ -81,7 +85,8 @@ private:
     {ROCKET_TOP_HATCH, "ROCKET TOP HATCH"},
     {ROCKET_MID_HATCH, "ROCKET TOP HATCH"},
     {BOTTOM_HATCH, "HATCH BOTTOM"},
-    {BAY_CARGO, "BAY CARGO"}
+    {BAY_CARGO, "BAY CARGO"},
+    {STOP_STATE, "STOP"}
   };
 
   //Move()
