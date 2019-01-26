@@ -6,28 +6,19 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-#include <iostream>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/Joystick.h>
-#include <frc/WPILib.h>
-#include "ctre/Phoenix.h"
-#include <frc/IterativeRobot.h>
-#include <frc/DigitalOutput.h>
-#include <frc/DoubleSolenoid.h>
-
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  joyThrottle = new Joystick(JOY_THROTTLE);
+  joyThrottle = new frc::Joystick(JOY_THROTTLE);
 
   canTalonTopIntake = new TalonSRX(0);
   canTalonBottomIntake = new TalonSRX(1);
 
-  suctionIn = new DigitalOutput(2);
-  suctionOut = new DigitalOutput(3);
+  suctionIn = new frc::DigitalOutput(2);
+  suctionOut = new frc::DigitalOutput(3);
 
   //doubleSolenoid1 = new DoubleSolenoid(2, 4);
 //  doubleSolenoid2 = new DoubleSolenoid(3, 6);

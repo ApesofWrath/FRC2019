@@ -26,6 +26,7 @@
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64.zip_dedbac496f76dd290da547459dc16ab7/osx/x86-64/shared/libopencv_video.3.4.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64.zip_dedbac496f76dd290da547459dc16ab7/osx/x86-64/shared/libopencv_videoio.3.4.dylib
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/opencv-cpp-3.4.4-4-osxx86-64.zip_dedbac496f76dd290da547459dc16ab7/osx/x86-64/shared/libopencv_videostab.3.4.dylib
+/Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/Pathfinder-Core-2019.1.10-osxx86-64.zip_c05191828c7c69a1988ff197d3140279/osxx86-64/libpathfinder.dylib
 -framework
 CoreFoundation
 -framework

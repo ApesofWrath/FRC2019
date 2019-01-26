@@ -5,12 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#ifndef SRC_ROBOT_H_
+#define SRC_ROBOT_H_
 
 #include <string>
-
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/Joystick.h>
+#include <frc/WPILib.h>
+#include "ctre/Phoenix.h"
+#include <frc/IterativeRobot.h>
+#include <frc/DigitalOutput.h>
+#include <frc/DoubleSolenoid.h>
 
 
 class Robot : public frc::TimedRobot {
@@ -23,6 +31,12 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
+ private:
+  frc::SendableChooser<std::string> m_chooser;
+  const std::string kAutoNameDefault = "Default";
+  const std::string kAutoNameCustom = "My Auto";
+  std::string m_autoSelected;
+
   const int JOY_THROTTLE = 0;
 
   const int BOTTOM_INTAKE_IN = 1;
@@ -32,17 +46,13 @@ class Robot : public frc::TimedRobot {
   const int SUCTION_IN = 5;
   const int SUCTION_RELEASE = 6;
 
-  Joystick *joyThrottle;
+  frc::Joystick *joyThrottle;
 
   TalonSRX *canTalonTopIntake, *canTalonBottomIntake;
 
-  DigitalOutput *suctionIn, *suctionOut;
+  frc::DigitalOutput *suctionIn, *suctionOut;
 
-  DoubleSolenoid *doubleSolenoid1, *doubleSolenoid2;
-
- private:
-  frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Default";
-  const std::string kAutoNameCustom = "My Auto";
-  std::string m_autoSelected;
+  frc::DoubleSolenoid *doubleSolenoid1, *doubleSolenoid2;
 };
+
+#endif
