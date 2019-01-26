@@ -14,17 +14,13 @@ void Robot::RobotInit() {
 
   joyThrottle = new frc::Joystick(JOY_THROTTLE);
 
-  canTalonTopIntake = new TalonSRX(0);
-  canTalonBottomIntake = new TalonSRX(1);
+  canTalonTopIntake = new TalonSRX(49);
+  canTalonBottomIntake = new TalonSRX(26);
 
-  suctionIn = new frc::DigitalOutput(2);
+  suctionIn = new frc::DigitalOutput(2); //needs values
   suctionOut = new frc::DigitalOutput(3);
 
-  //doubleSolenoid1 = new DoubleSolenoid(2, 4);
-//  doubleSolenoid2 = new DoubleSolenoid(3, 6);
-
-  frc::DoubleSolenoid doubleSolenoid1 {2, 4};
-  frc::DoubleSolenoid doubleSolenoid2 {3, 6};
+  frc::DoubleSolenoid doubleSolenoid {0, 7};
 
 
 }
@@ -79,8 +75,12 @@ void Robot::TeleopPeriodic() {
   bool bottom_intake_out = joyThrottle->GetRawButton(BOTTOM_INTAKE_OUT);
   bool top_intake_in = joyThrottle->GetRawButton(TOP_INTAKE_IN);
   bool top_intake_out = joyThrottle->GetRawButton(TOP_INTAKE_OUT);
+  bool both_intakes_in = joyThrottle->GetRawButton(BOTH_INTAKES_IN);
+  bool both_intakes_out = joyThrottle->GetRawButton(BOTH_INTAKES_OUT);
   bool suction_in = joyThrottle->GetRawButton(SUCTION_IN);
   bool suction_release = joyThrottle->GetRawButton(SUCTION_RELEASE);
+  bool push_hatch = joyThrottle->GetRawButton(PUSH_HATCH);
+
 
   if (bottom_intake_in) {
     canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.3);
@@ -98,20 +98,27 @@ void Robot::TeleopPeriodic() {
     canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
   }
 
+  if (both_intakes_in) {
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.3);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.3);
+  } else if (both_intakes_out) {
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, -0.3);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, -0.3);
+  } else {
+    canTalonBottomIntake->Set(ControlMode::PercentOutput, 0.0);
+    canTalonTopIntake->Set(ControlMode::PercentOutput, 0.0);
+  }
+
   if (suction_in) {
     suctionIn->Set(true);
-    doubleSolenoid1->Set(frc::DoubleSolenoid::kForward);
-    doubleSolenoid2->Set(frc::DoubleSolenoid::kForward);
-
   } else if (suction_release) {
     suctionOut->Set(true);
-    doubleSolenoid1->Set(frc::DoubleSolenoid::kReverse);
-    doubleSolenoid2->Set(frc::DoubleSolenoid::kReverse);
+  }
 
+  if (push_hatch) {
+    doubleSolenoid->Set(frc::DoubleSolenoid::kForward);
   } else {
-    doubleSolenoid1->Set(frc::DoubleSolenoid::kOff);
-    doubleSolenoid2->Set(frc::DoubleSolenoid::kOff);
-
+    doubleSolenoid->Set(frc::DoubleSolenoid::kReverse);
   }
 
 

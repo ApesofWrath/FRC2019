@@ -43,8 +43,11 @@ class Robot : public frc::TimedRobot {
   const int BOTTOM_INTAKE_OUT = 2;
   const int TOP_INTAKE_IN = 3;
   const int TOP_INTAKE_OUT = 4;
+  const int BOTH_INTAKES_IN = 7;
+  const int BOTH_INTAKES_OUT = 8;
   const int SUCTION_IN = 5;
   const int SUCTION_RELEASE = 6;
+  const int PUSH_HATCH = 9;
 
   frc::Joystick *joyThrottle;
 
@@ -52,7 +55,7 @@ class Robot : public frc::TimedRobot {
 
   frc::DigitalOutput *suctionIn, *suctionOut;
 
-  frc::DoubleSolenoid *doubleSolenoid1, *doubleSolenoid2;
+  frc::DoubleSolenoid *doubleSolenoid;
 };
 
 #endif
