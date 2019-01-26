@@ -5,14 +5,14 @@
  *      Author: DriversStation
  */
 
+#ifndef SRC_ELEVATORMOTIONPROFILER_H_
+#define SRC_ELEVATORMOTIONPROFILER_H_
+
 #include <list>
 #include <vector>
 #include <iostream>
 #include <cmath>
-#include <WPILib.h>
-
-#ifndef SRC_ELEVATORMOTIONPROFILER_H_
-#define SRC_ELEVATORMOTIONPROFILER_H_
+#include <frc/WPILib.h>
 
 class ElevatorMotionProfiler {
 
