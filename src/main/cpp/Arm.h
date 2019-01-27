@@ -8,26 +8,27 @@
  #ifndef SRC_ARM_H_
  #define SRC_ARM_H_
 
- #include <frc/WPILib.h>
- #include "ctre/Phoenix.h"
- #include <frc/Timer.h>
- #include <thread>
- #include <chrono>
- #include <vector>
- #include <cmath>
- #include <list>
- #include <frc/DigitalInput.h>
- #include <frc/Joystick.h>
- #include <frc/smartdashboard/SmartDashboard.h>
- #include <frc/smartdashboard/SendableChooser.h>
- #include <ArmMotionProfiler.h>
+#include <frc/WPILib.h>
+#include "ctre/Phoenix.h"
+#include <frc/Timer.h>
+#include <thread>
+#include <chrono>
+#include <vector>
+#include <cmath>
+#include <list>
+#include <frc/DigitalInput.h>
+#include <frc/Joystick.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/smartdashboard/SendableChooser.h>
+#include "ArmMotionProfiler.h"
+#include "ArmConstants.h"
 
 class Arm {
 public:
 
   TalonSRX *talonArm;
 
-  DigitalInput *hallEffectArm; //for bottom
+  frc::DigitalInput *hallEffectArm; //for bottom
 
   std::thread ArmThread;
 
@@ -44,8 +45,8 @@ public:
   const int STOP_ARM_STATE_H = 6;
   int arm_state = INIT_STATE_H;
 
-  Arm(PowerDistributionPanel *pdp,
-      ArmMotionProfiler *arm_profiler)
+  Arm(frc::PowerDistributionPanel *pdp,
+      ArmMotionProfiler *arm_profiler);
 
   void InitializeArm();
 
@@ -59,7 +60,7 @@ public:
 	void SetVoltageArm(double voltage_a);
 
 	void ZeroEnc();
-	void ManualArm(Joystick *joyOpArm);
+	void ManualArm(frc::Joystick *joyOpArm);
 
   void StopArm();
   void ArmStateMachine();
