@@ -42,7 +42,7 @@ void BallIntake::IntakeStateMachine(){
 
     case INIT_STATE:
       Init();
-      SmartDashboard::PutString("State", "BALL_INIT_STATE")
+      SmartDashboard::PutString("State", "BALL_INIT_STATE");
       last_intake_state = INIT_STATE;
       break;
 

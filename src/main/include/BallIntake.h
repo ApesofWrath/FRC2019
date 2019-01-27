@@ -12,6 +12,7 @@ int intake_state = STOP_STATE;
 class Ballintake {
   public:
   Ballintake();
+  void Init();
   void Stop();
   void In();
   void Out();
