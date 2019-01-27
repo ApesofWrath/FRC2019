@@ -89,15 +89,11 @@ void Arm::InitializeArm() {
 void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
 	frc::SmartDashboard::PutNumber("ARM CUR", talonArm->GetOutputCurrent());
-	double enc_arm = GetAngularPosition();
-	frc::SmartDashboard::PutNumber("ARM ENC",
-			talonArm->GetSensorCollection().GetQuadraturePosition());
+	frc::SmartDashboard::PutNumber("ARM ENC", talonArm->GetSensorCollection().GetQuadraturePosition());
 
 	frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition()); //left is negative, right is positive
 
-	double output = joyOpArm->GetY() * 0.5 * 1.0;
-
-	output *= MAX_VOLTAGE_A;
+	double output = joyOpArm->GetY() * 0.5 * 1.0 * MAX_VOLTAGE_A;
 
 	frc::SmartDashboard::PutNumber("ARM OUTPUT", output);
 
