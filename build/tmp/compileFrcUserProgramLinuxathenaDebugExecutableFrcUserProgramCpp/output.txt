@@ -1,17 +1,5 @@
 See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
-compiling ArmConstants.h successful.
-
-compiling suction.cpp successful.
-
-compiling suction.h successful.
-
-compiling ArmMotionProfiler.h successful.
-
 compiling Arm.h successful.
-
-compiling ArmMotionProfiler.cpp successful.
-
-compiling robot.cpp successful.
 
 compiling Arm.cpp successful.
 

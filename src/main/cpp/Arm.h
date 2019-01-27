@@ -16,6 +16,7 @@
 #include <vector>
 #include <cmath>
 #include <list>
+#include <map>
 #include <frc/DigitalInput.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -49,11 +50,25 @@ public:
   Arm(frc::PowerDistributionPanel *pdp,
       ArmMotionProfiler *arm_profiler);
 
+  std::map <int, std::string> arm_states = {
+  		{INIT_STATE_H, "INIT"},
+  		{UP_STATE_H, "UP"},
+  		{HIGH_CARGO_STATE_H, "HIGH"},
+  		{MID_CARGO_STATE_H, "MID"},
+  		{LOW_CARGO_STATE_H, "LOW"},
+  		{DOWN_STATE_H, "DOWN"},
+      {STOP_ARM_STATE_H, "STOP"}
+  	};
+
   void InitializeArm();
 
-  void Rotate(std::vector<std::vector<double> > ref_arm);
+  void Rotate();
+  // Rotate Helpers
+  void UpdatePositions();
+  void CalcOutputVoltage();
 	double GetAngularVelocity();
 	double GetAngularPosition();
+  void PrintElevatorInfo();
 
 	bool IsAtBottomArm();
   bool EncodersRunning();
@@ -72,6 +87,7 @@ public:
 
   void StopArm();
   void ArmStateMachine();
+  void UpdateArmProfile(int current_state, double angle);
 
   void StartArmThread();
 	void EndArmThread();

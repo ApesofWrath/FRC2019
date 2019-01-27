@@ -34,6 +34,8 @@ std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with th
 
 std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
 
+std::vector<std::vector<double> > ref_arm;
+
 frc::Timer *armTimer = new frc::Timer();
 
 frc::PowerDistributionPanel *pdp_a;
@@ -105,46 +107,54 @@ void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
 }
 
-void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
+void Arm::PrintElevatorInfo() {
+	frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition());
+	frc::SmartDashboard::PutNumber("ARM VEL", GetAngularVelocity());
 
+	frc::SmartDashboard::PutNumber("ARM REF POS", ref_arm[0][0]);
+	frc::SmartDashboard::PutNumber("ARM REF VEL", ref_arm[1][0]);
+
+	frc::SmartDashboard::PutNumber("ARM ERR POS", error_a[0][0]);
+	frc::SmartDashboard::PutNumber("ARM ERR VEL", error_a[1][0]);
+
+	frc::SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
+}
+
+void Arm::UpdatePositions() {
 	//top is position, bottom is velocity
+	ref_arm = arm_profiler->GetNextRefArm();
 
 	current_pos = GetAngularPosition();
 	current_vel = GetAngularVelocity();
 	goal_pos = ref_arm[0][0];
 	goal_vel = ref_arm[1][0];
 
-	frc::SmartDashboard::PutNumber("ARM POS", current_pos);
-	frc::SmartDashboard::PutNumber("ARM VEL", current_vel);
-
-	frc::SmartDashboard::PutNumber("ARM REF POS", goal_pos);
-	frc::SmartDashboard::PutNumber("ARM REF VEL", goal_vel);
-
 	error_a[0][0] = goal_pos - current_pos;
 	error_a[1][0] = goal_vel - current_vel;
+}
 
-	frc::SmartDashboard::PutNumber("ARM ERR POS", error_a[0][0]);
-	frc::SmartDashboard::PutNumber("ARM ERR VEL", error_a[1][0]);
-
+void CalcOutputVoltage() {
 	if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
 		K_a = K_down_a;
 	} else {
 		K_a = K_up_a;
 	}
 
-//	if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) { //shaking
-//		arm_state = DOWN_STATE;
-//	}
+	// Shaking: if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) {arm_state = DOWN_STATE;}
 
 	arm_offset = ARM_OFFSET * (double) cos(current_pos); //counter gravity when needed because of slack on the arm
 
 	u_a = (K_a[0][0] * error_a[0][0]) + (K_a[0][1] * error_a[1][0]) //u_sis in voltage, so * by v_bat_a
 			+ (Kv_a* goal_vel * v_bat_a) + arm_offset;
+}
 
-	frc::SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
-
+void Arm::Rotate() {
+	// Setup
+	UpdatePositions();
+	CalcOutputVoltage();
+	// Action
 	SetVoltageArm(u_a);
-
+	PrintElevatorInfo();
 }
 
 void Arm::SetVoltageArm(double voltage_a) {
@@ -166,11 +176,9 @@ void Arm::SetVoltageArm(double voltage_a) {
 }
 
 void Arm::OutputArmVoltage() {
-	//scale
 	arm_voltage /= v_bat_a; //scale from -1 to 1 for the talon // max voltage is positive
 
-	//reverse
-	arm_voltage *= -1.0; //set AT END
+	arm_voltage *= -1.0; //set AT END //reverse direction
 
 	talonArm->Set(ControlMode::PercentOutput, arm_voltage);
 }
@@ -220,7 +228,6 @@ void Arm::CapVoltage() {
 }
 
 double Arm::GetAngularVelocity() {
-
 	//Native vel units are in ticks per 100ms so divide by TICKS_PER_ROT to get rotations per 100ms then multiply 10 to get per second
 	//multiply by 2pi to get into radians per second (2pi radians are in one revolution)
 	double ang_vel =
@@ -229,7 +236,6 @@ double Arm::GetAngularVelocity() {
 	//double ang_vel = 0.0;
 
 	return ang_vel;
-
 }
 
 double Arm::GetAngularPosition() {
@@ -252,20 +258,17 @@ bool Arm::IsAtBottomArm() {
 }
 
 void Arm::StopArm() {
-
 	talonArm->Set(ControlMode::PercentOutput, 0.0);
-
 }
 
 void Arm::ArmStateMachine(){
-
   frc::SmartDashboard::PutNumber("ARM ENC",
 			talonArm->GetSensorCollection().GetQuadraturePosition());
 
-  switch (arm_state){
+	frc::SmartDashboard::PutString("ARM", arm_states[arm_state]);
+  switch (arm_state) {
 
     case INIT_STATE:
-    frc::SmartDashboard::PutString("ARM", "INIT");
     InitializeArm();
     if (is_init_arm) {
 			arm_state = UP_STATE;
@@ -274,68 +277,46 @@ void Arm::ArmStateMachine(){
     break;
 
     case UP_STATE:
-    frc::SmartDashboard::PutString("ARM", "UP");
-    if (last_arm_state != UP_STATE) { //first time in state
-      arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
-      arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-      arm_profiler->SetFinalGoalArm(UP_ANGLE);
-			arm_profiler->SetInitPosArm(GetAngularPosition());
-		}
-		last_arm_state = UP_STATE;
+    UpdateArmProfile(UP_STATE, UP_ANGLE);
     break;
 
     case HIGH_CARGO_STATE:
-    frc::SmartDashboard::PutString("ARM", "HIGH");
-    if (last_arm_state != HIGH_CARGO_STATE) {
-      arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
-      arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-			arm_profiler->SetFinalGoalArm(HIGH_ANGLE);
-			arm_profiler->SetInitPosArm(GetAngularPosition());
-		}
-		last_arm_state = HIGH_CARGO_STATE;
+		UpdateArmProfile(HIGH_CARGO_STATE, HIGH_ANGLE);
     break;
 
     case MID_CARGO_STATE:
-    frc::SmartDashboard::PutString("ARM", "MID");
-    if (last_arm_state != MID_CARGO_STATE) {
-      arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
-      arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-			arm_profiler->SetFinalGoalArm(MID_ANGLE);
-			arm_profiler->SetInitPosArm(GetAngularPosition());
-		}
-		last_arm_state = MID_CARGO_STATE;
+		UpdateArmProfile(MID_CARGO_STATE, MID_ANGLE);
     break;
 
     case LOW_CARGO_STATE:
-    frc::SmartDashboard::PutString("ARM", "LOW");
-    if (last_arm_state != LOW_CARGO_STATE) {
-      arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
-      arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-			arm_profiler->SetFinalGoalArm(LOW_ANGLE);
-			arm_profiler->SetInitPosArm(GetAngularPosition());
-		}
-		last_arm_state = LOW_CARGO_STATE;
+		UpdateArmProfile(LOW_CARGO_STATE, LOW_ANGLE);
     break;
 
 		case DOWN_STATE:
-		frc::SmartDashboard::PutString("ARM", "DOWN");
-		if (last_arm_state != DOWN_STATE) {
-			arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
-			arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-			arm_profiler->SetFinalGoalArm(DOWN_ANGLE);
-			arm_profiler->SetInitPosArm(GetAngularPosition());
-		}
-		last_arm_state = DOWN_STATE;
+		UpdateArmProfile(DOWN_STATE, DOWN_ANGLE);
 		break;
 
     case STOP_ARM_STATE:
-  		frc::SmartDashboard::PutString("ARM", "STOP");
-  		StopArm();
-  		last_arm_state = STOP_ARM_STATE;
-  		break;
-  }
+		frc::SmartDashboard::PutString("ARM", "STOP");
+		StopArm();
+		last_arm_state = STOP_ARM_STATE;
+		break;
+  	}
 
-  }
+}
+
+void Arm::UpdateArmProfile(int current_state, double angle) {
+	//these must be reset in each state
+	arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
+  arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
+	arm_profiler->SetInitPosArm(GetAngularPosition());
+
+	if (arm_state != current_state) {
+		arm_profiler->SetFinalGoalArm(angle);
+	}
+	last_arm_state = current_state;
+
+}
 
   bool Arm::EncodersRunning() { //will stop the controller from run //or stalled //MOVED INTO SET VOLTAGE
 
@@ -365,12 +346,10 @@ void Arm::ArmStateMachine(){
 
   			if (armTimer->HasPeriodPassed(ARM_WAIT_TIME)) {
 
-  				std::vector<std::vector<double>> profile_arm =
-						arm_profiler->GetNextRefArm();
 
   				if (arm->arm_state != STOP_ARM_STATE
   						&& arm->arm_state != INIT_STATE) {
-  					arm->Rotate(profile_arm);
+  					arm->Rotate();
   				}
 
   				armTimer->Reset();
