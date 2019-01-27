@@ -1,0 +1,35 @@
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64ReleaseExecutable/output.txt for all output for linkFrcUserProgramOsxx86-64ReleaseExecutable.
+linking frcUserProgram failed.
+Undefined symbols for architecture x86_64:
+  "ctre::phoenix::motorcontrol::SensorCollection::GetQuadraturePosition()", referenced from:
+      Arm::SetVoltageArm(double) in Arm.o
+      Arm::ManualArm(frc::Joystick*) in Arm.o
+      Arm::GetAngularPosition() in Arm.o
+      Arm::Rotate(std::__1::vector<std::__1::vector<double, std::__1::allocator<double> >, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double> > > >) in Arm.o
+      Arm::UpperSoftLimit() in Arm.o
+      Arm::LowerSoftLimit() in Arm.o
+      Arm::ArmStateMachine() in Arm.o
+      ...
+  "ctre::phoenix::motorcontrol::SensorCollection::GetQuadratureVelocity()", referenced from:
+      Arm::SetVoltageArm(double) in Arm.o
+      Arm::Rotate(std::__1::vector<std::__1::vector<double, std::__1::allocator<double> >, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double> > > >) in Arm.o
+      Arm::GetAngularVelocity() in Arm.o
+      Arm::StallSafety() in Arm.o
+  "ctre::phoenix::motorcontrol::SensorCollection::SetQuadraturePosition(int, int)", referenced from:
+      Arm::LowerSoftLimit() in Arm.o
+      Arm::ZeroEnc() in Arm.o
+  "ctre::phoenix::motorcontrol::can::TalonSRX::GetSensorCollection()", referenced from:
+      Arm::SetVoltageArm(double) in Arm.o
+      Arm::ManualArm(frc::Joystick*) in Arm.o
+      Arm::GetAngularPosition() in Arm.o
+      Arm::Rotate(std::__1::vector<std::__1::vector<double, std::__1::allocator<double> >, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double> > > >) in Arm.o
+      Arm::GetAngularVelocity() in Arm.o
+      Arm::UpperSoftLimit() in Arm.o
+      Arm::LowerSoftLimit() in Arm.o
+      ...
+  "ctre::phoenix::motorcontrol::can::TalonSRX::TalonSRX(int)", referenced from:
+      Arm::Arm(frc::PowerDistributionPanel*, ArmMotionProfiler*) in Arm.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+Finished linkFrcUserProgramOsxx86-64ReleaseExecutable, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64ReleaseExecutable/output.txt.

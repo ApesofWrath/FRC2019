@@ -40,7 +40,6 @@ frc::PowerDistributionPanel *pdp_a;
 
 ArmMotionProfiler *arm_profiler;
 
-bool is_at_bottom = false;
 bool first_time_at_bottom = false;
 bool voltage_safety = false;
 
@@ -48,6 +47,7 @@ int init_counter_a = 0;
 int counter_a = 0;
 int a = 0;
 int encoder_counter = 0;
+double arm_voltage = 0.0;
 
 Arm::Arm(frc::PowerDistributionPanel *pdp,
 		ArmMotionProfiler *arm_profiler_){
@@ -148,62 +148,75 @@ void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
 }
 
 void Arm::SetVoltageArm(double voltage_a) {
+	arm_voltage = voltage_a;
 
-	is_at_bottom = IsAtBottomArm(); //hall effect returns 0 when at bottom. we reverse it here
-	frc::SmartDashboard::PutNumber("ARM HALL EFF", is_at_bottom); //actually means not at bottom //0 means up// 1 means down
+	frc::SmartDashboard::PutNumber("ARM HALL EFF", IsAtBottomArm()); // actually means not at bottom //0 means up// 1 means down
 
-	frc::SmartDashboard::PutString("ARM SAFETY", "none");
+	arm_safety = "NONE";
 
-	//soft limit top
-	if (GetAngularPosition() >= (UP_LIMIT_A && voltage_a > UP_VOLT_LIMIT_A)) { //at max height and still trying to move up
-		voltage_a = 0.0; //shouldn't crash
-		frc::SmartDashboard::PutString("ARM SAFETY", "top soft limit");
+	UpperSoftLimit();
+	LowerSoftLimit();
+	StallSafety();
+	CapVoltage();
+
+	frc::SmartDashboard::PutString("ARM SAFETY", arm_safety);
+	frc::SmartDashboard::PutNumber("ARM VOLTAGE", arm_voltage);
+
+	OutputArmVoltage();
+}
+
+void Arm::OutputArmVoltage() {
+	//scale
+	arm_voltage /= v_bat_a; //scale from -1 to 1 for the talon // max voltage is positive
+
+	//reverse
+	arm_voltage *= -1.0; //set AT END
+
+	talonArm->Set(ControlMode::PercentOutput, arm_voltage);
+}
+
+void Arm::UpperSoftLimit() {
+	// SOFT LIMIT TOP
+	if (GetAngularPosition() >= (UP_LIMIT_A && arm_voltage > UP_VOLT_LIMIT_A)) { //at max height and still trying to move up
+		arm_voltage = 0.0; //shouldn't crash
+		arm_safety = "top soft limit";
 	}
+}
 
-	//soft limit bottom
-	if (is_at_bottom) {
+void Arm::LowerSoftLimit() {
+	//SOFT LIMIT BOTTOM
+	if (IsAtBottomArm()) { //hall effect returns 0 when at bottom. we reverse it here
 		ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
-		if (GetAngularPosition() < (DOWN_LIMIT_A && voltage_a < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
-			voltage_a = 0.0;
-			frc::SmartDashboard::PutString("ARM SAFETY", "bot hall eff");
+		if (GetAngularPosition() < (DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
+			arm_voltage = 0.0;
+			arm_safety = "bot hall eff";
 		}
 	}
+}
 
-//	} else {
-//		counter_a = 0;
-//	}
-
-	//voltage limit
-	if (voltage_a > MAX_VOLTAGE_A) {
-		voltage_a = MAX_VOLTAGE_A;
-		frc::SmartDashboard::PutString("ARM SAFETY", "clipped");
-	} else if (voltage_a < MIN_VOLTAGE_A) {
-		voltage_a = MIN_VOLTAGE_A;
-		frc::SmartDashboard::PutString("ARM SAFETY", "clipped");
-	}
-
-	//stall
-	if (std::abs(GetAngularVelocity()) <= STALL_VEL_A && std::abs(voltage_a) > STALL_VOLT_A) { //outputting current, not moving, should be moving
+void Arm::StallSafety() {
+	// STALL
+	if (std::abs(GetAngularVelocity()) <= STALL_VEL_A && std::abs(arm_voltage) > STALL_VOLT_A) { //outputting current, not moving, should be moving
 		encoder_counter++;
 	} else {
 		encoder_counter = 0;
 	}
 	if (encoder_counter > 10) {
 		voltage_safety = true;
-		voltage_a = 0.0;
-		frc::SmartDashboard::PutString("ARM SAFETY", "stall");
+		arm_voltage = 0.0;
+		arm_safety = "stall";
 	}
+}
 
-	frc::SmartDashboard::PutNumber("ARM VOLTAGE", voltage_a);
-
-	//scale
-	voltage_a /= v_bat_a; //scale from -1 to 1 for the talon // max voltage is positive
-
-	//reverse
-	voltage_a *= -1.0; //set AT END
-
-	talonArm->Set(ControlMode::PercentOutput, voltage_a);
-
+void Arm::CapVoltage() {
+	// CAP VOLTAGE
+	if (arm_voltage > MAX_VOLTAGE_A) {
+		arm_voltage = MAX_VOLTAGE_A;
+		arm_safety = "clipped";
+	} else if (arm_voltage < MIN_VOLTAGE_A) {
+		arm_voltage = MIN_VOLTAGE_A;
+		arm_safety = "clipped";
+	}
 }
 
 double Arm::GetAngularVelocity() {
@@ -235,11 +248,7 @@ double Arm::GetAngularPosition() {
 }
 
 bool Arm::IsAtBottomArm() {
-	if (!hallEffectArm->Get()) {
-		return true;
-	} else {
-		return false;
-	}
+	return !hallEffectArm->Get();
 }
 
 void Arm::StopArm() {
@@ -352,8 +361,7 @@ void Arm::ArmStateMachine(){
 
   	while (true) {
   		while (frc::RobotState::IsEnabled()) {
-  			std::this_thread::sleep_for(
-  					std::chrono::milliseconds(ARM_SLEEP_TIME));
+  			std::this_thread::sleep_for(std::chrono::milliseconds(ARM_SLEEP_TIME));
 
   			if (armTimer->HasPeriodPassed(ARM_WAIT_TIME)) {
 

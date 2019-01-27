@@ -1,0 +1,4 @@
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
+linking frcUserProgram successful.
+
+Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.

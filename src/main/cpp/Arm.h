@@ -31,6 +31,7 @@ public:
   frc::DigitalInput *hallEffectArm; //for bottom
 
   std::thread ArmThread;
+  std::string arm_safety;
 
 	int zeroing_counter_a = 0;
 
@@ -58,6 +59,13 @@ public:
   bool EncodersRunning();
 
 	void SetVoltageArm(double voltage_a);
+  // Safeties
+  void UpperSoftLimit();
+  void LowerSoftLimit();
+  void StallSafety();
+  // Output helpers
+  void CapVoltage();
+  void OutputArmVoltage();
 
 	void ZeroEnc();
 	void ManualArm(frc::Joystick *joyOpArm);

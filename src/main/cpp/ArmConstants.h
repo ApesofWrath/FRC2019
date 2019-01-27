@@ -35,7 +35,8 @@ const double MID_ANGLE = 0.6;
 const double LOW_ANGLE = 0.3;
 const double DOWN_ANGLE = -0.1; //lowest pos
 
-const double ARM_SLEEP_TIME = -1.0;
-const double ARM_WAIT_TIME = -1.0;
+// In millliseconds, not seconds 
+const int ARM_SLEEP_TIME = -1;
+const int ARM_WAIT_TIME = -1;
 
 #endif
