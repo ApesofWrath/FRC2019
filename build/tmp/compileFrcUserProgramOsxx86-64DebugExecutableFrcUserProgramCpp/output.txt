@@ -1,4 +1,48 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
+See file:///Users/robotics/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
+compiling Arm.cpp failed.
+/Users/robotics/Desktop/FRC2019/src/main/cpp/Arm.cpp:185:28: error: expected ';' after expression
+                voltage_a = MAX_VOLTAGE_A
+                                         ^
+                                         ;
+/Users/robotics/Desktop/FRC2019/src/main/cpp/Arm.cpp:187:39: error: expected ')'
+        } else if (voltage_a < MIN_VOLTAGE_A {
+                                             ^
+/Users/robotics/Desktop/FRC2019/src/main/cpp/Arm.cpp:187:12: note: to match this '('
+        } else if (voltage_a < MIN_VOLTAGE_A {
+                  ^
+/Users/robotics/Desktop/FRC2019/src/main/cpp/Arm.cpp:363:8: error: no matching conversion for functional-style cast from 'const double' to 'std::chrono::milliseconds' (aka 'duration<long long, ratio<1LL, 1000LL> >')
+                                        std::chrono::milliseconds(ARM_SLEEP_TIME));
+                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/chrono:407:29: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'const double' to 'const std::__1::chrono::duration<long long, std::__1::ratio<1, 1000> >' for 1st argument
+class _LIBCPP_TYPE_VIS_ONLY duration
+                            ^
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/chrono:407:29: note: candidate constructor (the implicit move constructor) not viable: no known conversion from 'const double' to 'std::__1::chrono::duration<long long, std::__1::ratio<1, 1000> >' for 1st argument
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/chrono:462:16: note: candidate template ignored: disabled by 'enable_if' [with _Rep2 = double]
+               is_convertible<_Rep2, rep>::value &&
+               ^
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/chrono:471:9: note: candidate template ignored: could not match 'duration<type-parameter-0-0, type-parameter-0-1>' against 'const double'
+        duration(const duration<_Rep2, _Period2>& __d,
+        ^
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/chrono:452:9: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+        duration() = default;
+        ^
+/Users/robotics/Desktop/FRC2019/src/main/cpp/Arm.cpp:398:1: error: extraneous closing brace ('}')
+}
+^
+4 errors generated.
+
+compiling Arm.h successful.
+
+compiling ArmConstants.h successful.
+
+compiling ArmMotionProfiler.cpp successful.
+
+compiling suction.cpp successful.
+
+compiling suction.h successful.
+
+compiling ArmMotionProfiler.h successful.
+
 compiling robot.cpp successful.
 
-Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/robotics/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.

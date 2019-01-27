@@ -82,6 +82,12 @@ std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with th
 
 std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
 
+frc::Timer *armTimer = new frc::Timer();
+
+frc::PowerDistributionPanel *pdp_a;
+
+ArmMotionProfiler *arm_profiler;
+
 bool is_at_bottom = false;
 bool first_time_at_bottom = false;
 bool voltage_safety = false;
@@ -91,7 +97,8 @@ int counter_a = 0;
 int a = 0;
 int encoder_counter = 0;
 
-Arm::Arm(PowerDistributionPanel *pdp, ArmMotionProfiler *arm_profiler_){
+Arm::Arm(frc::PowerDistributionPanel *pdp,
+		ArmMotionProfiler *arm_profiler_){
 
   talonArm = new TalonSRX(0);
 
@@ -104,7 +111,7 @@ Arm::Arm(PowerDistributionPanel *pdp, ArmMotionProfiler *arm_profiler_){
 
   arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
 	arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-	hallEffectArm = new DigitalInput(HALL_EFF_ARM_ID);
+	hallEffectArm = new frc::DigitalInput(HALL_EFF_ARM_ID);
 
   pdp_a = pdp;
 
@@ -191,7 +198,7 @@ void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
 void Arm::SetVoltageArm(double voltage_a) {
 
 	is_at_bottom = IsAtBottomArm(); //hall effect returns 0 when at bottom. we reverse it here
-	frc::SmartDashboard::PutNumber("ARM HALL EFF", is_at_bottom); //actually means not at bottom //0 means up// 1 means dow
+	frc::SmartDashboard::PutNumber("ARM HALL EFF", is_at_bottom); //actually means not at bottom //0 means up// 1 means down
 
 	frc::SmartDashboard::PutString("ARM SAFETY", "none");
 
@@ -399,7 +406,7 @@ void Arm::ArmStateMachine(){
   			if (armTimer->HasPeriodPassed(ARM_WAIT_TIME)) {
 
   				std::vector<std::vector<double>> profile_arm =
-  						arm_profiler->GetNextRefArm();
+						arm_profiler->GetNextRefArm();
 
   				if (arm->arm_state != STOP_ARM_STATE
   						&& arm->arm_state != INIT_STATE) {
