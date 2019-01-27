@@ -1,4 +1,35 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+compiling suction.h successful.
+
+compiling suction.cpp successful.
+
+compiling ArmMotionProfiler.cpp successful.
+
+compiling ArmConstants.h successful.
+
+compiling Arm.h successful.
+
+compiling ArmMotionProfiler.h successful.
+
+compiling Arm.cpp failed.
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:356:8: error: no matching conversion for functional-style cast from 'const double' to 'std::chrono::milliseconds' (aka 'duration<long long, ratio<1LL, 1000LL> >')
+                                        std::chrono::milliseconds(ARM_SLEEP_TIME));
+                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/include/c++/v1/chrono:491:28: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'const double' to 'const std::__1::chrono::duration<long long, std::__1::ratio<1, 1000> >' for 1st argument
+class _LIBCPP_TEMPLATE_VIS duration
+                           ^
+/Library/Developer/CommandLineTools/usr/include/c++/v1/chrono:491:28: note: candidate constructor (the implicit move constructor) not viable: no known conversion from 'const double' to 'std::__1::chrono::duration<long long, std::__1::ratio<1, 1000> >' for 1st argument
+/Library/Developer/CommandLineTools/usr/include/c++/v1/chrono:543:18: note: candidate template ignored: requirement 'is_convertible<double, rep>::value && (treat_as_floating_point<rep>::value || !treat_as_floating_point<double>::value)' was not satisfied [with _Rep2 = double]
+        explicit duration(const _Rep2& __r,
+                 ^
+/Library/Developer/CommandLineTools/usr/include/c++/v1/chrono:555:9: note: candidate template ignored: could not match 'duration<type-parameter-0-0, type-parameter-0-1>' against 'const double'
+        duration(const duration<_Rep2, _Period2>& __d,
+        ^
+/Library/Developer/CommandLineTools/usr/include/c++/v1/chrono:536:9: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+        duration() = default;
+        ^
+1 error generated.
+
 compiling robot.cpp successful.
 
-Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.

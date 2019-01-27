@@ -1,4 +1,58 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
+See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
+compiling suction.h successful.
+
+compiling ArmConstants.h successful.
+
+compiling suction.cpp successful.
+
+compiling ArmMotionProfiler.cpp successful.
+
 compiling robot.cpp successful.
 
-Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.
+compiling Arm.h successful.
+
+compiling ArmMotionProfiler.h successful.
+
+compiling Arm.cpp failed.
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp: In static member function 'static void Arm::ArmWrapper(Arm*)':
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:356:48: error: no matching function for call to 'std::chrono::duration<long long int, std::ratio<1ll, 1000ll> >::duration(const double&)'
+        std::chrono::milliseconds(ARM_SLEEP_TIME));
+                                                ^
+In file included from /Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/mutex:39:0,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpiutil-cpp-2019.1.1-headers.zip_09b38849dbdfa883c4be908731924be2/wpi/mutex.h:10,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/ErrorBase.h:12,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/ADXL345_I2C.h:10,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/WPILib.h:13,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.h:11,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:1:
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:270:14: note: candidate: template<class _Rep2, class _Period2, class> constexpr std::chrono::duration<_Rep, _Period>::duration(const std::chrono::duration<_Rep, _Period>&)
+    constexpr duration(const duration<_Rep2, _Period2>& __d)
+              ^~~~~~~~
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:270:14: note:   template argument deduction/substitution failed:
+/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:356:48: note:   mismatched types 'const std::chrono::duration<_Rep1, _Period1>' and 'const double'
+        std::chrono::milliseconds(ARM_SLEEP_TIME));
+                                                ^
+In file included from /Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/mutex:39:0,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpiutil-cpp-2019.1.1-headers.zip_09b38849dbdfa883c4be908731924be2/wpi/mutex.h:10,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/ErrorBase.h:12,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/ADXL345_I2C.h:10,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/WPILib.h:13,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.h:11,
+                 from /Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:1:
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:263:23: note: candidate: template<class _Rep2, class> constexpr std::chrono::duration<_Rep, _Period>::duration(const _Rep2&)
+    constexpr explicit duration(const _Rep2& __rep)
+                       ^~~~~~~~
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:263:23: note:   template argument deduction/substitution failed:
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:259:27: error: no type named 'type' in 'struct std::enable_if<false, void>'
+  template<typename _Rep2, typename = typename
+                           ^~~~~~~~
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:257:2: note: candidate: std::chrono::duration<_Rep, _Period>::duration(const std::chrono::duration<_Rep, _Period>&) [with _Rep = long long int; _Period = std::ratio<1ll, 1000ll>]
+  duration(const duration&) = default;
+  ^~~~~~~~
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:257:2: note:   no known conversion for argument 1 from 'const double' to 'const std::chrono::duration<long long int, std::ratio<1ll, 1000ll> >&'
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:252:12: note: candidate: constexpr std::chrono::duration<_Rep, _Period>::duration() [with _Rep = long long int; _Period = std::ratio<1ll, 1000ll>]
+  constexpr duration() = default;
+            ^~~~~~~~
+/Users/brianhardell/.gradle/toolchains/frc/2019/roborio/arm-frc2019-linux-gnueabi/usr/include/c++/6.3.0/chrono:252:12: note:   candidate expects 0 arguments, 1 provided
+
+Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.
