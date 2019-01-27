@@ -261,11 +261,7 @@ void Arm::StopArm() {
 	talonArm->Set(ControlMode::PercentOutput, 0.0);
 }
 
-void Arm::ArmStateMachine(){
-  frc::SmartDashboard::PutNumber("ARM ENC",
-			talonArm->GetSensorCollection().GetQuadraturePosition());
-
-	frc::SmartDashboard::PutString("ARM", arm_states[arm_state]);
+void Arm::ArmStateMachine() {
   switch (arm_state) {
 
     case INIT_STATE:
@@ -297,12 +293,15 @@ void Arm::ArmStateMachine(){
 		break;
 
     case STOP_ARM_STATE:
-		frc::SmartDashboard::PutString("ARM", "STOP");
 		StopArm();
 		last_arm_state = STOP_ARM_STATE;
 		break;
   	}
 
+		frc::SmartDashboard::PutNumber("ARM ENC",
+				talonArm->GetSensorCollection().GetQuadraturePosition());
+
+		frc::SmartDashboard::PutString("ARM", arm_states[arm_state]);
 }
 
 void Arm::UpdateArmProfile(int current_state, double angle) {
