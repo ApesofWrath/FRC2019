@@ -51,6 +51,15 @@ const double MID_ANGLE = 0.6;
 const double LOW_ANGLE = 0.3;
 const double DOWN_ANGLE = -0.1; //lowest pos
 
+const int ARM_SLEEP_TIME = 0;
+const double ARM_WAIT_TIME = 0.01; //sec
+
+frc::Timer *armTimer = new frc::Timer();
+
+frc::PowerDistributionPanel *pdp_a;
+
+ArmMotionProfiler *arm_profiler;
+
 double current_pos = 0.0;
 double current_vel = 0.0;
 double goal_pos = 0.0;
@@ -73,12 +82,6 @@ std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with th
 
 std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
 
-Timer *armTimer = new Timer();
-
-PowerDistributionPanel *pdp_a;
-
-ArmMotionProfiler *arm_profiler;
-
 bool is_at_bottom = false;
 bool first_time_at_bottom = false;
 bool voltage_safety = false;
@@ -88,8 +91,7 @@ int counter_a = 0;
 int a = 0;
 int encoder_counter = 0;
 
-Arm::Arm(PowerDistributionPanel *pdp,
-		ArmMotionProfiler *arm_profiler_){
+Arm::Arm(PowerDistributionPanel *pdp, ArmMotionProfiler *arm_profiler_){
 
   talonArm = new TalonSRX(0);
 
@@ -123,22 +125,22 @@ void Arm::InitializeArm() {
 	//talonElevator2->Set(ControlMode::PercentOutput, up_volt);
 }
 
-void Arm::ManualArm(Joystick *joyOpArm) {
+void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
-	SmartDashboard::PutNumber("ARM CUR", talonArm->GetOutputCurrent());
+	frc::SmartDashboard::PutNumber("ARM CUR", talonArm->GetOutputCurrent());
 	double enc_arm = GetAngularPosition();
-	SmartDashboard::PutNumber("ARM ENC",
+	frc::SmartDashboard::PutNumber("ARM ENC",
 			talonArm->GetSensorCollection().GetQuadraturePosition());
 
-	SmartDashboard::PutNumber("ARM POS", GetAngularPosition()); //left is negative, right is positive
+	frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition()); //left is negative, right is positive
 
 	double output = joyOpArm->GetY() * 0.5 * 1.0;
 
-	output *= MAX_VOLTAGE_A
+	output *= MAX_VOLTAGE_A;
 
-	SmartDashboard::PutNumber("ARM OUTPUT", output);
+	frc::SmartDashboard::PutNumber("ARM OUTPUT", output);
 
-	// SmartDashboard::PutString("HasRobotVoted", "True")
+	// frc::SmartDashboard::PutString("HasRobotVoted", "True")
 
 	SetVoltageArm(output);
 
@@ -153,17 +155,17 @@ void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
 	goal_pos = ref_arm[0][0];
 	goal_vel = ref_arm[1][0];
 
-	SmartDashboard::PutNumber("ARM POS", current_pos);
-	SmartDashboard::PutNumber("ARM VEL", current_vel);
+	frc::SmartDashboard::PutNumber("ARM POS", current_pos);
+	frc::SmartDashboard::PutNumber("ARM VEL", current_vel);
 
-	SmartDashboard::PutNumber("ARM REF POS", goal_pos);
-	SmartDashboard::PutNumber("ARM REF VEL", goal_vel);
+	frc::SmartDashboard::PutNumber("ARM REF POS", goal_pos);
+	frc::SmartDashboard::PutNumber("ARM REF VEL", goal_vel);
 
 	error_a[0][0] = goal_pos - current_pos;
 	error_a[1][0] = goal_vel - current_vel;
 
-	SmartDashboard::PutNumber("ARM ERR POS", error_a[0][0]);
-	SmartDashboard::PutNumber("ARM ERR VEL", error_a[1][0]);
+	frc::SmartDashboard::PutNumber("ARM ERR POS", error_a[0][0]);
+	frc::SmartDashboard::PutNumber("ARM ERR VEL", error_a[1][0]);
 
 	if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
 		K_a = K_down_a;
@@ -180,7 +182,7 @@ void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
 	u_a = (K_a[0][0] * error_a[0][0]) + (K_a[0][1] * error_a[1][0]) //u_sis in voltage, so * by v_bat_a
 			+ (Kv_a* goal_vel * v_bat_a) + arm_offset;
 
-	SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
+	frc::SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
 
 	SetVoltageArm(u_a);
 
@@ -189,22 +191,22 @@ void Arm::Rotate(std::vector<std::vector<double> > ref_arm) {
 void Arm::SetVoltageArm(double voltage_a) {
 
 	is_at_bottom = IsAtBottomArm(); //hall effect returns 0 when at bottom. we reverse it here
-	SmartDashboard::PutNumber("ARM HALL EFF", is_at_bottom); //actually means not at bottom //0 means up// 1 means dow
+	frc::SmartDashboard::PutNumber("ARM HALL EFF", is_at_bottom); //actually means not at bottom //0 means up// 1 means dow
 
-	SmartDashboard::PutString("ARM SAFETY", "none");
+	frc::SmartDashboard::PutString("ARM SAFETY", "none");
 
 	//soft limit top
-	if (GetAngularPosition() >= (UP_LIMIT_A && voltage_a > UP_VOLT_LIMIT_A { //at max height and still trying to move up
+	if (GetAngularPosition() >= (UP_LIMIT_A && voltage_a > UP_VOLT_LIMIT_A)) { //at max height and still trying to move up
 		voltage_a = 0.0; //shouldn't crash
-		SmartDashboard::PutString("ARM SAFETY", "top soft limit");
+		frc::SmartDashboard::PutString("ARM SAFETY", "top soft limit");
 	}
 
 	//soft limit bottom
 	if (is_at_bottom) {
 		ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
-		if (GetAngularPosition() < (DOWN_LIMIT_A && voltage_a < DOWN_VOLT_LIMIT_A { //but hall effect goes off at 0.35
+		if (GetAngularPosition() < (DOWN_LIMIT_A && voltage_a < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
 			voltage_a = 0.0;
-			SmartDashboard::PutString("ARM SAFETY", "bot hall eff");
+			frc::SmartDashboard::PutString("ARM SAFETY", "bot hall eff");
 		}
 	}
 
@@ -213,16 +215,16 @@ void Arm::SetVoltageArm(double voltage_a) {
 //	}
 
 	//voltage limit
-	if (voltage_a > MAX_VOLTAGE_A {
-		voltage_a = MAX_VOLTAGE_A
-		SmartDashboard::PutString("ARM SAFETY", "clipped");
-	} else if (voltage_a < MIN_VOLTAGE_A {
-		voltage_a = MIN_VOLTAGE_A
-		SmartDashboard::PutString("ARM SAFETY", "clipped");
+	if (voltage_a > MAX_VOLTAGE_A) {
+		voltage_a = MAX_VOLTAGE_A;
+		frc::SmartDashboard::PutString("ARM SAFETY", "clipped");
+	} else if (voltage_a < MIN_VOLTAGE_A) {
+		voltage_a = MIN_VOLTAGE_A;
+		frc::SmartDashboard::PutString("ARM SAFETY", "clipped");
 	}
 
 	//stall
-	if (std::abs(GetAngularVelocity()) <= STALL_VEL_A && std::abs(voltage_a) > STALL_VOLT_A { //outputting current, not moving, should be moving
+	if (std::abs(GetAngularVelocity()) <= STALL_VEL_A && std::abs(voltage_a) > STALL_VOLT_A) { //outputting current, not moving, should be moving
 		encoder_counter++;
 	} else {
 		encoder_counter = 0;
@@ -230,10 +232,10 @@ void Arm::SetVoltageArm(double voltage_a) {
 	if (encoder_counter > 10) {
 		voltage_safety = true;
 		voltage_a = 0.0;
-		SmartDashboard::PutString("ARM SAFETY", "stall");
+		frc::SmartDashboard::PutString("ARM SAFETY", "stall");
 	}
 
-	SmartDashboard::PutNumber("ARM VOLTAGE", voltage_a);
+	frc::SmartDashboard::PutNumber("ARM VOLTAGE", voltage_a);
 
 	//scale
 	voltage_a /= v_bat_a; //scale from -1 to 1 for the talon // max voltage is positive
@@ -251,7 +253,7 @@ double Arm::GetAngularVelocity() {
 	//multiply by 2pi to get into radians per second (2pi radians are in one revolution)
 	double ang_vel =
 			(talonArm->GetSensorCollection().GetQuadratureVelocity()
-					/ (TICKS_PER_ROT_A) * (2.0 * PI) * (10.0) * -1.0;
+					/ (TICKS_PER_ROT_A) * (2.0 * PI) * (10.0) * -1.0);
 	//double ang_vel = 0.0;
 
 	return ang_vel;
@@ -264,7 +266,7 @@ double Arm::GetAngularPosition() {
 	//2pi radians per rotations
 	double ang_pos =
 			(talonArm->GetSensorCollection().GetQuadraturePosition()
-					/ (TICKS_PER_ROT_A) * (2.0 * PI) * -1.0;
+					/ (TICKS_PER_ROT_A) * (2.0 * PI) * -1.0);
 	//double ang_pos = 0.0;
 
 	double offset_pos = .35; //amount that the arm will stick up in radians
@@ -289,13 +291,13 @@ void Arm::StopArm() {
 
 void Arm::ArmStateMachine(){
 
-  SmartDashboard::PutNumber("ARM ENC",
+  frc::SmartDashboard::PutNumber("ARM ENC",
 			talonArm->GetSensorCollection().GetQuadraturePosition());
 
   switch (arm_state){
 
     case INIT_STATE:
-    SmartDashboard::PutString("ARM", "INIT");
+    frc::SmartDashboard::PutString("ARM", "INIT");
     InitializeArm();
     if (is_init_arm) {
 			arm_state = UP_STATE;
@@ -304,7 +306,7 @@ void Arm::ArmStateMachine(){
     break;
 
     case UP_STATE:
-    SmartDashboard::PutString("ARM", "UP");
+    frc::SmartDashboard::PutString("ARM", "UP");
     if (last_arm_state != UP_STATE) { //first time in state
       arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
       arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
@@ -315,7 +317,7 @@ void Arm::ArmStateMachine(){
     break;
 
     case HIGH_CARGO_STATE:
-    SmartDashboard::PutString("ARM", "HIGH");
+    frc::SmartDashboard::PutString("ARM", "HIGH");
     if (last_arm_state != HIGH_CARGO_STATE) {
       arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
       arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
@@ -326,7 +328,7 @@ void Arm::ArmStateMachine(){
     break;
 
     case MID_CARGO_STATE:
-    SmartDashboard::PutString("ARM", "MID");
+    frc::SmartDashboard::PutString("ARM", "MID");
     if (last_arm_state != MID_CARGO_STATE) {
       arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
       arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
@@ -337,7 +339,7 @@ void Arm::ArmStateMachine(){
     break;
 
     case LOW_CARGO_STATE:
-    SmartDashboard::PutString("ARM", "LOW");
+    frc::SmartDashboard::PutString("ARM", "LOW");
     if (last_arm_state != LOW_CARGO_STATE) {
       arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A); //these must be reset in each state
       arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
@@ -348,7 +350,7 @@ void Arm::ArmStateMachine(){
     break;
 
 		case DOWN_STATE:
-		SmartDashboard::PutString("ARM", "DOWN");
+		frc::SmartDashboard::PutString("ARM", "DOWN");
 		if (last_arm_state != DOWN_STATE) {
 			arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
 			arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
@@ -359,7 +361,7 @@ void Arm::ArmStateMachine(){
 		break;
 
     case STOP_ARM_STATE:
-  		SmartDashboard::PutString("ARM", "STOP");
+  		frc::SmartDashboard::PutString("ARM", "STOP");
   		StopArm();
   		last_arm_state = STOP_ARM_STATE;
   		break;
@@ -427,4 +429,4 @@ void Arm::ArmStateMachine(){
 
   }
 
-}
+};

@@ -1,20 +1,47 @@
 See file:///C:/Users/kayac/eclipse-workspace/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
-compiling Arm.h failed.
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:23:32: fatal error: ArmMotionProfiler.h: No such file or directory
-  #include <ArmMotionProfiler.h>
-                                ^
-compilation terminated.
-
-compiling Arm.cpp failed.
-In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:0:
-C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:23:32: fatal error: ArmMotionProfiler.h: No such file or directory
-  #include <ArmMotionProfiler.h>
-                                ^
-compilation terminated.
-
 compiling suction.cpp successful.
 
 compiling suction.h successful.
+
+compiling Arm.h failed.
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:47:12: error: 'PowerDistributionPanel' has not been declared
+   void Arm(PowerDistributionPanel *pdp,
+            ^~~~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:48:38: error: return type specification for constructor invalid
+       ArmMotionProfiler *arm_profiler);
+                                      ^
+
+compiling Arm.cpp failed.
+In file included from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:0:
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:47:12: error: 'PowerDistributionPanel' has not been declared
+   void Arm(PowerDistributionPanel *pdp,
+            ^~~~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:48:38: error: return type specification for constructor invalid
+       ArmMotionProfiler *arm_profiler);
+                                      ^
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:94:15: error: variable or field 'Arm' declared void
+ void Arm::Arm(PowerDistributionPanel *pdp,
+               ^~~~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:94:15: error: 'PowerDistributionPanel' was not declared in this scope
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:94:15: note: suggested alternative:
+In file included from C:\Users\kayac\eclipse-workspace\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/WPILib.h:52:0,
+                 from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.h:11,
+                 from C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:8:
+C:\Users\kayac\eclipse-workspace\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.1.1-headers.zip_bbc5901b0e22ac527e7d642f2ec68009/frc/PowerDistributionPanel.h:21:7: note:   'frc::PowerDistributionPanel'
+ class PowerDistributionPanel : public ErrorBase, public SendableBase {
+       ^~~~~~~~~~~~~~~~~~~~~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:94:39: error: 'pdp' was not declared in this scope
+ void Arm::Arm(PowerDistributionPanel *pdp,
+                                       ^~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:95:21: error: expected primary-expression before '*' token
+   ArmMotionProfiler *arm_profiler_){
+                     ^
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:95:22: error: 'arm_profiler_' was not declared in this scope
+   ArmMotionProfiler *arm_profiler_){
+                      ^~~~~~~~~~~~~
+C:\Users\kayac\eclipse-workspace\FRC2019\src\main\cpp\Arm.cpp:433:1: error: expected declaration before '}' token
+ };
+ ^
 
 compiling ArmMotionProfiler.cpp successful.
 

@@ -20,14 +20,14 @@
  #include <frc/Joystick.h>
  #include <frc/smartdashboard/SmartDashboard.h>
  #include <frc/smartdashboard/SendableChooser.h>
- #include <ArmMotionProfiler.h>
+ #include "ArmMotionProfiler.h"
 
 class Arm {
 public:
 
   TalonSRX *talonArm;
 
-  DigitalInput *hallEffectArm; //for bottom
+  frc::DigitalInput *hallEffectArm; //for bottom
 
   std::thread ArmThread;
 
@@ -45,7 +45,7 @@ public:
   int arm_state = INIT_STATE_H;
 
   Arm(PowerDistributionPanel *pdp,
-      ArmMotionProfiler *arm_profiler)
+      ArmMotionProfiler *arm_profiler);
 
   void InitializeArm();
 
@@ -59,7 +59,7 @@ public:
 	void SetVoltageArm(double voltage_a);
 
 	void ZeroEnc();
-	void ManualArm(Joystick *joyOpArm);
+	void ManualArm(frc::Joystick *joyOpArm);
 
   void StopArm();
   void ArmStateMachine();
