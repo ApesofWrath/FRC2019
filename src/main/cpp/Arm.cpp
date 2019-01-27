@@ -96,8 +96,8 @@ void Arm::ManualArm(frc::Joystick *joyOpArm) {
 	double output = joyOpArm->GetY() * 0.5 * 1.0 * MAX_VOLTAGE_A;
 
 	frc::SmartDashboard::PutNumber("ARM OUTPUT", output);
-
-	// frc::SmartDashboard::PutString("HasRobotVoted", "True")
+	// TODO, IMPORTANT: find out how wrote this
+		// frc::SmartDashboard::PutString("HasRobotVoted", "True")
 
 	SetVoltageArm(output);
 
