@@ -5,14 +5,14 @@
  *      Author: DriversStation
  */
 
+#ifndef SRC_ARMMOTIONPROFILER_H_
+#define SRC_ARMMOTIONPROFILER_H_
+
 #include <list>
 #include <vector>
 #include <iostream>
 #include <cmath>
 #include <frc/WPILib.h>
-
-#ifndef SRC_ARMMOTIONPROFILER_H_
-#define SRC_ARMMOTIONPROFILER_H_
 
 class ArmMotionProfiler {
 

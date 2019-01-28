@@ -1,18 +1,8 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
-compiling suction.cpp successful.
-
-compiling ArmMotionProfiler.h successful.
-
-compiling Arm.h successful.
-
-compiling ArmConstants.h successful.
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
+compiling ArmMotionProfiler.cpp successful.
 
 compiling Arm.cpp successful.
 
-compiling suction.h successful.
+compiling Robot.cpp successful.
 
-compiling robot.cpp successful.
-
-compiling ArmMotionProfiler.cpp successful.
-
-Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.

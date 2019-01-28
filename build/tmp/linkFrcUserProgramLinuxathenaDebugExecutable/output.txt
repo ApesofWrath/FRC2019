@@ -1,7 +1,4 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
-linking frcUserProgram failed.
-/Users/brianhardell/Desktop/robotics/FRC2019/build/objs/frcUserProgram/linuxathena/debug/frcUserProgramCpp/7iqbol3dqbx5bcx4rqpnv7mlh/Arm.o: In function `Arm::Rotate()':
-/Users/brianhardell/Desktop/robotics/FRC2019/src/main/cpp/Arm.cpp:154: undefined reference to `Arm::CalcOutputVoltage()'
-collect2: error: ld returned 1 exit status
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
+linking frcUserProgram successful.
 
-Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.
+Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.

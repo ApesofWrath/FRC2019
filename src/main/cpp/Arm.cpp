@@ -10,8 +10,6 @@ const int LOW_CARGO_STATE = 4;
 const int DOWN_STATE = 5;
 const int STOP_ARM_STATE = 6;
 
-const int HALL_EFF_ARM_ID = 0;
-
 double current_pos = 0.0;
 double current_vel = 0.0;
 double goal_pos = 0.0;
@@ -65,7 +63,7 @@ Arm::Arm(frc::PowerDistributionPanel *pdp,
 
   arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
 	arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-	hallEffectArm = new frc::DigitalInput(HALL_EFF_ARM_ID);
+	hallEffectArm = new frc::DigitalInput(0);
 
   pdp_a = pdp;
 
@@ -103,7 +101,7 @@ void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
 }
 
-void Arm::PrintElevatorInfo() {
+void Arm::PrintArmInfo() {
 	frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition());
 	frc::SmartDashboard::PutNumber("ARM VEL", GetAngularVelocity());
 
@@ -129,7 +127,7 @@ void Arm::UpdatePositions() {
 	error_a[1][0] = goal_vel - current_vel;
 }
 
-void CalcOutputVoltage() {
+void Arm::CalcOutputVoltage() {
 	if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
 		K_a = K_down_a;
 	} else {
@@ -150,7 +148,7 @@ void Arm::Rotate() {
 	CalcOutputVoltage();
 	// Action
 	SetVoltageArm(u_a);
-	PrintElevatorInfo();
+	PrintArmInfo();
 }
 
 void Arm::SetVoltageArm(double voltage_a) {
@@ -313,13 +311,13 @@ void Arm::UpdateArmProfile(int current_state, double angle) {
 
 }
 
-  bool Arm::EncodersRunning() { //will stop the controller from run //or stalled //MOVED INTO SET VOLTAGE
+bool Arm::EncodersRunning() { //will stop the controller from run //or stalled //MOVED INTO SET VOLTAGE
 
   //	double current_pos = GetAngularPosition(); //radians
   //	double current_ref = intake_profiler->GetNextRefIntake().at(0).at(0);
 
   	return true;
-  }
+}
 
   void Arm::ZeroEnc() { //called in Initialize() and in SetVoltage()
 
@@ -329,43 +327,4 @@ void Arm::UpdateArmProfile(int current_state, double angle) {
     } else {
       is_init_arm = true;
     }
-  }
-
-  void Arm::ArmWrapper(Arm *arm) {
-
-  	armTimer->Start();
-
-  	while (true) {
-  		while (frc::RobotState::IsEnabled()) {
-  			std::this_thread::sleep_for(std::chrono::milliseconds(ARM_SLEEP_TIME));
-
-  			if (armTimer->HasPeriodPassed(ARM_WAIT_TIME)) {
-
-
-  				if (arm->arm_state != STOP_ARM_STATE
-  						&& arm->arm_state != INIT_STATE) {
-  					arm->Rotate();
-  				}
-
-  				armTimer->Reset();
-
-  			}
-  		}
-  	}
-
-  }
-
-  void Arm::StartArmThread() {
-
-  	Arm *arm_ = this;
-
-  	ArmThread = std::thread(&Arm::ArmWrapper, arm_);
-  	ArmThread.detach();
-
-  }
-
-  void Arm::EndArmThread() {
-
-  	ArmThread.~thread();
-
   }
