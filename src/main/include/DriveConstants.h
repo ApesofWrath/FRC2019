@@ -52,7 +52,7 @@ const double MAX_YAW_RATE = 20.0;
 
 const double MINUTE_CONVERSION = 600.0; //part of the conversion from ticks velocity to rpm
 
-//not used this year
+////////////not used this year
 
 //teleop
 const double K_P_RIGHT_VEL_LOW = 0.00; //low gear

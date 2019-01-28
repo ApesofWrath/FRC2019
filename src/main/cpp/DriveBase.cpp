@@ -476,6 +476,9 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		target_r = -max_y_rpm;
 	}
 
+	frc::SmartDashboard::PutNumber("target_r TeleopWCDrive", target_r);
+	frc::SmartDashboard::PutNumber("target_yaw_rate TeleopWCDrive", target_yaw_rate);
+
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
 			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
 			0.0, 0.0, 0.0);
@@ -644,6 +647,8 @@ void DriveBase::Controller(double ref_kick,
 
 	 frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
 	 frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
+	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
+	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
 
 	double target_yaw_rate = ref_yaw;
 
@@ -693,6 +698,12 @@ void DriveBase::Controller(double ref_kick,
 	feed_forward_l = k_f_left_vel * ref_left;
 	feed_forward_k = K_F_KICK_VEL * ref_kick;
 
+	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
+	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
+
+	frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
+	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
+
 	//conversion to RPM from native unit
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -702,8 +713,8 @@ void DriveBase::Controller(double ref_kick,
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
 
 
-frc::SmartDashboard::PutNumber("l vel actual", l_current);
-frc::SmartDashboard::PutNumber("r vel actual", r_current);
+frc::SmartDashboard::PutNumber("l current", l_current);
+frc::SmartDashboard::PutNumber("r current", r_current);
 
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
