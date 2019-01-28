@@ -20,9 +20,9 @@
 class DriveBase {
 public:
 
-	TalonSRX *canTalonLeft1, *canTalonLeft2, *canTalonLeft3, *canTalonLeft4, *canTalonRight1, *canTalonRight2,
-			*canTalonRight3, *canTalonRight4, *canTalonKicker; //for 4 talons: 1 is front right, 2 is back right, 3 is front left, 4 is back left
-
+	TalonSRX *canTalonLeft1, *canTalonRight1, *canTalonKicker; //for 4 talons: 1 is front right, 2 is back right, 3 is front left, 4 is back left
+	VictorSPX *canTalonLeft2, *canTalonLeft3,  *canTalonRight2,
+			*canTalonRight3;
 	DoubleSolenoid *solenoid;
 
 	AHRS *ahrs;

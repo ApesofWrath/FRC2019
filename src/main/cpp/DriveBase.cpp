@@ -72,99 +72,76 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-
-	canTalonLeft2 = new TalonSRX(L2);
-	canTalonLeft2->Set(ControlMode::Follower, LF);
-
-	canTalonLeft3 = new TalonSRX(L3);
-	canTalonLeft3->Set(ControlMode::Follower, LF);
-
-	canTalonLeft4 = new TalonSRX(LR);
-	canTalonLeft4->Set(ControlMode::Follower, LF);
+	canTalonLeft2 = new VictorSPX(L2);
+	canTalonLeft3 = new VictorSPX(L3);
 
 	canTalonRight1 = new TalonSRX(RF);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+	canTalonRight2 = new VictorSPX(R2);
+	canTalonRight3 = new VictorSPX(R3);
 
-	canTalonRight2 = new TalonSRX(R2);
-	canTalonRight2->Set(ControlMode::Follower, RF);
-
-	canTalonRight3 = new TalonSRX(R3);
-	canTalonRight3->Set(ControlMode::Follower, RF);
-
-	canTalonRight4 = new TalonSRX(RR);
-	canTalonRight4->Set(ControlMode::Follower, RF);
-
-	canTalonLeft1->EnableCurrentLimit(true);
-	canTalonLeft2->EnableCurrentLimit(true);
-	canTalonLeft3->EnableCurrentLimit(true);
-	canTalonLeft4->EnableCurrentLimit(true);
-	canTalonRight1->EnableCurrentLimit(true);
-	canTalonRight2->EnableCurrentLimit(true);
-	canTalonRight3->EnableCurrentLimit(true);
-	canTalonRight4->EnableCurrentLimit(true);
-
-	canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
-	canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
-	canTalonLeft3->ConfigPeakCurrentLimit(40, 0);
-	canTalonLeft4->ConfigPeakCurrentLimit(40, 0);
-	canTalonRight1->ConfigPeakCurrentLimit(40, 0);
-	canTalonRight2->ConfigPeakCurrentLimit(40, 0);
-	canTalonRight3->ConfigPeakCurrentLimit(40, 0);
-	canTalonRight4->ConfigPeakCurrentLimit(40, 0);
-
-	canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
-	canTalonLeft2->ConfigContinuousCurrentLimit(30, 0);
-	canTalonLeft3->ConfigContinuousCurrentLimit(30, 0);
-	canTalonLeft4->ConfigContinuousCurrentLimit(30, 0);
-	canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
-	canTalonRight2->ConfigContinuousCurrentLimit(30, 0);
-	canTalonRight3->ConfigContinuousCurrentLimit(30, 0);
-	canTalonRight4->ConfigContinuousCurrentLimit(30, 0);
-
-	canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
-	canTalonLeft2->ConfigPeakCurrentDuration(10, 0);
-	canTalonLeft3->ConfigPeakCurrentDuration(10, 0);
-	canTalonLeft4->ConfigPeakCurrentDuration(10, 0);
-	canTalonRight1->ConfigPeakCurrentDuration(10, 0);
-	canTalonRight2->ConfigPeakCurrentDuration(10, 0);
-	canTalonRight3->ConfigPeakCurrentDuration(10, 0);
-	canTalonRight4->ConfigPeakCurrentDuration(10, 0);
-
-	canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
-	canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
-	canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
-	canTalonLeft4->ConfigOpenloopRamp(0.15, 0);
-	canTalonRight1->ConfigOpenloopRamp(0.15, 0);
-
-	canTalonLeft1->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonLeft2->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonLeft2->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonLeft3->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonLeft3->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonLeft4->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonLeft4->ConfigVelocityMeasurementWindow(5, 0);
-
-	canTalonRight1->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonRight2->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonRight2->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonRight3->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonRight3->ConfigVelocityMeasurementWindow(5, 0);
-	canTalonRight4->ConfigVelocityMeasurementPeriod(
-			VelocityMeasPeriod::Period_10Ms, 0);
-	canTalonRight4->ConfigVelocityMeasurementWindow(5, 0);
-
-	canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-	canTalonRight1->SetStatusFramePeriod(
-			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+	// canTalonLeft1->EnableCurrentLimit(true);
+	// canTalonLeft2->EnableCurrentLimit(true);
+	// canTalonLeft3->EnableCurrentLimit(true);
+	//
+	// canTalonRight1->EnableCurrentLimit(true);
+	// canTalonRight2->EnableCurrentLimit(true);
+	// canTalonRight3->EnableCurrentLimit(true);
+	//
+	// canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
+	// canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
+	// canTalonLeft3->ConfigPeakCurrentLimit(40, 0);
+	//
+	// canTalonRight1->ConfigPeakCurrentLimit(40, 0);
+	// canTalonRight2->ConfigPeakCurrentLimit(40, 0);
+	// canTalonRight3->ConfigPeakCurrentLimit(40, 0);
+	//
+	// canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
+	// canTalonLeft2->ConfigContinuousCurrentLimit(30, 0);
+	// canTalonLeft3->ConfigContinuousCurrentLimit(30, 0);
+	//
+	// canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
+	// canTalonRight2->ConfigContinuousCurrentLimit(30, 0);
+	// canTalonRight3->ConfigContinuousCurrentLimit(30, 0);
+	//
+	// canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
+	// canTalonLeft2->ConfigPeakCurrentDuration(10, 0);
+	// canTalonLeft3->ConfigPeakCurrentDuration(10, 0);
+	//
+	// canTalonRight1->ConfigPeakCurrentDuration(10, 0);
+	// canTalonRight2->ConfigPeakCurrentDuration(10, 0);
+	// canTalonRight3->ConfigPeakCurrentDuration(10, 0);
+	//
+	// canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
+	// canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
+	// canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
+	// canTalonRight1->ConfigOpenloopRamp(0.15, 0);
+	// canTalonRight2->ConfigOpenloopRamp(0.15, 0);
+	// canTalonRight3->ConfigOpenloopRamp(0.15, 0);
+	//
+	// canTalonLeft1->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
+	// canTalonLeft2->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonLeft2->ConfigVelocityMeasurementWindow(5, 0);
+	// canTalonLeft3->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonLeft3->ConfigVelocityMeasurementWindow(5, 0);
+	//
+	// canTalonRight1->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
+	// canTalonRight2->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonRight2->ConfigVelocityMeasurementWindow(5, 0);
+	// canTalonRight3->ConfigVelocityMeasurementPeriod(
+	// 		VelocityMeasPeriod::Period_10Ms, 0);
+	// canTalonRight3->ConfigVelocityMeasurementWindow(5, 0);
+	//
+	// canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+	// canTalonRight1->SetStatusFramePeriod(
+	// 		StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
 
 	ahrs = new AHRS(SerialPort::kUSB);
 
@@ -212,25 +189,25 @@ DriveBase::DriveBase(int fl, int fr, int rl, int rr,
 	F_CHANNEL = f_channel;
 	R_CHANNEL = r_channel;
 
-	canTalonLeft1 = new TalonSRX(LF);
-	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-
-	canTalonLeft2 = new TalonSRX(LR);
-	canTalonLeft2->Set(ControlMode::Follower, LF);
-
-	canTalonRight1 = new TalonSRX(RF);
-	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-
-	canTalonRight2 = new TalonSRX(RR);
-	canTalonRight2->Set(ControlMode::Follower, RF);
-
-  canTalonKicker = new TalonSRX(KICKER);
-
-	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
-	canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
-	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
-	canTalonRight2->ConfigPeakCurrentLimit(30, 0);
-	canTalonKicker->ConfigPeakCurrentLimit(30, 0);
+	// canTalonLeft1 = new TalonSRX(LF);
+	// canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+	//
+	// canTalonLeft2 = new TalonSRX(LR);
+	// canTalonLeft2->Set(ControlMode::Follower, LF);
+	//
+	// canTalonRight1 = new TalonSRX(RF);
+	// canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+	//
+	// canTalonRight2 = new TalonSRX(RR);
+	// canTalonRight2->Set(ControlMode::Follower, RF);
+	//
+  // canTalonKicker = new TalonSRX(KICKER);
+	//
+	// canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
+	// canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
+	// canTalonRight1->ConfigPeakCurrentLimit(30, 0);
+	// canTalonRight2->ConfigPeakCurrentLimit(30, 0);
+	// canTalonKicker->ConfigPeakCurrentLimit(30, 0);
 
 	ahrs = new AHRS(SPI::Port::kMXP, 200);
 
@@ -780,7 +757,11 @@ frc::SmartDashboard::PutNumber("r vel actual", r_current);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
+	canTalonLeft2->Set(ControlMode::PercentOutput, total_left);
+	canTalonLeft3->Set(ControlMode::PercentOutput, total_left);
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right); //negative for Koba and for new drive train
+	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
+	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
 	//canTalonRearRight->Set(ControlMode::PercentOutput,  total_right); //these are slaves
 	//canTalonRearLeft->Set(ControlMode::PercentOutput, -total_left);
 	///canTalonKicker->Set(ControlMode::PercentOutput, -total_kick); //since there is no kicker, was causing timeout and spike on thread
@@ -815,11 +796,12 @@ void DriveBase::ZeroAll(bool stop_motors) {
 //will stop all driven motors in the drive controller
 void DriveBase::StopAll() {
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0); //0.0 because of the double, 0 should still work but better safe than sorry
-	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
-	//canTalonRearRight->Set(ControlMode::PercentOutput, 0.0); //slaved
-	//canTalonRearLeft->Set(ControlMode::PercentOutput, 0.0);
-	//canTalonKicker->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft2->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft3->Set(ControlMode::PercentOutput, 0.0);
+	canTalonRight1->Set(ControlMode::PercentOutput, 0.0); //negative for Koba and for new drive train
+	canTalonRight2->Set(ControlMode::PercentOutput, 0.0);
+	canTalonRight3->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
