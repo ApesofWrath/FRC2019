@@ -64,6 +64,7 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
 
   drive_controller->ZeroAll(true);
+  drive_controller->set_profile = false; //using for vision
 
 }
 
@@ -73,7 +74,7 @@ void Robot::TeleopPeriodic() {
 		is_vision = false;
 		is_fc = false;
 
-   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
+   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading, is_vision);
 
    //frc::SmartDashboard::PutNumber("L1", )
 }

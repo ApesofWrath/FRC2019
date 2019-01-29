@@ -2,8 +2,7 @@
 
 using namespace std::chrono;
 
-std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(6)); //rows stacked on rows, all points // can't be in .h for some reason
-std::vector<std::vector<double> > auton_rows(2, std::vector<double>(6));
+std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
@@ -533,9 +532,10 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 }
 
 //only to be used in teleop; auton will already have this essentially
-void DriveBase::VisionTrack(double dist_to_target, double yaw_to_target) {
+void DriveBase::VisionDrive(double dist_to_target, double yaw_to_target) {
 
-	drive_controller->ZeroAll(true);
+	InitDriveProf();
+	ZeroAll(true);
 
 	int length;
 	int POINT_LENGTH = 2;
@@ -567,42 +567,40 @@ void DriveBase::VisionTrack(double dist_to_target, double yaw_to_target) {
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
+	 auton_profile = {{}}; //runautondrive looks at drive_ref size
+	 auton_profile.resize(length, std::vector<double>(5));
+
 	for (int i = 0; i < length; i++) {
 
-		Segment sl = rightTrajectory[i]; //yes, going backwards requires switching the left and right profiles to have appropriate magnitudes that correspond to the yaw targets!
-		Segment sr = leftTrajectory[i];
+		Segment sl = leftTrajectory[i];
+		Segment sr = rightTrajectory[i];
 
-		full_refs_sc.at(i).at(0) = ((double) sl.heading) - PI; //profile tries to turn robot around and go straight, in order to go backwards?
-		full_refs_sc.at(i).at(1) = -1.0 * ((double) sl.position); //pathfinder does not give negative references; it always assumes forward
-		full_refs_sc.at(i).at(2) = -1.0 * ((double) sr.position);
-		full_refs_sc.at(i).at(3) = (0.0);
-		full_refs_sc.at(i).at(4) = -1.0 * ((double) sl.velocity);
-		full_refs_sc.at(i).at(5) = -1.0 * ((double) sr.velocity);
+		auton_profile.at(i).at(0) = ((double) sl.heading); //pathfinder doesn't give yaw vel targ
+		auton_profile.at(i).at(1) = ((double) sl.position);
+		auton_profile.at(i).at(2) = ((double) sr.position);
+		auton_profile.at(i).at(3) = ((double) sl.velocity);
+		auton_profile.at(i).at(4) = ((double) sr.velocity);
 
 	}
-
-	drive_controller->SetRefs(full_refs_sc);
 
 	free(trajectory);
 	free(leftTrajectory);
 	free(rightTrajectory);
 
+	SetAutonRefs(auton_profile); //setting to itself
+
 }
 
-/**
- * Param: Feet forward, + = forward
- */
 //position controlller
 //auton targets, actually just pd
-
 void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel, right vel
 
 	double refYaw = drive_ref.at(0); //reversed in Generate
 	double refLeft = drive_ref.at(1);
 	double refRight = drive_ref.at(2);
-	double targetYawRate = 0.0; //drive_ref.at(3); //0 for now
-	double tarVelLeft = drive_ref.at(4);
-	double tarVelRight = drive_ref.at(5);
+	double targetYawRate = 0;
+	double tarVelLeft = drive_ref.at(3);
+	double tarVelRight = drive_ref.at(4);
 
 	if (refYaw > PI) { //get negative half and positive half on circle
 		refYaw -= (2 * PI);
@@ -697,11 +695,9 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 		target_rpm_right = -MAX_FPS;
 	}
 
-	if (set_refs) { //only set to true if set_profile is set to true in the DriveContrller, by actually filling the profile, for everything except doNothing auton
 	Controller(0.0, 0.0, 0.0, targetYawRate, k_p_right_vel_au, k_p_left_vel_au,
 			0.0, k_p_yaw_au, k_d_yaw_au, k_d_left_vel_au, k_d_right_vel_au, 0.0, //sends all 0.0 gains
 			target_rpm_left, target_rpm_right, 0.0);
-	}
 
 	l_last_error = l_error_dis_au;
 	r_last_error = r_error_dis_au;
@@ -835,10 +831,11 @@ frc::SmartDashboard::PutNumber("r vel actual", r_current);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
-	canTalonRight1->Set(ControlMode::PercentOutput, -total_right); //negative for Koba and for new drive train
-	//canTalonRearRight->Set(ControlMode::PercentOutput,  total_right); //these are slaves
-	//canTalonRearLeft->Set(ControlMode::PercentOutput, -total_left);
-	///canTalonKicker->Set(ControlMode::PercentOutput, -total_kick); //since there is no kicker, was causing timeout and spike on thread
+	canTalonLeft2->Set(ControlMode::PercentOutput, total_left);
+	canTalonLeft3->Set(ControlMode::PercentOutput, total_left);
+	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
+	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
+	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -859,10 +856,6 @@ void DriveBase::ZeroAll(bool stop_motors) {
 	ZeroEncs();
 	ZeroYaw();
 
-	// while (std::abs(-1.0 * ahrs->GetYaw() * (double) (PI / 180)) > 0.1) {
-	// 	ZeroYaw();
-	// }
-
 	zeroing_counter++;
 
 }
@@ -870,27 +863,20 @@ void DriveBase::ZeroAll(bool stop_motors) {
 //will stop all driven motors in the drive controller
 void DriveBase::StopAll() {
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0); //0.0 because of the double, 0 should still work but better safe than sorry
+	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft2->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft3->Set(ControlMode::PercentOutput, 0.0);
 	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
-	//canTalonRearRight->Set(ControlMode::PercentOutput, 0.0); //slaved
-	//canTalonRearLeft->Set(ControlMode::PercentOutput, 0.0);
-	//canTalonKicker->Set(ControlMode::PercentOutput, 0.0);
+	canTalonRight2->Set(ControlMode::PercentOutput, 0.0);
+	canTalonRight3->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
 //sets the position of all the drive encoders to 0
-void DriveBase::ZeroEncs() { //acc to 8
+void DriveBase::ZeroEncs() {
 
 	canTalonRight1->SetSelectedSensorPosition(0, 0, 0);
 	canTalonLeft1->SetSelectedSensorPosition(0, 0, 0);
-//	canTalonRight2->SetSelectedSensorPosition(0, 0, 0);
-//	canTalonLeft2->SetSelectedSensorPosition(0, 0, 0);
-//	canTalonRight3->SetSelectedSensorPosition(0, 0, 0);
-
-//	canTalonLeft3->SetSelectedSensorPosition(0, 0, 0);
-//	canTalonRight4->SetSelectedSensorPosition(0, 0, 0);
-//	canTalonLeft4->SetSelectedSensorPosition(0, 0, 0);
-	//canTalonKicker->SetSelectedSensorPosition(0, 0, 0);
 
 }
 
@@ -926,7 +912,7 @@ double DriveBase::GetYawPos() {
 //Zeros the accumulating I
 void DriveBase::ZeroI() {
 
-	i_right = 0; //20,
+	i_right = 0;
 	i_left = 0;
 	i_yaw = 0;
 
@@ -937,23 +923,18 @@ void DriveBase::ZeroI() {
 }
 
 //profile input from the autonomous routine selector, most likely in robot.cpp
-void DriveBase::SetRefs(std::vector<std::vector<double>> profile) {
+void DriveBase::SetAutonRefs(std::vector<std::vector<double>> profile) {
 
+	set_profile = true;
 	auton_profile = profile;
-	set_profile = true; //cannot re-enable to restart profile
+	InitDriveProf();
+}
+
+void DriveBase::InitDriveProf() {
+
 	set_refs = true;
 	row_index = 0;
 	zeroing_counter = 0;
-
-}
-
-void DriveBase::SetRows(
-		std::vector<std::vector<double>> two_rows_profile) {
-
-	auton_rows = two_rows_profile;
-	set_profile = true; //cannot re-enable to restart profile
-	set_refs = true;
-	//row_index = 0;
 
 }
 
@@ -1020,12 +1001,6 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 //Increments through target points of the motion profile
 void DriveBase::RunAutonDrive() {
 
-	double left_enc = canTalonLeft1->GetSelectedSensorPosition(0);
-	double yaw_pos = ahrs->GetYaw();
-
-	// frc::SmartDashboard::PutNumber("enc.", left_enc);
-	// frc::SmartDashboard::PutNumber("yaw zeroed", yaw_pos);
-
 	for (int i = 0; i < auton_profile[0].size(); i++) { //looks through each row and then fills drive_ref with the column here, refills each interval with next set of refs
 		drive_ref.at(i) = auton_profile.at(row_index).at(i); //from SetRef()
 	}
@@ -1035,13 +1010,10 @@ void DriveBase::RunAutonDrive() {
 	}
 
 	if (row_index == next_zero_index) {
-		StopAll(); //maybe add counts after stop and before zero
+		StopAll();
 		if (zero_wait_counter < 10) {
-			ZeroAll(true); //ZEROING NO LONGER INCLUDES ZEROING THE YAW. ENCODERS STILL NEED TO BE ZEROED
+			ZeroAll(true);
 			zero_wait_counter++;
-//			if(std::abs(left_enc) < 0.1) {
-//				zero_wait_counter = 50; //hack to just break out of the counter 'loop'
-//			}
 		} else {
 			if (zero_counter < (zeroing_index.size() - 1)) {
 				zero_counter++;
@@ -1050,7 +1022,6 @@ void DriveBase::RunAutonDrive() {
 			row_index++; //break out of this if
 		}
 	} else {
-		//AutonDrive(); //send each row to auton drive before getting the next row
 		if (continue_profile && row_index < auton_profile.size()) {
 			AutonDrive();
 			row_index++;
@@ -1059,14 +1030,33 @@ void DriveBase::RunAutonDrive() {
 		}
 	}
 
-//	frc::SmartDashboard::PutNumber("ROW INDEX", row_index);
+}
+
+//Increments through target points of the motion profile
+void DriveBase::RunVisionDrive() {
+
+	//fill next point
+	for (int i = 0; i < vision_profile[0].size(); i++) { //can reuse after auto
+		drive_ref.at(i) = vision_profile.at(row_index).at(i);
+	}
+
+	if (row_index < vision_profile.size()) {
+		AutonDrive();
+		row_index++;
+	} else {
+		StopAll();
+		set_profile = false; //reset
+	}
+
 }
 
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
-		Joystick *JoyWheel, bool is_heading) {
+		Joystick *JoyWheel, bool is_heading, bool is_vision) {
 
 	if (is_heading) {
 		RotationController(JoyWheel);
+	} else if (is_vision) {
+		VisionDrive(0.0, 0.0); //TODO: add logic for stamping vision
 	} else {
 		TeleopWCDrive(JoyThrottle, JoyWheel);
 	}
