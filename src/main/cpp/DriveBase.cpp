@@ -712,6 +712,8 @@ void DriveBase::Controller(double ref_kick,
 //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
 
+frc::SmartDashboard::PutNumber("l position", GetLeftPosition());
+frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 
 frc::SmartDashboard::PutNumber("l current", l_current);
 frc::SmartDashboard::PutNumber("r current", r_current);
