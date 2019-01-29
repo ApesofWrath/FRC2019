@@ -10,49 +10,13 @@ const int LOW_CARGO_STATE = 4;
 const int DOWN_STATE = 5;
 const int STOP_ARM_STATE = 6;
 
-double current_pos = 0.0;
-double current_vel = 0.0;
-double goal_pos = 0.0;
-double goal_vel = 0.0;
-double arm_offset = 0.0;
-
-int last_arm_state = 0; //cannot equal the first state or profile will not set the first time
-
-double u_a = 0; //this is the input in volts to the motor
-const double v_bat_a = 12.0; //needs to be separate from the max and min voltages, which may change
-
-std::vector<std::vector<double> > K_a;
-std::vector<std::vector<double> > K_down_a = { { 10.32, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
-		{ 10.32, 0.063 } };
-std::vector<std::vector<double> > K_up_a = { { 10.32, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
-		{ 10.32, 0.063 } };
-
-std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with the states of the system //not used
-		{ 0.0 } };
-
-std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
-
-std::vector<std::vector<double> > ref_arm;
-
-frc::Timer *armTimer = new frc::Timer();
-
 frc::PowerDistributionPanel *pdp_a;
-
 ArmMotionProfiler *arm_profiler;
-
-bool first_time_at_bottom = false;
-bool voltage_safety = false;
-
-int init_counter_a = 0;
-int counter_a = 0;
-int a = 0;
-int encoder_counter = 0;
-double arm_voltage = 0.0;
 
 Arm::Arm(frc::PowerDistributionPanel *pdp,
 		ArmMotionProfiler *arm_profiler_){
 
-  talonArm = new TalonSRX(0);
+  talonArm = new TalonSRX(ARM_TALON_ID);
 
   talonArm->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	//talonArm->EnableCurrentLimit(true);
@@ -63,7 +27,7 @@ Arm::Arm(frc::PowerDistributionPanel *pdp,
 
   arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
 	arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
-	hallEffectArm = new frc::DigitalInput(0);
+	hallEffectArm = new frc::DigitalInput(HALL_EFF_ARM_ID);
 
   pdp_a = pdp;
 
@@ -71,17 +35,11 @@ Arm::Arm(frc::PowerDistributionPanel *pdp,
 
 void Arm::InitializeArm() {
 
-	//ZeroEnc();
-
-	//if (!IsAtBottomArm()) { //don't see hall effect
 	if (!is_init_arm) { //this has to be here for some reason
 		SetVoltageArm(-1.5); //double arm_volt = (2.0 / pdp_i->GetVoltage()) * 1.0; //down//SetVoltageArm(-1.0);
 		//talonArm->Set(ControlMode::PercentOutput, arm_volt);
 	}
 
-	//double up_volt = (0.2 * -1.0) / pdp_e->GetVoltage(); //to not crash down
-	//talonElevator1->Set(ControlMode::PercentOutput, up_volt);
-	//talonElevator2->Set(ControlMode::PercentOutput, up_volt);
 }
 
 void Arm::ManualArm(frc::Joystick *joyOpArm) {
@@ -114,7 +72,7 @@ void Arm::PrintArmInfo() {
 	frc::SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
 }
 
-void Arm::UpdatePositions() {
+void Arm::CalcError() {
 	//top is position, bottom is velocity
 	ref_arm = arm_profiler->GetNextRefArm();
 
@@ -127,7 +85,7 @@ void Arm::UpdatePositions() {
 	error_a[1][0] = goal_vel - current_vel;
 }
 
-void Arm::CalcOutputVoltage() {
+void Arm::RunController() {
 	if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
 		K_a = K_down_a;
 	} else {
@@ -144,8 +102,8 @@ void Arm::CalcOutputVoltage() {
 
 void Arm::Rotate() {
 	// Setup
-	UpdatePositions();
-	CalcOutputVoltage();
+	CalcError();
+	RunController();
 	// Action
 	SetVoltageArm(u_a);
 	PrintArmInfo();
