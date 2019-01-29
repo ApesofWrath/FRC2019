@@ -90,8 +90,8 @@ const double ACTUAL_MAX_Y_RPM_HIGH = 1300.0;
 
 const double MAX_X_RPM = 0.0; //for HDrive
 
-const double MAX_YAW_RATE_LOW = 0.0; //max angular velocity divided by the max rpm multiplied by set max rpm
-const double MAX_YAW_RATE_HIGH = 0.0;
+const double MAX_YAW_RATE_LOW = 20.0; //max angular velocity divided by the max rpm multiplied by set max rpm
+const double MAX_YAW_RATE_HIGH = 20.0;
 
 const double MAX_KICK_FPS = ((MAX_X_RPM * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
 const int Kv_KICK = (1 / MAX_KICK_FPS);
