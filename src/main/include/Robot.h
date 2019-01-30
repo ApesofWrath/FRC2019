@@ -13,11 +13,9 @@
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/TimedRobot.h>
-#include <networktables/NetworkTable.h>
-#include <networktables/NetworkTableEntry.h>
-#include <networktables/NetworkTableInstance.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include "DriveController.h"
+#include "Vision.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -42,8 +40,10 @@ class Robot : public frc::TimedRobot {
   const int JOY_WHEEL = 1;
   const int JOY_OP = 2;
 
-  DriveController *drive_controller;
   Joystick *joyThrottle, *joyWheel, *joyOp;
+
+  DriveController *drive_controller;
+  Vision *vision;
 
   bool is_heading, is_vision, is_fc;
 

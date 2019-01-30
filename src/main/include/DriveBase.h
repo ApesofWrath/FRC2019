@@ -18,12 +18,14 @@
 #include <list>
 #include "DriveConstants.h"
 #include "Constants.h"
+#include "Vision.h"
 
 class DriveBase {
 public:
 
 	TalonSRX *canTalonLeft1, *canTalonLeft2, *canTalonLeft3, *canTalonLeft4, *canTalonRight1, *canTalonRight2,
 	*canTalonRight3, *canTalonRight4, *canTalonKicker; //for 4 talons: 1 is front right, 2 is back right, 3 is front left, 4 is back left
+	Vision *visionDrive;
 
 	DoubleSolenoid *solenoid;
 
@@ -58,6 +60,8 @@ public:
 		double k_p_yaw, double k_d_yaw, double k_d_right, double k_d_left,
 		double k_d_kick, double target_vel_left, double target_vel_right,
 		double target_vel_kick); //The final controller, will take the references set by either teleop or auton drive function
+
+	void VisionDriveStateMachine();
 
 		//Motor Functions
 		void ZeroAll(bool stop_motors);
@@ -101,6 +105,10 @@ public:
 			int GetDriveIndex();
 
 			bool set_profile = false; //check to start auton drive
+
+			const int CREATE_PROFILE = 0;
+			const int FOLLOW_PROFILE = 1;
+			const int RESET = 2;
 
 		private:
 

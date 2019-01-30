@@ -2,6 +2,11 @@
 
 using namespace std::chrono;
 
+const int CREATE_PROFILE = 0;
+const int FOLLOW_PROFILE = 1;
+const int RESET = 2;
+int vision_drive_state = CREATE_PROFILE;
+
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
@@ -170,6 +175,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
 
 	ahrs = new AHRS(SerialPort::kUSB);
+	visionDrive = new Vision();
 
   //shifter
 	if (pcm != -1) solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
@@ -337,27 +343,27 @@ void DriveBase::VisionDrive(double dist_to_target, double yaw_to_target) {
 
 //position controlller
 //auton targets, actually just pd
-void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel, right vel
+void DriveBase::AutonDrive() {
 
-	double refYaw = drive_ref.at(0); //reversed in Generate
-	double refLeft = drive_ref.at(1);
-	double refRight = drive_ref.at(2);
-	double targetYawRate = 0;
-	double tarVelLeft = drive_ref.at(3);
-	double tarVelRight = drive_ref.at(4);
+	double pf_yaw_dis = drive_ref.at(0); //reversed in Generate - rad
+	double pf_l_dis = drive_ref.at(1); //feet
+	double pf_r_dis = drive_ref.at(2); //feet
+	double pf_l_vel = drive_ref.at(3); //fps
+	double pf_r_vel = drive_ref.at(4); //fps
 
-	if (refYaw > PI) { //get negative half and positive half on circle
-		refYaw -= (2 * PI);
+	if (pf_yaw_dis > PI) { //get negative half and positive half on circle - left half is positive
+		pf_yaw_dis -= (2 * PI);
 	}
 
 	//fps //not needed besides check for jitter
-	double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
-			/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
-	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
-			/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
+	// double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
+	// 		/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
+	// double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
+	// 		/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
 
 	//frc::SmartDashboard::PutNumber("Actual left", l_current);
 
+	//feet
 	double r_dis = -((double) canTalonRight1->GetSelectedSensorPosition(0) //empirically determined ticks per foot
 	/ TICKS_PER_FOOT);
 	double l_dis = ((double) canTalonLeft1->GetSelectedSensorPosition(0)
@@ -365,7 +371,7 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 
  frc::SmartDashboard::PutNumber("actualLeftDis", l_dis);
 // frc::SmartDashboard::PutNumber("actualRightDis", r_dis);
- frc::SmartDashboard::PutNumber("actualLeftVel", l_current);
+// frc::SmartDashboard::PutNumber("actualLeftVel", l_current);
 // frc::SmartDashboard::PutNumber("actualRightVel", r_current);
 
 	double y_dis = -1.0 * ahrs->GetYaw() * (double) (PI / 180); //current theta (yaw) value
@@ -373,17 +379,17 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 //	frc::SmartDashboard::PutNumber("Target Heading", refYaw);
 //	frc::SmartDashboard::PutNumber("Actual Heading", y_dis);
 
-	l_error_dis_au = refLeft - l_dis;
-	r_error_dis_au = refRight - r_dis;
+	l_error_dis_au = pf_l_dis - l_dis; //feet
+	r_error_dis_au = pf_r_dis - r_dis; //feet
 
-	y_error_dis_au = refYaw - y_dis; //positive - 0
+	y_error_dis_au = pf_yaw_dis - y_dis;  //rad
 
 	//frc::SmartDashboard::PutNumber("Heading error", y_error_dis_au);
 
-	if (std::abs(tarVelLeft - tarVelRight) < .05 && (std::abs(r_current) < 10)
-			&& (std::abs(l_current) < 10)) { //initial jitter
-
-	}
+	// if (std::abs(tarVelLeft - tarVelRight) < .05 && (std::abs(r_current) < 10)
+	// 		&& (std::abs(l_current) < 10)) { //initial jitter
+	//
+	// }
 
 	i_right += (r_error_dis_au);
 	d_right = (r_error_dis_au - r_last_error);
@@ -418,30 +424,31 @@ void DriveBase::AutonDrive() { //yaw pos, left pos, right pos, yaw vel, left vel
 
 	//frc::SmartDashboard::PutNumber("TOTAL", total_yaw);
 
-	double target_rpm_yaw_change = total_yaw * MAX_FPS;
-	double target_rpm_right = total_right * MAX_FPS; //max rpm* gear ratio
-	double target_rpm_left = total_left * MAX_FPS;
+	//scaling - vel output depending on dis PID
+	double target_fps_yaw_change = total_yaw * MAX_FPS;
+	double target_fps_right = total_right * MAX_FPS;
+	double target_fps_left = total_left * MAX_FPS;
 
-	target_rpm_right = target_rpm_right + target_rpm_yaw_change + tarVelRight; //even when feedback is 0, will send actual target rpm to Controller
-	target_rpm_left = target_rpm_left - target_rpm_yaw_change + tarVelLeft;
+	target_fps_right += (pf_r_vel + target_fps_yaw_change);
+	target_fps_left += (pf_l_vel - target_fps_yaw_change);
 
 	//std::cout << "FB: " << target_rpm_right << std::endl;
 
-	if (target_rpm_left > MAX_FPS) {
-		target_rpm_left = MAX_FPS;
-	} else if (target_rpm_left < -MAX_FPS) {
-		target_rpm_left = -MAX_FPS;
+	if (target_fps_left > MAX_FPS) {
+		target_fps_left = MAX_FPS;
+	} else if (target_fps_left < -MAX_FPS) {
+		target_fps_left = -MAX_FPS;
 	}
 //target rpm right is in fps
-	if (target_rpm_right > MAX_FPS) {
-		target_rpm_right = MAX_FPS;
-	} else if (target_rpm_right < -MAX_FPS) {
-		target_rpm_right = -MAX_FPS;
+	if (target_fps_right > MAX_FPS) {
+		target_fps_right = MAX_FPS;
+	} else if (target_fps_right < -MAX_FPS) {
+		target_fps_right = -MAX_FPS;
 	}
 
-	Controller(0.0, 0.0, 0.0, targetYawRate, k_p_right_vel_au, k_p_left_vel_au,
+	Controller(0.0, 0.0, 0.0, 0.0, k_p_right_vel_au, k_p_left_vel_au,
 			0.0, k_p_yaw_au, k_d_yaw_au, k_d_left_vel_au, k_d_right_vel_au, 0.0, //sends all 0.0 gains
-			target_rpm_left, target_rpm_right, 0.0);
+			target_fps_left, target_fps_right, 0.0);
 
 	l_last_error = l_error_dis_au;
 	r_last_error = r_error_dis_au;
@@ -676,7 +683,6 @@ void DriveBase::SetAutonRefs(std::vector<std::vector<double>> profile) {
 
 void DriveBase::InitDriveProf() {
 
-	set_refs = true;
 	row_index = 0;
 	zeroing_counter = 0;
 
@@ -753,6 +759,10 @@ void DriveBase::RunAutonDrive() {
 		next_zero_index = zeroing_index.at(zero_counter);
 	}
 
+	if (row_index >= auton_profile.size()) {
+		set_profile = false;
+	}
+
 	if (row_index == next_zero_index) {
 		StopAll();
 		if (zero_wait_counter < 10) {
@@ -784,25 +794,43 @@ void DriveBase::RunVisionDrive() {
 		drive_ref.at(i) = vision_profile.at(row_index).at(i);
 	}
 
-	if (row_index < vision_profile.size()) {
-		AutonDrive();
-		row_index++;
-	} else {
-		StopAll();
-		set_profile = false; //reset //TODO: add button for user to end visionDrive
-	}
+	AutonDrive();
+	row_index++;
 
 }
 
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
-		Joystick *JoyWheel, bool is_heading, bool is_vision) {
+		Joystick *JoyWheel, bool is_heading, bool is_vision) { //TODO: add drivemode state machine
 
 	if (is_heading) {
 		RotationController(JoyWheel);
 	} else if (is_vision) {
-		VisionDrive(0.0, 0.0); //TODO: add logic for stamping vision
+		VisionDriveStateMachine();
 	} else {
 		TeleopWCDrive(JoyThrottle, JoyWheel);
+	}
+
+}
+
+void DriveBase::VisionDriveStateMachine() {
+
+	switch (vision_drive_state) {
+		case CREATE_PROFILE:
+			VisionDrive((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
+			if (set_profile) {
+				vision_drive_state = FOLLOW_PROFILE;
+			}
+		break;
+		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
+			RunVisionDrive();
+			if (row_index >= vision_profile.size()) {
+				vision_drive_state = RESET;
+			}
+		break;
+		case RESET:
+			StopAll();
+		//	is_vision = false;
+		break;
 	}
 
 }

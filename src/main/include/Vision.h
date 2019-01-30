@@ -10,8 +10,8 @@ class Vision {
 public:
 
 	Vision();
-	auto GetYawToTarget();
-	auto GetDepthToTarget();
+	double GetYawToTarget();
+	double GetDepthToTarget();
 
 };
 

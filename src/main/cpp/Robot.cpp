@@ -18,19 +18,15 @@ void Robot::RobotInit() {
 	joyOp = new Joystick(JOY_OP);
 
   drive_controller = new DriveController();
+  vision = new Vision();
 
 }
 
 void Robot::RobotPeriodic() {
 
-  auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
-  auto table = inst.GetTable("SmartDashboard");
-
-  xEntry = table->GetEntry("X");
-
 }
 
-void Robot::AutonomousInit() {
+void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
   drive_controller->ZeroAll(true);
 
@@ -55,16 +51,13 @@ void Robot::AutonomousPeriodic() {
     // Default Auto goes here
   }
 
-  if (drive_controller->set_profile) {
   //  drive_controller->RunAutonDrive();
-  }
 
 }
 
 void Robot::TeleopInit() {
 
   drive_controller->ZeroAll(true);
-  drive_controller->set_profile = false; //using for vision
 
 }
 
@@ -75,7 +68,7 @@ void Robot::TeleopPeriodic() {
 		is_fc = false;
 
    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading, is_vision);
-
+   double yaw = vision->GetYawToTarget();
    //frc::SmartDashboard::PutNumber("L1", )
 }
 
