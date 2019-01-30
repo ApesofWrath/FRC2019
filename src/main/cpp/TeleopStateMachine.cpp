@@ -12,6 +12,8 @@ const int PLACE_BALL_STATE = 8
 const int POST_OUTTAKE_STATE = 9;
 int state = INIT_STATE
 
+int last_state = 0;
+
 Elevator *elevator;
 Intake *intake;
 Arm *arm;
@@ -36,26 +38,84 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 }
 
 void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_in,
-    bool bottom_intake_out, bool top_intake_in, bool top_intake_out, bool suction_on,
-    bool suction_off, bool hatch_out, bool arm_up, bool arm_down,
-    bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
+    bool bottom_intake_out, bool bottom_intake_stop, bool top_intake_in, bool top_intake_out,
+    bool top_intake_stop, bool suction_on, bool suction_off, bool hatch_out, bool arm_up,
+    bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
     bool elevator_ball_up, bool elevator_ball_mid, bool elevator_ball_low,
     bool get_ball, bool get_hatch_ground, bool get_hatch_station, bool post_intake_ball,
-    bool post_intake_hatch, bool place_hatch, bool place_ball, bool post_outtake){
+    bool post_intake_hatch, bool place_hatch, bool place_ball, bool post_outtake)
+
+    if (wait_for_button) {
+      state = WAIT_FOR_BUTTON_STATE;
+    }
+
+    //intake
+    if (top_intake_in) { //driver's slow button can control intake spin speed always
+  		state_intake = false;
+  		intake->intake_state = intake->TOP_INTAKE_IN_STATE_H;
+  	} else if (top_intake_out) {
+  		state_intake = false;
+  		intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
+  	} else if (top_intake_out) {
+      state_intake = false;
+      intake->intake_state = intake->TOP_INTAKE_STOP_STATE_H;
+    } else if (bottom_intake_in) {
+      state_intake = false;
+  		intake->intake_state = intake->BOTTOM_INTAKE_IN_STATE_H;
+    } else if (bottom_intake_out) {
+      state_intake = false;
+  		intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+    } else if (bottom_intake_stop) {
+  		state_intake = false;
+  		intake->intake_wheel_state = intake->BOTTOM_INTAKE_STOP_STATE_H;
+  	} else {
+  		state_intake = true;
+  	}
+
+    //arm
+  	if (arm_up) {
+  		state_arm = false;
+  		arm->arm_state = arm->UP_STATE_H;
+  	} else if (arm_down) {
+  		state_arm = false;
+  		arm->arm_state = arm->DOWN_STATE_H;
+  	} else {
+  		state_arm = true;
+  	}
+
+    //elevator
+  	if (elevator_hatch_up) {
+  		state_elevator = false;
+  		elevator->elevator_state = elevator->UP_STATE_H;
+  	} else if (mds_mid) {
+  		state_mds = false;
+  		mds->elevator_state = mds->MID_STATE_E_H;
+  	} else if (mds_down) {
+  		state_mds = false;
+  		mds->elevator_state = mds->DOWN_STATE_E_H;
+  	} else {
+  		state_mds = true;
+  	}
 
   switch (state) {
 
     case INIT_STATE:
+
       frc::SmartDashboard::PutString("State", "INIT");
+
       elevator->elevator_state = elevator->INIT_STATE_H;
       intake->intake_state = intake->INIT_STATE_H;
       arm->arm_state = arm->INIT_STATE_H;
       suction->suction_state = suction->INIT_STATE_H;
       solenoids->solenoids_state = solenoids->INIT_STATE_H;
+      state = WAIT_FOR_BUTTON_STATE;
+      last_state = INIT_STATE;
       break;
 
     case WAIT_FOR_BUTTON_STATE:
+
       frc::SmartDashboard::PutString("State", "WAIT FOR BUTTON");
+
       if (get_hatch_station) {
         state = GET_HATCH_STATION_STATE;
       } else if (get_hatch_ground) {
@@ -73,10 +133,13 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       } else if (post_outtake) {
         state = POST_OUTTAKE_STATE;
       }
+      last_state = WAIT_FOR_BUTTON_STATE;
       break;
 
     case GET_HATCH_STATION_STATE:
+
       frc::SmartDashboard::PutString("State", "GET HATCH STATION");
+
       if (state_elevator){
         elevator->elevator_state = elevator->DOWN_STATE_H;
       }
@@ -92,10 +155,13 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (intake->HaveHatch() || post_intake) {
         state = POST_INTAKE_HATCH_STATE;
       }
+      last_state = GET_HATCH_GROUND_STATE;
       break;
 
     case GET_HATCH_GROUND_STATE:
+
       frc::SmartDashboard::PutString("State", "GET HATCH GROUND");
+
       if (state_elevator) {
         elevator->elevator_state = elevator->DOWN_STATE_H;
       }
@@ -114,10 +180,13 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (intake->HaveHatch() || post_intake) {
         state = POST_INTAKE_HATCH_STATE;
       }
+      last_state = GET_HATCH_GROUND_STATE;
       break;
 
     case POST_INTAKE_HATCH_STATE:
+
       frc::SmartDashboard::PutString("State", "POST INTAKE HATCH");
+
       if (state_elevator) {
         elevator->elevator_state = elevator->DOWN_STATE_H;
       }
@@ -133,10 +202,13 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (place_hatch) {
         state = PLACE_HATCH_STATE;
       }
+      last_state = POST_INTAKE_HATCH_STATE;
       break;
 
     case GET_BALL_STATE:
+
       frc::SmartDashboard::PutString("State", "GET BALL");
+
       if (state_elevator) {
         elevator->elevator_state = elevator->DOWN_STATE_H;
       }
@@ -150,10 +222,13 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (intake->HaveBall() || post_intake) {
         state = POST_INTAKE_BALL_STATE;
       }
+      last_state = GET_BALL_STATE;
       break;
 
     case POST_INTAKE_BALL_STATE:
+
       frc::SmartDashboard::PutString("State", "POST INTAKE BALL");
+
       if (state_elevator) {
         elevator->elevator_state = elevator->DOWN_STATE_H;
       }
@@ -167,31 +242,106 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (place_ball) {
         state = PLACE_BALL_STATE;
       }
+      last_state = POST_INTAKE_BALL_STATE;
       break;
 
     case PLACE_HATCH_STATE:
+
       frc::SmartDashboard::PutString("State", "PLACE HATCH");
+
       if (state_arm) {
         arm->arm_state = arm->UP_STATE_H;
-      }
-      if (elevator_hatch_up) {
-        elevator->elevator_state = elevator->TOP_HATCH_H;
-      } else if (elevator_hatch_mid) {
-        elevator->elevator_state = elevator->MID_HATCH_H;
-      } else if (elevator_hatch_low) {
-        elevator->elevator_state = elevator->BOTTOM_HATCH_H;
       }
       if (state_solenoids) {
         solenoids->solenoids_state = solenoids->OUT_STATE_H
       }
+      if (elevator_hatch_up) {
+        elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
+        if (elevator->GetElevatorPosition() >= 0.60 && !place_hatch) { //placeholder
+          suction->suction_state = suction->OFF_STATE_H;
+          if (suction->ReleasedHatch()){
+            state = POST_OUTTAKE_STATE;
+          }
+        }
+      } else if (elevator_hatch_mid) {
+        elevator->elevator_state = elevator->MID_HATCH_STATE_H;
+        if (elevator->GetElevatorPosition() >= 0.40 && !place_hatch) { //placeholder
+          suction->suction_state = suction->OFF_STATE_H;
+          if (suction->ReleasedHatch()){
+            state = POST_OUTTAKE_STATE;
+          }
+        }
+      } else if (elevator_hatch_low) {
+        elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+        if (elevator->GetElevatorPosition() >= 0.20 && !place_hatch) { //placeholder
+          suction->suction_state = suction->OFF_STATE_H;
+          if (suction->ReleasedHatch()){
+            state = POST_OUTTAKE_STATE;
+          }
+        }
+      }
+      last_state = PLACE_HATCH_STATE;
       break;
 
     case PLACE_BALL_STATE:
+
       frc::SmartDashboard::PutString("State", "PLACE BALL");
+
+      if (state_arm) {
+        arm->arm_state = arm->DOWN_STATE_H;
+      }
+      if (elevator_ball_up) {
+        elevator->elevator_state = elevator->TOP_BALL_STATE_H;
+        if (elevator->GetElevatorPosition() >= 0.60 && !place_ball) { //placeholder
+          intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
+          intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+          if (intake->ReleasedBall()) {
+            state = POST_OUTTAKE_STATE;
+          }
+        }
+      } else if (elevator_ball_mid) {
+        elevator->elevator_state = elevator->MID_BALL_STATE_H;
+        if (elevator->GetElevatorPosition() >= 0.40 && !place_ball) { //placeholder
+          intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
+          intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+          if (intake->ReleasedBall()) {
+            state = POST_OUTTAKE_STATE;
+          }
+        }
+      } else if (elevator_ball_low) {
+         elevator->elevator_state = elevator->BOTTOM_BALL_STATE_H;
+         if (elevator->GetElevatorPosition() >= 0.20 && !place_ball) { //placeholder
+           intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
+           intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+           if (intake->ReleasedBall()) {
+             state = POST_OUTTAKE_STATE;
+           }
+         }
+      }
+      last_state = PLACE_BALL_STATE;
       break;
 
     case POST_OUTTAKE_STATE:
+
       frc::SmartDashboard::PutString("State", "POST OUTTAKE");
+
+      if (state_elevator) {
+        elevator->elevator_state = elevator->DOWN_STATE_H;
+      }
+      if (state_arm) {
+        arm->arm_state = arm->UP_STATE_H;
+      }
+      if (state_intake) {
+        intake->intake_state = intake->TOP_INTAKE_STOP_STATE_H;
+        intake->intake_state = intake->BOTTOM_INTAKE_STOP_STATE_H;
+      }
+      if (state_solenoids) {
+        solenoids->solenoids_state = solenoids->IN_STATE_H;
+      }
+      if (state_suction) {
+        suction->suction_state = suction->OFF_STATE_H;
+      }
+      last_state = POST_OUTTAKE_STATE;
       break;
 
   }
