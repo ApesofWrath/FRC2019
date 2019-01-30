@@ -1045,7 +1045,7 @@ void DriveBase::RunVisionDrive() {
 		row_index++;
 	} else {
 		StopAll();
-		set_profile = false; //reset
+		set_profile = false; //reset //TODO: add button for user to end visionDrive
 	}
 
 }
