@@ -63,12 +63,12 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-    is_heading = joyThrottle->GetRawButton(0);
+    is_rotation = joyThrottle->GetRawButton(0);
 		is_vision = false;
-		is_fc = false;
+		is_regular = false;
 
-   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading, is_vision);
-   double yaw = vision->GetYawToTarget();
+
+   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
    //frc::SmartDashboard::PutNumber("L1", )
 }
 

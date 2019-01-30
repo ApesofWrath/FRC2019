@@ -1,18 +1,5 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling DriveBase.cpp failed.
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp: In member function 'void DriveBase::VisionDriveStateMachine()':
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:818:8: error: use of 'this' in a constant expression
-   case CREATE_PROFILE:
-        ^~~~~~~~~~~~~~
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:818:8: error: 'this' is not a constant expression
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:824:8: error: use of 'this' in a constant expression
-   case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
-        ^~~~~~~~~~~~~~
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:824:8: error: 'this' is not a constant expression
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:830:8: error: use of 'this' in a constant expression
-   case RESET:
-        ^~~~~
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/DriveBase.cpp:830:8: error: 'this' is not a constant expression
+compiling DriveBase.cpp successful.
 
 compiling Vision.cpp successful.
 

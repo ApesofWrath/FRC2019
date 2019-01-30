@@ -45,7 +45,7 @@ class Robot : public frc::TimedRobot {
   DriveController *drive_controller;
   Vision *vision;
 
-  bool is_heading, is_vision, is_fc;
+  bool is_rotation, is_vision, is_regular;
 
 };
 

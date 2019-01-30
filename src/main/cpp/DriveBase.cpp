@@ -7,6 +7,11 @@ const int FOLLOW_PROFILE = 1;
 const int RESET = 2;
 int vision_drive_state = CREATE_PROFILE;
 
+const int REGULAR = 0;
+const int VISION_DRIVE = 1;
+const int ROTATION_CONTROLLER = 2;
+int teleop_drive_state = REGULAR;
+
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
@@ -800,37 +805,56 @@ void DriveBase::RunVisionDrive() {
 }
 
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
-		Joystick *JoyWheel, bool is_heading, bool is_vision) { //TODO: add drivemode state machine
+	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
 
-	if (is_heading) {
-		RotationController(JoyWheel);
-	} else if (is_vision) {
-		VisionDriveStateMachine();
-	} else {
-		TeleopWCDrive(JoyThrottle, JoyWheel);
-	}
+		if (is_regular) {
+			teleop_drive_state = REGULAR;
+		} else if (is_vision) {
+			teleop_drive_state = VISION_DRIVE;
+		} else if (is_rotation) {
+			teleop_drive_state = ROTATION_CONTROLLER;
+		}
+
+		switch (teleop_drive_state) {
+			case REGULAR:
+			TeleopWCDrive(JoyThrottle, JoyWheel);
+			break;
+			case VISION_DRIVE:
+			is_vision_done = VisionDriveStateMachine();
+			if (is_vision_done) {
+				teleop_drive_state = REGULAR;
+			}
+			break;
+			case ROTATION_CONTROLLER:
+			RotationController(JoyWheel);
+			break;
+		}
 
 }
 
-void DriveBase::VisionDriveStateMachine() {
+bool DriveBase::VisionDriveStateMachine() {
 
 	switch (vision_drive_state) {
+
 		case CREATE_PROFILE:
 			VisionDrive((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
+			return false;
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
 			RunVisionDrive();
 			if (row_index >= vision_profile.size()) {
 				vision_drive_state = RESET;
 			}
+			return false;
 		break;
 		case RESET:
 			StopAll();
-		//	is_vision = false;
+		  return true;
 		break;
+
 	}
 
 }

@@ -44,7 +44,7 @@ public:
 
 	void AutoShift(bool auto_shift);
 
-	void RunTeleopDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool is_heading, bool is_vision);
+	void RunTeleopDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation);
 	void RunAutonDrive();
 	void RunVisionDrive();
 	void InitDriveProf();
@@ -61,7 +61,7 @@ public:
 		double k_d_kick, double target_vel_left, double target_vel_right,
 		double target_vel_kick); //The final controller, will take the references set by either teleop or auton drive function
 
-	void VisionDriveStateMachine();
+	bool VisionDriveStateMachine();
 
 		//Motor Functions
 		void ZeroAll(bool stop_motors);
@@ -106,9 +106,7 @@ public:
 
 			bool set_profile = false; //check to start auton drive
 
-			const int CREATE_PROFILE = 0;
-			const int FOLLOW_PROFILE = 1;
-			const int RESET = 2;
+			bool is_vision_done = false;
 
 		private:
 
