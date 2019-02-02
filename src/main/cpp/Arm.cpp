@@ -32,10 +32,12 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_){
 
 void Arm::InitializeArm() {
 
-	if (!is_init_arm) { //this has to be here for some reason
-		SetVoltageArm(-1.5); //double arm_volt = (2.0 / pdp_i->GetVoltage()) * 1.0; //down//SetVoltageArm(-1.0);
-		//talonArm->Set(ControlMode::PercentOutput, arm_volt);
-	}
+	// if (!is_init_arm) { //this has to be here for some reason
+	// 	SetVoltageArm(-1.5); //	MAYBE SHOULDNT BE NEGATIVE - CHECK
+	// 	//talonArm->Set(ControlMode::PercentOutput, arm_volt);
+	// }
+
+	ZeroEnc(); //won't start at 0 on this year's robot!
 
 }
 
@@ -242,9 +244,10 @@ void Arm::ArmStateMachine() {
   switch (arm_state) {
 
     case INIT_STATE:
-    InitializeArm();
-    if (is_init_arm) {
-			arm_state = DOWN_STATE; //TODO: put back to up_state
+		if (is_init_arm) {
+			intake_arm_state = DOWN_STATE; //PUT BACK IN
+		} else {
+			InitializeArm();
 		}
 		last_arm_state = INIT_STATE;
     break;
