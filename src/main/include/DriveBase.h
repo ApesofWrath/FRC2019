@@ -82,8 +82,6 @@ public:
 		//Funstion to fill the profile points vector for autonomous
 		void SetAutonRefs(std::vector<std::vector<double>> profile);
 
-		std::vector<std::vector<double>> vision_profile = {{}};
-
 		void SetZeroingIndex(std::vector<int> zero_index);
 		void StopProfile(bool stop_profile);
 

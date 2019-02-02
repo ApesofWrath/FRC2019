@@ -12,7 +12,7 @@ const int VISION_DRIVE = 1;
 const int ROTATION_CONTROLLER = 2;
 int teleop_drive_state = REGULAR;
 
-std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
+std::vector<std::vector<double> > vision_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
@@ -322,19 +322,19 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
-	 auton_profile = {{}}; //runautondrive looks at auton_row size
-	 auton_profile.resize(length, std::vector<double>(5));
+	 std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
+	 vision_profile.resize(length, std::vector<double>(5));
 
 	for (int i = 0; i < length; i++) {
 
 		Segment sl = leftTrajectory[i];
 		Segment sr = rightTrajectory[i];
 
-		auton_profile.at(i).at(0) = ((double) sl.heading); //pathfinder doesn't give yaw vel targ
-		auton_profile.at(i).at(1) = ((double) sl.position);
-		auton_profile.at(i).at(2) = ((double) sr.position);
-		auton_profile.at(i).at(3) = ((double) sl.velocity);
-		auton_profile.at(i).at(4) = ((double) sr.velocity);
+		vision_profile.at(i).at(0) = ((double) sl.heading); //pathfinder doesn't give yaw vel targ
+		vision_profile.at(i).at(1) = ((double) sl.position);
+		vision_profile.at(i).at(2) = ((double) sr.position);
+		vision_profile.at(i).at(3) = ((double) sl.velocity);
+		vision_profile.at(i).at(4) = ((double) sr.velocity);
 
 	}
 
@@ -342,7 +342,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	free(leftTrajectory);
 	free(rightTrajectory);
 
-	SetAutonRefs(auton_profile); //setting to itself
+	SetAutonRefs(vision_profile);
 
 }
 
@@ -744,19 +744,19 @@ void DriveBase::SetZeroingIndex(std::vector<int> zero_index) {
 
 std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 
-	return auton_profile;
+	return vision_profile;
 
 }
 
 //Increments through target points of the motion profile
 //Pre: SetAutonRefs()
-//		row_index = 0, auton_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
+//		row_index = 0, vision_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
 //TODO: make a state machine
 void DriveBase::RunAutonDrive() {
 
 	//fill next point horizontally
-	for (int i = 0; i < auton_profile[0].size(); i++) {
-		auton_row.at(i) = auton_profile.at(row_index).at(i);
+	for (int i = 0; i < vision_profile[0].size(); i++) {
+		auton_row.at(i) = vision_profile.at(row_index).at(i);
 	}
 
 	//zeroing profile for next segment
@@ -776,7 +776,7 @@ void DriveBase::RunAutonDrive() {
 			row_index++; //break out of this if
 		}
 	} else {
-		if (continue_profile && row_index < auton_profile.size()) {
+		if (continue_profile && row_index < vision_profile.size()) {
 			AutonDrive();
 			row_index++;
 		} else {
