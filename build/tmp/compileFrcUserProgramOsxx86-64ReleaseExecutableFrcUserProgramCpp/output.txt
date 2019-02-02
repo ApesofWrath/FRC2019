@@ -1,12 +1,8 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
-compiling ElevatorConstants.h successful.
-
-compiling Robot.cpp successful.
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+compiling Elevator.cpp successful.
 
 compiling ElevatorMotionProfiler.cpp successful.
 
-compiling Elevator.h successful.
+compiling Robot.cpp successful.
 
-compiling Elevator.cpp successful.
-
-Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.

@@ -1,6 +1,8 @@
-See file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp.
-compiling Elevator.h successful.
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp.
+compiling ElevatorMotionProfiler.cpp successful.
 
 compiling Elevator.cpp successful.
 
-Finished compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp, see full log file:///Users/brianhardell/Desktop/robotics/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp/output.txt.
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramTestOsxx86-64ReleaseGoogleTestExeFrcUserProgramCpp/output.txt.

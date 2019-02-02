@@ -11,10 +11,20 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+const int ELEVATOR_UP = 3;
+const int ELEVATOR_MID = 16;
+const int ELEVATOR_DOWN = 9;
+
+bool elevator_up, elevator_mid, elevator_down;
+
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  elevator_mp = new ElevatorMotionProfiler(1.15, 5.0, 0.02);
+  elevator = new Elevator(elevator_mp);
+  joyElev = new frc::Joystick(0);
 }
 
 /**
@@ -61,7 +71,17 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+
+  // elevator->ElevatorStateMachine();
+  // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
+  // elevator_up = joyOp->GetRawButton(ELEVATOR_UP);
+	// elevator_mid = joyOp->GetRawButton(ELEVATOR_MID);
+	// elevator_down = joyOp->GetRawButton(ELEVATOR_DOWN);
+
+  elevator->ManualElevator(joyElev);
+
+}
 
 void Robot::TestPeriodic() {}
 
