@@ -1,4 +1,9 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64DebugExecutable/output.txt for all output for linkFrcUserProgramOsxx86-64DebugExecutable.
-linking frcUserProgram successful.
+linking frcUserProgram failed.
+Undefined symbols for architecture x86_64:
+  "_main", referenced from:
+     implicit entry/start for main executable
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 Finished linkFrcUserProgramOsxx86-64DebugExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramOsxx86-64DebugExecutable/output.txt.
