@@ -57,6 +57,8 @@ public:
   const int STOP_ARM_STATE_H = 6;
   int arm_state = INIT_STATE_H;
 
+  const int ARM_TALON_ID = 0;
+
   std::map <int, std::string> arm_states = {
   		{INIT_STATE_H, "INIT"},
   		{UP_STATE_H, "UP"},
