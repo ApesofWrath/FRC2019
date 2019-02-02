@@ -1,6 +1,4 @@
 See file:///C:/Users/DriversStation/Desktop/FRC2019_Elevator/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
 compiling Elevator.cpp successful.
 
-compiling Robot.cpp successful.
-
 Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/Desktop/FRC2019_Elevator/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.

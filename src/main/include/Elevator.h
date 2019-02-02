@@ -27,8 +27,8 @@ public:
   const int TALON_ID_1 = 33;//master
   const int TALON_ID_2 = 0;//not master
 
-  const int TOP_HALL = -1;
-  const int BOT_HALL = -1;
+  const int TOP_HALL = 2;
+  const int BOT_HALL = 1;
 
   int last_elevator_state = 0;
   int elevator_state = 5;
@@ -51,8 +51,12 @@ public:
 
   ElevatorMotionProfiler *elevator_profiler;
 
-  std::vector<std::vector<double> > K_down_e = { {  -1.0, -1.0}, { -1.0, -1.0 } };
-  std::vector<std::vector<double> > K_up_e = { {  -1.0, -1.0}, { -1.0, -1.0 } };
+  std::vector<std::vector<double> > K_down_e = { {  1.0, 1.0}, { 1.0, 1.0 } };
+  std::vector<std::vector<double> > K_up_e = { {  1.0, 1.0}, { 1.0, 1.0 } };
+
+// remove halle effects if not there
+// lower gains
+//
 
   Elevator(ElevatorMotionProfiler *elevator_profiler_);
 

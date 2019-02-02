@@ -24,9 +24,16 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   SetupTalon2();
 
   talonElevator1 = new TalonSRX(TALON_ID_1);
+  talonElevator1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
+  talonElevator1->ConfigContinuousCurrentLimit(40, 0);
+  talonElevator1->ConfigPeakCurrentLimit(80, 0);
+  talonElevator1->ConfigPeakCurrentDuration(100, 0);
+
+  talonElevator2 = new TalonSRX(TALON_ID_2);
+  talonElevator2->Set(ControlMode::Follower, TALON_ID_1);
+
   hallEffectTop = new frc::DigitalInput(TOP_HALL);
   hallEffectBottom = new frc::DigitalInput(BOT_HALL);
-
 }
 
 void Elevator::SetupTalon1() {
@@ -36,10 +43,8 @@ void Elevator::SetupTalon1() {
 
 	// talonElevator1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	// talonElevator1->EnableCurrentLimit(false);
-	// talonElevator1->ConfigContinuousCurrentLimit(40, 0);
-	// talonElevator1->ConfigPeakCurrentLimit(80, 0);
-	// talonElevator1->ConfigPeakCurrentDuration(100, 0);
-  //
+
+
 	// talonElevator1->ConfigVelocityMeasurementPeriod(VelocityMeasPeriod::Period_10Ms, 0);
 	// talonElevator1->ConfigVelocityMeasurementWindow(5, 0); //5 samples for every talon return
 	// talonElevator1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
@@ -119,7 +124,6 @@ void Elevator::Stop() {
 }
 
 double Elevator::GetElevatorPosition() {
-
 	//divide by the native ticks per rotation then multiply by the circumference of the pulley
 	//radians
 
@@ -128,12 +132,11 @@ double Elevator::GetElevatorPosition() {
 	double elevator_pos = ((elev_pos - position_offset_e) / TICKS_PER_ROT_E) //position offset to zero
 	* (PI * PULLEY_DIAMETER) * -1.0;
 
-	return elevator_pos;
+	return -0.04;
 
 }
 
 double Elevator::GetElevatorVelocity() {
-
 	//native units are ticks per 100 ms so we multiply the whole thing by 10 to get it into per second. Then divide by ticks per rotation to get into
 	//RPS then muliply by circumference for m/s
 	double elevator_vel =
@@ -315,23 +318,12 @@ void Elevator::UpperSoftLimit() {
 	}
 }
 
-
-
-
 bool Elevator::IsAtBottomElevator() {
-	if (!hallEffectBottom->Get()) {
-		return true;
-	} else {
-		return false;
-	}
+	return !hallEffectBottom->Get();
 }
 
 bool Elevator::IsAtTopElevator() {
-	if (!hallEffectTop->Get()) {
-		return true;
-	} else {
-		return false;
-	}
+	return !hallEffectTop->Get();
 }
 
 // something that goes in the ElevatorState?
@@ -340,7 +332,6 @@ double Elevator::GetVoltageElevator() { //not voltage sent to the motor. the vol
 }
 
 void Elevator::SetZeroOffset() {
-
 	position_offset_e =
 	talonElevator1->GetSelectedSensorPosition(0);
 }

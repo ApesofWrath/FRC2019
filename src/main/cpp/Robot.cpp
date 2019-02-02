@@ -35,7 +35,9 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  elevator->PrintElevatorInfo();
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -80,7 +82,7 @@ void Robot::TeleopPeriodic() {
 	// elevator_down = joyOp->GetRawButton(ELEVATOR_DOWN);
 
   elevator->ManualElevator(joyElev);
-
+  // elevator->Move();
 }
 
 void Robot::TestPeriodic() {}

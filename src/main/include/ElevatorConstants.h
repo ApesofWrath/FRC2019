@@ -10,7 +10,12 @@ const double ROCKET_MID_HATCH_POS = 0.0;
 const double BOTTOM_HATCH_POS = 0.0;
 const double BAY_CARGO_POS = 0.0;
 
-const double ff_percent_e = 1.0;
+// Last year positions for testing on Cornelius
+const double DOWN_POS_E = 0.000;
+const double MID_POS_E = 0.668;
+const double UP_POS_E = 0.90;
+
+const double ff_percent_e = 0.4;
 const double PULLEY_DIAMETER = -1.0;
 
 const double free_speed_e = 18730.0; //rad/s
