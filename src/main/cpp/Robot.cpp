@@ -18,19 +18,15 @@ void Robot::RobotInit() {
 	joyOp = new Joystick(JOY_OP);
 
   drive_controller = new DriveController();
+  vision = new Vision();
 
 }
 
 void Robot::RobotPeriodic() {
 
-  auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
-  auto table = inst.GetTable("SmartDashboard");
-
-  xEntry = table->GetEntry("X");
-
 }
 
-void Robot::AutonomousInit() {
+void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
   drive_controller->ZeroAll(true);
 
@@ -55,27 +51,31 @@ void Robot::AutonomousPeriodic() {
     // Default Auto goes here
   }
 
-  if (drive_controller->set_profile) {
   //  drive_controller->RunAutonDrive();
-  }
 
 }
 
 void Robot::TeleopInit() {
 
+  drive_controller->set_profile = false; //prep for visiondrive
   drive_controller->ZeroAll(true);
 
 }
 
 void Robot::TeleopPeriodic() {
 
-    is_heading = joyThrottle->GetRawButton(0);
-		is_vision = false;
-		is_fc = false;
+    is_rotation = joyThrottle->GetRawButton(-1);
+		is_vision = joyThrottle->GetRawButton(-1);
+		is_regular = joyThrottle->GetRawButton(-1);
 
-   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_heading);
 
-   //frc::SmartDashboard::PutNumber("L1", )
+   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+   frc::SmartDashboard::PutNumber("L1", drive_controller->canTalonLeft1->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R1", drive_controller->canTalonRight1->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
 }
 
 void Robot::TestPeriodic() {}

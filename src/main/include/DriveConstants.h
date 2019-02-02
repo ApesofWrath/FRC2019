@@ -82,7 +82,27 @@ const double K_P_KICKER_DIS = 0.0;
 const double K_I_KICKER_DIS = 0.0;
 const double K_D_KICKER_DIS = 0.0;
 
+<<<<<<< HEAD
 //robot drive constants
+=======
+///ROBOT DRIVE CONSTANTS///
+
+const double MAX_VEL_VIS = 3.0; //m/s for pathfinder
+const double MAX_ACC_VIS = 1.0;
+const double MAX_JERK_VIS = 10000.0;
+
+const double MAX_FPS = 0.0; //used in auton pathfinder
+const double FF_SCALE = 0.0;
+
+const double WHEEL_DIAMETER = 6.0; //inches, for fps for auton
+const double TICKS_PER_ROT = 1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders
+const double TICKS_PER_FOOT = 1315.0; //auton
+
+const double MAX_Y_RPM = 0;
+const double ACTUAL_MAX_Y_RPM = 0;
+const double MAX_YAW_RATE = 0.0;
+
+>>>>>>> drive-vision
 const double MAX_Y_RPM_LOW = 550.0;
 const double MAX_Y_RPM_HIGH = 1250.0;
 const double ACTUAL_MAX_Y_RPM_LOW = 625.0;
