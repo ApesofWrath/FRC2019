@@ -322,13 +322,11 @@ void Elevator::UpperSoftLimit() {
 }
 
 bool Elevator::IsAtBottomElevator() {
-  return true;
-	// return !hallEffectBottom->Get();
+	return !hallEffectBottom->Get();
 }
 
 bool Elevator::IsAtTopElevator() {
-  return true;
-  // return !hallEffectTop->Get();
+  return !hallEffectTop->Get();
 }
 
 // something that goes in the ElevatorState?
