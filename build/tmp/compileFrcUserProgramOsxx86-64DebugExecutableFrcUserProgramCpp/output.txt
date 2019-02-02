@@ -1,4 +1,9 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
-compiling robot.cpp successful.
+compiling Intake.cpp failed.
+In file included from /Users/gracekwak/Desktop/FRC2019/src/main/cpp/Intake.cpp:1:
+/Users/gracekwak/Desktop/FRC2019/src/main/include/Intake.h:4:10: fatal error: 'ctre/Phoenix.h' file not found
+#include <ctre/Phoenix.h>
+         ^~~~~~~~~~~~~~~~
+1 error generated.
 
 Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.

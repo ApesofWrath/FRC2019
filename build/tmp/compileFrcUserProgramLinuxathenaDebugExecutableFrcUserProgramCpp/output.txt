@@ -1,4 +1,9 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
-compiling robot.cpp successful.
+compiling Intake.cpp failed.
+In file included from /Users/gracekwak/Desktop/FRC2019/src/main/cpp/Intake.cpp:1:0:
+/Users/gracekwak/Desktop/FRC2019/src/main/include/Intake.h:4:26: fatal error: ctre/Phoenix.h: No such file or directory
+ #include <ctre/Phoenix.h>
+                          ^
+compilation terminated.
 
 Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.
