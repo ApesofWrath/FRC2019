@@ -114,9 +114,11 @@ void Elevator::CheckElevatorGoal(int elevator_state, double goal_pos) {
 
 void Elevator::ManualElevator(frc::Joystick *joyOpElev) {
   PrintElevatorInfo();
-
-    double output = (joyOpElev->GetY()) * 0.5 * 12.0; //multiply by voltage because setvoltageelevator takes voltage
-  	SetVoltage(output);
+  double y_pos = joyOpElev->GetY();
+  double output = (joyOpElev->GetY()) * 0.5 * 12.0; //multiply by voltage because setvoltageelevator takes voltage
+  frc::SmartDashboard::PutNumber("output", output);
+  frc::SmartDashboard::PutNumber("joystick y", y_pos);
+  SetVoltage(output);
 }
 
 void Elevator::Stop() {
@@ -132,7 +134,7 @@ double Elevator::GetElevatorPosition() {
 	double elevator_pos = ((elev_pos - position_offset_e) / TICKS_PER_ROT_E) //position offset to zero
 	* (PI * PULLEY_DIAMETER) * -1.0;
 
-	return -0.04;
+	return elevator_pos;
 
 }
 
@@ -290,21 +292,22 @@ void Elevator::ArmSafety() {
 }
 
 void Elevator::BottomHallEffectSafety() {
-	if (IsAtBottomElevator() && elevator_voltage > 0.2) { //elevator_voltage is actually reverse
+  // is called before inverting the volage
+	if (IsAtBottomElevator() && elevator_voltage < -0.1) { //elevator_voltage is actually reverse
 		elev_safety = "bot hall eff";
 		elevator_voltage = 0.0;
 	}
 }
 
 void Elevator::TopHallEffectSafety() {
-	if (IsAtTopElevator() && elevator_voltage < -0.2) { //elevator_voltage is actually reverse
+	if (IsAtTopElevator() && elevator_voltage > 0.1) { //elevator_voltage is actually reverse
 		elev_safety = "top hall eff";
 		elevator_voltage = 0.0;
 	}
 }
 
 void Elevator::LowerSoftLimit() {
-     if (GetElevatorPosition() <= (-0.05) && elevator_voltage < 0.0) {  //lower soft limit
+     if (GetElevatorPosition() <= (-0.05) && elevator_voltage < 0.0) {
 		elevator_voltage = 0.0;
 		elev_safety = "lower soft";
 	}
@@ -319,11 +322,13 @@ void Elevator::UpperSoftLimit() {
 }
 
 bool Elevator::IsAtBottomElevator() {
-	return !hallEffectBottom->Get();
+  return true;
+	// return !hallEffectBottom->Get();
 }
 
 bool Elevator::IsAtTopElevator() {
-	return !hallEffectTop->Get();
+  return true;
+  // return !hallEffectTop->Get();
 }
 
 // something that goes in the ElevatorState?
