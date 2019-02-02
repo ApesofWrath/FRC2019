@@ -13,6 +13,9 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/Joystick.h>
 #include "Arm.h"
+#include "ArmMotionProfiler.h"
+#include "Elevator.h"
+#include "ElevatorMotionProfiler.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -26,6 +29,7 @@ class Robot : public frc::TimedRobot {
 
   Arm *arm;
   Joystick *joyOp;
+  ArmMotionProfiler *arm_mp;
 
  private:
   frc::SendableChooser<std::string> m_chooser;

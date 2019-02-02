@@ -17,8 +17,11 @@ void Robot::RobotInit() {
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
+  arm_mp = new ArmMotionProfiler(-1.0, -1.0, 0.02);
+  elevator_mp = new ElevatorMotionProfiler(-1.0, -1.0, 0.02);
 
-  arm = new Arm();
+  arm = new Arm(arm_mp); //take out pdp
+  elevator = new Elevator(elevator_mp);
 
   joyOp = new Joystick(0);
 
