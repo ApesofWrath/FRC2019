@@ -4,7 +4,7 @@
 #include <frc/WPILib.h>
 #include <frc/DigitalOutput.h>
 
-class Suction {
+class HatchPickup {
 public:
 
   frc::DigitalOutput *suction;
@@ -15,7 +15,7 @@ public:
 
   const int SUCTION_CHANNEL = -1;
 
-  Suction();
+  HatchPickup();
   void Pull();
   void Push();
   void SuctionStateMachine();

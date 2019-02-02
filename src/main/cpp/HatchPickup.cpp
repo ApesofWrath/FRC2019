@@ -1,34 +1,36 @@
-#include "Suction.h"
+#include "HatchPickup.h"
 
 const int PULL_STATE = 0;
 const int PUSH_STATE = 1;
 
-Suction::Suction() {
+HatchPickup::HatchPickup() {
 
   suction = new frc::DigitalOutput(SUCTION_CHANNEL);
 
 }
 
-void Suction::Pull() {
+void HatchPickup::Pull() {
 
   suction->Set(true);
 
 }
 
-void Suction::Push() {
+void HatchPickup::Push() {
 
   suction->Set(false);
 
 }
 
-void Suction::SuctionStateMachine() {
+void HatchPickup::SuctionStateMachine() {
 
     switch (suction_state) {
         case PULL_STATE:
             Pull();
+            frc::SmartDashboard::PutString("SUCTION", "pull");
             break;
         case PUSH_STATE:
             Push();
+            frc::SmartDashboard::PutString("SUCTION", "push");
             break;
     }
 }
