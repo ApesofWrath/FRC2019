@@ -12,7 +12,8 @@ const int VISION_DRIVE = 1;
 const int ROTATION_CONTROLLER = 2;
 int teleop_drive_state = REGULAR;
 
-std::vector<std::vector<double> > vision_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
+ std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
+std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
@@ -38,22 +39,22 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	if (two_speed) { //StartLow()
 
-		max_y_rpm = MAX_Y_RPM_LOW;
-		max_yaw_rate = MAX_YAW_RATE_LOW;
-		actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;
-		max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
-
-		k_p_right_vel = K_P_RIGHT_VEL_LOW;
-		k_p_left_vel = K_P_LEFT_VEL_LOW;
-		k_p_yaw_vel = K_P_YAW_VEL_LOW;
-		k_d_yaw_vel = K_D_YAW_VEL_LOW;
-		k_d_right_vel = K_D_RIGHT_VEL_LOW;
-		k_d_left_vel = K_D_LEFT_VEL_LOW;
-
-		k_f_left_vel = 1.0 / actual_max_y_rpm;
-		k_f_right_vel = 1.0 / actual_max_y_rpm;
-
-		is_low_gear = true;
+		// max_y_rpm = MAX_Y_RPM_LOW;
+		// max_yaw_rate = MAX_YAW_RATE_LOW;
+		// actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;
+		// max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
+		//
+		// k_p_right_vel = K_P_RIGHT_VEL_LOW;
+		// k_p_left_vel = K_P_LEFT_VEL_LOW;
+		// k_p_yaw_vel = K_P_YAW_VEL_LOW;
+		// k_d_yaw_vel = K_D_YAW_VEL_LOW;
+		// k_d_right_vel = K_D_RIGHT_VEL_LOW;
+		// k_d_left_vel = K_D_LEFT_VEL_LOW;
+		//
+		// k_f_left_vel = 1.0 / actual_max_y_rpm;
+		// k_f_right_vel = 1.0 / actual_max_y_rpm;
+		//
+		// is_low_gear = true;
 
 	} else { //regular constants
 
@@ -262,8 +263,8 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 	}
 
 	Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
-			k_p_kick_vel, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
-			k_d_kick_vel, 0.0, 0.0, 0.0);
+			0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
+		0.0, 0.0, 0.0, 0.0);
 
 }
 
@@ -302,7 +303,6 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
-	 std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
 	 vision_profile.resize(length, std::vector<double>(5));
 
 	for (int i = 0; i < length; i++) {
@@ -503,7 +503,7 @@ void DriveBase::Controller(double ref_kick,
 
 	feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
 	feed_forward_l = k_f_left_vel * ref_left;
-	feed_forward_k = K_F_KICK_VEL * ref_kick;
+	feed_forward_k = 0.0 * ref_kick;//kf kick vel
 
 	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
 	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
@@ -709,7 +709,7 @@ double DriveBase::GetLeftPosition() {
 
 double DriveBase::GetRightPosition() {
 
-	double r_dis = -((double) canTalonLeft1->GetSelectedSensorPosition(0)
+	double r_dis = -((double) canTalonRight1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
 
 	return r_dis;
@@ -824,7 +824,7 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-			GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
+		//	GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
@@ -832,9 +832,9 @@ bool DriveBase::VisionDriveStateMachine() {
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
 			RunVisionDrive();
-			if (row_index >= vision_profile.size()) {
-				vision_drive_state = RESET;
-			}
+			// if (row_index >= vision_profile.size()) {
+			// 	vision_drive_state = RESET;
+			// }
 			return false;
 		break;
 		case RESET:

@@ -31,6 +31,8 @@ public:
 
 	AHRS *ahrs;
 
+	Vision *visionDrive;
+
 	//HDrive
 	DriveBase(int fl, int fr, int rl, int rr, int k, int pcm, int f_channel, int r_channel);
 	//WestCoast, 2-speed transmission option
