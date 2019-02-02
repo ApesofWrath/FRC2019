@@ -482,9 +482,6 @@ void DriveBase::Controller(double ref_kick,
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
 
-	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
-	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
-
 	if (std::abs(ref_kick) < 25) {
 		ref_kick = 0;
 	}
@@ -501,15 +498,18 @@ void DriveBase::Controller(double ref_kick,
 		ref_right = -max_y_rpm;
 	}
 
+  frc::SmartDashboard::PutNumber("l vel targ CONTROL", ref_left);
+	frc::SmartDashboard::PutNumber("r vel targ CONTROL", ref_right);
+
 	feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
 	feed_forward_l = k_f_left_vel * ref_left;
 	feed_forward_k = 0.0 * ref_kick;//kf kick vel
 
-	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
-	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
-
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
+	// frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
+	// frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
+  //
+	// frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
+	// frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
 
 	//conversion to RPM from native unit
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -529,8 +529,8 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	r_error_vel_t = ref_right - r_current;
 	//kick_error_vel = ref_kick - kick_current;
 
-	frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
-	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
+	// frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+	// frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
 
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
@@ -544,10 +544,10 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
-	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
+	// frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
+	// frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
+	// frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
+	// frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
 
 	if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
 		feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
@@ -804,15 +804,18 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 		switch (teleop_drive_state) {
 			case REGULAR:
+      frc::SmartDashboard::PutString("DriveState", "REG");
 			TeleopWCDrive(JoyThrottle, JoyWheel);
 			break;
 			case VISION_DRIVE:
+      frc::SmartDashboard::PutString("DriveState", "VIS");
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
 			}
 			break;
 			case ROTATION_CONTROLLER:
+        frc::SmartDashboard::PutString("DriveState", "ROT");
 			RotationController(JoyWheel);
 			break;
 		}
