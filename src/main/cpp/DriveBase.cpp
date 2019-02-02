@@ -165,146 +165,6 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 }
 
-<<<<<<< HEAD
-//HDrive - TODO: update from WestCoast
-DriveBase::DriveBase(int fl, int fr, int rl, int rr,
-		int k, int pcm, int f_channel, int r_channel) {
-
-	k_p_yaw_dis = K_P_YAW_DIS;
-	ff_scale = FF_SCALE;
-
-	max_y_rpm = MAX_Y_RPM;
-	DYN_MAX_Y_RPM = max_y_rpm;
-	actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-	max_yaw_rate = MAX_YAW_RATE;
-	k_p_yaw_au = K_P_YAW_AU;
-	k_d_yaw_au = K_D_YAW_AU;
-	k_p_yaw_heading_pos = K_P_YAW_HEADING_POS;
-	k_d_vision_pos = K_D_VISION_POS;
-	k_p_yaw_au = K_P_YAW_AU; //these get sent from AutonDrive to Controller, not used in AutonDrive
-	k_d_yaw_au = K_D_YAW_AU;
-
-	Kv = (1 / MAX_FPS);
-
-	k_p_right_vel = K_P_RIGHT_VEL;
-	k_p_left_vel = K_P_LEFT_VEL;
-	k_p_yaw_vel = K_P_YAW_VEL;
-	k_d_yaw_vel = K_D_YAW_VEL;
-	k_d_right_vel = K_D_RIGHT_VEL;
-	k_d_left_vel = K_D_LEFT_VEL;
-
-	k_f_left_vel = 1.0 / actual_max_y_rpm;
-	k_f_right_vel = 1.0 / actual_max_y_rpm;
-
-	LF = fl;
-	LR = rl;
-	RF = fr;
-	RR = rr;
-	KICKER = k;
-	PCM = pcm;
-	F_CHANNEL = f_channel;
-	R_CHANNEL = r_channel;
-
-	// canTalonLeft1 = new TalonSRX(LF);
-	// canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-	//
-	// canTalonLeft2 = new TalonSRX(LR);
-	// canTalonLeft2->Set(ControlMode::Follower, LF);
-	//
-	// canTalonRight1 = new TalonSRX(RF);
-	// canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-	//
-	// canTalonRight2 = new TalonSRX(RR);
-	// canTalonRight2->Set(ControlMode::Follower, RF);
-	//
-  // canTalonKicker = new TalonSRX(KICKER);
-	//
-	// canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
-	// canTalonLeft2->ConfigPeakCurrentLimit(30, 0);
-	// canTalonRight1->ConfigPeakCurrentLimit(30, 0);
-	// canTalonRight2->ConfigPeakCurrentLimit(30, 0);
-	// canTalonKicker->ConfigPeakCurrentLimit(30, 0);
-
-	ahrs = new AHRS(SPI::Port::kMXP, 200);
-
-  //kicker wheel
-	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
-
-}
-
-void DriveBase::ShiftUp() { //high gear, inside
-
-//	frc::SmartDashboard::PutString("GEAR", "HIGH");
-	std::cout << "shift up" << std::endl;
-
-	solenoid->Set(DoubleSolenoid::Value::kForward);
-	SetGainsHigh();
-
-}
-
-void DriveBase::ShiftDown() { //low gear, outside
-
-//	frc::SmartDashboard::PutString("GEAR", "LOW");
-
-	solenoid->Set(DoubleSolenoid::Value::kReverse);
-	//std::cout << "DOWN" << std::endl;
-
-	SetGainsLow(); //separate for gains in case we want to initialize them by themselves in the constructor
-
-}
-
-void DriveBase::SetGainsHigh() {
-
-	max_y_rpm = MAX_Y_RPM_HIGH;
-	max_yaw_rate = MAX_YAW_RATE_HIGH;
-
-	actual_max_y_rpm = ACTUAL_MAX_Y_RPM_HIGH;
-
-//MAX_FPS = 19.5; //((actual_max_y_rpm * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
-	Kv = (1 / MAX_FPS);
-	max_yaw_rate = (25 / actual_max_y_rpm) * max_y_rpm;
-
-	k_p_right_vel = K_P_RIGHT_VEL_HIGH; //these are all for teleop; we don't shift gears in auton
-	k_p_left_vel = K_P_LEFT_VEL_HIGH;
-	k_p_yaw_vel = K_P_YAW_VEL_HIGH;
-	k_d_yaw_vel = K_P_YAW_VEL_HIGH;
-	k_d_right_vel = K_D_RIGHT_VEL_HIGH;
-	k_d_left_vel = K_D_LEFT_VEL_HIGH;
-
-	k_f_left_vel = 1.0 / actual_max_y_rpm;
-	k_f_right_vel = 1.0 / actual_max_y_rpm;
-
-	is_low_gear = false;
-
-}
-
-void DriveBase::SetGainsLow() {
-
-	max_y_rpm = MAX_Y_RPM_LOW;
-	max_yaw_rate = MAX_YAW_RATE_LOW;
-
-	actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;
-
-	//MAX_FPS = 19.5; //((max_y_rpm * WHEEL_DIAMETER * PI) / 12.0) / 60.0;
-	Kv = (1 / MAX_FPS);
-	max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm; //(max_yaw_rate / actual_max_y_rpm) * set_max_y_rpm
-
-	k_p_right_vel = K_P_RIGHT_VEL_LOW;
-	k_p_left_vel = K_P_LEFT_VEL_LOW;
-	k_p_yaw_vel = K_P_YAW_VEL_LOW;
-	k_d_yaw_vel = K_D_YAW_VEL_LOW;
-	k_d_right_vel = K_D_RIGHT_VEL_LOW;
-	k_d_left_vel = K_D_LEFT_VEL_LOW;
-
-	k_f_left_vel = 1.0 / actual_max_y_rpm;
-	k_f_right_vel = 1.0 / actual_max_y_rpm;
-
-	is_low_gear = true;
-
-}
-
-=======
->>>>>>> drive-vision
 void DriveBase::SetAutonGains(bool same_side_scale) {
 
 	if (same_side_scale) {
@@ -719,18 +579,10 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
 	canTalonLeft2->Set(ControlMode::PercentOutput, total_left);
 	canTalonLeft3->Set(ControlMode::PercentOutput, total_left);
-<<<<<<< HEAD
-	canTalonRight1->Set(ControlMode::PercentOutput, -total_right); //negative for Koba and for new drive train
-	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
-	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
-	//canTalonRearRight->Set(ControlMode::PercentOutput,  total_right); //these are slaves
-	//canTalonRearLeft->Set(ControlMode::PercentOutput, -total_left);
-	///canTalonKicker->Set(ControlMode::PercentOutput, -total_kick); //since there is no kicker, was causing timeout and spike on thread
-=======
+
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
 	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
 	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
->>>>>>> drive-vision
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -761,11 +613,8 @@ void DriveBase::StopAll() {
 	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
 	canTalonLeft2->Set(ControlMode::PercentOutput, 0.0);
 	canTalonLeft3->Set(ControlMode::PercentOutput, 0.0);
-<<<<<<< HEAD
-	canTalonRight1->Set(ControlMode::PercentOutput, 0.0); //negative for Koba and for new drive train
-=======
+
 	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
->>>>>>> drive-vision
 	canTalonRight2->Set(ControlMode::PercentOutput, 0.0);
 	canTalonRight3->Set(ControlMode::PercentOutput, 0.0);
 

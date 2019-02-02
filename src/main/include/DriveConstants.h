@@ -82,9 +82,6 @@ const double K_P_KICKER_DIS = 0.0;
 const double K_I_KICKER_DIS = 0.0;
 const double K_D_KICKER_DIS = 0.0;
 
-<<<<<<< HEAD
-//robot drive constants
-=======
 ///ROBOT DRIVE CONSTANTS///
 
 const double MAX_VEL_VIS = 3.0; //m/s for pathfinder
