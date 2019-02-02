@@ -7,23 +7,18 @@
 
 #include "Robot.h"
 
-#include <iostream>
-
-#include <frc/smartdashboard/SmartDashboard.h>
-
-
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  arm_mp = new ArmMotionProfiler(-1.0, -1.0, 0.02);
-  elevator_mp = new ElevatorMotionProfiler(-1.0, -1.0, 0.02);
+  arm_mp = new ArmMotionProfiler(2.0, 10.0, 0.02);
+//  elev_mp = new ElevatorMotionProfiler(1.15, 5.0, 0.02);
 
   arm = new Arm(arm_mp); //take out pdp
-  elevator = new Elevator(elevator_mp);
+//  elev = new Elevator(elevator_mp);
 
-  joyOp = new Joystick(0);
+  joyOp = new frc::Joystick(0);
 
 }
 
@@ -82,7 +77,15 @@ void Robot::TeleopPeriodic() {
     bool arm_up = joyOp->GetRawButton(4);
     bool arm_down = joyOp->GetRawButton(5);
 
-    arm->ArmStateMachine();
+    // if (arm_up) {
+    //   arm->arm_state = arm->LOW_CARGO_STATE;
+    // } else if (arm_down) {
+    //   arm->arm_state = arm->DOWN_STATE;
+    // }
+    //
+    // arm->ArmStateMachine();
+
+    // arm->Rotate();
 
 }
 

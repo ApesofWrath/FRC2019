@@ -16,7 +16,7 @@ Undefined symbols for architecture x86_64:
       Arm::ZeroEnc() in Arm.o
       Arm::ArmStateMachine() in Arm.o
   "ctre::phoenix::motorcontrol::can::TalonSRX::TalonSRX(int)", referenced from:
-      Arm::Arm(frc::PowerDistributionPanel*, ArmMotionProfiler*) in Arm.o
+      Arm::Arm(ArmMotionProfiler*) in Arm.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 

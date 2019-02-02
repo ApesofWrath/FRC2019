@@ -19,6 +19,7 @@ const double MAX_ACCELERATION_A = 2.5; //rad/a/a
 const double TIME_STEP_A = 0.01; //sec
 
 const double UP_LIMIT_A = 1.58;
+const double BACK_LIMIT_A = 2.0;
 const double DOWN_LIMIT_A = 0.0;
 
 const double UP_VOLT_LIMIT_A = 0.0;
@@ -33,7 +34,7 @@ const double UP_ANGLE = 1.3; //starting pos
 const double HIGH_ANGLE = 1.0;
 const double MID_ANGLE = 0.6;
 const double LOW_ANGLE = 0.3;
-const double DOWN_ANGLE = -0.1; //lowest pos
+const double DOWN_ANGLE = 0.1; //lowest pos
 
 //id's
 const int HALL_EFF_ARM_ID = 0;

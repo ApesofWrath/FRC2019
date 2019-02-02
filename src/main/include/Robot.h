@@ -14,8 +14,8 @@
 #include <frc/Joystick.h>
 #include "Arm.h"
 #include "ArmMotionProfiler.h"
-#include "Elevator.h"
-#include "ElevatorMotionProfiler.h"
+//#include "Elevator.h"
+//#include "ElevatorMotionProfiler.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -28,8 +28,10 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
   Arm *arm;
-  Joystick *joyOp;
+  frc::Joystick *joyOp;
   ArmMotionProfiler *arm_mp;
+//  Elevator *elev;
+//  ElevatorMotionProfiler *elev_mp;
 
  private:
   frc::SendableChooser<std::string> m_chooser;

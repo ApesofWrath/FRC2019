@@ -27,8 +27,7 @@
 class Arm {
 public:
 
-  Arm(frc::PowerDistributionPanel *pdp,
-      ArmMotionProfiler *arm_profiler);
+  Arm(ArmMotionProfiler *arm_profiler);
 
   TalonSRX *talonArm;
 
@@ -69,7 +68,16 @@ public:
       {STOP_ARM_STATE_H, "STOP"}
   	};
 
+  void IsElevatorHigh(bool is_high); //choose arm safety
+  bool elevator_high = false;
+
+	void ManualArm(frc::Joystick *joyOpArm);
+  void ArmStateMachine();
+
 private:
+
+  double arm_pos;
+  double arm_vel;
 
   std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
   std::vector<std::vector<double> > K_a;
@@ -118,10 +126,8 @@ private:
   void OutputArmVoltage();
 
 	void ZeroEnc();
-	void ManualArm(frc::Joystick *joyOpArm);
 
   void StopArm();
-  void ArmStateMachine();
   void UpdateArmProfile(int current_state, double angle);
 
 

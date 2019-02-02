@@ -1,4 +1,8 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp.
+compiling ArmMotionProfiler.cpp successful.
+
 compiling Arm.cpp successful.
+
+compiling Robot.cpp successful.
 
 Finished compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64ReleaseExecutableFrcUserProgramCpp/output.txt.

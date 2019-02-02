@@ -13,8 +13,7 @@ const int STOP_ARM_STATE = 6;
 frc::PowerDistributionPanel *pdp_a;
 ArmMotionProfiler *arm_profiler;
 
-Arm::Arm(frc::PowerDistributionPanel *pdp,
-		ArmMotionProfiler *arm_profiler_){
+Arm::Arm(ArmMotionProfiler *arm_profiler_){
 
   talonArm = new TalonSRX(ARM_TALON_ID);
 
@@ -28,8 +27,6 @@ Arm::Arm(frc::PowerDistributionPanel *pdp,
   arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
 	arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
 	hallEffectArm = new frc::DigitalInput(HALL_EFF_ARM_ID);
-
-  pdp_a = pdp;
 
 }
 
@@ -102,11 +99,22 @@ void Arm::RunController() {
 
 void Arm::Rotate() {
 	// Setup
-	CalcError();
-	RunController();
-	// Action
-	SetVoltageArm(u_a);
-	PrintArmInfo();
+	if (arm_state != STOP_ARM_STATE_H
+		&& arm_state != INIT_STATE_H) {
+			CalcError();
+			RunController();
+			// // Action
+			SetVoltageArm(u_a);
+			PrintArmInfo();
+
+		}
+
+}
+
+void Arm::IsElevatorHigh(bool is_high) {
+
+	elevator_high = is_high;
+
 }
 
 void Arm::SetVoltageArm(double voltage_a) {
@@ -116,10 +124,18 @@ void Arm::SetVoltageArm(double voltage_a) {
 
 	arm_safety = "NONE";
 
+	arm_pos = GetAngularPosition();
+	arm_vel = GetAngularVelocity();
+
 	UpperSoftLimit();
 	LowerSoftLimit();
 	StallSafety();
 	CapVoltage();
+
+	//zero height moves up sometimes. this will make sure the arm goes all the way down every time
+	if (arm_state == DOWN_STATE && arm_pos <= 0.2) {
+		arm_voltage = 0.0;
+	}
 
 	frc::SmartDashboard::PutString("ARM SAFETY", arm_safety);
 	frc::SmartDashboard::PutNumber("ARM VOLTAGE", arm_voltage);
@@ -136,18 +152,27 @@ void Arm::OutputArmVoltage() {
 }
 
 void Arm::UpperSoftLimit() {
-	// SOFT LIMIT TOP
-	if (GetAngularPosition() >= (UP_LIMIT_A && arm_voltage > UP_VOLT_LIMIT_A)) { //at max height and still trying to move up
-		arm_voltage = 0.0; //shouldn't crash
-		arm_safety = "top soft limit";
+
+	if (elevator_high) {
+		if ((arm_pos >= UP_LIMIT_A) && (arm_voltage > UP_VOLT_LIMIT_A) && is_init_arm) { //at max height and still trying to move up
+			arm_voltage = 0.0; //shouldn't crash
+			arm_safety = "top soft limit";
+		}
+	} else {
+		if ((arm_pos >= BACK_LIMIT_A) && (arm_voltage > 0.0)
+			 && is_init_arm) { //at max height and still trying to move up //no upper soft limit when initializing
+		 arm_voltage = 0.0;
+		 arm_safety = "top soft limit";
+	 }
 	}
+
 }
 
 void Arm::LowerSoftLimit() {
 	//SOFT LIMIT BOTTOM
 	if (IsAtBottomArm()) { //hall effect returns 0 when at bottom. we reverse it here
 		ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
-		if (GetAngularPosition() < (DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
+		if (arm_pos < (DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
 			arm_voltage = 0.0;
 			arm_safety = "bot hall eff";
 		}
@@ -219,7 +244,7 @@ void Arm::ArmStateMachine() {
     case INIT_STATE:
     InitializeArm();
     if (is_init_arm) {
-			arm_state = UP_STATE;
+			arm_state = DOWN_STATE; //TODO: put back to up_state
 		}
 		last_arm_state = INIT_STATE;
     break;
