@@ -60,6 +60,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
+		Kv = 1 / ACTUAL_MAX_Y_RPM;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
@@ -287,9 +288,8 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 }
 
 //only to be used in teleop; auton will already have this essentially
-void DriveBase::VisionDrive(double dist_to_target, double yaw_to_target) {
+void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target) {
 
-	InitDriveProf();
 	ZeroAll(true);
 
 	int length;
@@ -322,7 +322,7 @@ void DriveBase::VisionDrive(double dist_to_target, double yaw_to_target) {
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
-	 auton_profile = {{}}; //runautondrive looks at drive_ref size
+	 auton_profile = {{}}; //runautondrive looks at auton_row size
 	 auton_profile.resize(length, std::vector<double>(5));
 
 	for (int i = 0; i < length; i++) {
@@ -350,11 +350,11 @@ void DriveBase::VisionDrive(double dist_to_target, double yaw_to_target) {
 //auton targets, actually just pd
 void DriveBase::AutonDrive() {
 
-	double pf_yaw_dis = drive_ref.at(0); //reversed in Generate - rad
-	double pf_l_dis = drive_ref.at(1); //feet
-	double pf_r_dis = drive_ref.at(2); //feet
-	double pf_l_vel = drive_ref.at(3); //fps
-	double pf_r_vel = drive_ref.at(4); //fps
+	double pf_yaw_dis = auton_row.at(0); //reversed in Generate - rad
+	double pf_l_dis = auton_row.at(1); //feet
+	double pf_r_dis = auton_row.at(2); //feet
+	double pf_l_vel = auton_row.at(3); //fps
+	double pf_r_vel = auton_row.at(4); //fps
 
 	if (pf_yaw_dis > PI) { //get negative half and positive half on circle - left half is positive
 		pf_yaw_dis -= (2 * PI);
@@ -683,11 +683,6 @@ void DriveBase::SetAutonRefs(std::vector<std::vector<double>> profile) {
 
 	set_profile = true;
 	auton_profile = profile;
-	InitDriveProf();
-}
-
-void DriveBase::InitDriveProf() {
-
 	row_index = 0;
 	zeroing_counter = 0;
 
@@ -754,20 +749,20 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 }
 
 //Increments through target points of the motion profile
+//Pre: SetAutonRefs()
+//		row_index = 0, auton_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
+//TODO: make a state machine
 void DriveBase::RunAutonDrive() {
 
-	for (int i = 0; i < auton_profile[0].size(); i++) { //looks through each row and then fills drive_ref with the column here, refills each interval with next set of refs
-		drive_ref.at(i) = auton_profile.at(row_index).at(i); //from SetRef()
+	//fill next point horizontally
+	for (int i = 0; i < auton_profile[0].size(); i++) {
+		auton_row.at(i) = auton_profile.at(row_index).at(i);
 	}
 
+	//zeroing profile for next segment
 	if (zeroing_index.size() > 0) {
 		next_zero_index = zeroing_index.at(zero_counter);
 	}
-
-	if (row_index >= auton_profile.size()) {
-		set_profile = false;
-	}
-
 	if (row_index == next_zero_index) {
 		StopAll();
 		if (zero_wait_counter < 10) {
@@ -796,7 +791,7 @@ void DriveBase::RunVisionDrive() {
 
 	//fill next point
 	for (int i = 0; i < vision_profile[0].size(); i++) { //can reuse after auto
-		drive_ref.at(i) = vision_profile.at(row_index).at(i);
+		auton_row.at(i) = vision_profile.at(row_index).at(i);
 	}
 
 	AutonDrive();
@@ -837,7 +832,7 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-			VisionDrive((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
+			GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}

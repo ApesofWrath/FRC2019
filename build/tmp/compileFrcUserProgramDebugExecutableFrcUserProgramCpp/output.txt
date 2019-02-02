@@ -1,6 +1,4 @@
 See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling Vision.cpp successful.
-
 compiling DriveBase.cpp successful.
 
 compiling Robot.cpp successful.

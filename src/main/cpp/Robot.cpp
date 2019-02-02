@@ -57,19 +57,25 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 
+  drive_controller->set_profile = false; //prep for visiondrive
   drive_controller->ZeroAll(true);
 
 }
 
 void Robot::TeleopPeriodic() {
 
-    is_rotation = joyThrottle->GetRawButton(0);
-		is_vision = false;
-		is_regular = false;
+    is_rotation = joyThrottle->GetRawButton(-1);
+		is_vision = joyThrottle->GetRawButton(-1);
+		is_regular = joyThrottle->GetRawButton(-1);
 
 
    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-   //frc::SmartDashboard::PutNumber("L1", )
+   frc::SmartDashboard::PutNumber("L1", drive_controller->canTalonLeft1->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R1", drive_controller->canTalonRight1->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
 }
 
 void Robot::TestPeriodic() {}
