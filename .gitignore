@@ -1,6 +1,6 @@
 /build/*
 /.gradle/*
-gradle/
+/gradle/*
 /.wpilib/*
 build.gradle
 gradlew
