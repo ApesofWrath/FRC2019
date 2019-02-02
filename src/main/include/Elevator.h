@@ -24,8 +24,8 @@ class Elevator {
 
 public:
 
-  const int TALON_ID_1 = -1;
-  const int TALON_ID_2 = -1;
+  const int TALON_ID_1 = 33;//master
+  const int TALON_ID_2 = 0;//not master
 
   const int TOP_HALL = -1;
   const int BOT_HALL = -1;
