@@ -11,9 +11,9 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const int ELEVATOR_UP = 3;
-const int ELEVATOR_MID = 16;
-const int ELEVATOR_DOWN = 9;
+const int ELEVATOR_UP = 3; //left lower
+const int ELEVATOR_MID = 5; //left upper
+const int ELEVATOR_DOWN = 4; //right lower
 
 bool elevator_up, elevator_mid, elevator_down;
 
@@ -75,14 +75,30 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
 
-  // elevator->ElevatorStateMachine();
+  elevator->ElevatorStateMachine();
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-  // elevator_up = joyOp->GetRawButton(ELEVATOR_UP);
-	// elevator_mid = joyOp->GetRawButton(ELEVATOR_MID);
-	// elevator_down = joyOp->GetRawButton(ELEVATOR_DOWN);
+  elevator_up = joyElev->GetRawButton(ELEVATOR_UP);
+	elevator_mid = joyElev->GetRawButton(ELEVATOR_MID);
+	elevator_down = joyElev->GetRawButton(ELEVATOR_DOWN);
 
-  elevator->ManualElevator(joyElev);
-  // elevator->Move();
+  frc::SmartDashboard::PutBoolean("elevator_up", elevator_up);
+  frc::SmartDashboard::PutBoolean("elevator_mid", elevator_mid);
+  frc::SmartDashboard::PutBoolean("elevator_down", elevator_down);
+
+  if (elevator_up) {
+    elevator->elevator_state = elevator->ROCKET_TOP_CARGO;
+  }
+  if (elevator_mid) {
+    elevator->elevator_state = elevator->ROCKET_MID_CARGO;
+  }
+  if (elevator_down) {
+    elevator->elevator_state = elevator->ROCKET_BOTTOM_CARGO;
+  }
+
+  elevator->Move();
+
+
+  // elevator->ManualElevator(joyElev);
 }
 
 void Robot::TestPeriodic() {}

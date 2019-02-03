@@ -30,19 +30,20 @@ public:
   const int TOP_HALL = 2;
   const int BOT_HALL = 1;
 
-  int last_elevator_state = 0;
-  int elevator_state = 5;
+  const int INIT = 0;
+  const int ROCKET_TOP_CARGO = 1;
+  const int ROCKET_MID_CARGO = 2;
+  const int ROCKET_BOTTOM_CARGO = 3;
+  const int ROCKET_TOP_HATCH = 4;
+  const int ROCKET_MID_HATCH = 5;
+  const int BOTTOM_HATCH = 6; // Same for rocket and cargo bay, only need one
+  const int BAY_CARGO = 7;
+  const int STOP_STATE = 8;
+
+  int last_elevator_state = INIT;
+  int elevator_state = INIT;
 
   bool is_elevator_init = false;
-
-  const int ROCKET_TOP_CARGO = 0;
-  const int ROCKET_MID_CARGO = 1;
-  const int ROCKET_BOTTOM_CARGO = 2;
-  const int ROCKET_TOP_HATCH = 3;
-  const int ROCKET_MID_HATCH = 4;
-  const int BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
-  const int BAY_CARGO = 6;
-  const int STOP_STATE = 7;
 
   int zeroing_counter_e = 0;
 
@@ -51,8 +52,8 @@ public:
 
   ElevatorMotionProfiler *elevator_profiler;
 
-  std::vector<std::vector<double> > K_down_e = { {  1.0, 1.0}, { 1.0, 1.0 } };
-  std::vector<std::vector<double> > K_up_e = { {  1.0, 1.0}, { 1.0, 1.0 } };
+  std::vector<std::vector<double> > K_down_e = { { 27.89, 4.12}, { 1.0, 1.0 } };
+  std::vector<std::vector<double> > K_up_e = { {  27.89, 4.12}, { 1.0, 1.0 } };
 
 // remove halle effects if not there
 // lower gains
@@ -78,11 +79,15 @@ public:
   bool ZeroEncs();
   void SetZeroOffset();
 
+  void Move();
+  void ElevatorStateMachine();
+
 private:
 
   std::string elev_type, elev_safety;
 
   std::map <int, std::string> elev_state = {
+    {INIT, "INIT"},
     {ROCKET_TOP_CARGO, "ROCKET TOP CARGO"},
     {ROCKET_MID_CARGO, "ROCKET MID CARGO"},
     {ROCKET_BOTTOM_CARGO, "ROCKET BOTTOM CARGO"},
@@ -112,7 +117,6 @@ private:
   void SetupTalon2();
 
   // state machine
-  void ElevatorStateMachine();
   void CheckElevatorGoal(int elevator_state, double goal_pos);
 
   void SetVoltage(double voltage_);
@@ -130,8 +134,6 @@ private:
   void InvertOutput();
 	void OutputToTalon();
 
-  // Move functions
-  void Move();
   void UpdateVoltage();
   void UpdateMoveCoordinates();
   void UpdateMoveError();

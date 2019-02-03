@@ -2,17 +2,19 @@
 
 #define PI 3.14159265
 
-const int _ROCKET_TOP_CARGO = 0;
-const int _ROCKET_MID_CARGO = 1;
-const int _ROCKET_BOTTOM_CARGO = 2;
-const int _ROCKET_TOP_HATCH = 3;
-const int _ROCKET_MID_HATCH = 4;
-const int _BOTTOM_HATCH = 5; // Same for rocket and cargo bay, only need one
-const int _BAY_CARGO = 6;
-const int _STOP_STATE = 7;
+const int _INIT = 0;
+const int _ROCKET_TOP_CARGO = 1;
+const int _ROCKET_MID_CARGO = 2;
+const int _ROCKET_BOTTOM_CARGO = 3;
+const int _ROCKET_TOP_HATCH = 4;
+const int _ROCKET_MID_HATCH = 5;
+const int _BOTTOM_HATCH = 6; // Same for rocket and cargo bay, only need one
+const int _BAY_CARGO = 7;
+const int _STOP_STATE = 8;
+
+double elevator_voltage = 0.0;
 
 int encoder_counter_e = 0;
-double elevator_voltage = 0.0;
 
 Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
@@ -69,6 +71,21 @@ void Elevator::ElevatorStateMachine() {
   PrintElevatorInfo();
 
   switch (elevator_state) {
+    case _INIT:
+      if (is_elevator_init) {
+        elevator_state = _ROCKET_BOTTOM_CARGO; // TODO: Change to actual starting position,(current is testing) probably BOTTOM_HATCH
+      } else {
+        ZeroElevator();
+      }
+
+        // if (ZeroEncs()) {
+        //   is_elevator_init = true;
+        // }
+        // SetVoltage(0.0);
+    //  }
+      last_elevator_state = _INIT;
+    break;
+
     case _ROCKET_TOP_CARGO:
      CheckElevatorGoal(_ROCKET_TOP_CARGO, ROCKET_TOP_CARGO_POS);
     break;
@@ -78,7 +95,7 @@ void Elevator::ElevatorStateMachine() {
     break;
 
     case _ROCKET_BOTTOM_CARGO:
-      CheckElevatorGoal(_ROCKET_TOP_CARGO, ROCKET_TOP_CARGO_POS);
+      CheckElevatorGoal(_ROCKET_BOTTOM_CARGO, ROCKET_BOTTOM_CARGO_POS);
     break;
 
     case _ROCKET_TOP_HATCH:
@@ -179,9 +196,11 @@ void Elevator::UpdateMoveCoordinates() {
 	current_pos_e = GetElevatorPosition();//GetElevatorPosition(); //TAKE THIS BACK OUT
 	current_vel_e = GetElevatorVelocity();//GetElevatorVelocity();
 
-
 	goal_pos_e = ref_elevator[0][0];
 	goal_vel_e = ref_elevator[1][0];
+
+  frc::SmartDashboard::PutNumber("goal_pos_e", goal_pos_e);
+  frc::SmartDashboard::PutNumber("goal_vel_e", goal_vel_e);
 }
 
 void Elevator::UpdateMoveError() {
@@ -207,12 +226,12 @@ void Elevator::SetVoltage(double voltage_) {
   LowerSoftLimit();
   TopHallEffectSafety();
 	BottomHallEffectSafety();
-  ArmSafety(); // rewrite arm safety for new arm
+  //ArmSafety(); // rewrite arm safety for new arm //arm/elev safeties will be in teleop statemachine
 
   frc::SmartDashboard::PutString("ELEVATOR SAFETY", elev_safety);
 
   // Output Voltage
-  ZeroElevator();
+  //ZeroElevator(); just for init ing
   CapVoltage();
   ScaleOutput();
   InvertOutput();
@@ -234,6 +253,7 @@ void Elevator::PrintElevatorInfo() {
   frc::SmartDashboard::PutNumber("ElEV ENC", talonElevator1->GetSelectedSensorPosition(0));
 
   frc::SmartDashboard::PutNumber("ELEV HEIGHT", GetElevatorPosition());
+  frc::SmartDashboard::PutNumber("ELEV vel", GetElevatorVelocity());
 
   frc::SmartDashboard::PutBoolean("TOP HALL", IsAtTopElevator());
   frc::SmartDashboard::PutBoolean("BOT HALL", IsAtBottomElevator());
@@ -337,17 +357,17 @@ double Elevator::GetVoltageElevator() { //not voltage sent to the motor. the vol
 void Elevator::SetZeroOffset() {
 	position_offset_e =
 	talonElevator1->GetSelectedSensorPosition(0);
+  frc::SmartDashboard::PutNumber("position_offset_e", position_offset_e);
 }
 
 bool Elevator::ZeroEncs() {
-
 	if (zeroing_counter_e < 1) {
-		//Great Robotic Actuation and Controls Execution ()
-		SetZeroOffset();
-		zeroing_counter_e++;
-		return true;
+  		// Great Robotic Actuation and Controls Execution ()
+  		SetZeroOffset();
+  		zeroing_counter_e++;
+  		return true;
 	} else {
-		return false;
+		  return false;
 	}
 
 }
