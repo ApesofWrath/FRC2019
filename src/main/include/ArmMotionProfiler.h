@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cmath>
 #include <frc/WPILib.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 class ArmMotionProfiler {
 

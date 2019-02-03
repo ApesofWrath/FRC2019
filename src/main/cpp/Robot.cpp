@@ -72,20 +72,23 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
 
-    arm->ManualArm(joyOp);
+    // arm->ManualArm(joyOp);
 
-    bool arm_up = joyOp->GetRawButton(4);
-    bool arm_down = joyOp->GetRawButton(5);
+    bool arm_up = joyOp->GetRawButton(3);
+    bool arm_down = joyOp->GetRawButton(4);
 
-    // if (arm_up) {
-    //   arm->arm_state = arm->LOW_CARGO_STATE;
-    // } else if (arm_down) {
-    //   arm->arm_state = arm->DOWN_STATE;
-    // }
-    //
-    // arm->ArmStateMachine();
+    frc::SmartDashboard::PutBoolean("arm_up",arm_up);
+    frc::SmartDashboard::PutBoolean("arm_down", arm_down);
 
-    // arm->Rotate();
+    if (arm_up) {
+      arm->arm_state = arm->LOW_CARGO_STATE_H;
+    } else if (arm_down) {
+      arm->arm_state = arm->DOWN_STATE_H;
+    }
+
+    arm->ArmStateMachine();
+
+    arm->Rotate();
 
 }
 

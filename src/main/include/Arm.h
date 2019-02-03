@@ -37,8 +37,12 @@ public:
 
   std::vector<std::vector<double> > K_down_a = { { 10.32, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
   		{ 10.32, 0.063 } };
+  // std::vector<std::vector<double> > K_down_a = { { 2.0, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
+  		// { 2.0, 0.063 } }; // REMOVE AND UNCOMMENT AFTER TESTING
   std::vector<std::vector<double> > K_up_a = { { 10.32, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
   		{ 10.32, 0.063 } };
+  // std::vector<std::vector<double> > K_up_a = { { 2.0, 0.063 }, //controller matrix that is calculated in the Python simulation, pos and vel
+  // 		{ 2.0, 0.063 } }; // REMOVE AND UNCOMMENT AFTER TESTING
 
   std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with the states of the system //not used
   		{ 0.0 } };
@@ -56,7 +60,8 @@ public:
   const int STOP_ARM_STATE_H = 6;
   int arm_state = INIT_STATE_H;
 
-  const int ARM_TALON_ID = 0;
+  const int ARM_TALON_ID = 55;
+  const int HALL_EFF_ARM_ID = 0;
 
   std::map <int, std::string> arm_states = {
   		{INIT_STATE_H, "INIT"},
@@ -73,7 +78,7 @@ public:
 
 	void ManualArm(frc::Joystick *joyOpArm);
   void ArmStateMachine();
-
+  void Rotate(); //main control loop
 private:
 
   double arm_pos;
@@ -81,7 +86,7 @@ private:
 
   std::vector<std::vector<double> > error_a = { { 0.0 }, { 0.0 } };
   std::vector<std::vector<double> > K_a;
-  std::vector<std::vector<double> > ref_arm;
+
 
   double current_pos = 0.0;
   double current_vel = 0.0;
@@ -105,7 +110,6 @@ private:
 
   void InitializeArm();
 
-  void Rotate(); //main control loop
   // Rotate Helpers
   void CalcError();
   void RunController();
@@ -129,8 +133,6 @@ private:
 
   void StopArm();
   void UpdateArmProfile(int current_state, double angle);
-
-
 };
 
 #endif /* SRC_ARM_H_ */
