@@ -1,4 +1,0 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp.
-compiling Suction.cpp successful.
-
-Finished compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramOsxx86-64DebugExecutableFrcUserProgramCpp/output.txt.

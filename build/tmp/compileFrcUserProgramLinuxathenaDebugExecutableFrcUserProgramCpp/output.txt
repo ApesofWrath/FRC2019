@@ -1,4 +1,0 @@
-See file:///C:/Users/andy/Robotics/FRC2019-SUCTION_SKELETON/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp.
-compiling HatchPickup.cpp successful.
-
-Finished compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/andy/Robotics/FRC2019-SUCTION_SKELETON/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaDebugExecutableFrcUserProgramCpp/output.txt.
