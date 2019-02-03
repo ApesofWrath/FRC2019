@@ -47,6 +47,8 @@ public:
   std::vector<std::vector<double> > X_a = { { 0.0 }, //state matrix filled with the states of the system //not used
   		{ 0.0 } };
 
+  const double ff_percent_a = 0.6;
+
 	int zeroing_counter_a = 0;
 
 	bool is_init_arm = false; //is arm initialized
@@ -111,8 +113,10 @@ private:
   void InitializeArm();
 
   // Rotate Helpers
-  void CalcError();
-  void RunController();
+  void UpdateRotateCoordinates();
+  void UpdateRotateError();
+  void UpdateRotatingDirection(std::vector<std::vector<double>> K_a_);
+  void UpdateVoltage();
 	double GetAngularVelocity();
 	double GetAngularPosition();
   void PrintArmInfo();

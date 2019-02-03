@@ -71,53 +71,68 @@ void Arm::PrintArmInfo() {
 	frc::SmartDashboard::PutNumber("ARM CONT VOLT", u_a);
 }
 
-void Arm::CalcError() {
-  counter++;
-	//top is position, bottom is velocity
+// void Arm::RunController() {
+//
+//
+// 	// Shaking: if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) {arm_state = DOWN_STATE;}
+//
+//
+//   frc::SmartDashboard::PutNumber("GOAL VELOCITY", goal_vel);
+//   frc::SmartDashboard::PutNumber("ERROR POS", error_a[0][0]);
+//   frc::SmartDashboard::PutNumber("ERROR VELOCITY", error_a[0][1]);
+//   frc::SmartDashboard::PutNumber("OFFSET", arm_offset);
+//
+// }
+
+void Arm::UpdateRotateCoordinates() {
+  //top is position, bottom is velocity
 	std::vector<std::vector<double> > ref_arm = arm_profiler->GetNextRefArm();
 
 	current_pos = GetAngularPosition();
   current_vel = GetAngularVelocity();
+
   goal_vel = ref_arm[1][0];
 	goal_pos = ref_arm[0][0];
 
   frc::SmartDashboard::PutNumber("REF ARM POS", ref_arm[0][0]);
-  frc::SmartDashboard::PutNumber("REF ARM VEL", ref_arm[0][1]);
+  frc::SmartDashboard::PutNumber("REF ARM VEL", ref_arm[1][0]);
 
-	error_a[0][0] = goal_pos - current_pos;
+}
+
+void Arm::UpdateRotateError() {
+  error_a[0][0] = goal_pos - current_pos;
 	error_a[1][0] = goal_vel - current_vel;
 }
 
-void Arm::RunController() {
-	if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
-		K_a = K_down_a;
-	} else {
-		K_a = K_up_a;
-	}
+void Arm::UpdateRotatingDirection(std::vector<std::vector<double>> K_a_) {
+  arm_offset = ARM_OFFSET * (double) cos(current_pos);
+  K_a = K_a_;
+  // TODO: does ff change? if so ff = ...
+}
 
-	// Shaking: if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) {arm_state = DOWN_STATE;}
-
-	arm_offset = ARM_OFFSET * (double) cos(current_pos); //counter gravity when needed because of slack on the arm
-
-  frc::SmartDashboard::PutNumber("GOAL VELOCITY", goal_vel);
-  frc::SmartDashboard::PutNumber("ERROR POS", error_a[0][0]);
-  frc::SmartDashboard::PutNumber("ERROR VELOCITY", error_a[0][1]);
-  frc::SmartDashboard::PutNumber("OFFSET", arm_offset);
-
-	u_a = (K_a[0][0] * error_a[0][0]) + (K_a[0][1] * error_a[1][0]) //u_sis in voltage, so * by v_bat_a
-			+ (Kv_a* goal_vel * v_bat_a) + arm_offset;
+void Arm::UpdateVoltage() {
+  u_a = (K_a[0][0] * error_a[0][0]) + (K_a[0][1] * error_a[1][0]) //u_sis in voltage, so * by v_bat_a
+			+ (Kv_a* goal_vel * v_bat_a) * ff_percent_a + arm_offset;
 }
 
 void Arm::Rotate() {
 	// Setup
 	if (arm_state != STOP_ARM_STATE_H
 		&& arm_state != INIT_STATE_H) {
-			CalcError(); //count
-			RunController();
+			UpdateRotateCoordinates();
+      UpdateRotateError();
 
-    if (arm_profiler->SetFinalGoalArm() < arm_profiler->SetInitPosArm()) {
+      if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
+    		UpdateRotatingDirection(K_down_a);
+    	} else {
+    		UpdateRotatingDirection(K_up_a);
+    	}
+
+      UpdateVoltage();
+
+    // if (arm_profiler->SetFinalGoalArm() < arm_profiler->SetInitPosArm()) {
       SetVoltageArm(u_a);
-    }
+    // }
 
 			PrintArmInfo();
 
