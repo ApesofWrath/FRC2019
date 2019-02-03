@@ -115,7 +115,10 @@ void Arm::Rotate() {
 			CalcError(); //count
 			RunController();
 
+    if (arm_profiler->SetFinalGoalArm() < arm_profiler->SetInitPosArm()) {
       SetVoltageArm(u_a);
+    }
+
 			PrintArmInfo();
 
 		}
