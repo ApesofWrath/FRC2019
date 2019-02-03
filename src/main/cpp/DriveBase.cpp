@@ -60,8 +60,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
-		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-		Kv = 1 / ACTUAL_MAX_Y_RPM;
+		actual_max_y_rpm = ACTUAL_MAX_Y_RPM_AUTON;
+		Kv = 1 / ACTUAL_MAX_Y_RPM_AUTON;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
@@ -71,8 +71,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		k_d_right_vel = K_D_RIGHT_VEL;
 		k_d_left_vel = K_D_LEFT_VEL;
 
-		k_f_left_vel = 1.0 / actual_max_y_rpm;
-		k_f_right_vel = 1.0 / actual_max_y_rpm;
+		k_f_left_vel = 1.0 / ACTUAL_MAX_Y_RPM_L_F;
+		k_f_right_vel = 1.0 / ACTUAL_MAX_Y_RPM_R_F;
 
 	}
 
@@ -512,9 +512,9 @@ void DriveBase::Controller(double ref_kick,
 	// frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
 
 	//conversion to RPM from native unit
-	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
+	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
-	double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
+	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
 //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive

@@ -44,9 +44,13 @@ const double WHEEL_DIAMETER = 6.0; //inches, for fps for auton
 const double TICKS_PER_ROT = 4096;//1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders
 const double TICKS_PER_FOOT = 1315.0; //auton
 
-const double MAX_Y_RPM = 550.0;
-const double ACTUAL_MAX_Y_RPM = 625.0;
-const double MAX_YAW_RATE = 20.0;
+const double MAX_Y_RPM = 500.0;
+const double ACTUAL_MAX_Y_RPM_AUTON = 500.0;
+const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
+const double ACTUAL_MAX_Y_RPM_L_B = 530.0;
+const double ACTUAL_MAX_Y_RPM_R_F = 550.0;
+const double ACTUAL_MAX_Y_RPM_R_B = 550.0;
+const double MAX_YAW_RATE = 0.17; //10.0 0.17 rad/s
 
 //misc
 
