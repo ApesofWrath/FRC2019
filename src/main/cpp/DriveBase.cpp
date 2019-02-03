@@ -501,9 +501,38 @@ void DriveBase::Controller(double ref_kick,
 		ref_right = -max_y_rpm;
 	}
 
-	feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
-	feed_forward_l = k_f_left_vel * ref_left;
-	feed_forward_k = 0.0 * ref_kick;//kf kick vel
+  if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
+    feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
+    feed_forward_l = 0;			//the PD controller should handle it itself
+    feed_forward_k = 0;
+
+  } else {
+
+    if (ref_right < 0.0) {
+      k_f_right_vel = 1.0 / 550.0;
+    } else {
+      k_f_right_vel = 1.0 / 550.0;
+    }
+
+    if (ref_left < 0.0) {
+      k_f_left_vel = 1.0 / 530.0;
+    } else {
+      k_f_left_vel = 1.0 / 600.0;
+    }
+
+    // const double MAX_Y_RPM = 500.0;
+    // const double ACTUAL_MAX_Y_RPM_AUTON = 500.0;
+    // const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
+    // const double ACTUAL_MAX_Y_RPM_L_B = 530.0;
+    // const double ACTUAL_MAX_Y_RPM_R_F = 550.0;
+    // const double ACTUAL_MAX_Y_RPM_R_B = 550.0;
+    // const double MAX_YAW_RATE = 0.17; //10.0 0.17 rad/s
+
+    feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
+  	feed_forward_l = k_f_left_vel * ref_left;
+  	feed_forward_k = 0.0 * ref_kick;//kf kick vel
+  }
+
 
 	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
 	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
@@ -576,13 +605,13 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
-	canTalonLeft2->Set(ControlMode::PercentOutput, total_left);
-	canTalonLeft3->Set(ControlMode::PercentOutput, total_left);
+	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+	canTalonLeft2->Set(ControlMode::PercentOutput, -total_left);
+	canTalonLeft3->Set(ControlMode::PercentOutput, -total_left);
 
-	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
-	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
-	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
+	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+	canTalonRight2->Set(ControlMode::PercentOutput, total_right);
+	canTalonRight3->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
