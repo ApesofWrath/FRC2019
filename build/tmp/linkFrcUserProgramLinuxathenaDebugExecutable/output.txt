@@ -1,4 +1,7 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
-linking frcUserProgram successful.
+See file:///C:/Users/andy/Robotics/FRC2019-SUCTION_SKELETON/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
+linking frcUserProgram failed.
+c:/users/andy/.gradle/toolchains/frc/2019/roborio/bin/../arm-frc2019-linux-gnueabi/usr/lib/crt1.o: In function `_start':
+/usr/src/debug/glibc/2.24-r0/git/csu/../sysdeps/arm/start.S:119: undefined reference to `main'
+collect2.exe: error: ld returned 1 exit status
 
-Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.
+Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///C:/Users/andy/Robotics/FRC2019-SUCTION_SKELETON/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.
