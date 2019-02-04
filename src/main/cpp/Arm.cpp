@@ -12,9 +12,6 @@ const int LOW_CARGO_STATE = 4;
 const int DOWN_STATE = 5;
 const int STOP_ARM_STATE = 6;
 
-frc::PowerDistributionPanel *pdp_a;
-ArmMotionProfiler *arm_profiler;
-
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
   talonArm = new TalonSRX(ARM_TALON_ID);
@@ -26,8 +23,6 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
   arm_profiler = arm_profiler_;
 
-  arm_profiler->SetMaxAccArm(MAX_ACCELERATION_A);
-	arm_profiler->SetMaxVelArm(MAX_VELOCITY_A);
 	hallEffectArm = new frc::DigitalInput(HALL_EFF_ARM_ID);
 
 }
@@ -122,7 +117,7 @@ void Arm::Rotate() {
 			UpdateRotateCoordinates();
       UpdateRotateError();
 
-      if (arm_profiler->final_goal_a < current_pos) { //must use final ref, to account for getting slightly ahead of the profiler
+      if (arm_profiler->GetFinalGoalArm() < arm_profiler->GetInitPosArm()) { //must use final ref, to account for getting slightly ahead of the profiler
     		UpdateRotatingDirection(K_down_a);
     	} else {
     		UpdateRotatingDirection(K_up_a);
@@ -310,12 +305,11 @@ void Arm::ArmStateMachine() {
 
 // TODO: remove current_state and just use arm_state
 void Arm::UpdateArmProfile(int current_state, double angle) {
-	//these must be reset in each state
-	arm_profiler->SetInitPosArm(GetAngularPosition());
 
   // First time in the new state, need to update motion profile
 	if (last_arm_state != arm_state) {
 		arm_profiler->SetFinalGoalArm(angle);
+    arm_profiler->SetInitPosArm(GetAngularPosition());
     frc::SmartDashboard::PutNumber("ANGLE", angle);
 	}
 	last_arm_state = current_state;

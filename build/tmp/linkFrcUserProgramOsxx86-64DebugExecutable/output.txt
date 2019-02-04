@@ -10,10 +10,10 @@ Undefined symbols for architecture x86_64:
   "ctre::phoenix::motorcontrol::SensorCollection::SetQuadraturePosition(int, int)", referenced from:
       Arm::ZeroEnc() in Arm.o
   "ctre::phoenix::motorcontrol::can::TalonSRX::GetSensorCollection()", referenced from:
+      Arm::ZeroEnc() in Arm.o
       Arm::ManualArm(frc::Joystick*) in Arm.o
       Arm::GetAngularPosition() in Arm.o
       Arm::GetAngularVelocity() in Arm.o
-      Arm::ZeroEnc() in Arm.o
       Arm::ArmStateMachine() in Arm.o
   "ctre::phoenix::motorcontrol::can::TalonSRX::TalonSRX(int)", referenced from:
       Arm::Arm(ArmMotionProfiler*) in Arm.o

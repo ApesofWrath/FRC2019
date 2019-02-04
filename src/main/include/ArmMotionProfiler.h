@@ -48,6 +48,9 @@ public:
 	//maximum velocity acceleration of the arm or system and the time step for the controller is needed
 	ArmMotionProfiler(double max_vel, double max_acc, double time_step);
 
+	double GetFinalGoalArm();
+	double GetInitPosArm();
+
 	//will generate a 1 dimensional profile for appendages
 	std::vector<std::vector<double> > CreateProfile1DArm(double init_pos,
 			std::vector<double> waypoints);

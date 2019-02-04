@@ -27,11 +27,12 @@
 class Arm {
 public:
 
-  Arm(ArmMotionProfiler *arm_profiler);
-
   TalonSRX *talonArm;
+  ArmMotionProfiler *arm_profiler;
 
   frc::DigitalInput *hallEffectArm; //for bottom
+
+  Arm(ArmMotionProfiler *arm_profiler);
 
   std::string arm_safety;
 
