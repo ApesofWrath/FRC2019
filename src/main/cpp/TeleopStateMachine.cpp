@@ -18,23 +18,22 @@ int last_state = 0;
 Elevator *elevator;
 Intake *intake;
 Arm *arm;
-Suction *suction;
-Solenoids *solenoids;
+HatchPickup *hatch_pickup;
 
-bool state_intake = false; //set to true to override the states set in the state machine
+bool state_top_intake = false; //set to true to override the states set in the state machine
+bool state_bottom_intake = false;
 bool state_arm = false;
 bool state_elevator = false;
 bool state_suction = false;
 bool state_solenoids = false;
 
 TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
-    Arm *arm_, Suction *suction_, Solenoids *solenoids_){
+    Arm *arm_, HatchPickup *hatch_pickup_){
 
     elevator = elevator_;
     intake = intake_;
     arm = arm_;
-    suction = suction_;
-    solenoids = solenoids_;
+    hatch_pickup = hatch_pickup_;
 
 }
 
@@ -50,27 +49,32 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       state = WAIT_FOR_BUTTON_STATE;
     }
 
-    //intake
+    //top intake
     if (top_intake_in) {
-  		state_intake = false;
-  		intake->intake_state = intake->TOP_INTAKE_IN_STATE_H;
+  		state_top_intake = false;
+  		intake->top_intake_state = intake->IN_STATE_H;
   	} else if (top_intake_out) {
-  		state_intake = false;
-  		intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
-  	} else if (top_intake_out) {
-      state_intake = false;
-      intake->intake_state = intake->TOP_INTAKE_STOP_STATE_H;
-    } else if (bottom_intake_in) {
-      state_intake = false;
-  		intake->intake_state = intake->BOTTOM_INTAKE_IN_STATE_H;
+  		state_top_intake = false;
+  		intake->top_intake_state = intake->OUT_STATE_H;
+  	} else if (top_intake_stop) {
+      state_top_intake = false;
+      intake->top_intake_state = intake->STOP_STATE_H;
+    } else {
+      state_top_intake = false;
+    }
+
+    //bottom intake
+    if (bottom_intake_in) {
+      state_bottom_intake = false;
+  		intake->bottom_intake_state = intake->IN_STATE_H;
     } else if (bottom_intake_out) {
-      state_intake = false;
-  		intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+      state_bottom_intake = false;
+  		intake->bottom_intake_state = intake->OUT_STATE_H;
     } else if (bottom_intake_stop) {
-  		state_intake = false;
-  		intake->intake_wheel_state = intake->BOTTOM_INTAKE_STOP_STATE_H;
+  		state_bottom_intake = false;
+  		intake->bottom_intake_stop = intake->STOP_STATE_H;
   	} else {
-  		state_intake = true;
+  		state_bottom_intake = true;
   	}
 
     //arm
@@ -113,10 +117,10 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     //suction
     if (suction_on) {
       state_suction = false;
-      suction->suction_state = suction->ON_STATE_H;
+      hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
     } else if (suction_off) {
       state_suction = false;
-      suction->suction_state = suction->OFF_STATE_H;
+      hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
     } else {
       state_suction = true;
     }
@@ -124,10 +128,10 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     //solenoids
     if (hatch_out) {
       state_solenoids = false;
-      solenoids->solenoids_state = solenoids->OUT_STATE_H
+      hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H
     } else if (hatch_in) {
       state_solenoids = false;
-      solenoids->solenoids_state = solenoids->IN_STATE_H;
+      hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
     } else {
       state_solenoids = true;
     }
@@ -139,10 +143,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       frc::SmartDashboard::PutString("State", "INIT");
 
       elevator->elevator_state = elevator->INIT_STATE_H;
-      intake->intake_state = intake->INIT_STATE_H;
+      intake->top_intake_state = intake->STOP_STATE_H;
+      intake->bottom_intake_state = intake->STOP_STATE_H;
       arm->arm_state = arm->INIT_STATE_H;
-      suction->suction_state = suction->INIT_STATE_H;
-      solenoids->solenoids_state = solenoids->INIT_STATE_H;
+      hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+      hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
       state = WAIT_FOR_BUTTON_STATE;
       last_state = INIT_STATE;
       break;
@@ -184,12 +189,12 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         }
       }
       if (state_suction) {
-        suction->suction_state = suction->ON_STATE_H;
+        hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
       }
       if (state_solenoids) {
-        solenoids->solenoids_state = solenoids->OUT_STATE_H;
+        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
       }
-      if (intake->HaveHatch() || post_intake_hatch) {
+      if (hatch_pickup->HaveHatch() || post_intake_hatch) {
         state = POST_INTAKE_HATCH_STATE;
       }
       last_state = GET_HATCH_GROUND_STATE;
@@ -205,16 +210,16 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           arm->arm_state = arm->DOWN_STATE_H;
         }
       }
-      if (state_intake) {
-        intake->intake_state = intake->BOTTOM_INTAKE_IN_STATE_H;
+      if (state_bottom_intake) {
+        intake->bottom_intake_state = intake->IN_STATE_H;
       }
       if (state_suction) {
-        suction->suction_state = suction->ON_STATE_H;
+        hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
       }
       if (state_solenoids) {
-        solenoids->solenoids_state = solenoids->OUT_STATE_H;
+        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
       }
-      if (intake->HaveHatch() || post_intake_hatch) {
+      if (hatch_pickup->HaveHatch() || post_intake_hatch) {
         state = POST_INTAKE_HATCH_STATE;
       }
       last_state = GET_HATCH_GROUND_STATE;
@@ -231,10 +236,10 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         }
       }
       if (state_suction) {
-        suction->suction_state = suction->ON_STATE_H;
+        hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
       }
       if (state_solenoids) {
-        solenoids->solenoids_state = solenoids->IN_STATE_H;
+        hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
       }
       if (place_hatch) {
         state = PLACE_HATCH_STATE;
@@ -252,9 +257,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           arm->arm_state = arm->DOWN_STATE_H;
         }
       }
-      if (state_intake) {
-        intake->intake_state = intake->BOTTOM_INTAKE_IN_STATE_H;
-        intake->intake_state = intake->TOP_INTAKE_IN_STATE_H;
+      if (state_bottom_intake) {
+        intake->bottom_intake_state = intake->IN_STATE_H;
+      }
+      if (state_top_intake) {
+        intake->top_intake_state = intake->IN_STATE_H;
       }
       if (intake->HaveBall() || post_intake_ball) {
         state = POST_INTAKE_BALL_STATE;
@@ -272,9 +279,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           arm->arm_state = arm->UP_STATE_H;
         }
       }
-      if (state_intake) {
-        intake->intake_arm = intake->BOTTOM_INTAKE_IN_STATE_H;
-        intake->intake_arm = intake->TOP_INTAKE_IN_STATE_H;
+      if (state_bottom_intake) {
+        intake->bottom_intake_arm = intake->IN_STATE_H;
+      }
+      if (state_top_intake) {
+        intake->top_intake_arm = intake->IN_STATE_H;
       }
       if (place_ball) {
         state = PLACE_BALL_STATE;
@@ -290,29 +299,29 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         arm->arm_state = arm->UP_STATE_H;
       }
       if (state_solenoids) {
-        solenoids->solenoids_state = solenoids->OUT_STATE_H
+        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H
       }
       if (elevator_hatch_up) {
         elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() >= 0.60 && !place_hatch) { //placeholder
-          suction->suction_state = suction->OFF_STATE_H;
-          if (suction->ReleasedHatch()){
+          hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+          if (hatch_pickup->ReleasedHatch()){
             state = POST_OUTTAKE_HATCH_STATE;
           }
         }
       } else if (elevator_hatch_mid) {
         elevator->elevator_state = elevator->MID_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() >= 0.40 && !place_hatch) { //placeholder
-          suction->suction_state = suction->OFF_STATE_H;
-          if (suction->ReleasedHatch()){
+          hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+          if (hatch_pickup->ReleasedHatch()){
             state = POST_OUTTAKE_HATCH_STATE;
           }
         }
       } else if (elevator_hatch_low) {
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() >= 0.20 && !place_hatch) { //placeholder
-          suction->suction_state = suction->OFF_STATE_H;
-          if (suction->ReleasedHatch()){
+          hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+          if (hatch_pickup->ReleasedHatch()){
             state = POST_OUTTAKE_HATCH_STATE;
           }
         }
@@ -330,8 +339,8 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (elevator_ball_up) {
         elevator->elevator_state = elevator->TOP_BALL_STATE_H;
         if (elevator->GetElevatorPosition() >= 0.60 && !place_ball) { //placeholder
-          intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
-          intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+          intake->top_intake_state = intake->OUT_STATE_H;
+          intake->bottom_intake_state = intake->OUT_STATE_H;
           if (intake->ReleasedBall()) {
             state = POST_OUTTAKE_BALL_STATE;
           }
@@ -339,8 +348,8 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       } else if (elevator_ball_mid) {
         elevator->elevator_state = elevator->MID_BALL_STATE_H;
         if (elevator->GetElevatorPosition() >= 0.40 && !place_ball) { //placeholder
-          intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
-          intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+          intake->top_intake_state = intake->OUT_STATE_H;
+          intake->bottom_intake_state = intake->OUT_STATE_H;
           if (intake->ReleasedBall()) {
             state = POST_OUTTAKE_BALL_STATE;
           }
@@ -348,8 +357,8 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       } else if (elevator_ball_low) {
          elevator->elevator_state = elevator->BOTTOM_BALL_STATE_H;
          if (elevator->GetElevatorPosition() >= 0.20 && !place_ball) { //placeholder
-           intake->intake_state = intake->TOP_INTAKE_OUT_STATE_H;
-           intake->intake_state = intake->BOTTOM_INTAKE_OUT_STATE_H;
+           intake->top_intake_state = intake->OUT_STATE_H;
+           intake->bottom_intake_state = intake->OUT_STATE_H;
            if (intake->ReleasedBall()) {
              state = POST_OUTTAKE_BALL_STATE;
            }
@@ -369,10 +378,10 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         }
       }
       if (state_solenoids) {
-        solenoids->solenoids_state = solenoids->IN_STATE_H;
+        hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
       }
       if (state_suction) {
-        suction->suction_state = suction->OFF_STATE_H;
+        hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
       }
       state = WAIT_FOR_BUTTON_STATE;
       last_state = POST_OUTTAKE_HATCH_STATE;
@@ -388,9 +397,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           arm->arm_state = arm->UP_STATE_H;
         }
       }
-      if (state_intake) {
-        intake->intake_state = intake->TOP_INTAKE_STOP_STATE_H;
-        intake->intake_state = intake->BOTTOM_INTAKE_STOP_STATE_H;
+      if (state_top_intake) {
+        intake->top_intake_state = intake->STOP_STATE_H;
+      }
+      if (state_bottom_intake) {
+        intake->bottom_intake_state = intake->STOP_STATE_H;
       }
       state = WAIT_FOR_BUTTON_STATE;
       last_state = POST_OUTTAKE_BALL_STATE;

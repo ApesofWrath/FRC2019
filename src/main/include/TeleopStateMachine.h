@@ -8,8 +8,7 @@
 #include "Arm.h"
 #include "Elevator.h"
 #include "Intake.h"
-#include "Suction.h"
-#include "Solenoids.h"
+#include "HatchPickup.h"
 
 class TeleopStateMachine {
 public:

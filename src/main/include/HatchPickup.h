@@ -11,13 +11,13 @@ public:
   frc::DigitalOutput *suction;
   frc::DoubleSolenoid *solenoid;
 
-  const int PULL_STATE_H = 0;
-  const int PUSH_STATE_H = 1;
+  const int ON_STATE_H = 0;
+  const int OFF_STATE_H = 1;
 
-  const int DOWN_STATE_H = 0;
-  const int UP_STATE_H = 1;
+  const int OUT_STATE_H = 0;
+  const int IN_STATE_H = 1;
 
-  int suction_state = PULL_STATE_H;
+  int suction_state = ON_STATE_H;
   int solenoid_state = DOWN_STATE_H;
 
 
@@ -29,12 +29,12 @@ public:
 
   HatchPickup();
 
-  void Pull();
-  void Push();
+  void On();
+  void Off();
   void SuctionStateMachine();
 
-  void Up();
-  void Down();
+  void In();
+  void Out();
   void SolenoidStateMachine();
 
 

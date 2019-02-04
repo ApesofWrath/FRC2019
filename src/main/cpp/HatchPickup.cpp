@@ -1,10 +1,10 @@
 #include "HatchPickup.h"
 
-const int PULL_STATE = 0;
-const int PUSH_STATE = 1;
+const int ON_STATE = 0;
+const int OFF_STATE = 1;
 
-const int DOWN_STATE = 0;
-const int UP_STATE = 1;
+const int OUT_STATE = 0;
+const int IN_STATE = 1;
 
 HatchPickup::HatchPickup() {
 
@@ -12,25 +12,25 @@ HatchPickup::HatchPickup() {
   solenoid = new frc::DoubleSolenoid(SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 
-void HatchPickup::Pull() {
+void HatchPickup::On() {
 
   suction->Set(true);
 
 }
 
-void HatchPickup::Push() {
+void HatchPickup::Off() {
 
   suction->Set(false);
 
 }
 
-void HatchPickup::Up() {
+void HatchPickup::In() {
 
   solenoid->Set(frc::DoubleSolenoid::kForward);
 
 }
 
-void HatchPickup::Down() {
+void HatchPickup::Out() {
 
   solenoid->Set(frc::DoubleSolenoid::kReverse);
 
@@ -39,13 +39,13 @@ void HatchPickup::Down() {
 void HatchPickup::SuctionStateMachine() {
 
     switch (suction_state) {
-        case PULL_STATE:
-            Pull();
-            frc::SmartDashboard::PutString("SUCTION", "pull");
+        case ON_STATE:
+            On();
+            frc::SmartDashboard::PutString("SUCTION", "On");
             break;
-        case PUSH_STATE:
-            Push();
-            frc::SmartDashboard::PutString("SUCTION", "push");
+        case OFF_STATE:
+            Off();
+            frc::SmartDashboard::PutString("SUCTION", "Off");
             break;
     }
 }
@@ -54,14 +54,14 @@ void HatchPickup::SuctionStateMachine() {
 void HatchPickup::SolenoidStateMachine() {
 
   switch (solenoid_state) {
-    case DOWN_STATE:
-      Down();
-      frc::SmartDashboard::PutString("SOLENOID", "down");
+    case OUT_STATE:
+      Out();
+      frc::SmartDashboard::PutString("SOLENOID", "Out");
       break;
 
-    case UP_STATE:
-      Up();
-      frc::SmartDashboard::PutString("SOLENOID", "up");
+    case IN_STATE:
+      In();
+      frc::SmartDashboard::PutString("SOLENOID", "In");
       break;
   }
 }
