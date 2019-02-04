@@ -6,13 +6,13 @@
 
 //Teleop
 
-const double K_P_RIGHT_VEL = 0.0; //no gear shift
+const double K_P_RIGHT_VEL = 0.001; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;
 
-const double K_P_LEFT_VEL = 0.0;
+const double K_P_LEFT_VEL = 0.001;
 const double K_D_LEFT_VEL = 0.0;
 
-const double K_P_YAW_VEL = 0.0;
+const double K_P_YAW_VEL = 15.0;
 const double K_D_YAW_VEL = 0.0;
 
 const double K_P_YAW_HEADING_POS = 0.0; //special controllers
@@ -46,7 +46,7 @@ const double TICKS_PER_FOOT = 1315.0; //auton
 
 const double MAX_Y_RPM = 500.0;
 const double ACTUAL_MAX_Y_RPM = 625.0;
-const double MAX_YAW_RATE = 20.0;
+const double MAX_YAW_RATE = 0.17;
 
 //misc
 

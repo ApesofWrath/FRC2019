@@ -477,13 +477,10 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((k_p_yaw * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb
-
+	double yaw_output = ((200.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
-
-	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
-	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
 
 	if (std::abs(ref_kick) < 25) {
 		ref_kick = 0;
@@ -509,13 +506,13 @@ void DriveBase::Controller(double ref_kick,
   } else {
 
     if (ref_right < 0.0) {
-      k_f_right_vel = 1.0 / 550.0;
+      k_f_right_vel = 1.0 / 600.0;
     } else {
-      k_f_right_vel = 1.0 / 550.0;
+      k_f_right_vel = 1.0 / 600.0;
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / 530.0;
+      k_f_left_vel = 1.0 / 570.0;
     } else {
       k_f_left_vel = 1.0 / 600.0;
     }
@@ -541,9 +538,9 @@ void DriveBase::Controller(double ref_kick,
 	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
 
 	//conversion to RPM from native unit
-	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
+	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
-	double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
+	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
 //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
@@ -551,14 +548,18 @@ void DriveBase::Controller(double ref_kick,
 frc::SmartDashboard::PutNumber("l position", GetLeftPosition());
 frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 
-frc::SmartDashboard::PutNumber("l current", l_current);
-frc::SmartDashboard::PutNumber("r current", r_current);
-
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
 	//kick_error_vel = ref_kick - kick_current;
 
-	frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+
+  frc::SmartDashboard::PutNumber("l current", l_current);
+  frc::SmartDashboard::PutNumber("r current", r_current);
+
+  	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
+  	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
+
+  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
 	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
 
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
@@ -577,12 +578,6 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
 	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
 	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
-
-	if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
-		feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
-		feed_forward_l = 0;			//the PD controller should handle it itself
-		feed_forward_k = 0;
-	}
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
 			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
