@@ -1,8 +1,6 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
-compiling ArmMotionProfiler.cpp successful.
-
+See file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp.
 compiling Arm.cpp successful.
 
 compiling Robot.cpp successful.
 
-Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/compileFrcUserProgramLinuxathenaReleaseExecutableFrcUserProgramCpp/output.txt.

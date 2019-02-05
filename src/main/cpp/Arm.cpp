@@ -29,7 +29,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
 void Arm::InitializeArm() {
 	if (!is_init_arm) { //this has to be here for some reason
-		SetVoltageArm(-1.5); //	MAYBE SHOULDNT BE NEGATIVE - CHECK
+		SetVoltageArm(3.5); //	MAYBE SHOULDNT BE NEGATIVE - CHECK
 	}
 
 	ZeroEnc(); //won't start at 0 on this year's robot!
@@ -91,7 +91,6 @@ void Arm::UpdateRotateCoordinates() {
 
   frc::SmartDashboard::PutNumber("REF ARM POS", ref_arm[0][0]);
   frc::SmartDashboard::PutNumber("REF ARM VEL", ref_arm[1][0]);
-
 }
 
 void Arm::UpdateRotateError() {
@@ -130,7 +129,6 @@ void Arm::Rotate() {
     // }
 
 			PrintArmInfo();
-
 		}
 }
 
@@ -155,7 +153,7 @@ void Arm::SetVoltageArm(double voltage_a) {
 	CapVoltage();
 
 	//zero height moves up sometimes. this will make sure the arm goes all the way down every time
-	if (arm_state == DOWN_STATE && arm_pos <= 0.2) {
+	if ((arm_state == DOWN_STATE) && arm_pos <= 0.4) { // TODO: change back to 0.2 after fix zeroing encoders
 		arm_voltage = 0.0;
 
 	}
@@ -169,7 +167,8 @@ void Arm::OutputArmVoltage() {
 	arm_voltage /= v_bat_a; //scale from -1 to 1 for the talon // max voltage is positive
 
 	arm_voltage *= -1.0; //set AT END //reverse direction
-
+  counter++;
+  frc::SmartDashboard::PutNumber("output counter", counter);
 	talonArm->Set(ControlMode::PercentOutput, arm_voltage);
 }
 
@@ -193,7 +192,7 @@ void Arm::UpperSoftLimit() {
 void Arm::LowerSoftLimit() {
 	//SOFT LIMIT BOTTOM
 	if (IsAtBottomArm()) { //hall effect returns 0 when at bottom. we reverse it here
-		ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
+		// ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
 		if (arm_pos < (DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
 			arm_voltage = 0.0;
 			arm_safety = "bot hall eff";
@@ -209,7 +208,6 @@ void Arm::StallSafety() {
 		encoder_counter = 0;
 	}
 	if (encoder_counter > 10) {
-		voltage_safety = true;
 		arm_voltage = 0.0;
 		arm_safety = "stall";
 	}
@@ -246,9 +244,11 @@ double Arm::GetAngularPosition() {
 					/ (TICKS_PER_ROT_A) * (2.0 * PI) * -1.0);
 	//double ang_pos = 0.0;
 
+  //TODO: what is this?
 	double offset_pos = .35; //amount that the arm will stick up in radians
-
-	return ang_pos + offset_pos;
+  
+  return ang_pos;
+	// return ang_pos + offset_pos;
 }
 
 bool Arm::IsAtBottomArm() {
@@ -325,7 +325,6 @@ bool Arm::EncodersRunning() { //will stop the controller from run //or stalled /
 }
 
   void Arm::ZeroEnc() { //called in Initialize() and in SetVoltage()
-
     if (zeroing_counter_a < 2) {
       talonArm->GetSensorCollection().SetQuadraturePosition(0, 0);
       zeroing_counter_a++;

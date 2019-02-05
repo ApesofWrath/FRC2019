@@ -82,6 +82,7 @@ public:
 	void ManualArm(frc::Joystick *joyOpArm);
   void ArmStateMachine();
   void Rotate(); //main control loop
+  void ZeroEnc();
 private:
 
   double arm_pos;
@@ -103,7 +104,6 @@ private:
   const double v_bat_a = 12.0; //needs to be separate from the max and min voltages, which may change
 
   bool first_time_at_bottom = false;
-  bool voltage_safety = false;
 
   int init_counter_a = 0;
   int counter_a = 0;
@@ -133,8 +133,6 @@ private:
   // Output helpers
   void CapVoltage();
   void OutputArmVoltage();
-
-	void ZeroEnc();
 
   void StopArm();
   void UpdateArmProfile(int current_state, double angle);
