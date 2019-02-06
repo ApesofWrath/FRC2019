@@ -68,22 +68,22 @@ void Robot::TeleopPeriodic() {
 		is_vision = joyThrottle->GetRawButton(-1);
 		is_regular = joyThrottle->GetRawButton(-1);
 
-    double y = joyThrottle->GetY();
-
-     drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, -y);
-  	   drive_controller->canTalonLeft2->Set(ControlMode::PercentOutput, -y);
-  	   drive_controller->canTalonLeft3->Set(ControlMode::PercentOutput, -y);
-    //
-  	   drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, y);
-  	   drive_controller->canTalonRight2->Set(ControlMode::PercentOutput, y);
-  	   drive_controller->canTalonRight3->Set(ControlMode::PercentOutput, y);
-
-  // drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-  frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());
-   // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
-   // frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
-   frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
-   // frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
+  //   double y = joyThrottle->GetY();
+  //
+  //    drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, -y);
+  // 	   drive_controller->canTalonLeft2->Set(ControlMode::PercentOutput, -y);
+  // 	   drive_controller->canTalonLeft3->Set(ControlMode::PercentOutput, -y);
+  //   //
+  // 	   drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, y);
+  // 	   drive_controller->canTalonRight2->Set(ControlMode::PercentOutput, y);
+  // 	   drive_controller->canTalonRight3->Set(ControlMode::PercentOutput, y);
+  //
+  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  // frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());
+  //  // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+  //  // frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
    // frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
 }
 

@@ -468,11 +468,11 @@ void DriveBase::Controller(double ref_kick,
 		double k_d_left, double k_d_kick, double target_vel_left, //50
 		double target_vel_right, double target_vel_kick) { //last parameter targets are for auton
 
-	double yaw_rate_current = -1.0 * (double) ahrs->GetRate();
+	double yaw_rate_current = -1.0 * (double) ahrs->GetRate(); //might be rad/ss
 		//	* (double) ((PI) / 180.0); //left should be positive
 
-	 frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
-	 frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
+	 // frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	 // frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
 	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
 	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
 
@@ -525,15 +525,15 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   } else {
 
     if (ref_right < 0.0) {
-      k_f_right_vel = 1.0 / 600.0;
+      k_f_right_vel = 1.0 / 580.0;
     } else {
-      k_f_right_vel = 1.0 / 600.0;
+      k_f_right_vel = 1.0 / 580.0;
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / 570.0;
+      k_f_left_vel = 1.0 / 550.0;
     } else {
-      k_f_left_vel = 1.0 / 600.0;
+      k_f_left_vel = 1.0 / 590.0;
     }
 
     // const double MAX_Y_RPM = 500.0;
