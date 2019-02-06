@@ -30,18 +30,18 @@ public:
   const int TOP_HALL = 2;
   const int BOT_HALL = 1;
 
-  const int INIT = 0;
-  const int ROCKET_TOP_CARGO = 1;
-  const int ROCKET_MID_CARGO = 2;
-  const int ROCKET_BOTTOM_CARGO = 3;
-  const int ROCKET_TOP_HATCH = 4;
-  const int ROCKET_MID_HATCH = 5;
-  const int BOTTOM_HATCH = 6; // Same for rocket and cargo bay, only need one
-  const int BAY_CARGO = 7;
-  const int STOP_STATE = 8;
+  const int INIT_STATE_H = 0;
+  const int TOP_CARGO_STATE_H = 1;
+  const int MID_CARGO_STATE_H = 2;
+  const int BOTTOM_CARGO_STATE_H = 3;
+  const int TOP_HATCH_STATE_H = 4;
+  const int MID_HATCH_STATE_H = 5;
+  const int BOTTOM_HATCH_STATE_H = 6; // Same for rocket and cargo bay, only need one
+  const int BAY_CARGO_STATE_H = 7;
+  const int STOP_STATE_H = 8;
 
-  int last_elevator_state = INIT;
-  int elevator_state = INIT;
+  int last_elevator_state = INIT_STATE_H;
+  int elevator_state = INIT_STATE_H;
 
   bool is_elevator_init = false;
 
@@ -87,15 +87,15 @@ private:
   std::string elev_type, elev_safety;
 
   std::map <int, std::string> elev_state = {
-    {INIT, "INIT"},
-    {ROCKET_TOP_CARGO, "ROCKET TOP CARGO"},
-    {ROCKET_MID_CARGO, "ROCKET MID CARGO"},
-    {ROCKET_BOTTOM_CARGO, "ROCKET BOTTOM CARGO"},
-    {ROCKET_TOP_HATCH, "ROCKET TOP HATCH"},
-    {ROCKET_MID_HATCH, "ROCKET TOP HATCH"},
-    {BOTTOM_HATCH, "HATCH BOTTOM"},
-    {BAY_CARGO, "BAY CARGO"},
-    {STOP_STATE, "STOP"}
+    {INIT_STATE_H, "INIT"},
+    {TOP_CARGO_STATE_H, "ROCKET TOP CARGO"},
+    {MID_CARGO_STATE_H, "ROCKET MID CARGO"},
+    {BOTTOM_CARGO_STATE_H, "ROCKET BOTTOM CARGO"},
+    {TOP_HATCH_STATE_H, "ROCKET TOP HATCH"},
+    {MID_HATCH_STATE_H, "ROCKET TOP HATCH"},
+    {BOTTOM_HATCH_STATE_H, "HATCH BOTTOM"},
+    {BAY_CARGO_STATE_H, "BAY CARGO"},
+    {STOP_STATE_H, "STOP"}
   };
 
   //Move()

@@ -17,8 +17,8 @@ public:
   const int OUT_STATE_H = 0;
   const int IN_STATE_H = 1;
 
-  int suction_state = ON_STATE_H;
-  int solenoid_state = DOWN_STATE_H;
+  int suction_state = 0;
+  int solenoid_state = 0;
 
 
   const int SUCTION_CHANNEL = -1;

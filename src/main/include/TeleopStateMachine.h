@@ -9,6 +9,7 @@
 #include "Elevator.h"
 #include "Intake.h"
 #include "HatchPickup.h"
+#include "Elevator.h"
 
 class TeleopStateMachine {
 public:
@@ -19,9 +20,9 @@ public:
       bool bottom_intake_out, bool bottom_intake_stop, bool top_intake_in, bool top_intake_out,
       bool top_intake_stop, bool suction_on, bool suction_off, bool hatch_out, bool hatch_in, bool arm_up,
       bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
-      bool elevator_ball_up, bool elevator_ball_mid, bool elevator_ball_low, bool elevator_down,
-      bool get_ball, bool get_hatch_ground, bool get_hatch_station, bool post_intake_ball,
-      bool post_intake_hatch, bool place_hatch, bool place_ball, bool post_outtake_hatch, bool post_outtake_ball);
+      bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo,
+      bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch,
+      bool place_hatch, bool place_cargo, bool post_outtake_hatch, bool post_outtake_cargo);
 
   Elevator *elevator;
   Intake *intake;

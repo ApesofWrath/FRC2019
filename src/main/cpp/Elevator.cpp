@@ -2,15 +2,15 @@
 
 #define PI 3.14159265
 
-const int _INIT = 0;
-const int _ROCKET_TOP_CARGO = 1;
-const int _ROCKET_MID_CARGO = 2;
-const int _ROCKET_BOTTOM_CARGO = 3;
-const int _ROCKET_TOP_HATCH = 4;
-const int _ROCKET_MID_HATCH = 5;
-const int _BOTTOM_HATCH = 6; // Same for rocket and cargo bay, only need one
-const int _BAY_CARGO = 7;
-const int _STOP_STATE = 8;
+const int INIT_STATE = 0;
+const int TOP_CARGO_STATE = 1;
+const int MID_CARGO_STATE = 2;
+const int BOTTOM_CARGO_STATE = 3;
+const int TOP_HATCH_STATE = 4;
+const int MID_HATCH_STATE = 5;
+const int BOTTOM_HATCH_STATE = 6; // Same for rocket and cargo bay, only need one
+const int BAY_CARGO_STATE = 7;
+const int STOP_STATE = 8;
 
 double elevator_voltage = 0.0;
 
@@ -18,7 +18,7 @@ int encoder_counter_e = 0;
 
 Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
-  elevator_state = BOTTOM_HATCH;
+  elevator_state = BOTTOM_HATCH_STATE;
 
   elevator_profiler = elevator_profiler_;
 
@@ -71,9 +71,9 @@ void Elevator::ElevatorStateMachine() {
   PrintElevatorInfo();
 
   switch (elevator_state) {
-    case _INIT:
+    case INIT_STATE:
       if (is_elevator_init) {
-        elevator_state = _ROCKET_BOTTOM_CARGO; // TODO: Change to actual starting position,(current is testing) probably BOTTOM_HATCH
+        elevator_state = BOTTOM_CARGO_STATE; // TODO: Change to actual starting position,(current is testing) probably BOTTOM_HATCH
       } else {
         ZeroElevator();
       }
@@ -83,40 +83,40 @@ void Elevator::ElevatorStateMachine() {
         // }
         // SetVoltage(0.0);
     //  }
-      last_elevator_state = _INIT;
+      last_elevator_state = INIT_STATE;
     break;
 
-    case _ROCKET_TOP_CARGO:
-     CheckElevatorGoal(_ROCKET_TOP_CARGO, ROCKET_TOP_CARGO_POS);
+    case TOP_CARGO_STATE:
+     CheckElevatorGoal(TOP_CARGO_STATE, TOP_CARGO_POS);
     break;
 
-    case _ROCKET_MID_CARGO:
-      CheckElevatorGoal(_ROCKET_MID_CARGO, ROCKET_MID_CARGO_POS);
+    case MID_CARGO_STATE:
+      CheckElevatorGoal(MID_CARGO_STATE, MID_CARGO_POS);
     break;
 
-    case _ROCKET_BOTTOM_CARGO:
-      CheckElevatorGoal(_ROCKET_BOTTOM_CARGO, ROCKET_BOTTOM_CARGO_POS);
+    case BOTTOM_CARGO_STATE:
+      CheckElevatorGoal(BOTTOM_CARGO_STATE, BOTTOM_CARGO_POS);
     break;
 
-    case _ROCKET_TOP_HATCH:
-      CheckElevatorGoal(_ROCKET_TOP_HATCH, ROCKET_TOP_HATCH_POS);
+    case TOP_HATCH_STATE:
+      CheckElevatorGoal(TOP_HATCH_STATE, TOP_HATCH_POS);
     break;
 
-    case _ROCKET_MID_HATCH:
-      CheckElevatorGoal(_ROCKET_MID_HATCH, ROCKET_MID_HATCH_POS);
+    case MID_HATCH_STATE:
+      CheckElevatorGoal(MID_HATCH_STATE, MID_HATCH_POS);
     break;
 
-    case _BOTTOM_HATCH:
-      CheckElevatorGoal(_BOTTOM_HATCH, BOTTOM_HATCH_POS);
+    case BOTTOM_HATCH_STATE:
+      CheckElevatorGoal(BOTTOM_HATCH_STATE, BOTTOM_HATCH_POS);
     break;
 
-    case _BAY_CARGO:
-      CheckElevatorGoal(_BAY_CARGO, BAY_CARGO_POS);
+    case BAY_CARGO_STATE:
+      CheckElevatorGoal(BAY_CARGO_STATE, BAY_CARGO_POS);
     break;
 
-    case _STOP_STATE:
+    case STOP_STATE:
       Stop();
-      last_elevator_state = _STOP_STATE;
+      last_elevator_state = STOP_STATE;
     break;
   }
 }
@@ -167,7 +167,7 @@ double Elevator::GetElevatorVelocity() {
 }
 
 void Elevator::Move() {
-  if (elevator_state != _STOP_STATE) {
+  if (elevator_state != STOP_STATE) {
     UpdateMoveCoordinates();
     UpdateMoveError();
 

@@ -7,11 +7,11 @@ const double MID_POS_E = 0.4;//0.668;
 const double UP_POS_E = 0.70;
 
 // elevator posititons for the differnet states
-const double ROCKET_TOP_CARGO_POS = UP_POS_E;
-const double ROCKET_MID_CARGO_POS = MID_POS_E;
-const double ROCKET_BOTTOM_CARGO_POS = DOWN_POS_E;
-const double ROCKET_TOP_HATCH_POS = 0.0;
-const double ROCKET_MID_HATCH_POS = 0.0;
+const double TOP_CARGO_POS = UP_POS_E;
+const double MID_CARGO_POS = MID_POS_E;
+const double BOTTOM_CARGO_POS = DOWN_POS_E;
+const double TOP_HATCH_POS = 0.0;
+const double MID_HATCH_POS = 0.0;
 const double BOTTOM_HATCH_POS = 0.0;
 const double BAY_CARGO_POS = 0.0;
 
