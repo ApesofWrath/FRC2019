@@ -1,7 +1,7 @@
-build/
-.gradle/
-gradle/
-.wpilib/
+build/*
+.gradle/*
+gradle/*
+.wpilib/*
 build.gradle
 gradlew
 gradlew.bat
