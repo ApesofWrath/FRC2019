@@ -8,9 +8,11 @@
 #pragma once
 
 #include <string>
-
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include "Elevator.h"
+#include "ElevatorMotionProfiler.h"
+#include <frc/Joystick.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -21,6 +23,10 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+
+  Elevator *elevator;
+  ElevatorMotionProfiler *elevator_mp;
+  frc::Joystick *joyElev;
 
  private:
   frc::SendableChooser<std::string> m_chooser;
