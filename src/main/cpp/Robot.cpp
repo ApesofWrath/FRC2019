@@ -72,7 +72,7 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
 
-    // arm->ManualArm(joyOp);
+    arm->ManualArm(joyOp);
 
 
     bool arm_low = joyOp->GetRawButton(3);
@@ -93,9 +93,9 @@ void Robot::TeleopPeriodic() {
       arm->arm_state = arm->MID_CARGO_STATE_H;
     }
 
-    arm->ArmStateMachine();
+    // arm->ArmStateMachine();
 
-    arm->Rotate();
+    // arm->Rotate();
 
 }
 

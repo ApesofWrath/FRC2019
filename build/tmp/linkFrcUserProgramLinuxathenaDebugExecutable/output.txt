@@ -1,4 +1,4 @@
-See file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
+See file:///C:/Users/DriversStation/Desktop/FRC2019_Auton/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt for all output for linkFrcUserProgramLinuxathenaDebugExecutable.
 linking frcUserProgram successful.
 
-Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.
+Finished linkFrcUserProgramLinuxathenaDebugExecutable, see full log file:///C:/Users/DriversStation/Desktop/FRC2019_Auton/FRC2019/build/tmp/linkFrcUserProgramLinuxathenaDebugExecutable/output.txt.

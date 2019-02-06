@@ -137,10 +137,11 @@ void Arm::IsElevatorHigh(bool is_high) {
 }
 
 void Arm::SetVoltageArm(double voltage_a) {
-  frc::SmartDashboard::PutNumber("Preprocessed Voltage", voltage_a);
   arm_voltage = voltage_a;
+  is_init_arm = true;
 
-	frc::SmartDashboard::PutNumber("ARM HALL EFF", IsAtBottomArm()); // actually means not at bottom //0 means up// 1 means down
+  arm_state = HIGH_CARGO_STATE;
+	// frc::SmartDashboard::PutNumber("ARM HALL EFF", IsAtBottomArm()); // actually means not at bottom //0 means up// 1 means down
 
 	arm_safety = "NONE";
 
@@ -173,8 +174,8 @@ void Arm::OutputArmVoltage() {
 }
 
 void Arm::UpperSoftLimit() {
-
-	if (elevator_high) {
+  // TODO: may need to differnetiate between whether the elevator_high and the top cago state, elevator mightbe able to be high in different cases
+	if (arm_state = HIGH_CARGO_STATE) {
 		if ((arm_pos >= UP_LIMIT_A) && (arm_voltage > UP_VOLT_LIMIT_A) && is_init_arm) { //at max height and still trying to move up
 			arm_voltage = 0.0; //shouldn't crash
 			arm_safety = "top soft limit";
@@ -193,7 +194,7 @@ void Arm::LowerSoftLimit() {
 	//SOFT LIMIT BOTTOM
 	if (IsAtBottomArm()) { //hall effect returns 0 when at bottom. we reverse it here
 		// ZeroEnc(); //will not run after 2nd time (first time is in teleop init)
-		if (arm_pos < (DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A)) { //but hall effect goes off at 0.35
+		if (arm_pos <= DOWN_LIMIT_A && arm_voltage < DOWN_VOLT_LIMIT_A) { //but hall effect goes off at 0.35
 			arm_voltage = 0.0;
 			arm_safety = "bot hall eff";
 		}
@@ -242,11 +243,9 @@ double Arm::GetAngularPosition() {
 	double ang_pos =
 			(talonArm->GetSensorCollection().GetQuadraturePosition()
 					/ (TICKS_PER_ROT_A) * (2.0 * PI) * -1.0);
-	//double ang_pos = 0.0;
 
-  //TODO: what is this?
 	double offset_pos = .35; //amount that the arm will stick up in radians
-  
+
   return ang_pos;
 	// return ang_pos + offset_pos;
 }
