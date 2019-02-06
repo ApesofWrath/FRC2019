@@ -98,7 +98,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	 canTalonLeft1->EnableCurrentLimit(true); //still not true from tuner
 //	 canTalonLeft2->EnableCurrentLimit(true); //victor spx does not have
 //	 canTalonLeft3->EnableCurrentLimit(true);
-	//
+
 	 canTalonRight1->EnableCurrentLimit(true);
 //	 canTalonRight2->EnableCurrentLimit(true);
 //	 canTalonRight3->EnableCurrentLimit(true);
@@ -677,7 +677,7 @@ void DriveBase::ZeroYaw() {
 
 }
 
-double DriveBase::GetLeftVel() {
+double DriveBase::GetLeftVel() { //550 left back //590 left forward
 
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -685,7 +685,7 @@ double DriveBase::GetLeftVel() {
 	return l_current;
 }
 
-double DriveBase::GetRightVel() {
+double DriveBase::GetRightVel() { //580 right back //580 right forward
 
 	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
