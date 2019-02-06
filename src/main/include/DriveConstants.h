@@ -6,10 +6,10 @@
 
 //Teleop
 
-const double K_P_RIGHT_VEL = 0.001; //no gear shift
+const double K_P_RIGHT_VEL = 0.00; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;
 
-const double K_P_LEFT_VEL = 0.001;
+const double K_P_LEFT_VEL = 0.00; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
 const double K_P_YAW_VEL = 15.0;

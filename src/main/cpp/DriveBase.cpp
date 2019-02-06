@@ -95,13 +95,13 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonRight2 = new VictorSPX(R2);
 	canTalonRight3 = new VictorSPX(R3);
 
-	// canTalonLeft1->EnableCurrentLimit(true);
-	// canTalonLeft2->EnableCurrentLimit(true);
-	// canTalonLeft3->EnableCurrentLimit(true);
+	 canTalonLeft1->EnableCurrentLimit(true); //still not true from tuner
+//	 canTalonLeft2->EnableCurrentLimit(true); //victor spx does not have
+//	 canTalonLeft3->EnableCurrentLimit(true);
 	//
-	// canTalonRight1->EnableCurrentLimit(true);
-	// canTalonRight2->EnableCurrentLimit(true);
-	// canTalonRight3->EnableCurrentLimit(true);
+	 canTalonRight1->EnableCurrentLimit(true);
+//	 canTalonRight2->EnableCurrentLimit(true);
+//	 canTalonRight3->EnableCurrentLimit(true);
 	//
 	// canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
 	// canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
@@ -126,37 +126,56 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	// canTalonRight1->ConfigPeakCurrentDuration(10, 0);
 	// canTalonRight2->ConfigPeakCurrentDuration(10, 0);
 	// canTalonRight3->ConfigPeakCurrentDuration(10, 0);
-	//
+  //
 	// canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
 	// canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
 	// canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
 	// canTalonRight1->ConfigOpenloopRamp(0.15, 0);
 	// canTalonRight2->ConfigOpenloopRamp(0.15, 0);
 	// canTalonRight3->ConfigOpenloopRamp(0.15, 0);
-	//
-	// canTalonLeft1->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
+  //
+	canTalonLeft1->ConfigVelocityMeasurementPeriod(
+			VelocityMeasPeriod::Period_10Ms, 0);
+	canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
 	// canTalonLeft2->ConfigVelocityMeasurementPeriod(
 	// 		VelocityMeasPeriod::Period_10Ms, 0);
 	// canTalonLeft2->ConfigVelocityMeasurementWindow(5, 0);
 	// canTalonLeft3->ConfigVelocityMeasurementPeriod(
 	// 		VelocityMeasPeriod::Period_10Ms, 0);
 	// canTalonLeft3->ConfigVelocityMeasurementWindow(5, 0);
-	//
-	// canTalonRight1->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
+
+	canTalonRight1->ConfigVelocityMeasurementPeriod(
+			VelocityMeasPeriod::Period_10Ms, 0);
+	canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
 	// canTalonRight2->ConfigVelocityMeasurementPeriod(
 	// 		VelocityMeasPeriod::Period_10Ms, 0);
 	// canTalonRight2->ConfigVelocityMeasurementWindow(5, 0);
 	// canTalonRight3->ConfigVelocityMeasurementPeriod(
 	// 		VelocityMeasPeriod::Period_10Ms, 0);
 	// canTalonRight3->ConfigVelocityMeasurementWindow(5, 0);
-	//
+
 	// canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-	// canTalonRight1->SetStatusFramePeriod(
+	// canTalonLeft1->SetStatusFramePeriod(
 	// 		StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+  //
+  // canTalonRight1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+  // canTalonRight1->SetStatusFramePeriod(
+  //   			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+
+  canTalonLeft1->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft1->EnableVoltageCompensation(true);
+  canTalonRight1->ConfigVoltageCompSaturation(12.0);
+  canTalonRight1->EnableVoltageCompensation(true);
+
+  canTalonLeft2->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft2->EnableVoltageCompensation(true);
+  canTalonRight2->ConfigVoltageCompSaturation(12.0);
+  canTalonRight2->EnableVoltageCompensation(true);
+
+  canTalonLeft3->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft3->EnableVoltageCompensation(true);
+  canTalonRight3->ConfigVoltageCompSaturation(12.0);
+  canTalonRight3->EnableVoltageCompensation(true);
 
 	ahrs = new AHRS(SerialPort::kUSB);
 	visionDrive = new Vision();
@@ -446,11 +465,11 @@ void DriveBase::Controller(double ref_kick,
 		double ref_right, //first parameter refs are for teleop
 		double ref_left, double ref_yaw, double k_p_right, double k_p_left,
 		double k_p_kick, double k_p_yaw, double k_d_yaw, double k_d_right,
-		double k_d_left, double k_d_kick, double target_vel_left,
+		double k_d_left, double k_d_kick, double target_vel_left, //50
 		double target_vel_right, double target_vel_kick) { //last parameter targets are for auton
 
-	double yaw_rate_current = -1.0 * (double) ahrs->GetRate()
-			* (double) ((PI) / 180.0); //left should be positive
+	double yaw_rate_current = -1.0 * (double) ahrs->GetRate();
+		//	* (double) ((PI) / 180.0); //left should be positive
 
 	 frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
 	 frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
@@ -477,7 +496,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((200.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((10.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
