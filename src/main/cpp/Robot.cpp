@@ -86,13 +86,13 @@ void Robot::TeleopPeriodic() {
   frc::SmartDashboard::PutBoolean("elevator_down", elevator_down);
 
   if (elevator_up) {
-    elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
+    elevator->elevator_state = elevator->ROCKET_TOP_CARGO;
   }
   if (elevator_mid) {
-    elevator->elevator_state = elevator->MID_CARGO_STATE_H;
+    elevator->elevator_state = elevator->ROCKET_MID_CARGO;
   }
   if (elevator_down) {
-    elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
+    elevator->elevator_state = elevator->ROCKET_BOTTOM_CARGO;
   }
 
   elevator->Move();
@@ -105,4 +105,3 @@ void Robot::TestPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
-#endif
