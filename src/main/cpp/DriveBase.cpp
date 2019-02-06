@@ -531,9 +531,9 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / 550.0;
+      k_f_left_vel = 1.0 / 570.0;
     } else {
-      k_f_left_vel = 1.0 / 590.0;
+      k_f_left_vel = 1.0 / 610.0;
     }
 
     // const double MAX_Y_RPM = 500.0;
