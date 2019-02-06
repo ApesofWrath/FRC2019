@@ -578,12 +578,15 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
   	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
   	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
 
-  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
-	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
-
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
 	d_kick_vel = (kick_error_vel - kick_last_error_vel);
+
+  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+  frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
+
+  frc::SmartDashboard::PutNumber("l vel k", k_p_left);
+  frc::SmartDashboard::PutNumber("r vel k", k_p_right);
 
 	P_LEFT_VEL = k_p_left * l_error_vel_t;
 	P_RIGHT_VEL = k_p_right * r_error_vel_t;
@@ -593,10 +596,12 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
-	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
+
+  frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
+  frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
+  frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
+  frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
+
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
 			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
