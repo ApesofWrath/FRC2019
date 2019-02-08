@@ -60,8 +60,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
-		actual_max_y_rpm = ACTUAL_MAX_Y_RPM_AUTON;
-		Kv = 1 / ACTUAL_MAX_Y_RPM_AUTON;
+		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
+		Kv = 1 / ACTUAL_MAX_Y_RPM;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
@@ -71,8 +71,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		k_d_right_vel = K_D_RIGHT_VEL;
 		k_d_left_vel = K_D_LEFT_VEL;
 
-		k_f_left_vel = 1.0 / ACTUAL_MAX_Y_RPM_L_F;
-		k_f_right_vel = 1.0 / ACTUAL_MAX_Y_RPM_R_F;
+		k_f_left_vel = 1.0 / actual_max_y_rpm;
+		k_f_right_vel = 1.0 / actual_max_y_rpm;
 
 	}
 
@@ -276,19 +276,18 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	int length;
 	int POINT_LENGTH = 2;
 
-	Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
+	//Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
+  Waypoint points[POINT_LENGTH];
 
-	Waypoint p1, p2;
-
-	p1 = {0.0, 0.0, 0.0};
-	p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
+	Waypoint p1 = {0.0, 0.0, 0.0};
+	Waypoint p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
 
 	points[0] = p1;
 	points[1] = p2;
 
 	TrajectoryCandidate candidate;
 	pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
-	PATHFINDER_SAMPLES_FAST, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
+	PATHFINDER_SAMPLES_HIGH, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
 
 	length = candidate.length;
 	Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
@@ -317,6 +316,8 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 		vision_profile.at(i).at(4) = ((double) sr.velocity);
 
 	}
+
+  frc::SmartDashboard::PutNumber("traj len", length);
 
 	free(trajectory);
 	free(leftTrajectory);
@@ -457,7 +458,8 @@ void DriveBase::Controller(double ref_kick,
 	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
 	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
 
-	double target_yaw_rate = ref_yaw;
+	double target_yaw_rate =
+  ref_yaw;
 
 	ref_left = ref_left - (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //left should be positive
 	ref_right = ref_right + (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //ff
@@ -477,8 +479,8 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((k_p_yaw * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb
-
+	double yaw_output = ((200.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
 
@@ -498,18 +500,44 @@ void DriveBase::Controller(double ref_kick,
 		ref_right = -max_y_rpm;
 	}
 
-  frc::SmartDashboard::PutNumber("l vel targ CONTROL", ref_left);
-	frc::SmartDashboard::PutNumber("r vel targ CONTROL", ref_right);
+  if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
+    feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
+    feed_forward_l = 0;			//the PD controller should handle it itself
+    feed_forward_k = 0;
 
-	feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
-	feed_forward_l = k_f_left_vel * ref_left;
-	feed_forward_k = 0.0 * ref_kick;//kf kick vel
+  } else {
 
-	// frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
-	// frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
-  //
-	// frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
-	// frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
+    if (ref_right < 0.0) {
+      k_f_right_vel = 1.0 / 600.0;
+    } else {
+      k_f_right_vel = 1.0 / 600.0;
+    }
+
+    if (ref_left < 0.0) {
+      k_f_left_vel = 1.0 / 570.0;
+    } else {
+      k_f_left_vel = 1.0 / 600.0;
+    }
+
+    // const double MAX_Y_RPM = 500.0;
+    // const double ACTUAL_MAX_Y_RPM_AUTON = 500.0;
+    // const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
+    // const double ACTUAL_MAX_Y_RPM_L_B = 530.0;
+    // const double ACTUAL_MAX_Y_RPM_R_F = 550.0;
+    // const double ACTUAL_MAX_Y_RPM_R_B = 550.0;
+    // const double MAX_YAW_RATE = 0.17; //10.0 0.17 rad/s
+
+    feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
+  	feed_forward_l = k_f_left_vel * ref_left;
+  	feed_forward_k = 0.0 * ref_kick;//kf kick vel
+  }
+
+
+	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
+	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
+
+	frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
+	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
 
 	//conversion to RPM from native unit
 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -522,15 +550,19 @@ void DriveBase::Controller(double ref_kick,
 frc::SmartDashboard::PutNumber("l position", GetLeftPosition());
 frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 
-frc::SmartDashboard::PutNumber("l current", l_current);
-frc::SmartDashboard::PutNumber("r current", r_current);
-
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
 	//kick_error_vel = ref_kick - kick_current;
 
-	// frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
-	// frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
+
+  frc::SmartDashboard::PutNumber("l current", l_current);
+  frc::SmartDashboard::PutNumber("r current", r_current);
+
+  	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
+  	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
+
+  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
 
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
@@ -544,16 +576,10 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	// frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
-	// frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
-	// frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
-	// frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
-
-	if (frc::RobotState::IsAutonomous()) { //only want the feedforward based off the motion profile during autonomous. The root generated ones (in the if() statement) //should already be 0 during auton because we send 0 as refs
-		feed_forward_r = 0;	// will be close to 0  (low error between profile points) for the most part but will get quite aggressive when an error builds,
-		feed_forward_l = 0;			//the PD controller should handle it itself
-		feed_forward_k = 0;
-	}
+	frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
+	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
+	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
 			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
@@ -576,13 +602,13 @@ frc::SmartDashboard::PutNumber("r current", r_current);
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
-	canTalonLeft2->Set(ControlMode::PercentOutput, total_left);
-	canTalonLeft3->Set(ControlMode::PercentOutput, total_left);
-
-	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
-	canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
-	canTalonRight3->Set(ControlMode::PercentOutput, -total_right);
+	// canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+	// canTalonLeft2->Set(ControlMode::PercentOutput, -total_left);
+	// canTalonLeft3->Set(ControlMode::PercentOutput, -total_left);
+  //
+	// canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+	// canTalonRight2->Set(ControlMode::PercentOutput, total_right);
+	// canTalonRight3->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -804,18 +830,18 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 		switch (teleop_drive_state) {
 			case REGULAR:
-      frc::SmartDashboard::PutString("DriveState", "REG");
+      frc::SmartDashboard::PutString("DRIVE", "reg");
 			TeleopWCDrive(JoyThrottle, JoyWheel);
 			break;
 			case VISION_DRIVE:
-      frc::SmartDashboard::PutString("DriveState", "VIS");
+      frc::SmartDashboard::PutString("DRIVE", "vis");
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
 			}
 			break;
 			case ROTATION_CONTROLLER:
-        frc::SmartDashboard::PutString("DriveState", "ROT");
+      frc::SmartDashboard::PutString("DRIVE", "rot");
 			RotationController(JoyWheel);
 			break;
 		}
@@ -827,20 +853,23 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-		//	GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
+    frc::SmartDashboard::PutString("VIS DRIVE", "create");
+			GenerateVisionProfile(0.0, 20.0); //(double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget()
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
 			return false;
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
+    frc::SmartDashboard::PutString("VIS DRIVE", "follow");
 			RunVisionDrive();
-			// if (row_index >= vision_profile.size()) {
-			// 	vision_drive_state = RESET;
-			// }
+			if (row_index >= vision_profile.size()) {
+				vision_drive_state = RESET;
+			}
 			return false;
 		break;
 		case RESET:
+    frc::SmartDashboard::PutString("VIS DRIVE", "reset");
 			StopAll();
 		  return true;
 		break;

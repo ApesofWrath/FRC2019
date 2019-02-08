@@ -27,11 +27,11 @@ const double K_P_YAW_DIS = 0.0; //used in AutonDrive()
 const double K_I_YAW_DIS = 0.0;
 const double K_D_YAW_DIS = 0.0;
 
-const double K_P_RIGHT_DIS = 0.0;
+const double K_P_RIGHT_DIS = 0.0;//.15
 const double K_I_RIGHT_DIS = 0.0;
 const double K_D_RIGHT_DIS = 0.0;
 
-const double K_P_LEFT_DIS = 0.0;
+const double K_P_LEFT_DIS = 0.0;//.15
 const double K_I_LEFT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 
@@ -70,7 +70,7 @@ const double MAX_JERK_VIS = 10000.0;
 // const double TICKS_PER_FOOT = 1315.0; //auton
 //
 // const double MAX_Y_RPM = 0;
-// const double ACTUAL_MAX_Y_RPM = 0;
+ const double ACTUAL_MAX_Y_RPM = 600; //theoretical-not used
 // const double MAX_YAW_RATE = 0.0;
 
 

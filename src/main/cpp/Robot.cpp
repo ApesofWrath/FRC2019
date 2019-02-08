@@ -65,9 +65,10 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 
     is_rotation = joyThrottle->GetRawButton(-1);
-		is_vision = joyThrottle->GetRawButton(-1);
+		is_vision = true;//joyThrottle->GetRawButton(-1);
 		is_regular = joyThrottle->GetRawButton(-1);
 
+     frc::SmartDashboard::PutBoolean("setprofile",drive_controller->set_profile);
     // drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, 1.0);
   	//   drive_controller->canTalonLeft2->Set(ControlMode::PercentOutput, 1.0);
   	//   drive_controller->canTalonLeft3->Set(ControlMode::PercentOutput, 1.0);

@@ -1,4 +1,8 @@
-See file:///C:/Users/ApesOfWrath/Desktop/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+See file:///C:/Users/DriversStation/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
 compiling DriveBase.cpp successful.
+C:\Users\DriversStation\FRC2019\src\main\cpp\DriveBase.cpp: In member function 'void DriveBase::GenerateVisionProfile(double, double)':
+C:\Users\DriversStation\FRC2019\src\main\cpp\DriveBase.cpp:280:31: warning: ISO C++ forbids variable length array 'points' [-Wvla]
+   Waypoint points[POINT_LENGTH];
+                               ^
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/ApesOfWrath/Desktop/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
