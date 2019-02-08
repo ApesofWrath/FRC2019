@@ -12,7 +12,7 @@ const int VISION_DRIVE = 1;
 const int ROTATION_CONTROLLER = 2;
 int teleop_drive_state = REGULAR;
 
- std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
+ std::vector<std::vector<double>> vision_profile; //runautondrive looks at auton_row size
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
@@ -275,7 +275,6 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	int POINT_LENGTH = 2;
 
-	//Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
   Waypoint points[POINT_LENGTH];
 
 	Waypoint p1 = {0.0, 0.0, 0.0};
@@ -291,11 +290,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	int length = candidate.length;
 	Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
 
-  frc::SmartDashboard::PutNumber(" p r e", 8);
-
 	pathfinder_generate(&candidate, trajectory);
-
-  frc::SmartDashboard::PutNumber("generated", 8);
 
 	Segment *leftTrajectory = (Segment*) malloc(sizeof(Segment) * length);
 	Segment *rightTrajectory = (Segment*) malloc(sizeof(Segment) * length);
@@ -305,10 +300,9 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
-      frc::SmartDashboard::PutNumber("modified", 8);
-
-
-	 vision_profile.resize(length, std::vector<double>(5));
+  for (int i = 0; i < length; i++) {
+    vision_profile.push_back(std::vector<double>(5,0));
+  }
 
 	for (int i = 0; i < length; i++) {
 
@@ -319,7 +313,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 		vision_profile.at(i).at(1) = ((double) sl.position);
 		vision_profile.at(i).at(2) = ((double) sr.position);
 		vision_profile.at(i).at(3) = ((double) sl.velocity);
-		vision_profile.at(i).at(4) = ((double) sr.velocity);
+	  vision_profile.at(i).at(4) = ((double) sr.velocity);
 
 	}
 
@@ -860,7 +854,7 @@ bool DriveBase::VisionDriveStateMachine() {
 
 		case CREATE_PROFILE:
     frc::SmartDashboard::PutString("VIS DRIVE", "create");
-			GenerateVisionProfile(5.0, 0.0); //(double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget()
+			GenerateVisionProfile(10.0, 0.0); //(double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget()
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
