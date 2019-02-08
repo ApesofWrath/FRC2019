@@ -273,7 +273,6 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	ZeroAll(true);
 
-	int length;
 	int POINT_LENGTH = 2;
 
 	//Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
@@ -287,12 +286,16 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	TrajectoryCandidate candidate;
 	pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
-	PATHFINDER_SAMPLES_HIGH, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
+	PATHFINDER_SAMPLES_FAST, 0.001, 15.0, 10.0, 60.0, &candidate);// max_vel_vis, max_acc_vis, max_jerk_vis
 
-	length = candidate.length;
+	int length = candidate.length;
 	Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
 
+  frc::SmartDashboard::PutNumber(" p r e", 8);
+
 	pathfinder_generate(&candidate, trajectory);
+
+  frc::SmartDashboard::PutNumber("generated", 8);
 
 	Segment *leftTrajectory = (Segment*) malloc(sizeof(Segment) * length);
 	Segment *rightTrajectory = (Segment*) malloc(sizeof(Segment) * length);
@@ -301,6 +304,9 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
+
+      frc::SmartDashboard::PutNumber("modified", 8);
+
 
 	 vision_profile.resize(length, std::vector<double>(5));
 
@@ -854,7 +860,7 @@ bool DriveBase::VisionDriveStateMachine() {
 
 		case CREATE_PROFILE:
     frc::SmartDashboard::PutString("VIS DRIVE", "create");
-			GenerateVisionProfile(0.0, 20.0); //(double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget()
+			GenerateVisionProfile(5.0, 0.0); //(double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget()
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
