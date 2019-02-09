@@ -1,23 +1,7 @@
 See file:///C:/Users/DriversStation/Documents/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling DriveBase.cpp failed.
-C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\DriveBase.cpp: In constructor 'DriveBase::DriveBase(int, int, int, int, int, int, int, int, int, int, int, bool)':
-C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\DriveBase.cpp:92:38: error: no matching function for call to 'ctre::phoenix::motorcontrol::can::VictorSPX::Follow(ctre::phoenix::motorcontrol::can::TalonSRX*&)'
-   canTalonLeft2->Follow(canTalonLeft1);
-                                      ^
-In file included from C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/phoenix/motorcontrol/can/TalonSRX.h:7:0,
-                 from C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/Phoenix.h:15,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\include/DriveBase.h:7,
-                 from C:\Users\DriversStation\Documents\FRC2019\src\main\cpp\DriveBase.cpp:1:
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/phoenix/motorcontrol/can/BaseMotorController.h:1860:7: note: candidate: void ctre::phoenix::motorcontrol::can::BaseMotorController::Follow(ctre::phoenix::motorcontrol::IMotorController&, ctre::phoenix::motorcontrol::FollowerType)
-  void Follow(IMotorController & masterToFollow, ctre::phoenix::motorcontrol::FollowerType followerType);
-       ^~~~~~
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/phoenix/motorcontrol/can/BaseMotorController.h:1860:7: note:   candidate expects 2 arguments, 1 provided
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/phoenix/motorcontrol/can/BaseMotorController.h:1866:15: note: candidate: virtual void ctre::phoenix::motorcontrol::can::BaseMotorController::Follow(ctre::phoenix::motorcontrol::IMotorController&)
-  virtual void Follow(IMotorController & masterToFollow);
-               ^~~~~~
-C:\Users\DriversStation\Documents\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec/ctre/phoenix/motorcontrol/can/BaseMotorController.h:1866:15: note:   no known conversion for argument 1 from 'ctre::phoenix::motorcontrol::can::TalonSRX*' to 'ctre::phoenix::motorcontrol::IMotorController&'
-
 compiling Vision.cpp successful.
+
+compiling DriveBase.cpp successful.
 
 compiling Robot.cpp successful.
 

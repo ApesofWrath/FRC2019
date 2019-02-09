@@ -88,16 +88,16 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonLeft2 = new VictorSPX(L2);
-  canTalonLeft2->Set(ControlMode::Follower, LF);
+  canTalonLeft2->Follow(*canTalonLeft1);
 	canTalonLeft3 = new VictorSPX(L3);
-  canTalonLeft3->Set(ControlMode::Follower, LF);
+  canTalonLeft3->Follow(*canTalonLeft1);
 
 	canTalonRight1 = new TalonSRX(RF);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonRight2 = new VictorSPX(R2);
-  canTalonRight2->Set(ControlMode::Follower, RF);
+  canTalonRight2->Follow(*canTalonRight1);
 	canTalonRight3 = new VictorSPX(R3);
-  canTalonRight3->Set(ControlMode::Follower, RF);
+  canTalonRight3->Follow(*canTalonRight1);
 
   //talon settings
 
