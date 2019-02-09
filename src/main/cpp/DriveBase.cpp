@@ -101,8 +101,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
   //talon settings
 
-	canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
-	canTalonRight1->ConfigPeakCurrentLimit(40, 0);
+	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
+	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
 
 	 canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
 	 canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
@@ -467,7 +467,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((10.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((0.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
@@ -524,8 +524,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
 	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
 
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
+	frc::SmartDashboard::PutNumber("ff r", feed_forward_r *550.0);
+	frc::SmartDashboard::PutNumber("ff l", feed_forward_l*550.0);
 
 	//conversion to RPM from native unit
 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -567,11 +567,21 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
+   // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R1", canTalonRight1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("R2",canTalonRight2->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("R3", canTalonRight3->GetOutputCurrent());
+  //
+    frc::SmartDashboard::PutNumber("L1", canTalonLeft1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("L2", canTalonLeft2->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("L3", canTalonLeft3->GetOutputCurrent());
 
-  frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
-  frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
-  frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
-  frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
+  frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL *550.0);
+  frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL*550.0);
+  frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL*550.0);
+  frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL*550.0);
 
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r

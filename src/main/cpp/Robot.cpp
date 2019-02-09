@@ -81,10 +81,15 @@ void Robot::TeleopPeriodic() {
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
   // frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());
   //  // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
-  //  // frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
-  //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("R1", drive_controller->canTalonRight1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
   //  frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
-   // frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
+  //
+  //  frc::SmartDashboard::PutNumber("L1", drive_controller->canTalonLeft1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
 }
 
 void Robot::TestPeriodic() {}
