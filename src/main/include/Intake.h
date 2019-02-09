@@ -37,7 +37,10 @@ public:
   void OutBottom();
 
   void IntakeTopStateMachine();
-  void IntakeTopStateMachine();
+  void IntakeBottomStateMachine();
+
+  bool HaveBall();
+  bool ReleasedBall();
 
 };
 

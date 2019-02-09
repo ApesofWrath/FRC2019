@@ -64,4 +64,13 @@ void HatchPickup::SolenoidStateMachine() {
       frc::SmartDashboard::PutString("SOLENOID", "In");
       break;
   }
+
+}
+
+bool HatchPickup::HaveHatch() {
+
+}
+
+bool HatchPickup::ReleasedHatch() {
+
 }

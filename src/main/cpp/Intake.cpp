@@ -92,3 +92,11 @@ void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
   }
 
 }
+
+bool Intake::HaveBall() {
+
+}
+
+bool Intake::ReleasedBall() {
+
+}

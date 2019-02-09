@@ -37,6 +37,9 @@ public:
   void Out();
   void SolenoidStateMachine();
 
+  bool HaveHatch();
+  bool ReleasedHatch();
+
 
 };
 

@@ -7,11 +7,11 @@ const int GET_HATCH_GROUND_STATE = 3;
 const int POST_INTAKE_HATCH_STATE = 4;
 const int GET_BALL_STATE = 5;
 const int POST_INTAKE_BALL_STATE = 6;
-const int PLACE_HATCH_STATE = 7
-const int PLACE_BALL_STATE = 8
+const int PLACE_HATCH_STATE = 7;
+const int PLACE_BALL_STATE = 8;
 const int POST_OUTTAKE_HATCH_STATE = 9;
 const int POST_OUTTAKE_BALL_STATE = 10;
-int state = INIT_STATE
+int state = INIT_STATE;
 
 int last_state = 0;
 
@@ -41,7 +41,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     bool bottom_intake_out, bool bottom_intake_stop, bool top_intake_in, bool top_intake_out,
     bool top_intake_stop, bool suction_on, bool suction_off, bool hatch_out, bool hatch_in, bool arm_up,
     bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
-    bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo, 
+    bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo,
     bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch,
     bool place_hatch, bool place_cargo, bool post_outtake_hatch, bool post_outtake_cargo) {
 
@@ -72,7 +72,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
   		intake->bottom_intake_state = intake->OUT_STATE_H;
     } else if (bottom_intake_stop) {
   		state_bottom_intake = false;
-  		intake->bottom_intake_stop = intake->STOP_STATE_H;
+  		intake->bottom_intake_state = intake->STOP_STATE_H;
   	} else {
   		state_bottom_intake = true;
   	}
@@ -125,7 +125,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     //solenoids
     if (hatch_out) {
       state_solenoids = false;
-      hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H
+      hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
     } else if (hatch_in) {
       state_solenoids = false;
       hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
@@ -158,7 +158,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       } else if (get_hatch_ground) {
         state = GET_HATCH_GROUND_STATE;
       } else if (post_intake_hatch) {
-        state = POST_INTAKE_HATCH_STATE
+        state = POST_INTAKE_HATCH_STATE;
       } else if (get_cargo) {
         state = GET_BALL_STATE;
       } else if (post_intake_cargo) {
@@ -181,7 +181,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->UP_STATE_H;
         }
       }
@@ -203,7 +203,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->DOWN_STATE_H;
         }
       }
@@ -228,7 +228,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->UP_STATE_H;
         }
       }
@@ -250,7 +250,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->DOWN_STATE_H;
         }
       }
@@ -272,15 +272,15 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->UP_STATE_H;
         }
       }
       if (state_bottom_intake) {
-        intake->bottom_intake_arm = intake->IN_STATE_H;
+        intake->bottom_intake_state = intake->IN_STATE_H;
       }
       if (state_top_intake) {
-        intake->top_intake_arm = intake->IN_STATE_H;
+        intake->top_intake_state = intake->IN_STATE_H;
       }
       if (place_cargo) {
         state = PLACE_BALL_STATE;
@@ -296,7 +296,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         arm->arm_state = arm->UP_STATE_H;
       }
       if (state_solenoids) {
-        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H
+        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
       }
       if (elevator_hatch_up) {
         elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
@@ -370,7 +370,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->UP_STATE_H;
         }
       }
@@ -390,7 +390,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition >= .20) {
+        if (elevator->GetElevatorPosition() >= .20) {
           arm->arm_state = arm->UP_STATE_H;
         }
       }
