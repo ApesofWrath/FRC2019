@@ -269,6 +269,7 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 }
 
 //only to be used in teleop; auton will already have this essentially
+//yaw in rad, dist in feet
 void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target) {
 
 	ZeroAll(true);
@@ -277,8 +278,13 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
   Waypoint points[POINT_LENGTH];
 
+  double x_dist = dist_to_target * tan(yaw_to_target);
+  if (yaw_to_target < 0.0) {
+    x_dist *= -1.0; //left is neg
+  }
+
 	Waypoint p1 = {0.0, 0.0, 0.0};
-	Waypoint p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
+	Waypoint p2 = {dist_to_target, x_dist, d2r(yaw_to_target)}; //y, x, yaw
 
 	points[0] = p1;
 	points[1] = p2;
