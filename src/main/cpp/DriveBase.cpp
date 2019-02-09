@@ -88,79 +88,50 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonLeft2 = new VictorSPX(L2);
+  canTalonLeft2->Set(ControlMode::Follower, LF);
 	canTalonLeft3 = new VictorSPX(L3);
+  canTalonLeft3->Set(ControlMode::Follower, LF);
 
 	canTalonRight1 = new TalonSRX(RF);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonRight2 = new VictorSPX(R2);
+  canTalonRight2->Set(ControlMode::Follower, RF);
 	canTalonRight3 = new VictorSPX(R3);
+  canTalonRight3->Set(ControlMode::Follower, RF);
 
-	 canTalonLeft1->EnableCurrentLimit(true); //still not true from tuner
-//	 canTalonLeft2->EnableCurrentLimit(true); //victor spx does not have
-//	 canTalonLeft3->EnableCurrentLimit(true);
+  //talon settings
 
-	 canTalonRight1->EnableCurrentLimit(true);
-//	 canTalonRight2->EnableCurrentLimit(true);
-//	 canTalonRight3->EnableCurrentLimit(true);
-	//
-	// canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
-	// canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
-	// canTalonLeft3->ConfigPeakCurrentLimit(40, 0);
-	//
-	// canTalonRight1->ConfigPeakCurrentLimit(40, 0);
-	// canTalonRight2->ConfigPeakCurrentLimit(40, 0);
-	// canTalonRight3->ConfigPeakCurrentLimit(40, 0);
-	//
-	// canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonLeft2->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonLeft3->ConfigContinuousCurrentLimit(30, 0);
-	//
-	// canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonRight2->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonRight3->ConfigContinuousCurrentLimit(30, 0);
-	//
-	// canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
-	// canTalonLeft2->ConfigPeakCurrentDuration(10, 0);
-	// canTalonLeft3->ConfigPeakCurrentDuration(10, 0);
-	//
-	// canTalonRight1->ConfigPeakCurrentDuration(10, 0);
-	// canTalonRight2->ConfigPeakCurrentDuration(10, 0);
-	// canTalonRight3->ConfigPeakCurrentDuration(10, 0);
-  //
-	// canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
-	// canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
-	// canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight1->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight2->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight3->ConfigOpenloopRamp(0.15, 0);
-  //
+	canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
+	canTalonRight1->ConfigPeakCurrentLimit(40, 0);
+
+	 canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
+	 canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
+
+	 canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
+	 canTalonRight1->ConfigPeakCurrentDuration(10, 0);
+
+	canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
+	canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
+	canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight1->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight2->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight3->ConfigOpenloopRamp(0.15, 0);
+
 	canTalonLeft1->ConfigVelocityMeasurementPeriod(
 			VelocityMeasPeriod::Period_10Ms, 0);
 	canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonLeft2->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft2->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonLeft3->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft3->ConfigVelocityMeasurementWindow(5, 0);
 
 	canTalonRight1->ConfigVelocityMeasurementPeriod(
 			VelocityMeasPeriod::Period_10Ms, 0);
 	canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonRight2->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight2->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonRight3->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight3->ConfigVelocityMeasurementWindow(5, 0);
 
-	// canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-	// canTalonLeft1->SetStatusFramePeriod(
-	// 		StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
-  //
-  // canTalonRight1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-  // canTalonRight1->SetStatusFramePeriod(
-  //   			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+	canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+	canTalonLeft1->SetStatusFramePeriod(
+			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+
+  canTalonRight1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+  canTalonRight1->SetStatusFramePeriod(
+    			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
 
   canTalonLeft1->ConfigVoltageCompSaturation(12.0);
   canTalonLeft1->EnableVoltageCompensation(true);
@@ -176,6 +147,9 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
   canTalonLeft3->EnableVoltageCompensation(true);
   canTalonRight3->ConfigVoltageCompSaturation(12.0);
   canTalonRight3->EnableVoltageCompensation(true);
+
+  canTalonLeft1->EnableCurrentLimit(true); //still not true from tuner
+  canTalonRight1->EnableCurrentLimit(true);
 
 	ahrs = new AHRS(SerialPort::kUSB);
 	visionDrive = new Vision();
@@ -254,9 +228,6 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 	} else if (target_r < -max_y_rpm) {
 		target_r = -max_y_rpm;
 	}
-
-	frc::SmartDashboard::PutNumber("target_r TeleopWCDrive", target_r);
-	frc::SmartDashboard::PutNumber("target_yaw_rate TeleopWCDrive", target_yaw_rate);
 
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
 			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
@@ -625,12 +596,7 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	canTalonLeft2->Set(ControlMode::PercentOutput, -total_left);
-	canTalonLeft3->Set(ControlMode::PercentOutput, -total_left);
-
 	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
-	canTalonRight2->Set(ControlMode::PercentOutput, total_right);
-	canTalonRight3->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -659,12 +625,7 @@ void DriveBase::ZeroAll(bool stop_motors) {
 void DriveBase::StopAll() {
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
-	canTalonLeft2->Set(ControlMode::PercentOutput, 0.0);
-	canTalonLeft3->Set(ControlMode::PercentOutput, 0.0);
-
 	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
-	canTalonRight2->Set(ControlMode::PercentOutput, 0.0);
-	canTalonRight3->Set(ControlMode::PercentOutput, 0.0);
 
 }
 

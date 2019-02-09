@@ -1,8 +1,4 @@
-See file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling Vision.cpp successful.
-
+See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling DriveBase.cpp successful.
 
-compiling Robot.cpp successful.
-
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/ApesOfWrath/Desktop/FRC2019_arm/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
