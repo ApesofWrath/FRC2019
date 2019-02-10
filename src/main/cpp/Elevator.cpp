@@ -155,6 +155,18 @@ double Elevator::GetElevatorPosition() {
 
 }
 
+bool Elevator::IsElevatorHigh() {
+
+  return (GetElevatorPosition() > EL_SAFETY_HEIGHT);
+
+}
+
+void Elevator::IsArmBack(double arm_angle) {
+
+  keep_elevator_up = (arm_angle > ARM_HEIGHT_SAFETY_HEIGHT) && (elevator_voltage < 0.0);
+
+}
+
 double Elevator::GetElevatorVelocity() {
 	//native units are ticks per 100 ms so we multiply the whole thing by 10 to get it into per second. Then divide by ticks per rotation to get into
 	//RPS then muliply by circumference for m/s
@@ -226,7 +238,7 @@ void Elevator::SetVoltage(double voltage_) {
   LowerSoftLimit();
   TopHallEffectSafety();
 	BottomHallEffectSafety();
-  //ArmSafety(); // rewrite arm safety for new arm //arm/elev safeties will be in teleop statemachine
+  ArmSafety(); 
 
   frc::SmartDashboard::PutString("ELEVATOR SAFETY", elev_safety);
 
@@ -304,11 +316,12 @@ void Elevator::StallSafety() {
 }
 
 void Elevator::ArmSafety() {
-  //Last Year's code
-  	// if (keep_elevator_up) {
-  	// 	elevator_voltage = 1.0;
-  	// 	elev_safety = "arm safety";
-  	// }
+
+  	if (keep_elevator_up) {
+  		elevator_voltage = 1.0;
+  		elev_safety = "arm safety";
+  	}
+
 }
 
 void Elevator::BottomHallEffectSafety() {

@@ -174,15 +174,15 @@ void Arm::OutputArmVoltage() {
 }
 
 void Arm::UpperSoftLimit() {
-  // TODO: may need to differnetiate between whether the elevator_high and the top cago state, elevator mightbe able to be high in different cases
-	if (arm_state == HIGH_CARGO_STATE) {
+
+	if (!elevator_high) {
 		if ((arm_pos >= UP_LIMIT_A) && (arm_voltage > UP_VOLT_LIMIT_A) && is_init_arm) { //at max height and still trying to move up
 			arm_voltage = 0.0; //shouldn't crash
 			arm_safety = "top soft limit";
 		}
 	} else {
 		if ((arm_pos >= BACK_LIMIT_A) && (arm_voltage > 0.0)
-			 && is_init_arm) { //at max height and still trying to move up //no upper soft limit when initializing
+			 && is_init_arm) { 
 		 arm_voltage = 0.0;
 		 arm_safety = "top soft limit";
 	 }

@@ -83,6 +83,13 @@ public:
   void ArmStateMachine();
   void Rotate(); //main control loop
   void ZeroEnc();
+
+  double GetAngularVelocity();
+  double GetAngularPosition();
+  void PrintArmInfo();
+
+  bool IsAtBottomArm();
+  
 private:
 
   double arm_pos;
@@ -118,11 +125,7 @@ private:
   void UpdateRotateError();
   void UpdateRotatingDirection(std::vector<std::vector<double>> K_a_);
   void UpdateVoltage();
-	double GetAngularVelocity();
-	double GetAngularPosition();
-  void PrintArmInfo();
 
-	bool IsAtBottomArm();
   bool EncodersRunning();
 
 	void SetVoltageArm(double voltage_a);

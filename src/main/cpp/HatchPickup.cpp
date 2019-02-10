@@ -68,9 +68,9 @@ void HatchPickup::SolenoidStateMachine() {
 }
 
 bool HatchPickup::HaveHatch() {
-
+  return false;
 }
 
 bool HatchPickup::ReleasedHatch() {
-
+  return false;
 }

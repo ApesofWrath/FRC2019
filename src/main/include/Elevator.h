@@ -82,6 +82,11 @@ public:
   void Move();
   void ElevatorStateMachine();
 
+  bool IsElevatorHigh();
+  void IsArmBack(double arm_angle);
+
+  bool keep_elevator_up = false;
+
 private:
 
   std::string elev_type, elev_safety;
