@@ -55,7 +55,7 @@ public:
 
 	//Driving Operators
 	void TeleopHDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool *is_fc); //creates velocity references set by joysticks, for HDrive Train
-	void TeleopWCDrive(Joystick *JoyThrottle, Joystick *JoyWheel); //creates velocity references based on joysticks, for normal west coast drive train
+	void TeleopWCDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool hybrid); //creates velocity references based on joysticks, for normal west coast drive train
 	void AutonDrive(); //makes velocity references based on motion profiles
 	void RotationController(Joystick *JoyWheel);
 	void GenerateVisionProfile(double dist_to_target, double yaw_to_target);

@@ -8,8 +8,9 @@ const int RESET = 2;
 int vision_drive_state = CREATE_PROFILE;
 
 const int REGULAR = 0;
-const int VISION_DRIVE = 1;
-const int ROTATION_CONTROLLER = 2;
+const int VISION_PF = 1;
+const int VISION_YAW = 2;
+const int ROTATION_CONTROLLER = 3;
 int teleop_drive_state = REGULAR;
 
  std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
@@ -174,8 +175,9 @@ void DriveBase::SetAutonGains(bool same_side_scale) {
 
 //PD on left and right
 //P on yaw
+//pos on yaw
 void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
-		Joystick *JoyWheel) {
+		Joystick *JoyWheel, bool hybrid) {
 
 	double target_l, target_r, target_yaw_rate;
 
@@ -193,29 +195,44 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
 	target_l = reverse_y * forward * max_y_rpm; //scale to velocity
 
-	target_r = target_l;
+  target_r = target_l;
 
-	double reverse_x = 1.0;
+  if (!hybrid) {
 
-	double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
+    double reverse_x = 1.0;
 
-	if (wheel < 0.0) {
-		reverse_x = -1.0;
-	} else {
-		reverse_x = 1.0;
-	}
+    double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
 
-	double joy_wheel_val = reverse_x * wheel * wheel;
+    if (wheel < 0.0) {
+      reverse_x = -1.0;
+    } else {
+      reverse_x = 1.0;
+    }
 
-//	if (!is_low_gear) { //squrare wheel in high gear
-//		joy_wheel_val *= reverse_x * JoyWheel->GetX();
-//	}
+    double joy_wheel_val = reverse_x * wheel * wheel;
 
-	if (std::abs(joy_wheel_val) < .02) {
-		joy_wheel_val = 0.0;
-	}
+    //	if (!is_low_gear) { //squrare wheel in high gear
+    //		joy_wheel_val *= reverse_x * JoyWheel->GetX();
+    //	}
 
-	target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
+    if (std::abs(joy_wheel_val) < .02) {
+      joy_wheel_val = 0.0;
+    }
+
+    target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
+
+  } else {
+
+    double target_heading = init_heading
+        + visionDrive->GetYawToTarget();
+
+    double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+
+    double error_heading_h = target_heading - current_heading;
+
+    target_yaw_rate = k_p_yaw_heading_pos * error_heading_h;
+
+  }
 
 	if (target_l > max_y_rpm) {
 		target_l = max_y_rpm;
@@ -235,6 +252,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
 }
 
+//teleop wc has one more param total_heading, k_p_yaw
 void DriveBase::RotationController(Joystick *JoyWheel) {
 
 	double target_heading = init_heading
@@ -816,21 +834,28 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		if (is_regular) {
 			teleop_drive_state = REGULAR;
 		} else if (is_vision) {
-			teleop_drive_state = VISION_DRIVE;
+			teleop_drive_state = VISION_YAW; //left out pf
 		} else if (is_rotation) {
 			teleop_drive_state = ROTATION_CONTROLLER;
 		}
 
 		switch (teleop_drive_state) {
+
 			case REGULAR:
-			TeleopWCDrive(JoyThrottle, JoyWheel);
+			TeleopWCDrive(JoyThrottle, JoyWheel, false);
 			break;
-			case VISION_DRIVE:
+
+			case VISION_PF:
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
 			}
 			break;
+
+      case VISION_YAW:
+      TeleopWCDrive(JoyThrottle, JoyWheel, true);
+      break;
+
 			case ROTATION_CONTROLLER:
 			RotationController(JoyWheel);
 			break;
