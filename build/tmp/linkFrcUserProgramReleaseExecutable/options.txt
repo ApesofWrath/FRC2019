@@ -3,6 +3,10 @@
 /Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/93ixow8u8bfgq2hv59ifogolb/Vision.o
 /Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/corqtin9ryem48jovxdb89ydd/DriveBase.o
 /Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/9760xtgdau9jsoxxi90ozrpww/Robot.o
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/blnz3m9bejngkawru2x650hlw/CenterLowHab_TwoCargo.o
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/ez06ex5hv5xkdp4x2q0xh35a6/MoveForward.o
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/41ewna1regjxvrz28mlyj5e2c/AutonDrive.o
+/Users/gracekwak/Desktop/FRC2019/build/objs/frcUserProgram/release/frcUserProgramCpp/a2acrt388fyqf75n80y4fddvp/CenterLowHab_OneCargo.o
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpilibc-cpp-2019.1.1-linuxathenadebug.zip_9be03f12d8cdec0d381617907948b5a4/linux/athena/shared/libwpilibcd.so
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/hal-cpp-2019.1.1-linuxathenadebug.zip_034bba773f7f7db9d75c2bd76d92b633/linux/athena/shared/libwpiHald.so
 /Users/gracekwak/Desktop/FRC2019/build/tmp/expandedArchives/wpiutil-cpp-2019.1.1-linuxathenadebug.zip_e009205852b26420bb11324df59a30fc/linux/athena/shared/libwpiutild.so
