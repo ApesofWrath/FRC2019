@@ -5,8 +5,6 @@
 #include <frc/WPILib.h>
 #include <frc/Joystick.h>
 #include "ctre/Phoenix.h"
-//#include "ctre/BaseMotorController.h"
-//#include "ctre/IFollower.h"
 #include "AHRS.h"
 #include <thread>
 #include <chrono>
@@ -18,6 +16,7 @@
 #include <pathfinder.h>
 #include <vector>
 #include <list>
+
 #include "DriveConstants.h"
 #include "Constants.h"
 #include "Vision.h"
@@ -188,6 +187,8 @@ public:
 			k_p_yaw_au, k_d_yaw_au;
 			double k_p_yaw_heading_pos, k_d_vision_pos;
 			double k_f_left_vel, k_f_right_vel;
+
+			double actual_max_y_rpm_auton, actual_max_y_rpm_l_f, actual_max_y_rpm_l_b, actual_max_y_rpm_r_f, actual_max_y_rpm_r_b;
 
 			double DYN_MAX_Y_RPM = 0;
 

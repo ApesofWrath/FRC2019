@@ -76,6 +76,12 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	}
 
+  actual_max_y_rpm_auton = ACTUAL_MAX_Y_RPM_AUTON;
+  actual_max_y_rpm_l_f = ACTUAL_MAX_Y_RPM_L_F;
+  actual_max_y_rpm_l_b = ACTUAL_MAX_Y_RPM_L_B;
+  actual_max_y_rpm_r_f = ACTUAL_MAX_Y_RPM_R_F;
+  actual_max_y_rpm_r_b = ACTUAL_MAX_Y_RPM_R_B;
+
 	LF = l1;
 	L2 = l2;
 	L3 = l3;
@@ -496,24 +502,16 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   } else {
 
     if (ref_right < 0.0) {
-      k_f_right_vel = 1.0 / 580.0;
+      k_f_right_vel = 1.0 / actual_max_y_rpm_r_b;
     } else {
-      k_f_right_vel = 1.0 / 580.0;
+      k_f_right_vel = 1.0 / actual_max_y_rpm_r_f;
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / 570.0;
+      k_f_left_vel = 1.0 / actual_max_y_rpm_l_b;
     } else {
-      k_f_left_vel = 1.0 / 610.0;
+      k_f_left_vel = 1.0 / actual_max_y_rpm_l_f;
     }
-
-    // const double MAX_Y_RPM = 500.0;
-    // const double ACTUAL_MAX_Y_RPM_AUTON = 500.0;
-    // const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
-    // const double ACTUAL_MAX_Y_RPM_L_B = 530.0;
-    // const double ACTUAL_MAX_Y_RPM_R_F = 550.0;
-    // const double ACTUAL_MAX_Y_RPM_R_B = 550.0;
-    // const double MAX_YAW_RATE = 0.17; //10.0 0.17 rad/s
 
     feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
   	feed_forward_l = k_f_left_vel * ref_left;
@@ -843,7 +841,7 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-		//	GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
+		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
@@ -851,9 +849,9 @@ bool DriveBase::VisionDriveStateMachine() {
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
 			RunVisionDrive();
-			// if (row_index >= vision_profile.size()) {
-			// 	vision_drive_state = RESET;
-			// }
+			if (row_index >= vision_profile.size()) {
+				vision_drive_state = RESET;
+			}
 			return false;
 		break;
 		case RESET:
