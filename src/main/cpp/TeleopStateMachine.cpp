@@ -5,12 +5,12 @@ const int WAIT_FOR_BUTTON_STATE = 1;
 const int GET_HATCH_STATION_STATE = 2;
 const int GET_HATCH_GROUND_STATE = 3;
 const int POST_INTAKE_HATCH_STATE = 4;
-const int GET_BALL_STATE = 5;
-const int POST_INTAKE_BALL_STATE = 6;
+const int GET_CARGO_STATE = 5;
+const int POST_INTAKE_CARGO_STATE = 6;
 const int PLACE_HATCH_STATE = 7;
-const int PLACE_BALL_STATE = 8;
+const int PLACE_CARGO_STATE = 8;
 const int POST_OUTTAKE_HATCH_STATE = 9;
-const int POST_OUTTAKE_BALL_STATE = 10;
+const int POST_OUTTAKE_CARGO_STATE = 10;
 int state = INIT_STATE;
 
 int last_state = 0;
@@ -163,17 +163,17 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       } else if (post_intake_hatch) {
         state = POST_INTAKE_HATCH_STATE;
       } else if (get_cargo) {
-        state = GET_BALL_STATE;
+        state = GET_CARGO_STATE;
       } else if (post_intake_cargo) {
-        state = POST_INTAKE_BALL_STATE;
+        state = POST_INTAKE_CARGO_STATE;
       } else if (place_hatch) {
         state = PLACE_HATCH_STATE;
       } else if (place_cargo) {
-        state = PLACE_BALL_STATE;
+        state = PLACE_CARGO_STATE;
       } else if (post_outtake_hatch) {
         state = POST_OUTTAKE_HATCH_STATE;
       } else if (post_outtake_cargo) {
-        state = POST_OUTTAKE_BALL_STATE;
+        state = POST_OUTTAKE_CARGO_STATE;
       }
       last_state = WAIT_FOR_BUTTON_STATE;
       break;
@@ -247,9 +247,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       last_state = POST_INTAKE_HATCH_STATE;
       break;
 
-    case GET_BALL_STATE:
+    case GET_CARGO_STATE:
 
-      frc::SmartDashboard::PutString("State", "GET BALL");
+      frc::SmartDashboard::PutString("State", "GET CARGO");
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
@@ -264,14 +264,14 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         intake->top_intake_state = intake->IN_STATE_H;
       }
       if (intake->HaveBall() || post_intake_cargo) {
-        state = POST_INTAKE_BALL_STATE;
+        state = POST_INTAKE_CARGO_STATE;
       }
-      last_state = GET_BALL_STATE;
+      last_state = GET_CARGO_STATE;
       break;
 
-    case POST_INTAKE_BALL_STATE:
+    case POST_INTAKE_CARGO_STATE:
 
-      frc::SmartDashboard::PutString("State", "POST INTAKE BALL");
+      frc::SmartDashboard::PutString("State", "POST INTAKE CARGO");
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
@@ -286,9 +286,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         intake->top_intake_state = intake->IN_STATE_H;
       }
       if (place_cargo) {
-        state = PLACE_BALL_STATE;
+        state = PLACE_CARGO_STATE;
       }
-      last_state = POST_INTAKE_BALL_STATE;
+      last_state = POST_INTAKE_CARGO_STATE;
       break;
 
     case PLACE_HATCH_STATE:
@@ -329,9 +329,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       last_state = PLACE_HATCH_STATE;
       break;
 
-    case PLACE_BALL_STATE:
+    case PLACE_CARGO_STATE:
 
-      frc::SmartDashboard::PutString("State", "PLACE BALL");
+      frc::SmartDashboard::PutString("State", "PLACE CARGO");
 
       if (state_arm) {
         arm->arm_state = arm->DOWN_STATE_H;
@@ -342,7 +342,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           intake->top_intake_state = intake->OUT_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
           if (intake->ReleasedBall()) {
-            state = POST_OUTTAKE_BALL_STATE;
+            state = POST_OUTTAKE_CARGO_STATE;
           }
         }
       } else if (elevator_cargo_mid) {
@@ -351,7 +351,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
           intake->top_intake_state = intake->OUT_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
           if (intake->ReleasedBall()) {
-            state = POST_OUTTAKE_BALL_STATE;
+            state = POST_OUTTAKE_CARGO_STATE;
           }
         }
       } else if (elevator_cargo_low) {
@@ -360,11 +360,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
            intake->top_intake_state = intake->OUT_STATE_H;
            intake->bottom_intake_state = intake->OUT_STATE_H;
            if (intake->ReleasedBall()) {
-             state = POST_OUTTAKE_BALL_STATE;
+             state = POST_OUTTAKE_CARGO_STATE;
            }
          }
       }
-      last_state = PLACE_BALL_STATE;
+      last_state = PLACE_CARGO_STATE;
       break;
 
     case POST_OUTTAKE_HATCH_STATE:
@@ -387,9 +387,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       last_state = POST_OUTTAKE_HATCH_STATE;
       break;
 
-    case POST_OUTTAKE_BALL_STATE:
+    case POST_OUTTAKE_CARGO_STATE:
 
-      frc::SmartDashboard::PutString("State", "POST OUTTAKE BALL");
+      frc::SmartDashboard::PutString("State", "POST OUTTAKE CARGO");
 
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
@@ -404,7 +404,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
         intake->bottom_intake_state = intake->STOP_STATE_H;
       }
       state = WAIT_FOR_BUTTON_STATE;
-      last_state = POST_OUTTAKE_BALL_STATE;
+      last_state = POST_OUTTAKE_CARGO_STATE;
       break;
 
   }
