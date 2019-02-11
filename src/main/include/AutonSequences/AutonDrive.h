@@ -26,6 +26,7 @@ public:
   // AutonDrive(DriveController *dc, AutonStateMachine *ausm);
   AutonDrive();
   void PrintTrajectory();
+  std::vector<std::vector<double> > GetFullProfile();
 
 protected:
     // SI units

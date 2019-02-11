@@ -48,9 +48,12 @@ public:
 	void AutoShift(bool auto_shift);
 
 	void RunTeleopDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation);
-	void RunAutonDrive();
-	void RunVisionDrive();
+	void RunAutonDrive(Joystick *JoyThrottle,
+		Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation);
+	void RunVisionProfile();
 	void InitDriveProf();
+	void RunAutonProfile();
+//	void SelectAutonProfile();
 
 	//Driving Operators
 	void TeleopHDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool *is_fc); //creates velocity references set by joysticks, for HDrive Train

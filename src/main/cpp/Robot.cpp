@@ -9,9 +9,15 @@
 
 void Robot::RobotInit() {
 
-  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  auton_chooser.SetDefaultOption(kDoNothing, kDoNothing);
+  auton_chooser.AddOption(kDriveForward, kDriveForward);
+  auton_chooser.AddOption(kCenterLowHabOneCargo, kCenterLowHabOneCargo);
+  frc::SmartDashboard::PutData("Auto Modes", &auton_chooser);
+
+  start_chooser.SetDefaultOption(kCenter, kCenter);
+  start_chooser.AddOption(kLeft, kLeft);
+  start_chooser.AddOption(kRight, kRight);
+  frc::SmartDashboard::PutData("Start Placement", &start_chooser);
 
   joyThrottle = new Joystick(JOY_THROTTLE);
 	joyWheel = new Joystick(JOY_WHEEL);
@@ -30,26 +36,24 @@ void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
   drive_controller->ZeroAll(true);
 
-  m_autoSelected = m_chooser.GetSelected();
+  m_autoSelected = auton_chooser.GetSelected();
   m_autoSelected = SmartDashboard::GetString("Auto Selector",
-       kAutoNameDefault);
+       kDriveForward);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
-  if (m_autoSelected == kAutoNameCustom) {
+  if (m_autoSelected == kCenterLowHabOneCargo) {
     // Custom Auto goes here
-  } else {
+  } else if (m_autoSelected == kDoNothing) {
     // Default Auto goes here
+  } else if (m_autoSelected == kMoveForward) {
+    move_forward = new MoveForward();
+    move_forward->BuildTotalTrajectory();
+    drive_controller->SetAutonRefs(move_forward->GetFullProfile());
   }
 
 }
 
 void Robot::AutonomousPeriodic() {
-
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
 
   //  drive_controller->RunAutonDrive();
 

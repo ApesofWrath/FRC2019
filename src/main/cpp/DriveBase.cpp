@@ -2,17 +2,26 @@
 
 using namespace std::chrono;
 
-const int CREATE_PROFILE = 0;
-const int FOLLOW_PROFILE = 1;
-const int RESET = 2;
-int vision_drive_state = CREATE_PROFILE;
-
+//teleop drive sm
 const int REGULAR = 0;
 const int VISION_DRIVE = 1;
 const int ROTATION_CONTROLLER = 2;
 int teleop_drive_state = REGULAR;
 
- std::vector<std::vector<double>> vision_profile = {{}}; //runautondrive looks at auton_row size
+//vision drive sm
+const int CREATE_VIS_PROF = 0;
+const int FOLLOW_VIS_PROF = 1;
+const int RESET_VIS = 2;
+int vision_drive_state = CREATE_VIS_PROF;
+
+//auton drive sm
+const int CREATE_AUTON_PROF = 0;
+const int FOLLOW_AUTON_PROF = 1;
+const int RESET_AUTON = 2;
+const int TELEOP_DRIVE = 3;
+int auton_drive_state = CREATE_AUTON_PROF;
+
+std::vector<std::vector<double>> vision_profile; //runautondrive looks at auton_row size
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
 //WestCoast, 2-speed transmission option
@@ -760,10 +769,9 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 //Increments through target points of the motion profile
 //Pre: SetAutonRefs()
 //		row_index = 0, vision_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
-//TODO: make a state machine
-void DriveBase::RunAutonDrive() {
+void DriveBase::RunAutonProfile() {
 
-	//fill next point horizontally
+  //fill next point horizontally
 	for (int i = 0; i < vision_profile[0].size(); i++) {
 		auton_row.at(i) = vision_profile.at(row_index).at(i);
 	}
@@ -796,7 +804,7 @@ void DriveBase::RunAutonDrive() {
 }
 
 //Increments through target points of the motion profile
-void DriveBase::RunVisionDrive() {
+void DriveBase::RunVisionProfile() {
 
 	//fill next point
 	for (int i = 0; i < vision_profile[0].size(); i++) { //can reuse after auto
@@ -836,25 +844,50 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 }
 
+
+void DriveBase::RunAutonDrive(Joystick *JoyThrottle,
+	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
+
+  switch (auton_drive_state) {
+
+    case CREATE_AUTON_PROF:
+    if (set_profile) {
+      auton_drive_state = FOLLOW_AUTON_PROF;
+    }
+    break;
+    case FOLLOW_AUTON_PROF:
+    RunAutonProfile();
+    break;
+    case RESET_AUTON:
+    //zeroall(true) ?
+    break;
+    case TELEOP_DRIVE: //clear old auton
+    RunTeleopDrive(JoyThrottle, JoyWheel, is_regular, is_vision, is_rotation);
+    break;
+
+  }
+
+}
+
 bool DriveBase::VisionDriveStateMachine() {
 
 	switch (vision_drive_state) {
 
-		case CREATE_PROFILE:
+		case CREATE_VIS_PROF:
 		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
 			if (set_profile) {
-				vision_drive_state = FOLLOW_PROFILE;
+				vision_drive_state = FOLLOW_VIS_PROF;
 			}
 			return false;
 		break;
-		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
-			RunVisionDrive();
+		case FOLLOW_VIS_PROF: //TODO: add button for user to end visionDrive
+			RunVisionProfile();
 			if (row_index >= vision_profile.size()) {
-				vision_drive_state = RESET;
+				vision_drive_state = RESET_VIS;
 			}
 			return false;
 		break;
-		case RESET:
+		case RESET_VIS:
 			StopAll();
 		  return true;
 		break;

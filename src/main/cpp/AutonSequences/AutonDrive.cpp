@@ -6,8 +6,7 @@
 #include <chrono> // ditto
 
 // Fix errors and add to header file so subclasses have access to it
-std::vector<std::vector<double> > full_refs(1500, std::vector<double>(6)); // initalizes each index value to 0;
-
+std::vector<std::vector<double> > full_refs(1500, std::vector<double>(5)); // initalizes each index value to 0;
 
 int current_index = 0;
 
@@ -40,16 +39,14 @@ void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bo
       full_refs.at(current_index).at(0) = ((double) sl.heading) - PI; //profile tries to turn robot around and go straight, in order to go backwards
       full_refs.at(current_index).at(1) = -1.0 * ((double) sl.position); //pathfinder does not give negative references
       full_refs.at(current_index).at(2) = -1.0 * ((double) sr.position);
-      full_refs.at(current_index).at(3) = (0.0);
-      full_refs.at(current_index).at(4) = -1.0 * ((double) sl.velocity);
-      full_refs.at(current_index).at(5) = -1.0 * ((double) sr.velocity);
+      full_refs.at(current_index).at(3) = -1.0 * ((double) sl.velocity);
+      full_refs.at(current_index).at(4) = -1.0 * ((double) sr.velocity);
     } else {
       full_refs.at(current_index).at(0) = (double) sl.heading;
   		full_refs.at(current_index).at(1) = (double) sl.position;
   		full_refs.at(current_index).at(2) = (double) sr.position;
-  		full_refs.at(current_index).at(3) = (0.0);
-  		full_refs.at(current_index).at(4) = (double) sl.velocity;
-  		full_refs.at(current_index).at(5) = (double) sr.velocity;
+  		full_refs.at(current_index).at(3) = (double) sl.velocity;
+  		full_refs.at(current_index).at(4) = (double) sr.velocity;
     }
 
     current_index++;;
@@ -137,7 +134,12 @@ void AutonDrive::PrintTrajectory() {
     myfile << std::to_string(full_refs.at(i).at(2)) << "\n";
     myfile << std::to_string(full_refs.at(i).at(3)) << "\n";
     myfile << std::to_string(full_refs.at(i).at(4)) << "\n";
-    myfile << std::to_string(full_refs.at(i).at(5)) << "\n";
   }
   myfile.close();
+}
+
+std::vector<std::vector<double> > AutonDrive::GetFullProfile() {
+
+  return full_refs;
+
 }

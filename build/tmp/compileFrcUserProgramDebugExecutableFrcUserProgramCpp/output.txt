@@ -5,9 +5,15 @@ compiling CenterLowHab_TwoCargo.cpp successful.
 
 compiling AutonDrive.cpp successful.
 /Users/gracekwak/Desktop/FRC2019/src/main/cpp/AutonSequences/AutonDrive.cpp: In member function 'Waypoint AutonDrive::TestModule(Waypoint)':
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/AutonSequences/AutonDrive.cpp:95:29: warning: ISO C++ forbids variable length array 'points' [-Wvla]
+/Users/gracekwak/Desktop/FRC2019/src/main/cpp/AutonSequences/AutonDrive.cpp:93:29: warning: ISO C++ forbids variable length array 'points' [-Wvla]
    Waypoint points[num_points]; // Assuming start and end point only
                              ^
+
+compiling Vision.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling DriveBase.cpp successful.
 
 compiling MoveForward.cpp successful.
 
