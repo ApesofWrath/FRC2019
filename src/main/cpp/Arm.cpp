@@ -180,14 +180,7 @@ void Arm::UpperSoftLimit() {
 			arm_voltage = 0.0; //shouldn't crash
 			arm_safety = "top soft limit";
 		}
-	} else {
-		if ((arm_pos >= BACK_LIMIT_A) && (arm_voltage > 0.0)
-			 && is_init_arm) { 
-		 arm_voltage = 0.0;
-		 arm_safety = "top soft limit";
-	 }
-	}
-
+	} 
 }
 
 void Arm::LowerSoftLimit() {

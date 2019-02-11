@@ -8,19 +8,19 @@ const int IN_STATE = 1;
 
 HatchPickup::HatchPickup() {
 
-  suction = new frc::DigitalOutput(SUCTION_CHANNEL);
+  suction = new Talon(SUCTION_CHANNEL);
   solenoid = new frc::DoubleSolenoid(SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 
 void HatchPickup::On() {
 
-  suction->Set(true);
+  suction->Set(ControlMode::PercentOutput, 0.3);
 
 }
 
 void HatchPickup::Off() {
 
-  suction->Set(false);
+  suction->Set(ControlMode::PercentOutput, 0.0);
 
 }
 

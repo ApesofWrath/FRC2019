@@ -2,13 +2,13 @@
 #define SRC_SUCTION_H_
 
 #include <frc/WPILib.h>
-#include <frc/DigitalOutput.h>
+#include "ctre/Phoenix.h"
 #include <frc/DoubleSolenoid.h>
 
 class HatchPickup {
 public:
 
-  frc::DigitalOutput *suction;
+  TalonSRX *suction;
   frc::DoubleSolenoid *solenoid;
 
   const int ON_STATE_H = 0;
@@ -19,7 +19,6 @@ public:
 
   int suction_state = 0;
   int solenoid_state = 0;
-
 
   const int SUCTION_CHANNEL = -1;
 
