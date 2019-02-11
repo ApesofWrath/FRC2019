@@ -1,14 +1,20 @@
-See file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling CenterLowHab_OneCargo.cpp successful.
-
+See file:///C:/Users/DriversStation/Music/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling CenterLowHab_TwoCargo.cpp successful.
 
+compiling CenterLowHab_OneCargo.cpp successful.
+
 compiling AutonDrive.cpp successful.
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/AutonSequences/AutonDrive.cpp: In member function 'Waypoint AutonDrive::TestModule(Waypoint)':
-/Users/gracekwak/Desktop/FRC2019/src/main/cpp/AutonSequences/AutonDrive.cpp:95:29: warning: ISO C++ forbids variable length array 'points' [-Wvla]
+C:\Users\DriversStation\Music\FRC2019\src\main\cpp\AutonSequences\AutonDrive.cpp: In member function 'Waypoint AutonDrive::TestModule(Waypoint)':
+C:\Users\DriversStation\Music\FRC2019\src\main\cpp\AutonSequences\AutonDrive.cpp:95:29: warning: ISO C++ forbids variable length array 'points' [-Wvla]
    Waypoint points[num_points]; // Assuming start and end point only
                              ^
 
+compiling Vision.cpp successful.
+
+compiling Robot.cpp successful.
+
 compiling MoveForward.cpp successful.
 
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///Users/gracekwak/Desktop/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+compiling DriveBase.cpp successful.
+
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/Music/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

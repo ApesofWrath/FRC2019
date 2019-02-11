@@ -5,7 +5,7 @@
 
 #define COMP COMP_BOT
 
-#if COMP
+#if COMP //bot still w/o superstructure
 
 //Teleop
 
@@ -44,20 +44,20 @@ const double MAX_JERK_VIS = 10000.0;
 
 //Drive maxes
 
-const double ACTUAL_MAX_Y_RPM_AUTON = 0.0;
-const double ACTUAL_MAX_Y_RPM_L_F = 0.0;
-const double ACTUAL_MAX_Y_RPM_L_B = 0.0;
-const double ACTUAL_MAX_Y_RPM_R_F = 0.0;
-const double ACTUAL_MAX_Y_RPM_R_B = 0.0;
+const double ACTUAL_MAX_Y_RPM_AUTON = 10.0;
+const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
+const double ACTUAL_MAX_Y_RPM_L_B = 595.0;
+const double ACTUAL_MAX_Y_RPM_R_F = 590.0;
+const double ACTUAL_MAX_Y_RPM_R_B = 505.0;
 
-const double MAX_Y_RPM = 0.0;
+const double MAX_Y_RPM = 505.0; //smallest actual max
 const double ACTUAL_MAX_Y_RPM = 0.0;
-const double MAX_YAW_RATE = 0.0;
+const double MAX_YAW_RATE = 11.4;
 const double MAX_FPS = 15.0; //used in auton pathfinder
 
 const double FF_SCALE = 0.7; //auton
 
-#else
+#else //1st bot to have superstructure
 
 //Teleop
 
@@ -109,7 +109,7 @@ const double MAX_FPS = 15.0; //used in auton pathfinder
 
 const double FF_SCALE = 0.7; //auton
 
-#endif
+#endif //both bots
 
 const double WHEEL_DIAMETER = 6.0; //inches, for fps for auton
 const double TICKS_PER_ROT = 4096;//1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders

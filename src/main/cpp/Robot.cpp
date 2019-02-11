@@ -62,34 +62,28 @@ void Robot::TeleopInit() {
 
 }
 
+double previous_yaw = 0.0;
+
 void Robot::TeleopPeriodic() {
 
     is_rotation = joyThrottle->GetRawButton(-1);
 		is_vision = joyThrottle->GetRawButton(-1);
 		is_regular = joyThrottle->GetRawButton(-1);
+    is_regular = true;
 
-  //   double y = joyThrottle->GetY();
-  //
-  //    drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, -y);
-  // 	   drive_controller->canTalonLeft2->Set(ControlMode::PercentOutput, -y);
-  // 	   drive_controller->canTalonLeft3->Set(ControlMode::PercentOutput, -y);
-  //   //
-  // 	   drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, y);
-  // 	   drive_controller->canTalonRight2->Set(ControlMode::PercentOutput, y);
-  // 	   drive_controller->canTalonRight3->Set(ControlMode::PercentOutput, y);
-  //
-  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-  // frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());
-  //  // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
-  //  frc::SmartDashboard::PutNumber("R1", drive_controller->canTalonRight1->GetOutputCurrent());
-  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
-  //  frc::SmartDashboard::PutNumber("R2", drive_controller->canTalonRight2->GetOutputCurrent());
-  //  frc::SmartDashboard::PutNumber("R3", drive_controller->canTalonRight3->GetOutputCurrent());
-  //
-  //  frc::SmartDashboard::PutNumber("L1", drive_controller->canTalonLeft1->GetOutputCurrent());
-  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
-  //  frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
-  //  frc::SmartDashboard::PutNumber("L3", drive_controller->canTalonLeft3->GetOutputCurrent());
+    drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+
+    double y = joyThrottle->GetY();
+    // double x = joyWheel->GetX();
+
+    //  drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, x);
+    //  drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, x);
+
+     // double yaw_rate = drive_controller->ahrs->GetRate();//abs(previous_yaw - drive_controller->GetYawPos()) / 0.020;
+
+     // frc::SmartDashboard::PutNumber("YAW RATE", yaw_rate);
+     // frc::SmartDashboard::PutNumber("X", x);
+
 }
 
 void Robot::TestPeriodic() {}
