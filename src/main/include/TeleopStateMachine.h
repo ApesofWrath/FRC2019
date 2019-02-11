@@ -1,3 +1,5 @@
+#ifndef SRC_TELEOPSTATEMACHINE_H_
+#define SRC_TELEOPSTATEMACHINE_H_
 //frc and 3rd party library includes
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "ctre/Phoenix.h"
@@ -23,9 +25,12 @@ public:
       bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch, bool place_hatch,
       bool place_cargo, bool post_outtake_hatch, bool post_outtake_cargo);
 
+  void Initialize();
+
   Elevator *elevator;
   Intake *intake;
   Arm *arm;
   HatchPickup *hatch_pickup;
 
 };
+#endif

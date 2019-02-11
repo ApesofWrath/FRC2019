@@ -8,7 +8,7 @@ const int IN_STATE = 1;
 
 HatchPickup::HatchPickup() {
 
-  suction = new Talon(SUCTION_CHANNEL);
+  suction = new TalonSRX(SUCTION_CHANNEL);
   solenoid = new frc::DoubleSolenoid(SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 

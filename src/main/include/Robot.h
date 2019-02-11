@@ -7,6 +7,9 @@
 
 #pragma once
 
+#ifndef SRC_ROBOT_H_
+#define SRC_ROBOT_H_
+
 #include <string>
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
@@ -34,3 +37,4 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 };
+#endif

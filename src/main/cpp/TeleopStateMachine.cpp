@@ -37,6 +37,10 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
 }
 
+void TeleopStateMachine::Initialize(){
+  state = INIT_STATE;
+}
+
 void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_in,
     bool bottom_intake_out, bool bottom_intake_stop, bool top_intake_in, bool top_intake_out,
     bool top_intake_stop, bool suction_on, bool suction_off, bool hatch_out, bool hatch_in, bool arm_up,
