@@ -111,6 +111,14 @@ Waypoint AutonDrive::Forward(Waypoint start_point, bool isReversed) {
   return end;
 }
 
+Waypoint AutonDrive::RightRocketFront(Waypoint start_point, bool isReversed) {
+  Waypoint points[2];
+  Waypoint end = { 10.5 , 13 , d2r(90) };
+  points[0] = start_point;
+  points[1] = end
+  GeneratePartialTrajectory(2,points, isReversed)
+}
+
 void AutonDrive::FillRemainingTrajectory() {
   // Out of bounds
   if (current_index <= 0 || current_index >= 1500){

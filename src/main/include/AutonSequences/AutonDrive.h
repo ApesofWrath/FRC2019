@@ -45,6 +45,7 @@ protected:
     Waypoint BottomCargoRefill(Waypoint start_point, bool isReversed);
     Waypoint RightFrontCargoBay(Waypoint start_point, bool isReversed);
     Waypoint Forward(Waypoint start_point, bool isReversed);
+    Waypoint RightRocketFront(Waypoint start_point, bool isReversed);
 
     Waypoint TestModule(Waypoint start_point);
     void FillRemainingTrajectory();
