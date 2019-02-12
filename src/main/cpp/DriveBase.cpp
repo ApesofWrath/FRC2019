@@ -531,8 +531,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
 	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
 
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r *550.0);
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l*550.0);
+	frc::SmartDashboard::PutNumber("ff r", feed_forward_r * MAX_Y_RPM); //max rpm
+	frc::SmartDashboard::PutNumber("ff l", feed_forward_l * MAX_Y_RPM);
 
 	//conversion to RPM from native unit
 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
