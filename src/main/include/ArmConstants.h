@@ -9,6 +9,7 @@ const double MIN_VOLTAGE_A = -12.0;
 
 const double free_speed_a = 18730.0; //rpm
 const double G_a = (831.0 / 1.0); //gear ratio
+const double ENC_GEAR_RATIO = (7.5 / 1.0); //7.5 encoder rot for each arm rot
 const double MAX_THEORETICAL_VELOCITY_A = ((free_speed_a/ G_a)) * (2.0 * PI)
 		/ 60.0; //rad/s
 const double Kv_a = 1 / MAX_THEORETICAL_VELOCITY_A;

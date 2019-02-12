@@ -180,7 +180,7 @@ void Arm::UpperSoftLimit() {
 			arm_voltage = 0.0; //shouldn't crash
 			arm_safety = "top soft limit";
 		}
-	} 
+	}
 }
 
 void Arm::LowerSoftLimit() {
@@ -218,29 +218,28 @@ void Arm::CapVoltage() {
 	}
 }
 
+//returns rad/s
 double Arm::GetAngularVelocity() {
 	//Native vel units are in ticks per 100ms so divide by TICKS_PER_ROT to get rotations per 100ms then multiply 10 to get per second
 	//multiply by 2pi to get into radians per second (2pi radians are in one revolution)
 	double ang_vel =
 			(talonArm->GetSensorCollection().GetQuadratureVelocity()
-					/ (TICKS_PER_ROT_A) * (2.0 * PI) * (10.0) * -1.0);
-	//double ang_vel = 0.0;
+					/ (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * (10.0) * -1.0);
 
 	return ang_vel;
 }
 
+//returns rad
 double Arm::GetAngularPosition() {
 
-	//Native position in ticks, divide by ticks per rot to get into revolutions multiply by 2pi to get into radians
-	//2pi radians per rotations
 	double ang_pos =
 			(talonArm->GetSensorCollection().GetQuadraturePosition()
-					/ (TICKS_PER_ROT_A) * (2.0 * PI) * -1.0);
+					/ (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * -1.0);
 
 	double offset_pos = .35; //amount that the arm will stick up in radians
 
   return ang_pos;
-	// return ang_pos + offset_pos;
+
 }
 
 bool Arm::IsAtBottomArm() {

@@ -49,9 +49,6 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch,
     bool place_hatch, bool place_cargo, bool post_outtake_hatch, bool post_outtake_cargo) {
 
-    arm->IsElevatorHigh(elevator->IsElevatorHigh()); //diff arm upper soft limit
-    elevator->IsArmBack(arm->GetAngularPosition());
-
     if (wait_for_button) {
       state = WAIT_FOR_BUTTON_STATE;
     }
