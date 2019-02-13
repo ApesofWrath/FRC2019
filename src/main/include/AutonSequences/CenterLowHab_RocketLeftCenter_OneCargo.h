@@ -2,9 +2,9 @@
 
 // // // Code Name: Bartholomew_Fragrance@gmail_escapevesselright_uno.cpp
 
-class CenterLowHabRocketRightOneCargo : public AutonDrive {
+class CenterLowHabRocketLeftCenterOneCargo : public AutonDrive {
 
 public:
-  CenterLowHabRocketRightOneCargo(Waypoint start);
+  CenterLowHabRocketLeftCenterOneCargo(Waypoint start);
   void BuildTotalTrajectory();
 }

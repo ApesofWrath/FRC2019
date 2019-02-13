@@ -112,8 +112,56 @@ Waypoint AutonDrive::RightRocketFront(Waypoint start_point, bool isReversed) {
   Waypoint points[2];
   Waypoint end = { 10.5 , 13 , d2r(90) };
   points[0] = start_point;
-  points[1] = end
-  GeneratePartialTrajectory(2,points, isReversed)
+  points[1] = end;
+  GeneratePartialTrajectory(2,points, isReversed);
+}
+
+Waypoint AutonDrive::LeftRocketFront(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { -10.5, 13, d2r(-90) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::LeftRocketLeft(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { -11.5, 11, d2r(-28.75) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::RightRocketRight(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { 11.5, 11, d2r(28.75) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::LeftRocketBack(Waypoint start_point, bool isReversed) {
+  Waypoint points[4];
+  Waypoint pt1 = { -2.5, 9, d2r(-10) };
+  Waypoint pt2 = { -6.5, 17, d2r(-50) };
+  Waypoint end = { -11.5, 15, d2r(-151.25) };
+  points[0] = start_point;
+  points[1] = pt1;
+  points[2] = pt2;
+  points[3] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::RightRocketBack(Waypoint start_point, bool isReversed) {
+  Waypoint points[4];
+  Waypoint pt1 = { 2.5, 9, d2r(10) };
+  Waypoint pt2 = { 6.5, 17, d2r(50) };
+  Waypoint end = { 11.5, 15, d2r(151.25) };
+  points[0] = start_point;
+  points[1] = pt1;
+  points[2] = pt2;
+  points[3] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
 }
 
 void AutonDrive::FillRemainingTrajectory() {

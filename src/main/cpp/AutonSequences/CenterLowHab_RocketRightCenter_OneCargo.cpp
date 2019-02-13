@@ -1,6 +1,6 @@
-#include "../../include/AutonSequences/CenterLowHab_RocketRight_OneCargo.h"
+#include "../../include/AutonSequences/CenterLowHab_RocketRightCenter_OneCargo.h"
 
-CenterLowHabRocketRightOneCargo::CenterLowHabRocketRightOneCargo(Waypoint start) {
+CenterLowHabRocketRightCenterOneCargo::CenterLowHabRocketRightCenterOneCargo(Waypoint start) {
   start_pos = start;
   MAX_VELOCITY = 11.0;
   MAX_ACCELERATION = 6.0;
@@ -9,7 +9,7 @@ CenterLowHabRocketRightOneCargo::CenterLowHabRocketRightOneCargo(Waypoint start)
   WHEELBASE_WIDTH = 2.1; // TODO: determine (in meters)
 }
 
-void CenterLowHabRocketRightOneCargo::BuildTotalTrajectory() {
+void CenterLowHabRocketRightCenterOneCargo::BuildTotalTrajectory() {
   RightRocketFront(start_pos, false);
   FillRemainingTrajectory();
   PrintTrajectory();
