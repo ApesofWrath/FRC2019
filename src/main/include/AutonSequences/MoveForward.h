@@ -11,6 +11,6 @@
 class MoveForward : public AutonDrive {
 
 public:
-  MoveForward(Waypoint start);
+  MoveForward();
   void BuildTotalTrajectory();
 };

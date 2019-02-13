@@ -1,7 +1,7 @@
 #include "../../include/AutonSequences/MoveForward.h"
 
-MoveForward::MoveForward(Waypoint start) {
-  start_pos = start;
+MoveForward::MoveForward() {
+//  start_pos = start;
   MAX_VELOCITY = 11.0;
   MAX_ACCELERATION = 6.0;
   MAX_JERK = 100000.0;
@@ -12,6 +12,6 @@ MoveForward::MoveForward(Waypoint start) {
 void MoveForward::BuildTotalTrajectory() {
   Waypoint start = {0, 0, 0};
   Forward(start, false); // To make it forward/backward change this to true and false respectively
-  FillRemainingTrajectory();
+  // FillRemainingTrajectory();
   PrintTrajectory();
 }

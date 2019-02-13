@@ -24,8 +24,25 @@ void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bo
   int length = candidate.length;
   // myfile << "LENGTH: " << std::to_string(length);
   Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
+  TrajectoryInfo *ti = &candidate.info;
 
-  int result = pathfinder_generate(&candidate, trajectory);
+  // ti->impulse = 0;
+  // ti->length = 0;
+  // ti->filter1 = 0;
+  // ti->filter2 = 0;
+  // ti->v = 0;
+  // ti->u = 0;
+
+  frc::SmartDashboard::PutNumber("filter 1", ti->filter1);
+  frc::SmartDashboard::PutNumber("filter 2", ti->filter2);
+  frc::SmartDashboard::PutNumber("dt", ti->dt);
+  frc::SmartDashboard::PutNumber("u", ti->u);
+  frc::SmartDashboard::PutNumber("v", ti->v);
+  frc::SmartDashboard::PutNumber("impulse", ti->length);
+  frc::SmartDashboard::PutNumber("length", ti->length);
+
+
+ int result = pathfinder_generate(&candidate, trajectory);
 
   Segment *leftTrajectory = (Segment*) malloc(sizeof(Segment) * length);
 	Segment *rightTrajectory = (Segment*) malloc(sizeof(Segment) * length);
@@ -101,7 +118,7 @@ Waypoint AutonDrive::TestModule(Waypoint start_point) {
 
 Waypoint AutonDrive::Forward(Waypoint start_point, bool isReversed) {
   Waypoint points[2];
-  Waypoint end = {0, 4, d2r(0)};
+  Waypoint end = {4, 0, d2r(0)};
   points[0] = start_point;
   points[1] = end;
   GeneratePartialTrajectory(2, points, isReversed);

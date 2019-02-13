@@ -25,10 +25,9 @@ void Robot::RobotInit() {
 
   drive_controller = new DriveController();
   vision = new Vision();
-  start = {0,0,0};
- move_forward = new MoveForward(start);
- //move_forward->BuildTotalTrajectory();
- //move_forward->GetFullProfile()
+
+ move_forward = new MoveForward();
+ move_forward->BuildTotalTrajectory();
 
 }
 
@@ -64,10 +63,10 @@ void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
      frc::SmartDashboard::PutNumber("nothing", 0);
   } else if (m_autoSelected == kDriveForward) {
 
-  //  drive_controller->SetAutonRefs();
+
   }
 
-
+//  drive_controller->SetAutonRefs(move_forward->GetFullProfile());
 
 }
 
