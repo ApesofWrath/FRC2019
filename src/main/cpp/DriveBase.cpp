@@ -612,8 +612,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+//	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+//	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -829,15 +829,18 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 		switch (teleop_drive_state) {
 			case REGULAR:
+			frc::SmartDashboard::PutString("DRIVE", "reg");
 			TeleopWCDrive(JoyThrottle, JoyWheel);
 			break;
 			case VISION_DRIVE:
+			frc::SmartDashboard::PutString("DRIVE", "vis");
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
 			}
 			break;
 			case ROTATION_CONTROLLER:
+			frc::SmartDashboard::PutString("DRIVE", "rot");
 			RotationController(JoyWheel);
 			break;
 		}
@@ -851,17 +854,21 @@ void DriveBase::RunAutonDrive(Joystick *JoyThrottle,
   switch (auton_drive_state) {
 
     case CREATE_AUTON_PROF:
+		frc::SmartDashboard::PutString("DRIVE", "create prof");
     if (set_profile) {
       auton_drive_state = FOLLOW_AUTON_PROF;
     }
     break;
     case FOLLOW_AUTON_PROF:
+		frc::SmartDashboard::PutString("DRIVE", "follow prof");
     RunAutonProfile();
     break;
     case RESET_AUTON:
+		frc::SmartDashboard::PutString("DRIVE", "reset auton");
     //zeroall(true) ?
     break;
     case TELEOP_DRIVE: //clear old auton
+
     RunTeleopDrive(JoyThrottle, JoyWheel, is_regular, is_vision, is_rotation);
     break;
 
@@ -874,6 +881,7 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_VIS_PROF:
+			frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
 		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_VIS_PROF;
@@ -881,6 +889,7 @@ bool DriveBase::VisionDriveStateMachine() {
 			return false;
 		break;
 		case FOLLOW_VIS_PROF: //TODO: add button for user to end visionDrive
+			frc::SmartDashboard::PutString("VIS DRIVE", "follow prof");
 			RunVisionProfile();
 			if (row_index >= vision_profile.size()) {
 				vision_drive_state = RESET_VIS;
@@ -888,6 +897,7 @@ bool DriveBase::VisionDriveStateMachine() {
 			return false;
 		break;
 		case RESET_VIS:
+			frc::SmartDashboard::PutString("VIS DRIVE", "reset prof");
 			StopAll();
 		  return true;
 		break;

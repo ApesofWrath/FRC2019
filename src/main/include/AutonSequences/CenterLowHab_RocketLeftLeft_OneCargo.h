@@ -7,4 +7,4 @@ class CenterLowHabRocketLeftLeftOneCargo : public AutonDrive {
 public:
   CenterLowHabRocketLeftLeftOneCar(Waypoint start);
   void BuildTotalTrajectory();
-}
+};

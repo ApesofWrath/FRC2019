@@ -25,6 +25,10 @@ void Robot::RobotInit() {
 
   drive_controller = new DriveController();
   vision = new Vision();
+  start = {0,0,0};
+ move_forward = new MoveForward(start);
+ //move_forward->BuildTotalTrajectory();
+ //move_forward->GetFullProfile()
 
 }
 
@@ -34,28 +38,43 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
-  drive_controller->ZeroAll(true);
+//  drive_controller->ZeroAll(true);
 
   m_autoSelected = auton_chooser.GetSelected();
   m_autoSelected = SmartDashboard::GetString("Auto Selector",
-       kDriveForward);
-  std::cout << "Auto selected: " << m_autoSelected << std::endl;
+       kDriveForward);//default
+
+  m_startSelected = start_chooser.GetSelected();
+  m_startSelected = SmartDashboard::GetString("Center Selector",
+       kCenter); //default
+
+       if (m_startSelected == kCenter) {
+         start = { 0.0 , 0.0, 0.0 };
+           frc::SmartDashboard::PutNumber("waypoint", 0);
+       } else if (m_startSelected == kLeft) {
+         start = { 0.0 , 0.0, 0.0 }; //TODO:
+       } else if (m_startSelected == kRight) {
+         start = { 0.0 , 0.0, 0.0 };
+       }
 
   if (m_autoSelected == kCenterLowHabOneCargo) {
     // Custom Auto goes here
   } else if (m_autoSelected == kDoNothing) {
     // Default Auto goes here
-  } else if (m_autoSelected == kMoveForward) {
-    move_forward = new MoveForward();
-    move_forward->BuildTotalTrajectory();
-    drive_controller->SetAutonRefs(move_forward->GetFullProfile());
+     frc::SmartDashboard::PutNumber("nothing", 0);
+  } else if (m_autoSelected == kDriveForward) {
+
+  //  drive_controller->SetAutonRefs();
   }
+
+
 
 }
 
 void Robot::AutonomousPeriodic() {
 
-  //  drive_controller->RunAutonDrive();
+  frc::SmartDashboard::PutNumber("periodic", 0);
+  drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
 }
 
