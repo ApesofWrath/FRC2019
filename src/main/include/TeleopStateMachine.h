@@ -1,5 +1,5 @@
-#ifndef SRC_TELEOPSTATEMACHINE_H_
-#define SRC_TELEOPSTATEMACHINE_H_
+#ifndef SRC_TELEOPSTATE_MACHINE_H_
+#define SRC_TELEOPSTATE_MACHINE_H_
 //frc and 3rd party library includes
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "ctre/Phoenix.h"
@@ -31,6 +31,20 @@ public:
   Intake *intake;
   Arm *arm;
   HatchPickup *hatch_pickup;
+
+  const int INIT_STATE_H = 0;
+  const int WAIT_FOR_BUTTON_STATE_H = 1;
+  const int GET_HATCH_STATION_STATE_H = 2;
+  const int GET_HATCH_GROUND_STATE_H = 3;
+  const int POST_INTAKE_HATCH_STATE_H = 4;
+  const int GET_CARGO_STATE_H = 5;
+  const int POST_INTAKE_CARGO_STATE_H = 6;
+  const int PLACE_HATCH_STATE_H = 7;
+  const int PLACE_CARGO_STATE_H = 8;
+  const int POST_OUTTAKE_HATCH_STATE_H = 9;
+  const int POST_OUTTAKE_CARGO_STATE_H = 10;
+
+  int state = INIT_STATE
 
 };
 #endif

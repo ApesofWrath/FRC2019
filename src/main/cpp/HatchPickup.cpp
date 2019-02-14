@@ -38,16 +38,16 @@ void HatchPickup::Out() {
 
 void HatchPickup::SuctionStateMachine() {
 
-    switch (suction_state) {
-        case ON_STATE:
-            On();
-            frc::SmartDashboard::PutString("SUCTION", "On");
-            break;
-        case OFF_STATE:
-            Off();
-            frc::SmartDashboard::PutString("SUCTION", "Off");
-            break;
-    }
+  switch (suction_state) {
+      case ON_STATE:
+          On();
+          frc::SmartDashboard::PutString("SUCTION", "On");
+          break;
+      case OFF_STATE:
+          Off();
+          frc::SmartDashboard::PutString("SUCTION", "Off");
+          break;
+  }
 }
 
 

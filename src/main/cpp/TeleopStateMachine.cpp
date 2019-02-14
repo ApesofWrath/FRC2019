@@ -11,7 +11,7 @@ const int PLACE_HATCH_STATE = 7;
 const int PLACE_CARGO_STATE = 8;
 const int POST_OUTTAKE_HATCH_STATE = 9;
 const int POST_OUTTAKE_CARGO_STATE = 10;
-int state = INIT_STATE;
+
 
 int last_state = 0;
 
@@ -29,6 +29,7 @@ bool state_solenoids = false;
 
 TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
     Arm *arm_, HatchPickup *hatch_pickup_){
+    state = INIT_STATE;
 
     elevator = elevator_;
     intake = intake_;

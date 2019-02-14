@@ -6,25 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-
 #include <iostream>
-
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const int ELEVATOR_UP = 3; //left lower
-const int ELEVATOR_MID = 5; //left upper
-const int ELEVATOR_DOWN = 4; //right lower
-
-bool elevator_up, elevator_mid, elevator_down;
+bool wait_for_button, get_hatch_ground, get_hatch_station, post_intake_hatch,
+  get_cargo, post_intake_cargo, place_hatch, place_cargo, post_outtake_cargo,
+  post_outtake_hatch;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  elevator_mp = new ElevatorMotionProfiler(1.15, 5.0, 0.02);
-  elevator = new Elevator(elevator_mp);
-  joyElev = new frc::Joystick(0);
+  tsm = new TeleopStateMachine();
+  joyOp = new frc::Joystick(0);
 }
 
 /**
@@ -35,9 +30,7 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {
-  elevator->PrintElevatorInfo();
-}
+void Robot::RobotPeriodic() {}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -75,27 +68,40 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
 
-  elevator->ElevatorStateMachine();
+  tsm->StateMachine();
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-  elevator_up = joyElev->GetRawButton(ELEVATOR_UP);
-	elevator_mid = joyElev->GetRawButton(ELEVATOR_MID);
-	elevator_down = joyElev->GetRawButton(ELEVATOR_DOWN);
+  wait_for_button = joyOp->GetRawButton(1);
+  get_hatch_ground = joyOp->GetRawButton(2);
+  get_hatch_station = joyOp->GetRawButton(3);
+  post_intake_hatch = joyOp->GetRawButton(4);
+  get_cargo = joyOp->GetRawButton(5);
+  post_intake_cargo = joyOp->GetRawButton(6);
+  place_hatch = joyOp->GetRawButton(7);
+  place_cargo = joyOp->GetRawButton(8);
+  post_outtake_cargo = joyOp->GetRawButton(9);
+  post_outtake_hatch = joyOp->GetRawButton(10);
 
-  frc::SmartDashboard::PutBoolean("elevator_up", elevator_up);
-  frc::SmartDashboard::PutBoolean("elevator_mid", elevator_mid);
-  frc::SmartDashboard::PutBoolean("elevator_down", elevator_down);
-
-  if (elevator_up) {
-    elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
+  if (wait_for_button) {
+    tsm->state = state->WAIT_FOR_BUTTON_STATE_H;
+  } else if (get_hatch_ground) {
+    tsm->state = state->GET_HATCH_GROUND_STATE_H;
+  } else if (get_hatch_station) {
+    tsm->state = state->GET_HATCH_STATION_STATE_H;
+  } else if (post_intake_hatch) {
+    tsm->state = state->POST_INTAKE_HATCH_STATE_H;
+  } else if (get_cargo) {
+    tsm->state = state->GET_CARGO_STATE_H;
+  } else if (post_intake_cargo) {
+    tsm->state = state->POST_INTAKE_CARGO_STATE_H;
+  } else if (place_hatch) {
+    tsm->state = state->PLACE_HATCH_STATE_H;
+  } else if (place_cargo) {
+    tsm->state = state->PLACE_CARGO_STATE_H;
+  } else if (post_outtake_cargo) {
+    tsm->state = state->POST_OUTTAKE_CARGO_STATE_H;
+  } else if (post_outtake_hatch) {
+    tsm->state = state->POST_OUTTAKE_HATCH_STATE_H;
   }
-  if (elevator_mid) {
-    elevator->elevator_state = elevator->MID_CARGO_STATE_H;
-  }
-  if (elevator_down) {
-    elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
-  }
-
-  elevator->Move();
 
 
   // elevator->ManualElevator(joyElev);
