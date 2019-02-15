@@ -1,0 +1,5 @@
+See file:///C:/Users/osgoo/Desktop/Robotics/FRC2019-SUCCCCCCCCCCCCCCCCCCCTIONHAAATCCCCH/FRC2019/build/tmp/compileFrcUserProgramTestWindowsx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramTestWindowsx86-64DebugGoogleTestExeFrcUserProgramCpp.
+compiling robot.cpp successful.
+robot.cpp
+
+Finished compileFrcUserProgramTestWindowsx86-64DebugGoogleTestExeFrcUserProgramCpp, see full log file:///C:/Users/osgoo/Desktop/Robotics/FRC2019-SUCCCCCCCCCCCCCCCCCCCTIONHAAATCCCCH/FRC2019/build/tmp/compileFrcUserProgramTestWindowsx86-64DebugGoogleTestExeFrcUserProgramCpp/output.txt.

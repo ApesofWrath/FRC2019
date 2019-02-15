@@ -15,6 +15,9 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  talon1 = new TalonSRX(1);
+  talon2 = new TalonSRX(2);
+  joyOp = new frc::Joystick(0);
 }
 
 /**
@@ -61,7 +64,20 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  if (joyOp->GetRawButton(SUCTION_ON)) {
+    talon1->Set(ControlMode::PercentOutput, 1.0);
+    talon2->Set(ControlMode::PercentOutput, 1.0);
+  }
+  if (joyOp->GetRawButton(SUCTION_OFF)){
+    talon1->Set(ControlMode::PercentOutput, 0.0);
+    talon2->Set(ControlMode::PercentOutput, 0.0);
+  }
+
+  frc::SmartDashboard::PutNumber("CURRENT OUTPUT 1", talon1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("CURRENT OUTPUT 2", talon2->GetOutputCurrent());
+
+}
 
 void Robot::TestPeriodic() {}
 

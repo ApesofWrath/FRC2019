@@ -11,6 +11,12 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <string>
+#include <frc/TimedRobot.h>
+#include <frc/Joystick.h>
+#include <frc/WPILib.h>
+#include "ctre/Phoenix.h"
+#include <frc/IterativeRobot.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -22,9 +28,17 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
+  TalonSRX *talon1, *talon2;
+  frc::Joystick *joyOp;
+
+  const int SUCTION_ON = 0;
+  const int SUCTION_OFF = 1;
+
  private:
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+
+
 };

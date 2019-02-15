@@ -1,0 +1,5 @@
+See file:///C:/Users/osgoo/Desktop/Robotics/FRC2019-SUCCTIONHATCH/FRC2019/build/tmp/compileFrcUserProgramTestWindowsx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt for all output for compileFrcUserProgramTestWindowsx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp.
+compiling main.cpp successful.
+main.cpp
+
+Finished compileFrcUserProgramTestWindowsx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp, see full log file:///C:/Users/osgoo/Desktop/Robotics/FRC2019-SUCCTIONHATCH/FRC2019/build/tmp/compileFrcUserProgramTestWindowsx86-64ReleaseGoogleTestExeFrcUserProgramTestCpp/output.txt.

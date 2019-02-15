@@ -1,0 +1,34 @@
+/DEBUG:FULL
+/OUT:C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\exe\frcUserProgramTest\windowsx86-64\debug\frcUserProgramTest.exe
+/NOLOGO
+"/LIBPATH:C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\lib\x64"
+"/LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17763.0\um\x64"
+"/LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17763.0\ucrt\x64"
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\objs\frcUserProgramTest\windowsx86-64\debug\frcUserProgramTestCpp\4kav41ravy7v2me881tk87z1i\main.obj
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\objs\frcUserProgramTest\windowsx86-64\debug\frcUserProgramCpp\194ue62o8fxv9hpb2jbtmms7x\robot.obj
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.2.1-windowsx86-64debug.zip_8c786cf566e20bf9f1a3f4aa53838adb\windows\x86-64\shared\wpilibcd.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\hal-cpp-2019.2.1-windowsx86-64debug.zip_2cf9b610adb61e41accb66c77ab485ba\windows\x86-64\shared\wpiHald.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpiutil-cpp-2019.2.1-windowsx86-64debug.zip_29a980bb69d3a9d38d89662b22369f14\windows\x86-64\shared\wpiutild.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\ntcore-cpp-2019.2.1-windowsx86-64debug.zip_18a2501ed9f8867c58bb4ae7b71d5495\windows\x86-64\shared\ntcored.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cscore-cpp-2019.2.1-windowsx86-64debug.zip_ecdb15b108ac6be059c6dc9ee82bb501\windows\x86-64\shared\cscored.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cameraserver-cpp-2019.2.1-windowsx86-64debug.zip_ab57f42d4f46baca193062b4b0457c9a\windows\x86-64\shared\cameraserverd.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_calib3d344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_core344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_features2d344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_flann344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_highgui344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_imgcodecs344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_imgproc344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_ml344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_objdetect344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_photo344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_shape344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_stitching344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_superres344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_video344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_videoio344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-windowsx86-64debug.zip_a8abb2a019c54861e6e4f70f5398888b\windows\x86-64\shared\opencv_videostab344d.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\googletest-1.8.0-4-4e4df22-windowsx86-64staticdebug.zip_315c326297bdec6a202014cb91dbf91a\windows\x86-64\static\googletestd.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpiapi-cpp-5.12.0-windowsx86-64staticdebug.zip_0e28b57d6f7148325416d0f6245e0ca9\windows\x86-64\static\CTRE_Phoenix_WPI.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-windowsx86-64staticdebug.zip_31b77cd27d0db976efe4c288a3a0075a\windows\x86-64\static\CTRE_Phoenix.lib
+C:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cci-5.12.0-windowsx86-64staticdebug.zip_339c00e8aa995c16c6e0012e8905fd5e\windows\x86-64\static\CTRE_PhoenixCCI.lib

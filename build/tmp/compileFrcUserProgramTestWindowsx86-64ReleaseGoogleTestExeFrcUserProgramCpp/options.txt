@@ -1,0 +1,31 @@
+/TP
+/nologo
+/c
+/DRUNNING_FRC_TESTS
+/EHsc
+/DNOMINMAX
+/Zi
+/FS
+/Zc:inline
+/O2
+/MD
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\src\main\include
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpilibc-cpp-2019.2.1-headers.zip_c5f7002a6c1dfda8aa2899e2594d01fe
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\hal-cpp-2019.2.1-headers.zip_c1e3733a98824778ae9dc4369a7c5066
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpiutil-cpp-2019.2.1-headers.zip_961601eb64e5456d71ed70c0f9da8e94
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\ntcore-cpp-2019.2.1-headers.zip_bb0cec940e93e7a2ed066107bd22e12e
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cscore-cpp-2019.2.1-headers.zip_3d9a26a763eb0e1008d349ec462fd509
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cameraserver-cpp-2019.2.1-headers.zip_6d5c4a8bf55973d76d90eeb158bc5c66
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\opencv-cpp-3.4.4-4-headers.zip_ed19d56be47d37c8193b8f0377a9cfe6
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\googletest-1.8.0-4-4e4df22-headers.zip_6df6026f32d57a167443a587edfa5107
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\navx-cpp-3.1.344-headers.zip_744b022e6074b8136dc4cb47e25c93fd
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\Pathfinder-Core-2019.1.10-headers.zip_3d64920cca5e9b4af5e5d4ce446f5e13
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\Pathfinder-FRCSupport-2019.1.10-headers.zip_f919712666acd2b5ef93f35e767b1475
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\wpiapi-cpp-5.12.0-headers.zip_29daa6d91100a3e64a6c5c507f77fd54
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\api-cpp-5.12.0-headers.zip_4c0f1181ce667c2b1da6d536e53054ec
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\cci-5.12.0-headers.zip_dcc0606199f9f03e2afc8c79f610ebba
+/IC:\Users\osgoo\Desktop\Robotics\FRC2019-SUCCTIONHATCH\FRC2019\build\tmp\expandedArchives\core-5.12.0-headers.zip_318ff6fc4a9e78b523ef7a1e4e5003aa
+"/IC:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\shared"
+"/IC:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt"
