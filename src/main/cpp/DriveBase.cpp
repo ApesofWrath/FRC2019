@@ -8,8 +8,9 @@ const int RESET = 2;
 int vision_drive_state = CREATE_PROFILE;
 
 const int REGULAR = 0;
-const int VISION_DRIVE = 1;
-const int ROTATION_CONTROLLER = 2;
+const int VISION_PF = 1;
+const int VISION_YAW = 2;
+const int ROTATION_CONTROLLER = 3;
 int teleop_drive_state = REGULAR;
 
  std::vector<std::vector<double>> vision_profile; //runautondrive looks at auton_row size
@@ -88,75 +89,68 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	canTalonLeft1 = new TalonSRX(LF);
 	canTalonLeft1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonLeft2 = new VictorSPX(L2);
+  canTalonLeft2->Follow(*canTalonLeft1);
 	canTalonLeft3 = new VictorSPX(L3);
+  canTalonLeft3->Follow(*canTalonLeft1);
 
 	canTalonRight1 = new TalonSRX(RF);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonRight2 = new VictorSPX(R2);
+  canTalonRight2->Follow(*canTalonRight1);
 	canTalonRight3 = new VictorSPX(R3);
+  canTalonRight3->Follow(*canTalonRight1);
 
-	// canTalonLeft1->EnableCurrentLimit(true);
-	// canTalonLeft2->EnableCurrentLimit(true);
-	// canTalonLeft3->EnableCurrentLimit(true);
-	//
-	// canTalonRight1->EnableCurrentLimit(true);
-	// canTalonRight2->EnableCurrentLimit(true);
-	// canTalonRight3->EnableCurrentLimit(true);
-	//
-	// canTalonLeft1->ConfigPeakCurrentLimit(40, 0);
-	// canTalonLeft2->ConfigPeakCurrentLimit(40, 0);
-	// canTalonLeft3->ConfigPeakCurrentLimit(40, 0);
-	//
-	// canTalonRight1->ConfigPeakCurrentLimit(40, 0);
-	// canTalonRight2->ConfigPeakCurrentLimit(40, 0);
-	// canTalonRight3->ConfigPeakCurrentLimit(40, 0);
-	//
-	// canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonLeft2->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonLeft3->ConfigContinuousCurrentLimit(30, 0);
-	//
-	// canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonRight2->ConfigContinuousCurrentLimit(30, 0);
-	// canTalonRight3->ConfigContinuousCurrentLimit(30, 0);
-	//
-	// canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
-	// canTalonLeft2->ConfigPeakCurrentDuration(10, 0);
-	// canTalonLeft3->ConfigPeakCurrentDuration(10, 0);
-	//
-	// canTalonRight1->ConfigPeakCurrentDuration(10, 0);
-	// canTalonRight2->ConfigPeakCurrentDuration(10, 0);
-	// canTalonRight3->ConfigPeakCurrentDuration(10, 0);
-	//
-	// canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
-	// canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
-	// canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight1->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight2->ConfigOpenloopRamp(0.15, 0);
-	// canTalonRight3->ConfigOpenloopRamp(0.15, 0);
-	//
-	// canTalonLeft1->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonLeft2->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft2->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonLeft3->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonLeft3->ConfigVelocityMeasurementWindow(5, 0);
-	//
-	// canTalonRight1->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonRight2->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight2->ConfigVelocityMeasurementWindow(5, 0);
-	// canTalonRight3->ConfigVelocityMeasurementPeriod(
-	// 		VelocityMeasPeriod::Period_10Ms, 0);
-	// canTalonRight3->ConfigVelocityMeasurementWindow(5, 0);
-	//
-	// canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-	// canTalonRight1->SetStatusFramePeriod(
-	// 		StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+  //talon settings
+
+	canTalonLeft1->ConfigPeakCurrentLimit(30, 0);
+	canTalonRight1->ConfigPeakCurrentLimit(30, 0);
+
+	 canTalonLeft1->ConfigContinuousCurrentLimit(30, 0);
+	 canTalonRight1->ConfigContinuousCurrentLimit(30, 0);
+
+	 canTalonLeft1->ConfigPeakCurrentDuration(10, 0);
+	 canTalonRight1->ConfigPeakCurrentDuration(10, 0);
+
+	canTalonLeft1->ConfigOpenloopRamp(0.15, 0);
+	canTalonLeft2->ConfigOpenloopRamp(0.15, 0);
+	canTalonLeft3->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight1->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight2->ConfigOpenloopRamp(0.15, 0);
+	canTalonRight3->ConfigOpenloopRamp(0.15, 0);
+
+	canTalonLeft1->ConfigVelocityMeasurementPeriod(
+			VelocityMeasPeriod::Period_10Ms, 0);
+	canTalonLeft1->ConfigVelocityMeasurementWindow(5, 0);
+
+	canTalonRight1->ConfigVelocityMeasurementPeriod(
+			VelocityMeasPeriod::Period_10Ms, 0);
+	canTalonRight1->ConfigVelocityMeasurementWindow(5, 0);
+
+	canTalonLeft1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+	canTalonLeft1->SetStatusFramePeriod(
+			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+
+  canTalonRight1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
+  canTalonRight1->SetStatusFramePeriod(
+    			StatusFrameEnhanced::Status_2_Feedback0, 10, 0);
+
+  canTalonLeft1->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft1->EnableVoltageCompensation(true);
+  canTalonRight1->ConfigVoltageCompSaturation(12.0);
+  canTalonRight1->EnableVoltageCompensation(true);
+
+  canTalonLeft2->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft2->EnableVoltageCompensation(true);
+  canTalonRight2->ConfigVoltageCompSaturation(12.0);
+  canTalonRight2->EnableVoltageCompensation(true);
+
+  canTalonLeft3->ConfigVoltageCompSaturation(12.0);
+  canTalonLeft3->EnableVoltageCompensation(true);
+  canTalonRight3->ConfigVoltageCompSaturation(12.0);
+  canTalonRight3->EnableVoltageCompensation(true);
+
+  canTalonLeft1->EnableCurrentLimit(true); //still not true from tuner
+  canTalonRight1->EnableCurrentLimit(true);
 
 	ahrs = new AHRS(SerialPort::kUSB);
 	visionDrive = new Vision();
@@ -181,8 +175,9 @@ void DriveBase::SetAutonGains(bool same_side_scale) {
 
 //PD on left and right
 //P on yaw
+//pos on yaw
 void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
-		Joystick *JoyWheel) {
+		Joystick *JoyWheel, bool hybrid) {
 
 	double target_l, target_r, target_yaw_rate;
 
@@ -200,29 +195,44 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
 	target_l = reverse_y * forward * max_y_rpm; //scale to velocity
 
-	target_r = target_l;
+  target_r = target_l;
 
-	double reverse_x = 1.0;
+  if (!hybrid) {
 
-	double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
+    double reverse_x = 1.0;
 
-	if (wheel < 0.0) {
-		reverse_x = -1.0;
-	} else {
-		reverse_x = 1.0;
-	}
+    double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
 
-	double joy_wheel_val = reverse_x * wheel * wheel;
+    if (wheel < 0.0) {
+      reverse_x = -1.0;
+    } else {
+      reverse_x = 1.0;
+    }
 
-//	if (!is_low_gear) { //squrare wheel in high gear
-//		joy_wheel_val *= reverse_x * JoyWheel->GetX();
-//	}
+    double joy_wheel_val = reverse_x * wheel * wheel;
 
-	if (std::abs(joy_wheel_val) < .02) {
-		joy_wheel_val = 0.0;
-	}
+    //	if (!is_low_gear) { //squrare wheel in high gear
+    //		joy_wheel_val *= reverse_x * JoyWheel->GetX();
+    //	}
 
-	target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
+    if (std::abs(joy_wheel_val) < .02) {
+      joy_wheel_val = 0.0;
+    }
+
+    target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
+
+  } else {
+
+    double target_heading = init_heading
+        + visionDrive->GetYawToTarget();
+
+    double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+
+    double error_heading_h = target_heading - current_heading;
+
+    target_yaw_rate = k_p_yaw_heading_pos * error_heading_h;
+
+  }
 
 	if (target_l > max_y_rpm) {
 		target_l = max_y_rpm;
@@ -236,15 +246,13 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		target_r = -max_y_rpm;
 	}
 
-	frc::SmartDashboard::PutNumber("target_r TeleopWCDrive", target_r);
-	frc::SmartDashboard::PutNumber("target_yaw_rate TeleopWCDrive", target_yaw_rate);
-
 	Controller(0.0, target_r, target_l, target_yaw_rate, k_p_right_vel,
 			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
 			0.0, 0.0, 0.0);
 
 }
 
+//teleop wc has one more param total_heading, k_p_yaw
 void DriveBase::RotationController(Joystick *JoyWheel) {
 
 	double target_heading = init_heading
@@ -453,14 +461,14 @@ void DriveBase::Controller(double ref_kick,
 		double ref_right, //first parameter refs are for teleop
 		double ref_left, double ref_yaw, double k_p_right, double k_p_left,
 		double k_p_kick, double k_p_yaw, double k_d_yaw, double k_d_right,
-		double k_d_left, double k_d_kick, double target_vel_left,
+		double k_d_left, double k_d_kick, double target_vel_left, //50
 		double target_vel_right, double target_vel_kick) { //last parameter targets are for auton
 
-	double yaw_rate_current = -1.0 * (double) ahrs->GetRate()
-			* (double) ((PI) / 180.0); //left should be positive
+	double yaw_rate_current = -1.0 * (double) ahrs->GetRate(); //might be rad/ss
+		//	* (double) ((PI) / 180.0); //left should be positive
 
-	 frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
-	 frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
+	 // frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	 // frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
 	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
 	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
 
@@ -485,7 +493,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((200.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((0.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
@@ -542,8 +550,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
 	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
 
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r);
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l);
+	frc::SmartDashboard::PutNumber("ff r", feed_forward_r *550.0);
+	frc::SmartDashboard::PutNumber("ff l", feed_forward_l*550.0);
 
 	//conversion to RPM from native unit
 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -567,12 +575,15 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
   	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
   	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
 
-  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
-	frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
-
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
 	d_kick_vel = (kick_error_vel - kick_last_error_vel);
+
+  frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
+  frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
+
+  frc::SmartDashboard::PutNumber("l vel k", k_p_left);
+  frc::SmartDashboard::PutNumber("r vel k", k_p_right);
 
 	P_LEFT_VEL = k_p_left * l_error_vel_t;
 	P_RIGHT_VEL = k_p_right * r_error_vel_t;
@@ -582,10 +593,21 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	D_RIGHT_VEL = k_d_right * d_right_vel;
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
-	frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL);
-	frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL);
-	frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL);
+   // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
+   frc::SmartDashboard::PutNumber("R1", canTalonRight1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("R2",canTalonRight2->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("R3", canTalonRight3->GetOutputCurrent());
+  //
+    frc::SmartDashboard::PutNumber("L1", canTalonLeft1->GetOutputCurrent());
+  // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
+  //  frc::SmartDashboard::PutNumber("L2", canTalonLeft2->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("L3", canTalonLeft3->GetOutputCurrent());
+
+  frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL *550.0);
+  frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL*550.0);
+  frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL*550.0);
+  frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL*550.0);
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
 			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
@@ -608,13 +630,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	// canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	// canTalonLeft2->Set(ControlMode::PercentOutput, -total_left);
-	// canTalonLeft3->Set(ControlMode::PercentOutput, -total_left);
-  //
-	// canTalonRight1->Set(ControlMode::PercentOutput, total_right);
-	// canTalonRight2->Set(ControlMode::PercentOutput, total_right);
-	// canTalonRight3->Set(ControlMode::PercentOutput, total_right);
+	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -643,12 +660,7 @@ void DriveBase::ZeroAll(bool stop_motors) {
 void DriveBase::StopAll() {
 
 	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
-	canTalonLeft2->Set(ControlMode::PercentOutput, 0.0);
-	canTalonLeft3->Set(ControlMode::PercentOutput, 0.0);
-
 	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
-	canTalonRight2->Set(ControlMode::PercentOutput, 0.0);
-	canTalonRight3->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
@@ -666,7 +678,7 @@ void DriveBase::ZeroYaw() {
 
 }
 
-double DriveBase::GetLeftVel() {
+double DriveBase::GetLeftVel() { //550 left back //590 left forward
 
 	double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -674,7 +686,7 @@ double DriveBase::GetLeftVel() {
 	return l_current;
 }
 
-double DriveBase::GetRightVel() {
+double DriveBase::GetRightVel() { //580 right back //580 right forward
 
 	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
@@ -829,23 +841,28 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		if (is_regular) {
 			teleop_drive_state = REGULAR;
 		} else if (is_vision) {
-			teleop_drive_state = VISION_DRIVE;
+			teleop_drive_state = VISION_YAW; //left out pf
 		} else if (is_rotation) {
 			teleop_drive_state = ROTATION_CONTROLLER;
 		}
 
 		switch (teleop_drive_state) {
+
 			case REGULAR:
-      frc::SmartDashboard::PutString("DRIVE", "reg");
-			TeleopWCDrive(JoyThrottle, JoyWheel);
+			TeleopWCDrive(JoyThrottle, JoyWheel, false);
 			break;
-			case VISION_DRIVE:
-      frc::SmartDashboard::PutString("DRIVE", "vis");
+
+			case VISION_PF:
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
 			}
 			break;
+
+      case VISION_YAW:
+      TeleopWCDrive(JoyThrottle, JoyWheel, true);
+      break;
+
 			case ROTATION_CONTROLLER:
       frc::SmartDashboard::PutString("DRIVE", "rot");
 			RotationController(JoyWheel);

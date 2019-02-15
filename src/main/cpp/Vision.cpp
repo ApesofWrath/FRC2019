@@ -8,6 +8,7 @@ Vision::Vision() {
 
 }
 
+//return rad
 double Vision::GetYawToTarget() {
 
   auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
@@ -17,6 +18,7 @@ double Vision::GetYawToTarget() {
 
 }
 
+//return feet
 double Vision::GetDepthToTarget() {
 
   auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
