@@ -50,6 +50,8 @@ protected:
     Waypoint LeftRocketFront(Waypoint start_point, bool isReversed);
     Waypoint LeftRocketLeft(Waypoint start_point, bool isReversed);
     Waypoint RightRocketRight(Waypoint start_point, bool isReversed);
+    Waypoint LeftRocketBack(Waypoint start_point, bool isReversed);
+    Waypoint RightRocketBack(Waypoint start_point, bool isReversed);
 
     Waypoint TestModule(Waypoint start_point);
     void FillRemainingTrajectory();

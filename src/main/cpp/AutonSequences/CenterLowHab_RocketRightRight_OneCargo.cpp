@@ -1,6 +1,6 @@
 #include "../../include/AutonSequences/CenterLowHab_RocketRightRight_OneCargo.h"
 
-CenterLowHabRocketRightCenterOneCargo::CenterLowHabRocketRightRightOneCargo(Waypoint start) {
+CenterLowHabRocketRightRightOneCargo::CenterLowHabRocketRightRightOneCargo(Waypoint start) {
   start_pos = start;
   MAX_VELOCITY = 11.0;
   MAX_ACCELERATION = 6.0;

@@ -8,6 +8,7 @@
         // reloadblasters = player station
         // escapevesselleft = leftmost rocket
         // escapevesselright = rightmost rocket
+#ifndef SRC_CENTERLOWHAB_ONECARGO_H_
 
 #include "AutonDrive.h"
 
@@ -16,4 +17,12 @@ class CenterLowHabOneCargo : public AutonDrive {
 public:
   CenterLowHabOneCargo(Waypoint start);
   void BuildTotalTrajectory();
+//
+// protected:
+//   double MAX_VELOCITY;
+//   double MAX_ACCELERATION;
+//   double MAX_JERK;
+//   double dt;
+//   double WHEELBASE_WIDTH;
 };
+#endif
