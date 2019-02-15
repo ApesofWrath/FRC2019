@@ -19,6 +19,8 @@ void Robot::RobotInit() {
   start_chooser.AddOption(kRight, kRight);
   frc::SmartDashboard::PutData("Start Placement", &start_chooser);
 
+  pdp = new PowerDistributionPanel(3); // 0 is the vcm
+
   joyThrottle = new Joystick(JOY_THROTTLE);
 	joyWheel = new Joystick(JOY_WHEEL);
 	joyOp = new Joystick(JOY_OP);
@@ -96,16 +98,16 @@ void Robot::TeleopPeriodic() {
 
     drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
-    double y = joyThrottle->GetY();
+   //double y = joyThrottle->GetY();
     // double x = joyWheel->GetX();
 
-    //  drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, x);
-    //  drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, x);
+//    drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, -y);
+//      drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, y);
+//
+//      // double yaw_rate = drive_controller->ahrs->GetRate();//abs(previous_yaw - drive_controller->GetYawPos()) / 0.020;
+// frc::SmartDashboard::PutNumber("rightvel", drive_controller->GetRightVel());
+// frc::SmartDashboard::PutNumber("leftvel", drive_controller->GetLeftVel());
 
-     // double yaw_rate = drive_controller->ahrs->GetRate();//abs(previous_yaw - drive_controller->GetYawPos()) / 0.020;
-
-     // frc::SmartDashboard::PutNumber("YAW RATE", yaw_rate);
-     // frc::SmartDashboard::PutNumber("X", x);
 
 }
 

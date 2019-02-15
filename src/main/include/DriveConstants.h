@@ -3,16 +3,16 @@
 
 #include "Constants.h"
 
-#define COMP COMP_BOT
+#define COMP 1 //0 uses the consts on the bottom
 
 #if COMP //bot still w/o superstructure
 
 //Teleop
 
-const double K_P_RIGHT_VEL = 0.00;//0.0001; //no gear shift
-const double K_D_RIGHT_VEL = 0.0;// 0.0005;
+const double K_P_RIGHT_VEL = 0.001;//0.0001; //no gear shift
+const double K_D_RIGHT_VEL = 0.0000;// 0.0005;
 
-const double K_P_LEFT_VEL = 0.00; //voltage compensation //ff //p
+const double K_P_LEFT_VEL = 0.001; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
 const double K_P_YAW_VEL = 0.0;
@@ -48,10 +48,10 @@ const double ACTUAL_MAX_Y_RPM_AUTON = 10.0;
 const double ACTUAL_MAX_Y_RPM_L_F = 600.0;
 const double ACTUAL_MAX_Y_RPM_L_B = 595.0;
 const double ACTUAL_MAX_Y_RPM_R_F = 590.0;
-const double ACTUAL_MAX_Y_RPM_R_B = 505.0;
+const double ACTUAL_MAX_Y_RPM_R_B = 595.0;
 
-const double MAX_Y_RPM = 505.0; //smallest actual max
-const double ACTUAL_MAX_Y_RPM = 0.0;
+const double MAX_Y_RPM = 595.0; //smallest actual max
+const double ACTUAL_MAX_Y_RPM = 600.0;
 const double MAX_YAW_RATE = 11.4;
 const double MAX_FPS = 15.0; //used in auton pathfinder
 
