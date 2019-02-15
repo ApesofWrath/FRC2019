@@ -14,6 +14,12 @@
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include "TeleopStateMachine.h"
+#include "ArmMotionProfiler.h"
+#include "Arm.h"
+#include "Intake.h"
+#include "Elevator.h"
+#include "ElevatorMotionProfiler.h"
+#include "HatchPickup.h"
 #include <frc/Joystick.h>
 
 class Robot : public frc::TimedRobot {

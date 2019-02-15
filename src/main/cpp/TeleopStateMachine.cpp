@@ -15,11 +15,6 @@ const int POST_OUTTAKE_CARGO_STATE = 10;
 
 int last_state = 0;
 
-Elevator *elevator;
-Intake *intake;
-Arm *arm;
-HatchPickup *hatch_pickup;
-
 bool state_top_intake = false; //set to true to override the states set in the state machine
 bool state_bottom_intake = false;
 bool state_arm = false;
