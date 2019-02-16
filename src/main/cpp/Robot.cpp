@@ -11,17 +11,17 @@ double targetPos;
 	void Robot::RobotInit() {
 
 		/* Hardware */
-		talon1 = new TalonSRX(33);
-		talon2 = new TalonSRX(0);
+		talon1 = new TalonSRX(55);
+		//talon2 = new TalonSRX(0);
 		joy = new frc::Joystick(0);
 
 		/* create some followers */
 	//	talon2 *talon2 = new talon2SPX(2);
-		talon2->Follow(*talon1);
+	//	talon2->Follow(*talon1);
 
 		/* Factory default hardware to prevent unexpected behavior */
 		talon1->ConfigFactoryDefault();
-		talon2->ConfigFactoryDefault();
+	//	talon2->ConfigFactoryDefault();
 
 		/* Configure Sensor Source for Pirmary PID */
 		talon1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
@@ -35,7 +35,7 @@ double targetPos;
 		 */
 		//talon->SetSensorPhase(true);
 		talon1->SetInverted(true);
-		talon2->SetInverted(true);
+	//	talon2->SetInverted(true);
 
 		/* Set relevant frame periods to be at least as fast as periodic rate */
 		talon1->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
@@ -49,14 +49,14 @@ double targetPos;
 
 		/* Set Motion Magic gains in slot0 - see documentation */
 		talon1->SelectProfileSlot(0, 0);
-		talon1->Config_kF(0, .31, 10);
-		talon1->Config_kP(0, 0.1, 10);
+		talon1->Config_kF(0, 10.0, 10); //1023/ max speed
+		talon1->Config_kP(0, 0.0, 10);
 		talon1->Config_kI(0, 0, 10); //middle number is the gain
 		talon1->Config_kD(0, 0, 10);
 
 		/* Set acceleration and vcruise velocity - see documentation */
-		talon1->ConfigMotionCruiseVelocity(1000, 10);
-		talon1->ConfigMotionAcceleration(1000, 10);
+		talon1->ConfigMotionCruiseVelocity(60, 10);
+		talon1->ConfigMotionAcceleration(60, 10);
 
 		/* Zero the sensor */
 		talon1->SetSelectedSensorPosition(0, 0, 10);
@@ -75,11 +75,12 @@ void Robot::TeleopInit() {}
 			/* Motion Magic */
 
 			/*4096 ticks/rev * 10 Rotations in either direction */
-			targetPos = 4.5 * 4096;
+			targetPos = 400;
 			talon1->Set(ControlMode::MotionMagic, targetPos);
 
 	} else {
 		talon1->Set(ControlMode::PercentOutput, joy->GetY());
+		frc::SmartDashboard::PutNumber("output ", joy->GetY());
 	}
 
 	frc::SmartDashboard::PutNumber("enc vel", talon1->GetSelectedSensorVelocity(0));
@@ -87,6 +88,8 @@ void Robot::TeleopInit() {}
 		frc::SmartDashboard::PutNumber("enc targ", targetPos);
 		frc::SmartDashboard::PutNumber("enc error",targetPos - talon1->GetSelectedSensorPosition(0));
 	frc::SmartDashboard::PutNumber("cur", talon1->GetOutputCurrent());
+	frc::SmartDashboard::PutNumber("tal active vel", talon1->GetActiveTrajectoryVelocity());
+		frc::SmartDashboard::PutNumber("tal active pos", talon1->GetActiveTrajectoryPosition());
 }
 
 void Robot::TestPeriodic() {}
