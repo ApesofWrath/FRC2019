@@ -32,6 +32,13 @@ void Robot::RobotInit() {
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
+  elevator_profiler = new ElevatorMotionProfiler(-1, -1, -1);
+  elevator = new Elevator(elevator_profiler);
+  arm_profiler = new ArmMotionProfiler(-1, -1, -1);
+  arm = new Arm(arm_profiler);
+  intake = new Intake();
+  hatch_pickup = new HatchPickup();
+
   tsm = new TeleopStateMachine(elevator, intake, arm, hatch_pickup);
   joyOp = new frc::Joystick(0);
 
