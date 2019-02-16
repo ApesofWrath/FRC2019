@@ -457,12 +457,14 @@ void DriveBase::Controller(double ref_kick,
 	double yaw_rate_current = -1.0 * (double) ahrs->GetRate(); //might be rad/ss
 		//	* (double) ((PI) / 180.0); //left should be positive
 
-	 // frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	  frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
 	 // frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
-	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
-	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
+	 // frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
 
 	double target_yaw_rate = ref_yaw;
+
+	frc::SmartDashboard::PutNumber("yaw target", target_yaw_rate);
+
 
 	ref_left = ref_left - (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //left should be positive
 	ref_right = ref_right + (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //ff
@@ -482,7 +484,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((0.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((k_p_yaw * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
@@ -528,11 +530,11 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   }
 
 
-	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
-	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
+	// frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
+	// frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
 
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r * MAX_Y_RPM); //max rpm
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l * MAX_Y_RPM);
+	// frc::SmartDashboard::PutNumber("ff r", feed_forward_r * MAX_Y_RPM); //max rpm
+	// frc::SmartDashboard::PutNumber("ff l", feed_forward_l * MAX_Y_RPM);
 
 	//conversion to RPM from native unit
 	double l_current = GetLeftVel(); //-((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -542,8 +544,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
 //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
 
-frc::SmartDashboard::PutNumber("l position", GetLeftPosition());
-frc::SmartDashboard::PutNumber("r position", GetRightPosition());
+// frc::SmartDashboard::PutNumber("l position", GetLeftPosition());
+// frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 
 	l_error_vel_t = ref_left - l_current;
 	r_error_vel_t = ref_right - r_current;
@@ -563,11 +565,11 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
   frc::SmartDashboard::PutNumber("l vel error", l_error_vel_t);
   frc::SmartDashboard::PutNumber("r vel error", r_error_vel_t);
 
-  frc::SmartDashboard::PutNumber("l vel k", k_p_left);
-  frc::SmartDashboard::PutNumber("r vel k", k_p_right);
-
-	frc::SmartDashboard::PutNumber("k p l", k_p_left);
-	  frc::SmartDashboard::PutNumber("k p r", k_p_right);
+  // frc::SmartDashboard::PutNumber("l vel k", k_p_left);
+  // frc::SmartDashboard::PutNumber("r vel k", k_p_right);
+	//
+	// frc::SmartDashboard::PutNumber("k p l", k_p_left);
+	//   frc::SmartDashboard::PutNumber("k p r", k_p_right);
 	//  frc::SmartDashboard::PutNumber("R2",canTalonRight2->GetOutputCurrent());
 
 	P_LEFT_VEL = k_p_left * l_error_vel_t;
