@@ -10,11 +10,8 @@
 #include <string>
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include "Elevator.h"
-#include "ElevatorMotionProfiler.h"
 #include <frc/Joystick.h>
-#include "Arm.h"
-#include "ArmConstants.h"
+#include "ctre/Phoenix.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -26,9 +23,8 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
-  Elevator *elevator;
-  ElevatorMotionProfiler *elevator_mp;
-  frc::Joystick *joyElev;
+  TalonSRX *talon;
+  frc::Joystick *joy;
 
  private:
   frc::SendableChooser<std::string> m_chooser;
