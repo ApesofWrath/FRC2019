@@ -10,6 +10,7 @@
 #include <string>
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/Joystick.h>
 #include "ctre/Phoenix.h"
 
@@ -23,7 +24,7 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
 
-  TalonSRX *talon;
+  TalonSRX *talon1, *talon2;
   frc::Joystick *joy;
 
  private:
