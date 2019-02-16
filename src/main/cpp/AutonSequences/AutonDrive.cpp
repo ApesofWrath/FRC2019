@@ -136,17 +136,17 @@ Waypoint AutonDrive::RightRocketFront(Waypoint start_point, bool isReversed) {
 void AutonDrive::FillRemainingTrajectory() {
   // Out of bounds
   if (current_index <= 0 || current_index >= 1500){
-    return;
-  }
-
+  //  return;
+} else {
+frc::SmartDashboard::PutString("fill", "y");
   for (int i = current_index; i < 1500; i++) {
     full_refs.at(i).at(0) = full_refs.at(i - 1).at(0);
     full_refs.at(i).at(1) = full_refs.at(i - 1).at(1);
     full_refs.at(i).at(2) = full_refs.at(i - 1).at(2);
     full_refs.at(i).at(3) = full_refs.at(i - 1).at(3);
     full_refs.at(i).at(4) = full_refs.at(i - 1).at(4);
-    full_refs.at(i).at(5) = full_refs.at(i - 1).at(5);
   }
+}
 }
 
 void AutonDrive::PrintTrajectory() {

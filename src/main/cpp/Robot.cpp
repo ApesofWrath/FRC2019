@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-
+std::vector<std::vector<double>> profile;
 void Robot::RobotInit() {
 
   auton_chooser.SetDefaultOption(kDoNothing, kDoNothing);
@@ -37,7 +37,7 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
-//  drive_controller->ZeroAll(true);
+ drive_controller->ZeroAll(true);
 
   m_autoSelected = auton_chooser.GetSelected();
   m_autoSelected = SmartDashboard::GetString("Auto Selector",
@@ -66,7 +66,9 @@ void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
   }
 
-//  drive_controller->SetAutonRefs(move_forward->GetFullProfile());
+//  profile = move_forward->GetFullProfile();
+//rc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
+  //drive_controller->SetAutonRefs(profile);
 
 }
 

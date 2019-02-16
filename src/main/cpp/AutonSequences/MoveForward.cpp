@@ -12,6 +12,6 @@ MoveForward::MoveForward() {
 void MoveForward::BuildTotalTrajectory() {
   Waypoint start = {0, 0, 0};
   Forward(start, false); // To make it forward/backward change this to true and false respectively
-  // FillRemainingTrajectory();
+  FillRemainingTrajectory();
   PrintTrajectory();
 }
