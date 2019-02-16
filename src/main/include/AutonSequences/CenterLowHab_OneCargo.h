@@ -16,4 +16,8 @@ class CenterLowHabOneCargo : public AutonDrive {
 public:
   CenterLowHabOneCargo(Waypoint start);
   void BuildTotalTrajectory();
+
+  void CenterLowHabOneCargoStateMachine();
+
+  const int 
 };
