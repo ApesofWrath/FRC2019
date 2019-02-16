@@ -1,3 +1,5 @@
+// TODO: check states and positins for elevator
+
 #ifndef SRC_ELEVATOR_H
 #define SRC_ELEVATOR_H
 
@@ -8,17 +10,6 @@
 #include <vector>
 #include "ElevatorMotionProfiler.h"
 #include "ElevatorConstants.h"
-
-// TODO:
-  // states variables in .cpp and .h file?
-
-//DONE
-  // Some of SetVoltage()
-  // elevatorconstants.h
-  // Move (almost all)
-  // Motion profiler carry over
-  //Stuff in State machines
-  // talons initialization
 
 class Elevator {
 
@@ -39,6 +30,15 @@ public:
   const int BOTTOM_HATCH_STATE_H = 6; // Same for rocket and cargo bay, only need one
   const int BAY_CARGO_STATE_H = 7;
   const int STOP_STATE_H = 8;
+
+  // elevator posititons for the differnet states
+  const double TOP_CARGO_POS = 0.0;
+  const double MID_CARGO_POS = 0.0;
+  const double BOTTOM_CARGO_POS = 0.0;
+  const double TOP_HATCH_POS = 0.0;
+  const double MID_HATCH_POS = 0.0;
+  const double BOTTOM_HATCH_POS = 0.0;
+  const double BAY_CARGO_POS = 0.0;
 
   int last_elevator_state = INIT_STATE_H;
   int elevator_state = INIT_STATE_H;

@@ -1,9 +1,4 @@
-/*
- * Arm.h
- *
- *  Created on: Jan 7, 2019
- *      Author: Kaya
- */
+// TODO: Revise states and positions to make more sense for this year's arm
 
  #ifndef SRC_ARM_H_
  #define SRC_ARM_H_
@@ -55,12 +50,20 @@ public:
 	bool is_init_arm = false; //is arm initialized
 
   const int INIT_STATE_H = 0;
-	const int UP_STATE_H = 1; //arm state machine
-  const int HIGH_CARGO_STATE_H = 2;
-  const int MID_CARGO_STATE_H = 3;
-  const int LOW_CARGO_STATE_H = 4;
-  const int DOWN_STATE_H = 5;
+	const int HATCH_STATE_H = 1; //arm state machine
+  const int CARGO_STATE_H = 2;
+  // EXTRA STATES
+  const int DRIVING_STATE_H = 3; // TODO: rename in .cpp file from incorrect names
+  const int DOWN_STATE_H = 4;
+  const int EXTRA_STATE_H = 5;
   const int STOP_ARM_STATE_H = 6;
+
+  const double HATCH_ANGLE = 1.0; //starting pos // originally 1..3, but lowered for testing
+  const double CARGO_ANGLE = 1.0;
+  const double MID_ANGLE = 0.6;
+  const double DOWN_ANGLE = 0.1; //lowest pos
+  const double EXTRA_ANGLE = 0.3;
+
   int arm_state = INIT_STATE_H;
 
   const int ARM_TALON_ID = 55;
@@ -68,11 +71,11 @@ public:
 
   std::map <int, std::string> arm_states = {
   		{INIT_STATE_H, "INIT"},
-  		{UP_STATE_H, "UP"},
-  		{HIGH_CARGO_STATE_H, "HIGH"},
-  		{MID_CARGO_STATE_H, "MID"},
-  		{LOW_CARGO_STATE_H, "LOW"},
-  		{DOWN_STATE_H, "DOWN"},
+  		{HATCH_STATE_H, "UP"},
+  		{CARGO_STATE_H, "HIGH"},
+  		{DRIVING_STATE_H, "MID"},
+  		{DOWN_STATE_H, "LOW"},
+  		{EXTRA_STATE_H, "DOWN"},
       {STOP_ARM_STATE_H, "STOP"}
   	};
 
@@ -89,7 +92,7 @@ public:
   void PrintArmInfo();
 
   bool IsAtBottomArm();
-  
+
 private:
 
   double arm_pos;

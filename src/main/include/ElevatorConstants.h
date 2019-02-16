@@ -9,15 +9,6 @@ const double DOWN_POS_E = 0.01;
 const double MID_POS_E = 0.4;//0.668;
 const double UP_POS_E = 0.70;
 
-// elevator posititons for the differnet states
-const double TOP_CARGO_POS = UP_POS_E;
-const double MID_CARGO_POS = MID_POS_E;
-const double BOTTOM_CARGO_POS = DOWN_POS_E;
-const double TOP_HATCH_POS = 0.0;
-const double MID_HATCH_POS = 0.0;
-const double BOTTOM_HATCH_POS = 0.0;
-const double BAY_CARGO_POS = 0.0;
-
 const double ff_percent_e = 0.4;
 const double PULLEY_DIAMETER = 0.0381;
 

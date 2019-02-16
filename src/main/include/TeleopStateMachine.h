@@ -45,6 +45,5 @@ public:
   const int POST_OUTTAKE_CARGO_STATE_H = 10;
 
   int state = INIT_STATE_H;
-
 };
 #endif

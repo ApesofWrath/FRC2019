@@ -5,11 +5,11 @@
 int counter = 0;
 
 const int INIT_STATE = 0;
-const int UP_STATE = 1;
-const int HIGH_CARGO_STATE = 2;
-const int MID_CARGO_STATE = 3;
-const int LOW_CARGO_STATE = 4;
-const int DOWN_STATE = 5;
+const int HATCH_STATE = 1;
+const int CARGO_STATE = 2;
+const int DRIVING_STATE = 3;
+const int DOWN_STATE = 4;
+const int EXTRA_STATE = 5;
 const int STOP_ARM_STATE = 6;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
@@ -140,7 +140,7 @@ void Arm::SetVoltageArm(double voltage_a) {
   arm_voltage = voltage_a;
   is_init_arm = true;
 
-  arm_state = HIGH_CARGO_STATE;
+  arm_state = CARGO_STATE;
 	// frc::SmartDashboard::PutNumber("ARM HALL EFF", IsAtBottomArm()); // actually means not at bottom //0 means up// 1 means down
 
 	arm_safety = "NONE";
@@ -262,24 +262,24 @@ void Arm::ArmStateMachine() {
 		last_arm_state = INIT_STATE;
     break;
 
-    case UP_STATE:
-    UpdateArmProfile(UP_STATE, UP_ANGLE);
+    case HATCH_STATE:
+    UpdateArmProfile(HATCH_STATE, HATCH_ANGLE);
     break;
 
-    case HIGH_CARGO_STATE:
-		UpdateArmProfile(HIGH_CARGO_STATE, HIGH_ANGLE);
+    case CARGO_STATE:
+		UpdateArmProfile(CARGO_STATE, CARGO_ANGLE);
     break;
 
-    case MID_CARGO_STATE:
-		UpdateArmProfile(MID_CARGO_STATE, MID_ANGLE);
+    case DRIVING_STATE:
+		UpdateArmProfile(DRIVING_STATE_H, MID_ANGLE);
     break;
 
-    case LOW_CARGO_STATE:
-		UpdateArmProfile(LOW_CARGO_STATE, LOW_ANGLE);
+    case DOWN_STATE:
+		UpdateArmProfile(DOWN_STATE_H, DOWN_ANGLE);
     break;
 
-		case DOWN_STATE:
-		UpdateArmProfile(DOWN_STATE, DOWN_ANGLE);
+		case EXTRA_STATE:
+		UpdateArmProfile(EXTRA_STATE_H, EXTRA_ANGLE);
 		break;
 
     case STOP_ARM_STATE:

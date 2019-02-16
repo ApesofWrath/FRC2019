@@ -31,10 +31,4 @@ const double ARM_OFFSET = 1.3;
 const double STALL_VEL_A = 0.05;
 const double STALL_VOLT_A = 4.0;
 
-const double UP_ANGLE = 1.0; //starting pos // originally 1..3, but lowered for testing
-const double HIGH_ANGLE = 1.0;
-const double MID_ANGLE = 0.6;
-const double LOW_ANGLE = 0.3;
-const double DOWN_ANGLE = 0.1; //lowest pos
-
 #endif
