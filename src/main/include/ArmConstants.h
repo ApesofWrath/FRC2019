@@ -1,39 +1,45 @@
-#ifndef SRC_ARMCONSTANTS_H_
-#define SRC_ARMCONSTANTS_H_
+class ArmConstants {
+	/**
+	 * Which PID slot to pull gains from. Starting 2018, you can choose from
+	 * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
+	 * configuration.
+	 */
+	static int kSlotIdx = 0;
 
-#define PI 3.14159265
+	/**
+	 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For
+	 * now we just want the primary one.
+	 */
+	static int kPIDLoopIdx = 0;
 
-const double TICKS_PER_ROT_A = 4096.0;
-const double MAX_VOLTAGE_A = 12.0; //CANNOT EXCEED abs(10)
-const double MIN_VOLTAGE_A = -12.0;
+	/**
+	 * set to zero to skip waiting for confirmation, set to nonzero to wait and
+	 * report to DS if action fails.
+	 */
+	static int kTimeoutMs = 30;
 
-const double free_speed_a = 18730.0; //rpm
-const double G_a = (831.0 / 1.0); //gear ratio
-const double MAX_THEORETICAL_VELOCITY_A = ((free_speed_a/ G_a)) * (2.0 * PI)
-		/ 60.0; //rad/s
-const double Kv_a = 1 / MAX_THEORETICAL_VELOCITY_A;
+	/**
+	 * Gains used in Motion Magic, to be adjusted accordingly
+     * Gains(kp, ki, kd, kf, izone, peak output);
+     */
+  static Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0);
 
-//for motion motionProfiler
-const double MAX_VELOCITY_A = 1.0; //rad/s
-const double MAX_ACCELERATION_A = 2.5; //rad/a/a
-const double TIME_STEP_A = 0.01; //sec
+	double kP;
+	double kI;
+	double kD;
+	double kF;
+	int kIzone;
+	double kPeakOutput;
 
-const double UP_LIMIT_A = 1.58;
-const double BACK_LIMIT_A = 2.0;
-const double DOWN_LIMIT_A = 0.0;
+}
 
-const double UP_VOLT_LIMIT_A = 0.0;
-const double DOWN_VOLT_LIMIT_A = 0.0;
+void Gains (double _kP, double _kI, double _kD, double _kF, int _kIzone, double _kPeakOutput) {
 
-const double ARM_OFFSET = 1.3;
+kP = _kP;
+kI = _kI;
+kD = _kD;
+kF = _kF;
+kIzone = _kIzone;
+kPeakOutput = _kPeakOutput;
 
-const double STALL_VEL_A = 0.05;
-const double STALL_VOLT_A = 4.0;
-
-const double UP_ANGLE = 1.0; //starting pos // originally 1..3, but lowered for testing
-const double HIGH_ANGLE = 1.0;
-const double MID_ANGLE = 0.6;
-const double LOW_ANGLE = 0.3;
-const double DOWN_ANGLE = 0.1; //lowest pos
-
-#endif
+}

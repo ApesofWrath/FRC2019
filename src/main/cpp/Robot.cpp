@@ -11,97 +11,109 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const int ELEVATOR_UP = 3; //left lower
-const int ELEVATOR_MID = 5; //left upper
-const int ELEVATOR_DOWN = 4; //right lower
+class Robot extends TimedRobot {
+	/* Hardware */
+	TalonSRX talon = new TalonSRX(1);
+	Joystick joy = new Joystick(0);
 
-bool elevator_up, elevator_mid, elevator_down;
+	/* create some followers */
+	BaseMotorController _follower1 = new TalonSRX(0);
+	BaseMotorController _follower2 = new VictorSPX(0);
+	BaseMotorController _follower3 = new VictorSPX(1);
 
-void Robot::RobotInit() {
-  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+	/* Used to build string throughout loop */
+	StringBuilder _sb = new StringBuilder();
 
-  elevator_mp = new ElevatorMotionProfiler(1.15, 5.0, 0.02);
-  elevator = new Elevator(elevator_mp);
-  joyElev = new frc::Joystick(0);
+	void robotInit() {
+		/* setup some followers */
+		_follower1.configFactoryDefault();
+		_follower2.configFactoryDefault();
+		_follower3.configFactoryDefault();
+		_follower1.follow(_talon);
+		_follower2.follow(_talon);
+		_follower3.follow(_talon);
+
+		/* Factory default hardware to prevent unexpected behavior */
+		_talon.configFactoryDefault();
+
+		/* Configure Sensor Source for Pirmary PID */
+		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+											Constants.kPIDLoopIdx,
+											Constants.kTimeoutMs);
+
+		/**
+		 * Configure Talon SRX Output and Sesnor direction accordingly
+		 * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
+		 * Phase sensor to have positive increment when driving Talon Forward (Green LED)
+		 */
+		_talon.setSensorPhase(true);
+		_talon.setInverted(false);
+
+		/* Set relevant frame periods to be at least as fast as periodic rate */
+		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+
+		/* Set the peak and nominal outputs */
+		_talon.configNominalOutputForward(0, Constants.kTimeoutMs);
+		_talon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		_talon.configPeakOutputForward(1, Constants.kTimeoutMs);
+		_talon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+		/* Set Motion Magic gains in slot0 - see documentation */
+		_talon.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+		_talon.config_kF(Constants.kSlotIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+		_talon.config_kP(Constants.kSlotIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+		_talon.config_kI(Constants.kSlotIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+		_talon.config_kD(Constants.kSlotIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		_talon.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
+		_talon.configMotionAcceleration(6000, Constants.kTimeoutMs);
+
+		/* Zero the sensor */
+		_talon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+	}
+
+	/**
+	 * This function is called periodically during operator control
+	 */
+	void teleopPeriodic() {
+		/* Get gamepad axis - forward stick is positive */
+		double leftYstick = -1.0 * _joy.getY();
+		if (Math.abs(leftYstick) < 0.10) { leftYstick = 0;} /* deadband 10% */
+
+		/* Get current Talon SRX motor output */
+		double motorOutput = _talon.getMotorOutputPercent();
+
+		/* Prepare line to print */
+		_sb.append("\tOut%:");
+		_sb.append(motorOutput);
+		_sb.append("\tVel:");
+		_sb.append(_talon.getSelectedSensorVelocity(Constants.kPIDLoopIdx));
+
+		/**
+		 * Peform Motion Magic when Button 1 is held,
+		 * else run Percent Output, which can be used to confirm hardware setup.
+		 */
+		if (_joy.getRawButton(1)) {
+			/* Motion Magic */
+
+			/*4096 ticks/rev * 10 Rotations in either direction */
+			double targetPos = leftYstick * 4096 * 10.0;
+			_talon.set(ControlMode.MotionMagic, targetPos);
+
+			/* Append more signals to print when in speed mode */
+			_sb.append("\terr:");
+			_sb.append(_talon.getClosedLoopError(Constants.kPIDLoopIdx));
+			_sb.append("\ttrg:");
+			_sb.append(targetPos);
+		} else {
+			/* Percent Output */
+
+			_talon.set(ControlMode.PercentOutput, leftYstick);
+		}
+
+		/* Instrumentation */
+		//Instrum.Process(_talon, _sb);
+	}
 }
-
-/**
- * This function is called every robot packet, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
-void Robot::RobotPeriodic() {
-  elevator->PrintElevatorInfo();
-}
-
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
- *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
-void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
-  std::cout << "Auto selected: " << m_autoSelected << std::endl;
-
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
-}
-
-void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
-}
-
-void Robot::TeleopInit() {}
-
-void Robot::TeleopPeriodic() {
-
-  elevator->ElevatorStateMachine();
-  // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-  elevator_up = joyElev->GetRawButton(ELEVATOR_UP);
-	elevator_mid = joyElev->GetRawButton(ELEVATOR_MID);
-	elevator_down = joyElev->GetRawButton(ELEVATOR_DOWN);
-
-  frc::SmartDashboard::PutBoolean("elevator_up", elevator_up);
-  frc::SmartDashboard::PutBoolean("elevator_mid", elevator_mid);
-  frc::SmartDashboard::PutBoolean("elevator_down", elevator_down);
-
-  if (elevator_up) {
-    elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
-  }
-  if (elevator_mid) {
-    elevator->elevator_state = elevator->MID_CARGO_STATE_H;
-  }
-  if (elevator_down) {
-    elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
-  }
-
-  elevator->Move();
-
-
-  // elevator->ManualElevator(joyElev);
-}
-
-void Robot::TestPeriodic() {}
-
-//#ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }

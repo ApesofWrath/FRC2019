@@ -13,6 +13,8 @@
 #include "Elevator.h"
 #include "ElevatorMotionProfiler.h"
 #include <frc/Joystick.h>
+#include "Arm.h"
+#include "ArmConstants.h"
 
 class Robot : public frc::TimedRobot {
  public:
