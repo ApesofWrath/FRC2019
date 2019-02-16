@@ -44,8 +44,7 @@ model {
     components {
         frcUserProgram(NativeExecutableSpec) {
             targetPlatform wpi.platforms.roborio
-            targetPlatform wpi.platforms.desktop
-
+          
             sources.cpp {
                 source {
                     srcDir 'src/main/cpp'

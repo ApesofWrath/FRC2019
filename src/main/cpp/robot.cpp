@@ -68,8 +68,7 @@ void Robot::TeleopPeriodic() {
   if (joyOp->GetRawButton(SUCTION_ON)) {
     talon1->Set(ControlMode::PercentOutput, 1.0);
     talon2->Set(ControlMode::PercentOutput, 1.0);
-  }
-  if (joyOp->GetRawButton(SUCTION_OFF)){
+  } else {
     talon1->Set(ControlMode::PercentOutput, 0.0);
     talon2->Set(ControlMode::PercentOutput, 0.0);
   }
