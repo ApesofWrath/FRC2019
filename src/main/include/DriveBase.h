@@ -197,9 +197,9 @@ public:
 
 			double k_p_yaw_dis, k_i_yaw_dis, k_d_yaw_dis, ff_scale;
 
-			double k_p_right_vel_au = 0.0;
-			double k_p_left_vel_au = 0.0;
-			double k_p_kick_vel_au = 0.0;
+			double k_p_right_vel_au = 0.2;
+			double k_p_left_vel_au = 0.2;
+			double k_p_kick_vel_au = 0.2;
 			double k_d_left_vel_au = 0.0;
 			double k_d_right_vel_au = 0.0;
 			double k_d_kick_vel_au = 0.0;

@@ -334,12 +334,17 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 //position controlller
 //auton targets, actually just pd
 void DriveBase::AutonDrive() {
-
 	double pf_yaw_dis = auton_row.at(0); //reversed in Generate - rad
 	double pf_l_dis = auton_row.at(1); //feet
 	double pf_r_dis = auton_row.at(2); //feet
 	double pf_l_vel = auton_row.at(3); //fps
 	double pf_r_vel = auton_row.at(4); //fps
+
+	// frc::SmartDashboard::PutNumber("A yaw distance", pf_yaw_dis);
+	// frc::SmartDashboard::PutNumber("A right distace", pf_r_dis);
+	// frc::SmartDashboard::PutNumber("A left distace", pf_l_dis);
+	// frc::SmartDashboard::PutNumber("A left velocity", pf_l_vel);
+	// frc::SmartDashboard::PutNumber("A right velocity", pf_r_vel);
 
 	if (pf_yaw_dis > PI) { //get negative half and positive half on circle - left half is positive
 		pf_yaw_dis -= (2 * PI);
@@ -359,22 +364,20 @@ void DriveBase::AutonDrive() {
 	double l_dis = ((double) canTalonLeft1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
 
- frc::SmartDashboard::PutNumber("actualLeftDis", l_dis);
-// frc::SmartDashboard::PutNumber("actualRightDis", r_dis);
+ // frc::SmartDashboard::PutNumber("actualLeftDis", l_dis);
+ // frc::SmartDashboard::PutNumber("actualRightDis", r_dis);
 // frc::SmartDashboard::PutNumber("actualLeftVel", l_current);
 // frc::SmartDashboard::PutNumber("actualRightVel", r_current);
 
 	double y_dis = -1.0 * ahrs->GetYaw() * (double) (PI / 180); //current theta (yaw) value
-
-//	frc::SmartDashboard::PutNumber("Target Heading", refYaw);
-//	frc::SmartDashboard::PutNumber("Actual Heading", y_dis);
+	// pf_yaw_dis = 50.0;
+	frc::SmartDashboard::PutNumber("Target Heading", pf_yaw_dis);
+	frc::SmartDashboard::PutNumber("Actual Heading", y_dis);
 
 	l_error_dis_au = pf_l_dis - l_dis; //feet
 	r_error_dis_au = pf_r_dis - r_dis; //feet
 
 	y_error_dis_au = pf_yaw_dis - y_dis;  //rad
-
-	//frc::SmartDashboard::PutNumber("Heading error", y_error_dis_au);
 
 	// if (std::abs(tarVelLeft - tarVelRight) < .05 && (std::abs(r_current) < 10)
 	// 		&& (std::abs(l_current) < 10)) { //initial jitter
@@ -391,6 +394,11 @@ void DriveBase::AutonDrive() {
 
 	i_yaw += y_error_dis_au;
 
+
+	frc::SmartDashboard::PutNumber("Heading error", y_error_dis_au);
+	frc::SmartDashboard::PutNumber("Left error", l_error_dis_au);
+	frc::SmartDashboard::PutNumber("Right error", r_error_dis_au);
+
 	P_RIGHT_DIS = K_P_RIGHT_DIS * r_error_dis_au;
 	I_RIGHT_DIS = K_I_RIGHT_DIS * i_right;
 	D_RIGHT_DIS = K_D_RIGHT_DIS * d_right;
@@ -403,7 +411,7 @@ void DriveBase::AutonDrive() {
 	I_YAW_DIS = k_i_yaw_dis * i_yaw;
 	D_YAW_DIS = k_d_yaw_dis * (y_error_dis_au - yaw_last_error);
 
-	// frc::SmartDashboard::PutNumber("P", P_YAW_DIS);
+	// frc::SmartDashboard::PutNumber("P RIGHT", P_RIGHT_DIS);
 	// frc::SmartDashboard::PutNumber("I", I_YAW_DIS);
 	// frc::SmartDashboard::PutNumber("D", D_YAW_DIS);
 
@@ -412,7 +420,6 @@ void DriveBase::AutonDrive() {
 
 	double total_yaw = P_YAW_DIS + I_YAW_DIS + D_YAW_DIS;
 
-	//frc::SmartDashboard::PutNumber("TOTAL", total_yaw);
 
 	//scaling - vel output depending on dis PID
 	double target_fps_yaw_change = total_yaw * MAX_FPS;
@@ -444,7 +451,6 @@ void DriveBase::AutonDrive() {
 	r_last_error = r_error_dis_au;
 	kick_last_error = k_error_dis_au;
 	yaw_last_error = y_error_dis_au;
-
 }
 
 void DriveBase::Controller(double ref_kick,
@@ -612,8 +618,12 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-//	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-//	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left * 10);
+	canTalonRight1->Set(ControlMode::PercentOutput, total_right * 10);
+
+
+		// canTalonRight1->Set(ControlMode::PercentOutput, 0.05);
+		// canTalonLeft1->Set(ControlMode::PercentOutput, -0.05);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -640,9 +650,9 @@ void DriveBase::ZeroAll(bool stop_motors) {
 
 //will stop all driven motors in the drive controller
 void DriveBase::StopAll() {
-
-	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
-	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
+	frc::SmartDashboard::PutString("STOPPED AUTO", "AUTO STOPPED");
+	// canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
+	// canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
@@ -770,9 +780,9 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 //Pre: SetAutonRefs()
 //		row_index = 0, vision_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
 void DriveBase::RunAutonProfile() {
-
+frc::SmartDashboard::PutNumber("row index", row_index);
   //fill next point horizontally
-	for (int i = 0; i < auton_profile[0].size(); i++) {
+	for (int i = 0; i < auton_profile[row_index].size(); i++) {
 		auton_row.at(i) = auton_profile.at(row_index).at(i);
 	}
 
@@ -850,7 +860,6 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 void DriveBase::RunAutonDrive(Joystick *JoyThrottle,
 	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
-
   switch (auton_drive_state) {
 
     case CREATE_AUTON_PROF:

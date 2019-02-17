@@ -30,11 +30,11 @@ const double K_P_YAW_DIS = 0.0; //used in AutonDrive()
 const double K_I_YAW_DIS = 0.0;
 const double K_D_YAW_DIS = 0.0;
 
-const double K_P_RIGHT_DIS = 0.0;
+const double K_P_RIGHT_DIS = 0.15;
 const double K_I_RIGHT_DIS = 0.0;
 const double K_D_RIGHT_DIS = 0.0;
 
-const double K_P_LEFT_DIS = 0.0;
+const double K_P_LEFT_DIS = 0.15;
 const double K_I_LEFT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 
@@ -78,15 +78,15 @@ const double K_D_VISION_POS = 0.0;
 const double K_P_YAW_AU = 0.0; //gets sent to Controller()
 const double K_D_YAW_AU = 0.0;
 
-const double K_P_YAW_DIS = 0.0; //used in AutonDrive()
+const double K_P_YAW_DIS = 0.15; //used in AutonDrive()
 const double K_I_YAW_DIS = 0.0;
 const double K_D_YAW_DIS = 0.0;
 
-const double K_P_RIGHT_DIS = 0.0;
+const double K_P_RIGHT_DIS = 0.15;
 const double K_I_RIGHT_DIS = 0.0;
 const double K_D_RIGHT_DIS = 0.0;
 
-const double K_P_LEFT_DIS = 0.0;
+const double K_P_LEFT_DIS = 0.15;
 const double K_I_LEFT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 
