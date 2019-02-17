@@ -58,13 +58,13 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
     talonElevator1->Config_kF(0, .34, 10); //TODO:arbitrary ff
-    talonElevator1->Config_kP(0, 0.05, 10);
-    talonElevator1->Config_kI(0, 0, 10); //middle number is the gain
+    talonElevator1->Config_kP(0, 0.07, 10);
+    talonElevator1->Config_kI(0, 0.00004, 10); //middle number is the gain
     talonElevator1->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonElevator1->ConfigMotionCruiseVelocity(1000, 10);//3120
-    talonElevator1->ConfigMotionAcceleration(2000, 10);
+    talonElevator1->ConfigMotionCruiseVelocity(4000, 10);//3120
+    talonElevator1->ConfigMotionAcceleration(10000, 10);
 
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);

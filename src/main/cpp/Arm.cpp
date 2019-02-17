@@ -20,8 +20,8 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
   talonArm->ConfigFactoryDefault();
 
   talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-
-    //	talonArm->SetInverted(true);
+talonArm->SetSensorPhase(true);
+    talonArm->SetInverted(true);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
     talonArm->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
@@ -35,13 +35,13 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonArm->SelectProfileSlot(0, 0);
-    talonArm->Config_kF(0, 0.0, 10); //1023/ max speed
+    talonArm->Config_kF(0, 2.18, 10); //1023/ max speed
     talonArm->Config_kP(0, 0.0, 10);
     talonArm->Config_kI(0, 0, 10); //middle number is the gain
     talonArm->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonArm->ConfigMotionCruiseVelocity(60, 10);
+    talonArm->ConfigMotionCruiseVelocity(100, 10);
     talonArm->ConfigMotionAcceleration(60, 10);
 
     arm_profiler = arm_profiler_;
