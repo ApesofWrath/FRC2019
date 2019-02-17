@@ -49,25 +49,30 @@ public:
 	bool is_init_arm = false; //is arm initialized
 
   const int INIT_STATE_H = 0;
-	const int HATCH_STATE_H = 1; //arm state machine
-  const int CARGO_STATE_H = 2;
+  const int REST_STATE_H = 1;
+	const int HATCH_STATE_H = 2; //arm state machine
+  const int CARGO_STATE_H = 3;
   // EXTRA STATES
-  const int DRIVING_STATE_H = 3; // TODO: rename in .cpp file from incorrect names
-  const int DOWN_STATE_H = 4;
-  const int EXTRA_STATE_H = 5;
-  const int STOP_ARM_STATE_H = 6;
+  const int DRIVING_STATE_H = 4; // TODO: rename in .cpp file from incorrect names
+  const int DOWN_STATE_H = 5;
+  const int EXTRA_STATE_H = 6;
+  const int STOP_ARM_STATE_H = 7;
 
-  const double HATCH_ANGLE = 1.0; //starting pos // originally 1..3, but lowered for testing
-  const double CARGO_ANGLE = 1.0;
-  const double MID_ANGLE = 0.6;
-  const double DOWN_ANGLE = 0.1; //lowest pos
-  const double EXTRA_ANGLE = 0.3;
+  const double REST_ANGLE = 2.1;
+  const double HATCH_ANGLE = 1.57; //90 deg
+  const double CARGO_ANGLE = 0.0;
+  const double MID_ANGLE = 0.6;//
+  const double DOWN_ANGLE = 0.1; //
+  const double EXTRA_ANGLE = 0.3;//
 
-  const double ENC_HATCH_ANGLE = HATCH_ANGLE * (2 * 3.14) * 4096 * 7.5;
-  const double ENC_CARGO_ANGLE = CARGO_ANGLE * (2 * 3.14) * 4096 * 7.5;
-  const double ENC_MID_ANGLE = MID_ANGLE * (2 * 3.14) * 4096 * 7.5;
-  const double ENC_DOWN_ANGLE = DOWN_ANGLE * (2 * 3.14) * 4096 * 7.5;
-  const double ENC_EXTRA_ANGLE = EXTRA_ANGLE * (2 * 3.14) * 4096 * 7.5;
+  const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;
+
+  const double ENC_HATCH_ANGLE = HATCH_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_CARGO_ANGLE = CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_MID_ANGLE = MID_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_DOWN_ANGLE = DOWN_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_EXTRA_ANGLE = EXTRA_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_REST_ANGLE = REST_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
 
   int arm_state = INIT_STATE_H;
 
@@ -142,7 +147,7 @@ private:
   void UpperSoftLimit();
   void LowerSoftLimit();
   void StallSafety();
-  
+
   // Output helpers
   void CapVoltage();
   void OutputArmVoltage();

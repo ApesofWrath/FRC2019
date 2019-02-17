@@ -5,12 +5,13 @@
 int counter = 0;
 
 const int INIT_STATE = 0;
-const int HATCH_STATE = 1;
-const int CARGO_STATE = 2;
-const int DRIVING_STATE = 3;
-const int DOWN_STATE = 4;
-const int EXTRA_STATE = 5;
-const int STOP_ARM_STATE = 6;
+const int REST_STATE = 1;
+const int HATCH_STATE = 2;
+const int CARGO_STATE = 3;
+const int DRIVING_STATE = 4;
+const int DOWN_STATE = 5;
+const int EXTRA_STATE = 6;
+const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
@@ -244,23 +245,16 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     double Arm::GetAngularVelocity() {
       //Native vel units are in ticks per 100ms so divide by TICKS_PER_ROT to get rotations per 100ms then multiply 10 to get per second
       //multiply by 2pi to get into radians per second (2pi radians are in one revolution)
-      double ang_vel =
-      (talonArm->GetSensorCollection().GetQuadratureVelocity()
-      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * (10.0) * -1.0);
+      return (talonArm->GetSensorCollection().GetQuadratureVelocity()
+      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * (10.0));
 
-      return ang_vel;
     }
 
     //returns rad
     double Arm::GetAngularPosition() {
 
-      double ang_pos =
-      (talonArm->GetSensorCollection().GetQuadraturePosition()
-      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * -1.0);
-
-      double offset_pos = .35; //amount that the arm will stick up in radians
-
-      return ang_pos;
+      return (talonArm->GetSensorCollection().GetQuadraturePosition()
+      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI));
 
     }
 
@@ -284,6 +278,10 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         }
         last_arm_state = INIT_STATE;
         break;
+
+        case REST_STATE:
+        frc::SmartDashboard::PutString("ARM", "rest");
+        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
 
         case HATCH_STATE:
         frc::SmartDashboard::PutString("ARM", "hatch");
@@ -349,10 +347,11 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
       return true;
     }
 
+//NOT REALLY ZEROING
     void Arm::ZeroEnc() { //called in Initialize() and in SetVoltage()
       if (zeroing_counter_a < 2) {
         /* Zero the sensor */
-        talonArm->SetSelectedSensorPosition(0, 0, 10);
+        talonArm->SetSelectedSensorPosition(ENC_REST_ANGLE, 0, 10);
         //  talonArm->GetSensorCollection().SetQuadraturePosition(0, 0);
         zeroing_counter_a++;
       } else {

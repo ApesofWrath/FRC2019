@@ -71,8 +71,8 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     hallEffectBottom = new frc::DigitalInput(BOT_HALL);
   }
 
-  void Elevator::SetuptalonElevator1() {
-
+//  void Elevator::SetuptalonElevator1() {
+//
 
     // Previous Year's code
 
@@ -85,9 +85,9 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     // talonElevator1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
     // talonElevator1->SetStatusFramePeriod(StatusFrameEnhanced::Status_2_Feedback0, 10, 0); //for getselectedsensor //getselectedsensor defaults to 10ms anyway. don't use getsensorcollection because that defaults to 160ms
 
-  }
+//  }
 
-  void Elevator::SetuptalonElevator2() {
+  //void Elevator::SetuptalonElevator2() {
     // additional setup for talonElevator2, previous year's code below
 
     // if (TALON_ID_2 >= 0) {
@@ -98,7 +98,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     // 	talonElevator2->ConfigPeakCurrentLimit(80, 0);
     // 	talonElevator2->ConfigPeakCurrentDuration(100, 0);
     // }
-  }
+//  }
 
   void Elevator::ElevatorStateMachine() {
     PrintElevatorInfo();
@@ -183,15 +183,9 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   }
 
   double Elevator::GetElevatorPosition() {
-    //divide by the native ticks per rotation then multiply by the circumference of the pulley
-    //radians
 
-    int elev_pos = talonElevator1->GetSelectedSensorPosition(0);
-
-    double elevator_pos = ((elev_pos - position_offset_e) / TICKS_PER_ROT_E) //position offset to zero
-    * (PI * PULLEY_DIAMETER) * -1.0;
-
-    return elevator_pos;
+    return (((talonElevator1->GetSelectedSensorPosition(0)) / TICKS_PER_ROT_E)
+    * (PI * PULLEY_DIAMETER));
 
   }
 
@@ -210,11 +204,8 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   double Elevator::GetElevatorVelocity() {
     //native units are ticks per 100 ms so we multiply the whole thing by 10 to get it into per second. Then divide by ticks per rotation to get into
     //RPS then muliply by circumference for m/s
-    double elevator_vel =
-    (talonElevator1->GetSelectedSensorVelocity(0)
-    / (TICKS_PER_ROT_E)) * (PULLEY_DIAMETER * PI) * (10.0)
-    * -1.0;
-    return elevator_vel;
+  return ((talonElevator1->GetSelectedSensorVelocity(0)
+    / (TICKS_PER_ROT_E)) * (PULLEY_DIAMETER * PI) * (10.0));
 
   }
 
@@ -416,7 +407,7 @@ void Elevator::SetZeroOffset() {
 bool Elevator::ZeroEncs() {
   if (zeroing_counter_e < 1) {
     // Great Robotic Actuation and Controls Execution ()
-    SetZeroOffset();
+    talonElevator1->SetSelectedSensorPosition(0, 0, 10);
     zeroing_counter_e++;
     return true;
   } else {
