@@ -254,6 +254,7 @@ void Arm::ArmStateMachine() {
   switch (arm_state) {
 
     case INIT_STATE:
+    frc::SmartDashboard::PutString("ARM", "init");
 		if (is_init_arm) {
 			arm_state = DOWN_STATE; //PUT BACK IN
 		} else {
@@ -263,35 +264,41 @@ void Arm::ArmStateMachine() {
     break;
 
     case HATCH_STATE:
+    frc::SmartDashboard::PutString("ARM", "hatch");
     UpdateArmProfile(HATCH_STATE, HATCH_ANGLE);
     break;
 
     case CARGO_STATE:
+    frc::SmartDashboard::PutString("ARM", "cargo");
 		UpdateArmProfile(CARGO_STATE, CARGO_ANGLE);
     break;
 
     case DRIVING_STATE:
+    frc::SmartDashboard::PutString("ARM", "driving");
 		UpdateArmProfile(DRIVING_STATE_H, MID_ANGLE);
     break;
 
     case DOWN_STATE:
+    frc::SmartDashboard::PutString("ARM", "down");
 		UpdateArmProfile(DOWN_STATE_H, DOWN_ANGLE);
     break;
 
 		case EXTRA_STATE:
+    frc::SmartDashboard::PutString("ARM", "extra");
 		UpdateArmProfile(EXTRA_STATE_H, EXTRA_ANGLE);
 		break;
 
     case STOP_ARM_STATE:
+    frc::SmartDashboard::PutString("ARM", "stop");
 		StopArm();
 		last_arm_state = STOP_ARM_STATE;
 		break;
   	}
 
-		frc::SmartDashboard::PutNumber("ARM ENC",
-				talonArm->GetSensorCollection().GetQuadraturePosition());
-
-		frc::SmartDashboard::PutString("ARM", arm_states[arm_state]);
+		// frc::SmartDashboard::PutNumber("ARM ENC",
+		// 		talonArm->GetSensorCollection().GetQuadraturePosition());
+    //
+		// frc::SmartDashboard::PutString("ARM", arm_states[arm_state]);
 }
 
 // TODO: remove current_state and just use arm_state

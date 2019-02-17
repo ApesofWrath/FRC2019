@@ -114,9 +114,11 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     //suction
     if (suction_on) {
       state_suction = false;
+  //    frc::SmartDashboard::PutString("suction on", "8");
       hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
     } else if (suction_off) {
       state_suction = false;
+  //      frc::SmartDashboard::PutString("suction off", "8");
       hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
     } else {
       state_suction = true;

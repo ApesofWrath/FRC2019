@@ -13,35 +13,21 @@
 //   get_cargo, post_intake_cargo, place_hatch, place_cargo, post_outtake_cargo,
 //   post_outtake_hatch;
 
-bool  wait_for_button,  bottom_intake_in,  bottom_intake_out,
-     bottom_intake_stop,  top_intake_in,  top_intake_out,  top_intake_stop,
-     suction_on,  suction_off,  hatch_out,  hatch_in,  arm_up,  arm_down,
-     elevator_hatch_up,  elevator_hatch_mid,  elevator_hatch_low,  elevator_cargo_up,  elevator_cargo_mid,  elevator_cargo_low,  get_cargo,  get_hatch_ground, get_hatch_station,  post_intake_cargo,  post_intake_hatch,  place_hatch, place_cargo,  post_outtake_hatch,  post_outtake_cargo;
-
-ElevatorMotionProfiler *elevator_profiler;
-ArmMotionProfiler *arm_profiler;
-
-Arm *arm;
-Elevator *elevator;
-Intake *intake;
-HatchPickup *hatch_pickup;
-
-
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  elevator_profiler = new ElevatorMotionProfiler(-1, -1, -1);
+  elevator_profiler = new ElevatorMotionProfiler(0.5, 2.0, 0.02);
   elevator = new Elevator(elevator_profiler);
-  arm_profiler = new ArmMotionProfiler(-1, -1, -1);
+  arm_profiler = new ArmMotionProfiler(1.0, 5.0, 0.02);
   arm = new Arm(arm_profiler);
   intake = new Intake();
   hatch_pickup = new HatchPickup();
 
   tsm = new TeleopStateMachine(elevator, intake, arm, hatch_pickup);
   joyOp = new frc::Joystick(0);
-
+	joyWheel = new frc::Joystick(1);
 
 }
 
@@ -67,24 +53,11 @@ void Robot::RobotPeriodic() {}
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
-  std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
 }
 
 void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
+
 }
 
 void Robot::TeleopInit() {}
@@ -103,34 +76,42 @@ void Robot::TeleopPeriodic() {
   // post_outtake_cargo = joyOp->GetRawButton(9);
   // post_outtake_hatch = joyOp->GetRawButton(10);
 
+	elevator->ElevatorStateMachine();
+	arm->ArmStateMachine();
+	intake->IntakeTopStateMachine();
+	intake->IntakeBottomStateMachine();
+	hatch_pickup->SuctionStateMachine();
+	hatch_pickup->SolenoidStateMachine();
+
   //elevator
   elevator_hatch_up = joyOp->GetRawButton(1);
-  elevator_hatch_mid = joyOp->GetRawButton(2);
+  elevator_hatch_mid = joyOp->GetRawButton(2); //doesnt work
   elevator_hatch_low = joyOp->GetRawButton(3);
   elevator_cargo_up = joyOp->GetRawButton(4);
   elevator_cargo_mid  = joyOp->GetRawButton(5);
   elevator_cargo_low = joyOp->GetRawButton(6);
 
+
+	  // suction
+	  suction_on =  joyOp->GetRawButton(7);
+	  suction_off =  joyOp->GetRawButton(8);
+
+
+	// hatch -solenoid
+	hatch_in = joyWheel->GetRawButton(1);
+	hatch_out = joyWheel->GetRawButton(2);
+
   // arm
-  arm_up = joyOp->GetRawButton(1);
-  arm_down = joyOp->GetRawButton(2);
+  arm_up = joyWheel->GetRawButton(3);
+  arm_down = joyWheel->GetRawButton(4);
 
   // intakes
-  bottom_intake_in = joyOp->GetRawButton(3);
-  bottom_intake_out = joyOp->GetRawButton(4);
-  bottom_intake_stop   = joyOp->GetRawButton(8);
-  top_intake_in  = joyOp->GetRawButton(8);
-  top_intake_out  = joyOp->GetRawButton(8);
-  top_intake_stop = joyOp->GetRawButton(8);
-
-  // suction
-  suction_on =  joyOp->GetRawButton(9);
-  suction_off =  joyOp->GetRawButton(10);
-
-  // hatch
-  hatch_in = joyWheel->GetRawButton(1);
-  hatch_out = joyWheel->GetRawButton(2);
-
+  bottom_intake_in = joyWheel->GetRawButton(5);
+  bottom_intake_out = joyWheel->GetRawButton(6);
+  bottom_intake_stop = joyWheel->GetRawButton(7);
+  top_intake_in  = joyWheel->GetRawButton(8);
+  top_intake_out  = joyWheel->GetRawButton(9);
+  top_intake_stop = joyWheel->GetRawButton(10);
 
 
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop, suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low, elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch, place_hatch, place_cargo, post_outtake_hatch, post_outtake_cargo);
