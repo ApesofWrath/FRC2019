@@ -14,7 +14,7 @@ const int EXTRA_STATE = 6;
 const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
-
+//TODO: backlash compensation - tension releases when direction changes
   talonArm = new TalonSRX(ARM_TALON_ID);
 
   talonArm->ConfigFactoryDefault();

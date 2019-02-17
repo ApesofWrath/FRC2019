@@ -39,7 +39,14 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+
+  frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
+  frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
+
+  frc::SmartDashboard::PutNumber("el targ pos", elevator->talonElevator1->GetActiveTrajectoryPosition());
+  frc::SmartDashboard::PutNumber("el targ vel", elevator->talonElevator1->GetActiveTrajectoryVelocity());
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -68,17 +75,13 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 
 if (joyOp->GetRawButton(1)) {
-elevator->talonElevator1->Set(ControlMode::MotionMagic, 12288);
+elevator->talonElevator1->Set(ControlMode::MotionMagic, 12288, DemandType_ArbitraryFeedForward, 0.07);
 }
 //elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp->GetY());
 //  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
 frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
 frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
-frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
-frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
 
-frc::SmartDashboard::PutNumber("el targ pos", elevator->talonElevator1->GetActiveTrajectoryPosition());
-frc::SmartDashboard::PutNumber("el targ vel", elevator->talonElevator1->GetActiveTrajectoryVelocity());
 //	elevator->ElevatorStateMachine();
 //	arm->ArmStateMachine();
 	intake->IntakeTopStateMachine();
