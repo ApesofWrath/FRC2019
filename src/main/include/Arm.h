@@ -1,4 +1,3 @@
-// TODO: Revise states and positions to make more sense for this year's arm
 
  #ifndef SRC_ARM_H_
  #define SRC_ARM_H_
@@ -63,6 +62,12 @@ public:
   const double MID_ANGLE = 0.6;
   const double DOWN_ANGLE = 0.1; //lowest pos
   const double EXTRA_ANGLE = 0.3;
+
+  const double ENC_HATCH_ANGLE = HATCH_ANGLE * (2 * 3.14) * 4096 * 7.5;
+  const double ENC_CARGO_ANGLE = CARGO_ANGLE * (2 * 3.14) * 4096 * 7.5;
+  const double ENC_MID_ANGLE = MID_ANGLE * (2 * 3.14) * 4096 * 7.5;
+  const double ENC_DOWN_ANGLE = DOWN_ANGLE * (2 * 3.14) * 4096 * 7.5;
+  const double ENC_EXTRA_ANGLE = EXTRA_ANGLE * (2 * 3.14) * 4096 * 7.5;
 
   int arm_state = INIT_STATE_H;
 
@@ -132,10 +137,12 @@ private:
   bool EncodersRunning();
 
 	void SetVoltageArm(double voltage_a);
+
   // Safeties
   void UpperSoftLimit();
   void LowerSoftLimit();
   void StallSafety();
+  
   // Output helpers
   void CapVoltage();
   void OutputArmVoltage();

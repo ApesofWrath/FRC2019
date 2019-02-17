@@ -3,6 +3,12 @@
 
 #define PI 3.14159265
 
+const double Kp = 0.0;
+const double Ki = 0.0;
+const double Kd = 0.0;
+const double MAX_VEL_ENC = 0.0; // 4096 ticks / 100 ms
+const double Kf = 1023.0 / MAX_VEL_ENC;
+
 const double TICKS_PER_ROT_A = 4096.0;
 const double MAX_VOLTAGE_A = 12.0; //CANNOT EXCEED abs(10)
 const double MIN_VOLTAGE_A = -12.0;
