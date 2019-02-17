@@ -90,46 +90,51 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
-  wait_for_button = joyOp->GetRawButton(1);
-  get_hatch_ground = joyOp->GetRawButton(2);
-  get_hatch_station = joyOp->GetRawButton(3);
-  post_intake_hatch = joyOp->GetRawButton(4);
-  get_cargo = joyOp->GetRawButton(5);
-  post_intake_cargo = joyOp->GetRawButton(6);
-  place_hatch = joyOp->GetRawButton(7);
-  place_cargo = joyOp->GetRawButton(8);
-  post_outtake_cargo = joyOp->GetRawButton(9);
-  post_outtake_hatch = joyOp->GetRawButton(10);
+  frc::SmartDashboard::PutString("TeleopPeriodic", "Made it");
+  //teleop state machine
+  // wait_for_button = joyOp->GetRawButton(1);
+  // get_hatch_ground = joyOp->GetRawButton(2);
+  // get_hatch_station = joyOp->GetRawButton(3);
+  // post_intake_hatch = joyOp->GetRawButton(4);
+  // get_cargo = joyOp->GetRawButton(5);
+  // post_intake_cargo = joyOp->GetRawButton(6);
+  // place_hatch = joyOp->GetRawButton(7);
+  // place_cargo = joyOp->GetRawButton(8);
+  // post_outtake_cargo = joyOp->GetRawButton(9);
+  // post_outtake_hatch = joyOp->GetRawButton(10);
+
+  //elevator
+  elevator_hatch_up = joyOp->GetRawButton(1);
+  elevator_hatch_mid = joyOp->GetRawButton(2);
+  elevator_hatch_low = joyOp->GetRawButton(3);
+  elevator_cargo_up = joyOp->GetRawButton(4);
+  elevator_cargo_mid  = joyOp->GetRawButton(5);
+  elevator_cargo_low = joyOp->GetRawButton(6);
+
+  // arm
+  arm_up = joyOp->GetRawButton(1);
+  arm_down = joyOp->GetRawButton(2);
+
+  // intakes
+  bottom_intake_in = joyOp->GetRawButton(3);
+  bottom_intake_out = joyOp->GetRawButton(4);
+  bottom_intake_stop   = joyOp->GetRawButton(8);
+  top_intake_in  = joyOp->GetRawButton(8);
+  top_intake_out  = joyOp->GetRawButton(8);
+  top_intake_stop = joyOp->GetRawButton(8);
+
+  // suction
+  suction_on =  joyOp->GetRawButton(9);
+  suction_off =  joyOp->GetRawButton(10);
+
+  // hatch
+  hatch_in = joyWheel->GetRawButton(1);
+  hatch_out = joyWheel->GetRawButton(2);
+
 
 
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop, suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low, elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch, place_hatch, place_cargo, post_outtake_hatch, post_outtake_cargo);
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-
-
-  // if (wait_for_button) {
-  //   tsm->state = state->WAIT_FOR_BUTTON_STATE_H;
-  // } else if (get_hatch_ground) {
-  //   tsm->state = state->GET_HATCH_GROUND_STATE_H;
-  // } else if (get_hatch_station) {
-  //   tsm->state = state->GET_HATCH_STATION_STATE_H;
-  // } else if (post_intake_hatch) {
-  //   tsm->state = state->POST_INTAKE_HATCH_STATE_H;
-  // } else if (get_cargo) {
-  //   tsm->state = state->GET_CARGO_STATE_H;
-  // } else if (post_intake_cargo) {
-  //   tsm->state = state->POST_INTAKE_CARGO_STATE_H;
-  // } else if (place_hatch) {
-  //   tsm->state = state->PLACE_HATCH_STATE_H;
-  // } else if (place_cargo) {
-  //   tsm->state = state->PLACE_CARGO_STATE_H;
-  // } else if (post_outtake_cargo) {
-  //   tsm->state = state->POST_OUTTAKE_CARGO_STATE_H;
-  // } else if (post_outtake_hatch) {
-  //   tsm->state = state->POST_OUTTAKE_HATCH_STATE_H;
-  // }
-
-
-  // elevator->ManualElevator(joyElev);
 }
 
 void Robot::TestPeriodic() {}
