@@ -63,21 +63,12 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic() {
-  frc::SmartDashboard::PutString("TeleopPeriodic", "Made it");
-  //teleop state machine
-  // wait_for_button = joyOp->GetRawButton(1);
-  // get_hatch_ground = joyOp->GetRawButton(2);
-  // get_hatch_station = joyOp->GetRawButton(3);
-  // post_intake_hatch = joyOp->GetRawButton(4);
-  // get_cargo = joyOp->GetRawButton(5);
-  // post_intake_cargo = joyOp->GetRawButton(6);
-  // place_hatch = joyOp->GetRawButton(7);
-  // place_cargo = joyOp->GetRawButton(8);
-  // post_outtake_cargo = joyOp->GetRawButton(9);
-  // post_outtake_hatch = joyOp->GetRawButton(10);
 
-	elevator->ElevatorStateMachine();
-	arm->ArmStateMachine();
+  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
+frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
+frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
+//	elevator->ElevatorStateMachine();
+//	arm->ArmStateMachine();
 	intake->IntakeTopStateMachine();
 	intake->IntakeBottomStateMachine();
 	hatch_pickup->SuctionStateMachine();

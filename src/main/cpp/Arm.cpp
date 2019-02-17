@@ -61,7 +61,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
   void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
     frc::SmartDashboard::PutNumber("ARM CUR", talonArm->GetOutputCurrent());
-    frc::SmartDashboard::PutNumber("ARM ENC", talonArm->GetSensorCollection().GetQuadraturePosition());
+  //  frc::SmartDashboard::PutNumber("ARM ENC", talonArm->GetSensorCollection().GetQuadraturePosition());
 
     frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition()); //left is negative, right is positive
 
@@ -245,7 +245,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     double Arm::GetAngularVelocity() {
       //Native vel units are in ticks per 100ms so divide by TICKS_PER_ROT to get rotations per 100ms then multiply 10 to get per second
       //multiply by 2pi to get into radians per second (2pi radians are in one revolution)
-      return (talonArm->GetSensorCollection().GetQuadratureVelocity()
+      return (talonArm->GetSelectedSensorVelocity(0)
       / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * (10.0));
 
     }
@@ -253,7 +253,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     //returns rad
     double Arm::GetAngularPosition() {
 
-      return (talonArm->GetSensorCollection().GetQuadraturePosition()
+      return (talonArm->GetSelectedSensorPosition(0)
       / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI));
 
     }
