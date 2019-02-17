@@ -78,10 +78,10 @@ void Robot::TeleopInit() {}
 			targetPos = 400;
 			talon1->Set(ControlMode::MotionMagic, targetPos);
 
-	} else {
-		talon1->Set(ControlMode::PercentOutput, joy->GetY());
-		frc::SmartDashboard::PutNumber("output ", joy->GetY());
-	}
+	// } else {
+	// 	talon1->Set(ControlMode::PercentOutput, joy->GetY());
+	// 	frc::SmartDashboard::PutNumber("output ", joy->GetY());
+	// }
 
 	frc::SmartDashboard::PutNumber("enc vel", talon1->GetSelectedSensorVelocity(0));
 	frc::SmartDashboard::PutNumber("enc pos", talon1->GetSelectedSensorPosition(0));
