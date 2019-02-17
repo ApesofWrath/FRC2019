@@ -26,8 +26,8 @@ void Robot::RobotInit() {
   drive_controller = new DriveController();
   vision = new Vision();
 
- move_forward = new MoveForward();
- move_forward->BuildTotalTrajectory();
+  move_forward = new MoveForward();
+  move_forward->BuildTotalTrajectory();
 
 }
 
@@ -37,38 +37,40 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
 
- drive_controller->ZeroAll(true);
-
-  m_autoSelected = auton_chooser.GetSelected();
-  m_autoSelected = SmartDashboard::GetString("Auto Selector",
-       kDriveForward);//default
-
-  m_startSelected = start_chooser.GetSelected();
-  m_startSelected = SmartDashboard::GetString("Center Selector",
-       kCenter); //default
-
-       if (m_startSelected == kCenter) {
-         start = { 0.0 , 0.0, 0.0 };
-           frc::SmartDashboard::PutNumber("waypoint", 0);
-       } else if (m_startSelected == kLeft) {
-         start = { 0.0 , 0.0, 0.0 }; //TODO:
-       } else if (m_startSelected == kRight) {
-         start = { 0.0 , 0.0, 0.0 };
-       }
-
-  if (m_autoSelected == kCenterLowHabOneCargo) {
-    // Custom Auto goes here
-  } else if (m_autoSelected == kDoNothing) {
-    // Default Auto goes here
-     frc::SmartDashboard::PutNumber("nothing", 0);
-  } else if (m_autoSelected == kDriveForward) {
-
-
-  }
-
-//  profile = move_forward->GetFullProfile();
-//rc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
-  //drive_controller->SetAutonRefs(profile);
+// drive_controller->ZeroAll(true);
+  //
+  // m_autoSelected = auton_chooser.GetSelected();
+  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
+  //      kDriveForward);//default
+  //
+  // m_startSelected = start_chooser.GetSelected();
+  // m_startSelected = SmartDashboard::GetString("Center Selector",
+  //      kCenter); //default
+  //
+  //      if (m_startSelected == kCenter) {
+  //        start = { 0.0 , 0.0, 0.0 };
+  //          frc::SmartDashboard::PutNumber("waypoint", 0);
+  //      } else if (m_startSelected == kLeft) {
+  //        start = { 0.0 , 0.0, 0.0 }; //TODO:
+  //      } else if (m_startSelected == kRight) {
+  //        start = { 0.0 , 0.0, 0.0 };
+  //      }
+  //
+  // if (m_autoSelected == kCenterLowHabOneCargo) {
+  //   // Custom Auto goes here
+  // } else if (m_autoSelected == kDoNothing) {
+  //   // Default Auto goes here
+  //    frc::SmartDashboard::PutNumber("nothing", 0);
+  // } else if (m_autoSelected == kDriveForward) {
+  //
+  //
+  // }
+  frc::SmartDashboard::PutNumber("hi", 2733);
+  //
+  //
+  // profile = move_forward->GetFullProfile();
+  // frc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
+  // drive_controller->SetAutonRefs(profile);
 
 }
 

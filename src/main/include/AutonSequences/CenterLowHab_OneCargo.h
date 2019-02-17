@@ -19,5 +19,4 @@ public:
 
   void CenterLowHabOneCargoStateMachine();
 
-  const int 
 };

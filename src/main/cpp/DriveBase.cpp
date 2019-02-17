@@ -772,8 +772,8 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 void DriveBase::RunAutonProfile() {
 
   //fill next point horizontally
-	for (int i = 0; i < vision_profile[0].size(); i++) {
-		auton_row.at(i) = vision_profile.at(row_index).at(i);
+	for (int i = 0; i < auton_profile[0].size(); i++) {
+		auton_row.at(i) = auton_profile.at(row_index).at(i);
 	}
 
 	//zeroing profile for next segment
@@ -793,7 +793,7 @@ void DriveBase::RunAutonProfile() {
 			row_index++; //break out of this if
 		}
 	} else {
-		if (continue_profile && row_index < vision_profile.size()) {
+		if (continue_profile && row_index < auton_profile.size()) {
 			AutonDrive();
 			row_index++;
 		} else {
