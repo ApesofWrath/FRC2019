@@ -15,6 +15,8 @@ class Elevator {
 
 public:
 
+  const double METERS_TO_ENCS = (1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0;
+
   const int TALON_ID_1 = 33;//master
   const int TALON_ID_2 = 0;//not master
 
@@ -39,6 +41,14 @@ public:
   const double MID_HATCH_POS = 0.0;
   const double BOTTOM_HATCH_POS = 0.0;
   const double BAY_CARGO_POS = 0.0;
+
+  const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_MID_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_BOTTOM_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_TOP_HATCH_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_MID_HATCH_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_BOTTOM_HATCH_POS = TOP_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_BAY_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
 
   int last_elevator_state = INIT_STATE_H;
   int elevator_state = INIT_STATE_H;
