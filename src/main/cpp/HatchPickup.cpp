@@ -8,19 +8,25 @@ const int IN_STATE = 1;
 
 HatchPickup::HatchPickup() {
 
-  suction = new TalonSRX(SUCTION_CHANNEL);
-  solenoid = new frc::DoubleSolenoid(SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
+  suction1 = new TalonSRX(12);
+  suction2 = new TalonSRX(40);
+  suction2->Follow(*suction1);
+  solenoid = new frc::DoubleSolenoid(9, SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 
 void HatchPickup::On() {
 
-  suction->Set(ControlMode::PercentOutput, 0.3);
+  suction1->Set(ControlMode::PercentOutput, 0.15); //.3
+///  suction2->Set(ControlMode::PercentOutput, 0.3);
+
+
 
 }
 
 void HatchPickup::Off() {
 
-  suction->Set(ControlMode::PercentOutput, 0.0);
+  suction1->Set(ControlMode::PercentOutput, 0.0);
+//  suction2->Set(ControlMode::PercentOutput, 0.0);
 
 }
 

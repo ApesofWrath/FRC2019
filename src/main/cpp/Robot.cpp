@@ -60,52 +60,64 @@ void Robot::AutonomousPeriodic() {
 
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+  //elevator->talonElevator1->Set(ControlMode::MotionMagic, 4096);
+  elevator->talonElevator1->SetSelectedSensorPosition(0, 0, 10);
+}
 
 void Robot::TeleopPeriodic() {
 
-  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
+if (joyOp->GetRawButton(1)) {
+elevator->talonElevator1->Set(ControlMode::MotionMagic, 12288);
+}
+//elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp->GetY());
+//  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
 frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
 frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
+frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
+frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
+
+frc::SmartDashboard::PutNumber("el targ pos", elevator->talonElevator1->GetActiveTrajectoryPosition());
+frc::SmartDashboard::PutNumber("el targ vel", elevator->talonElevator1->GetActiveTrajectoryVelocity());
 //	elevator->ElevatorStateMachine();
 //	arm->ArmStateMachine();
 	intake->IntakeTopStateMachine();
 	intake->IntakeBottomStateMachine();
 	hatch_pickup->SuctionStateMachine();
 	hatch_pickup->SolenoidStateMachine();
+  //
+  // //elevator
+  // elevator_hatch_up = joyOp->GetRawButton(1);
+  // elevator_hatch_mid = joyOp->GetRawButton(2); //doesnt work
+  // elevator_hatch_low = joyOp->GetRawButton(3);
+  // elevator_cargo_up = joyOp->GetRawButton(4);
+  // elevator_cargo_mid  = joyOp->GetRawButton(5);
+  // elevator_cargo_low = joyOp->GetRawButton(6);
+  //
+  //
+	//   // suction
+	//   suction_on =  joyOp->GetRawButton(7);
+	//   suction_off =  joyOp->GetRawButton(8);
+  //
+  //
+	// // hatch -solenoid
+	// hatch_in = joyWheel->GetRawButton(1);
+	// hatch_out = joyWheel->GetRawButton(2);
+  //
+  // // arm
+  // arm_up = joyWheel->GetRawButton(3);
+  // arm_down = joyWheel->GetRawButton(4);
+  //
+  // // intakes
+  // bottom_intake_in = joyWheel->GetRawButton(5);
+  // bottom_intake_out = joyWheel->GetRawButton(6);
+  // bottom_intake_stop = joyWheel->GetRawButton(7);
+  // top_intake_in  = joyWheel->GetRawButton(8);
+  // top_intake_out  = joyWheel->GetRawButton(9);
+  // top_intake_stop = joyWheel->GetRawButton(10);
+  //
 
-  //elevator
-  elevator_hatch_up = joyOp->GetRawButton(1);
-  elevator_hatch_mid = joyOp->GetRawButton(2); //doesnt work
-  elevator_hatch_low = joyOp->GetRawButton(3);
-  elevator_cargo_up = joyOp->GetRawButton(4);
-  elevator_cargo_mid  = joyOp->GetRawButton(5);
-  elevator_cargo_low = joyOp->GetRawButton(6);
-
-
-	  // suction
-	  suction_on =  joyOp->GetRawButton(7);
-	  suction_off =  joyOp->GetRawButton(8);
-
-
-	// hatch -solenoid
-	hatch_in = joyWheel->GetRawButton(1);
-	hatch_out = joyWheel->GetRawButton(2);
-
-  // arm
-  arm_up = joyWheel->GetRawButton(3);
-  arm_down = joyWheel->GetRawButton(4);
-
-  // intakes
-  bottom_intake_in = joyWheel->GetRawButton(5);
-  bottom_intake_out = joyWheel->GetRawButton(6);
-  bottom_intake_stop = joyWheel->GetRawButton(7);
-  top_intake_in  = joyWheel->GetRawButton(8);
-  top_intake_out  = joyWheel->GetRawButton(9);
-  top_intake_stop = joyWheel->GetRawButton(10);
-
-
-  tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop, suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low, elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch, place_hatch, place_cargo, post_outtake_hatch, post_outtake_cargo);
+  //tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop, suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low, elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch, place_hatch, place_cargo, post_outtake_hatch, post_outtake_cargo);
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 }
 

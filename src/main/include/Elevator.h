@@ -12,13 +12,16 @@
 #include "ElevatorConstants.h"
 
 class Elevator {
+//12,40 -
+//solenoid 0,1
+
 
 public:
 
-  const double METERS_TO_ENCS = (1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0;
+  const double METERS_TO_ENCS = (1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0 / 2.0; //enc value of x results in enc height of 2x
 
-  const int TALON_ID_1 = 33;//master
-  const int TALON_ID_2 = 0;//not master
+  const int TALON_ID_1 = 14;//master
+  const int TALON_ID_2 = 3;//not master
 
   const int TOP_HALL = 2;
   const int BOT_HALL = 1;
@@ -57,7 +60,8 @@ public:
 
   int zeroing_counter_e = 0;
 
-  TalonSRX *talonElevator1, *talonElevator2;
+  TalonSRX *talonElevator1;
+  VictorSPX *talonElevator2;
   frc::DigitalInput *hallEffectTop, *hallEffectBottom; // http://first.wpi.edu/FRC/roborio/release/docs/cpp/classfrc_1_1DigitalInput.html
 
   ElevatorMotionProfiler *elevator_profiler;

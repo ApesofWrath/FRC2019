@@ -76,7 +76,7 @@ public:
 
   int arm_state = INIT_STATE_H;
 
-  const int ARM_TALON_ID = 55;
+  const int ARM_TALON_ID = 43;
   const int HALL_EFF_ARM_ID = 0;
 
   std::map <int, std::string> arm_states = {

@@ -23,7 +23,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   elevator_profiler = elevator_profiler_;
 
   talonElevator1 = new TalonSRX(TALON_ID_1);
-  talonElevator2 = new TalonSRX(TALON_ID_2);
+  talonElevator2 = new VictorSPX(TALON_ID_2);
 
   talonElevator2->Follow(*talonElevator1);
 
@@ -42,8 +42,8 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     * Phase sensor to have positive increment when driving Talon Forward (Green LED)
     */
     //talon->SetSensorPhase(true);
-  //  talonElevator1->SetInverted(true);
-  //  talonElevator2->SetInverted(true);
+    talonElevator1->SetInverted(true);
+//    talonElevator2->SetInverted(true);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
     talonElevator1->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
@@ -57,14 +57,14 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
-    talonElevator1->Config_kF(0, .31, 10);
-    talonElevator1->Config_kP(0, 0.0, 10);
+    talonElevator1->Config_kF(0, .39, 10);
+    talonElevator1->Config_kP(0, 0.15, 10);
     talonElevator1->Config_kI(0, 0, 10); //middle number is the gain
     talonElevator1->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonElevator1->ConfigMotionCruiseVelocity(1000, 10);
-    talonElevator1->ConfigMotionAcceleration(1000, 10);
+    talonElevator1->ConfigMotionCruiseVelocity(3120, 10);
+    talonElevator1->ConfigMotionAcceleration(12000, 10);
 
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);
@@ -185,7 +185,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   double Elevator::GetElevatorPosition() {
 
     return (((talonElevator1->GetSelectedSensorPosition(0)) / TICKS_PER_ROT_E)
-    * (PI * PULLEY_DIAMETER));
+    * (PI * PULLEY_DIAMETER) * 2.0); //*2 for cascading elev
 
   }
 
@@ -291,7 +291,7 @@ void Elevator::PrintElevatorInfo() {
   frc::SmartDashboard::PutString("ELEV: ", GetState());
 
   frc::SmartDashboard::PutNumber("ELEV CUR 1", talonElevator1->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("ELEV CUR 2", talonElevator2->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("ELEV CUR 2", talonElevator1->GetOutputCurrent());
 
   frc::SmartDashboard::PutNumber("ElEV ENC", talonElevator1->GetSelectedSensorPosition(0));
 
