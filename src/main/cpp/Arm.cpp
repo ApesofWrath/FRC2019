@@ -14,14 +14,14 @@ const int EXTRA_STATE = 6;
 const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
-//TODO: backlash compensation - tension releases when direction changes
+  //TODO: backlash compensation - tension releases when direction changes
   talonArm = new TalonSRX(ARM_TALON_ID);
-talonArm->ConfigVoltageCompSaturation(12.0);
-talonArm->EnableVoltageCompensation(true);
+  talonArm->ConfigVoltageCompSaturation(12.0);
+  talonArm->EnableVoltageCompensation(true);
   talonArm->ConfigFactoryDefault();
 
   talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-talonArm->SetSensorPhase(true);
+    talonArm->SetSensorPhase(true);
     talonArm->SetInverted(true);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
@@ -62,7 +62,7 @@ talonArm->SetSensorPhase(true);
   void Arm::ManualArm(frc::Joystick *joyOpArm) {
 
     frc::SmartDashboard::PutNumber("ARM CUR", talonArm->GetOutputCurrent());
-  //  frc::SmartDashboard::PutNumber("ARM ENC", talonArm->GetSensorCollection().GetQuadraturePosition());
+    //  frc::SmartDashboard::PutNumber("ARM ENC", talonArm->GetSensorCollection().GetQuadraturePosition());
 
     frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition()); //left is negative, right is positive
 
@@ -272,10 +272,10 @@ talonArm->SetSensorPhase(true);
 
         case INIT_STATE:
         frc::SmartDashboard::PutString("ARM", "init");
-        if (is_init_arm) {
-          arm_state = DOWN_STATE; //PUT BACK IN
+        if (std::abs(talonArm->GetSelectedSensorPosition() - 13800) < 10) {
+          arm_state = REST_STATE;
         } else {
-          InitializeArm();
+          talonArm->SetSelectedSensorPosition(13800, 0, 10);
         }
         last_arm_state = INIT_STATE;
         break;
@@ -283,6 +283,7 @@ talonArm->SetSensorPhase(true);
         case REST_STATE:
         frc::SmartDashboard::PutString("ARM", "rest");
         talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
+        break;
 
         case HATCH_STATE:
         frc::SmartDashboard::PutString("ARM", "hatch");
@@ -348,7 +349,7 @@ talonArm->SetSensorPhase(true);
       return true;
     }
 
-//NOT REALLY ZEROING
+    //NOT REALLY ZEROING
     void Arm::ZeroEnc() { //called in Initialize() and in SetVoltage()
       if (zeroing_counter_a < 2) {
         /* Zero the sensor */
