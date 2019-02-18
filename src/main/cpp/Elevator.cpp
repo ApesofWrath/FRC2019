@@ -72,8 +72,8 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     talonElevator1->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonElevator1->ConfigMotionCruiseVelocity(4000, 10);//3120
-    talonElevator1->ConfigMotionAcceleration(10000, 10);
+    talonElevator1->ConfigMotionCruiseVelocity(5000, 10);//3120
+    talonElevator1->ConfigMotionAcceleration(2000, 10);
 
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);
