@@ -627,8 +627,7 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -867,7 +866,22 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 void DriveBase::RunAutonDrive(Joystick *JoyThrottle,
 	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
-  switch (auton_drive_state) {
+
+	// 	canTalonLeft1->Set(ControlMode::PercentOutput, -1);
+	// 	canTalonRight1->Set(ControlMode::PercentOutput, 1);
+	//
+	// 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
+	// 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
+	// 	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
+	// 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
+	// //	double kick_current = ((double) canTalonKicker->GetSelectedSensorVelocity(0) //will timeout, taking too much time
+	// //			 (double) TICKS_PER_ROT) * MINUTE_CONVERSION; //going right is positive
+	//
+	//
+	//   frc::SmartDashboard::PutNumber("l current", l_current);
+	//   frc::SmartDashboard::PutNumber("r current", r_current);
+
+	switch (auton_drive_state) {
 
     case CREATE_AUTON_PROF:
 		frc::SmartDashboard::PutString("DRIVE", "create prof");
@@ -898,8 +912,7 @@ bool DriveBase::VisionDriveStateMachine() {
 
 		case CREATE_VIS_PROF:
 			frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
-		  // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
-			GenerateVisionProfile(3, d2r(15));
+		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_VIS_PROF;
 			}
@@ -921,4 +934,8 @@ bool DriveBase::VisionDriveStateMachine() {
 
 	}
 
+}
+
+void DriveBase::RestartVision() {
+	vision_drive_state = CREATE_VIS_PROF;
 }

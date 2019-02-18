@@ -63,7 +63,7 @@ drive_controller->ZeroAll(true);
 
 
   }
-
+  drive_controller->RestartVision();
   // profile = move_forward->GetFullProfile();
   // frc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
   // drive_controller->SetAutonRefs(profile);

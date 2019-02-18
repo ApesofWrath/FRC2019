@@ -54,7 +54,7 @@ public:
 	void InitDriveProf();
 	void RunAutonProfile();
 //	void SelectAutonProfile();
-
+	void RestartVision();
 	//Driving Operators
 	void TeleopHDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool *is_fc); //creates velocity references set by joysticks, for HDrive Train
 	void TeleopWCDrive(Joystick *JoyThrottle, Joystick *JoyWheel); //creates velocity references based on joysticks, for normal west coast drive train
