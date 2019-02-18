@@ -75,33 +75,37 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-double arb = cos(3.14 - arm->GetAngularPosition()) * 0.158 * -1.0 * 1.7;
+// double arb = cos(3.14 - arm->GetAngularPosition()) * 0.158 * -1.0 * 1.7;
+//
+// frc::SmartDashboard::PutNumber("arb", arb);
+// frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
+//
+// if (joyOp->GetRawButton(1)) {
+// intake->talonIntake1->Set(ControlMode::PercentOutput, 0.3); //outttake
+// intake->talonIntake2->Set(ControlMode::PercentOutput, 0.3);
+// } else if (joyOp->GetRawButton(2)) {
+//   intake->talonIntake1->Set(ControlMode::PercentOutput, -0.3); //intake
+//   intake->talonIntake2->Set(ControlMode::PercentOutput, -0.3);
+// } else {
+//   intake->talonIntake1->Set(ControlMode::PercentOutput, -0);
+//   intake->talonIntake2->Set(ControlMode::PercentOutput, -0);
+// }
 
-frc::SmartDashboard::PutNumber("arb", arb);
-frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
 
-if (joyOp->GetRawButton(1)) {
-  frc::SmartDashboard::PutNumber("here", 8);
-arm->talonArm->Set(ControlMode::MotionMagic, 10000);
 
-} else if (joyOp->GetRawButton(2)) {
-  arm->talonArm->Set(ControlMode::MotionMagic, 13700);
-} else {
-arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
-}
-//arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
-//  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
-frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
-frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
-
-frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
-frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
+// //arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
+// //  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
+// frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
+// frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
+//
+// frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
+// frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
 //	elevator->ElevatorStateMachine();
 //	arm->ArmStateMachine();
-	intake->IntakeTopStateMachine();
-	intake->IntakeBottomStateMachine();
-	hatch_pickup->SuctionStateMachine();
-	hatch_pickup->SolenoidStateMachine();
+	// intake->IntakeTopStateMachine();
+	// intake->IntakeBottomStateMachine();
+	// hatch_pickup->SuctionStateMachine();
+	// hatch_pickup->SolenoidStateMachine();
   //
   // //elevator
   // elevator_hatch_up = joyOp->GetRawButton(1);

@@ -11,12 +11,13 @@ HatchPickup::HatchPickup() {
   suction1 = new TalonSRX(12);
   suction2 = new TalonSRX(40);
   suction2->Follow(*suction1);
+
   solenoid = new frc::DoubleSolenoid(9, SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 
 void HatchPickup::On() {
 
-  suction1->Set(ControlMode::PercentOutput, 0.15); //.3
+  suction1->Set(ControlMode::PercentOutput, 0.6); //.3
 ///  suction2->Set(ControlMode::PercentOutput, 0.3);
 
 
@@ -32,13 +33,13 @@ void HatchPickup::Off() {
 
 void HatchPickup::In() {
 
-  solenoid->Set(frc::DoubleSolenoid::kForward);
+  solenoid->Set(frc::DoubleSolenoid::kReverse); //reversed
 
 }
 
 void HatchPickup::Out() {
 
-  solenoid->Set(frc::DoubleSolenoid::kReverse);
+  solenoid->Set(frc::DoubleSolenoid::kForward); //reversed
 
 }
 

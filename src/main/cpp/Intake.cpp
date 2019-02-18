@@ -13,37 +13,37 @@ Intake::Intake() {
 
 void Intake::StopTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, 0.0 - STOP_TOP_SPEED);
+  talonIntake1->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
 void Intake::InTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, -IN_TOP_SPEED);
+  talonIntake1->Set(ControlMode::PercentOutput, -0.3);
 
 }
 
 void Intake::OutTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, OUT_TOP_SPEED);
+  talonIntake1->Set(ControlMode::PercentOutput, 0.3);
 
 }
 
 void Intake::StopBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, 0.0 - STOP_BOTTOM_SPEED);
+  talonIntake2->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
 void Intake::InBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, -IN_BOTTOM_SPEED);
+  talonIntake2->Set(ControlMode::PercentOutput, -0.3);
 
 }
 
 void Intake::OutBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, OUT_BOTTOM_SPEED);
+  talonIntake2->Set(ControlMode::PercentOutput, 0.3);
 
 }
 
