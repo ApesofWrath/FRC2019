@@ -9,7 +9,7 @@ const int REST_STATE = 1;
 const int HATCH_STATE = 2;
 const int CARGO_STATE = 3;
 const int HIGH_CARGO_STATE = 4;
-const int DOWN_STATE = 5;
+const int GET_HATCH_GROUND_STATE = 5;
 const int EXTRA_STATE = 6;
 const int STOP_ARM_STATE = 7;
 
@@ -98,7 +98,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
   // void Arm::RunController() {
   //
   //
-  // 	// Shaking: if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) {arm_state = DOWN_STATE;}
+  // 	// Shaking: if (IsAtBottomArm() && std::abs(error_a[0][0]) > 0.4) {arm_state = GET_HATCH_GROUND_STATE;}
   //
   //
   //   frc::SmartDashboard::PutNumber("GOAL VELOCITY", goal_vel);
@@ -183,7 +183,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
       CapVoltage();
 
       //zero height moves up sometimes. this will make sure the arm goes all the way down every time
-      if ((arm_state == DOWN_STATE) && arm_pos <= 0.4) { // TODO: change back to 0.2 after fix zeroing encoders
+      if ((arm_state == GET_HATCH_GROUND_STATE) && arm_pos <= 0.4) { // TODO: change back to 0.2 after fix zeroing encoders
         arm_voltage = 0.0;
 
       }
@@ -312,10 +312,10 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         talonArm->Set(ControlMode::MotionMagic, ENC_HIGH_CARGO_ANGLE);
         break;
 
-        case DOWN_STATE:
+        case GET_HATCH_GROUND_STATE:
         frc::SmartDashboard::PutString("ARM", "down");
-        //UpdateArmProfile(DOWN_STATE_H, DOWN_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_DOWN_ANGLE);
+        //UpdateArmProfile(GET_HATCH_GROUND_STATE_H, GET_HATCH_GROUND_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE);
         break;
 
         case EXTRA_STATE:

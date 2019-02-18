@@ -222,9 +222,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       frc::SmartDashboard::PutString("State", "GET HATCH GROUND");
 
       if (state_elevator) {
-        elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition() <= .20) {
-          arm->arm_state = arm->DOWN_STATE_H;
+        elevator->elevator_state = elevator->MID_CARGO_STATE_H;
+        if (elevator->GetElevatorPosition() >= .40) {
+          arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
         }
       }
 
@@ -241,6 +241,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       }
 
       if (hatch_pickup->HaveHatch() || post_intake_hatch) {
+        hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         state = POST_INTAKE_HATCH_STATE;
       }
 
@@ -256,7 +257,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (state_elevator) {
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() <= elevator->BOTTOM_HATCH_POS) {
-          arm->arm_state = arm->HATCH_STATE_H;
+          arm->arm_state = arm->REST_STATE_H;
         }
       }
       if (state_suction) {
@@ -280,9 +281,9 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       frc::SmartDashboard::PutString("State", "GET CARGO");
 
       if (state_elevator) {
-        elevator->elevator_state = elevator->BOTTOM_CARGO_POS;
-        if (elevator->GetElevatorPosition() <= .20) {
-          arm->arm_state = arm->DOWN_STATE_H;
+        elevator->elevator_state = elevator->MID_HATCH_POS;
+        if (elevator->GetElevatorPosition() >= .50) {
+          arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
         }
       }
       if (state_bottom_intake) {

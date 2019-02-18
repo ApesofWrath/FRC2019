@@ -53,17 +53,17 @@ public:
 	const int HATCH_STATE_H = 2; //arm state machine
   const int CARGO_STATE_H = 3;
   const int HIGH_CARGO_STATE_H = 4;
-  const int DOWN_STATE_H = 5;
+  const int GET_HATCH_GROUND_STATE_H = 5;
   const int EXTRA_STATE_H = 6;
   const int STOP_ARM_STATE_H = 7;
 
   const double START_ANGLE = 2.87;
   const double REST_ANGLE = 2.6;
-  const double HATCH_ANGLE = 2.11;
-  const double CARGO_ANGLE = 1.37;
-  const double HIGH_CARGO_ANGLE = 2.0;
+  const double HATCH_ANGLE = 2.11; //place hatch
+  const double CARGO_ANGLE = 1.37; //place cargo
+  const double HIGH_CARGO_ANGLE = 2.0; //place high cargo
   //extra states
-  const double DOWN_ANGLE = 2.6; //
+  const double GET_HATCH_GROUND_ANGLE = 1.0; //
   const double EXTRA_ANGLE = 2.6;//
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;
@@ -72,7 +72,7 @@ public:
   const double ENC_HATCH_ANGLE = HATCH_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO; //hatch cargo extra
   const double ENC_CARGO_ANGLE = CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_HIGH_CARGO_ANGLE = HIGH_CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
-  const double ENC_DOWN_ANGLE = DOWN_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_GET_HATCH_GROUND_ANGLE = GET_HATCH_GROUND_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_EXTRA_ANGLE = EXTRA_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_REST_ANGLE = REST_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
 
@@ -86,7 +86,7 @@ public:
   		{HATCH_STATE_H, "UP"},
   		{CARGO_STATE_H, "HIGH"},
   		{HIGH_CARGO_STATE_H, "MID"},
-  		{DOWN_STATE_H, "LOW"},
+  		{GET_HATCH_GROUND_STATE_H, "LOW"},
   		{EXTRA_STATE_H, "DOWN"},
       {STOP_ARM_STATE_H, "STOP"}
   	};
