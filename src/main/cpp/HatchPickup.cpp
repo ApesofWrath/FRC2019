@@ -6,6 +6,11 @@ const int OFF_STATE = 1;
 const int OUT_STATE = 0;
 const int IN_STATE = 1;
 
+const int sample_window = 10;
+int currents_intake[sample_window] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+double avg1 = 0.0;
+double avg2 = 0.0;
+
 HatchPickup::HatchPickup() {
 
   suction1 = new TalonSRX(12);
@@ -75,7 +80,29 @@ void HatchPickup::SolenoidStateMachine() {
 }
 
 bool HatchPickup::HaveHatch() {
+
+  for (int i = 0; i < (sample_window - 2); i++) { //to index 18
+		currents_intake[i] = currents_intake[i + 1];
+	}
+
+	currents_intake[sample_window - 1] =
+			talonArm->GetOutputCurrent();
+
+  for (int i = 0; i < 4; i++) {
+    avg1++;
+  }
+  avg1 /= sample_window / 2;
+
+  for (int i = 5; i < (sample_window - 1); i++) {
+    avg2++;
+  }
+  avg2 /= sample_window / 2;
+
+  if ((avg1 - avg2) > 0.5) {
+    return true;
+  }
   return false;
+
 }
 
 bool HatchPickup::ReleasedHatch() {

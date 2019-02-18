@@ -52,24 +52,26 @@ public:
   const int REST_STATE_H = 1;
 	const int HATCH_STATE_H = 2; //arm state machine
   const int CARGO_STATE_H = 3;
-  // EXTRA STATES
-  const int DRIVING_STATE_H = 4; // TODO: rename in .cpp file from incorrect names
+  const int HIGH_CARGO_STATE_H = 4;
   const int DOWN_STATE_H = 5;
   const int EXTRA_STATE_H = 6;
   const int STOP_ARM_STATE_H = 7;
 
-  const double REST_ANGLE = 2.87;
-  const double HATCH_ANGLE = 2.11; //90 deg
-  const double CARGO_ANGLE = 1.37; //higher ball angle for higher elev
-  const double MID_ANGLE = 2.0;//cargo angle2
-  const double DOWN_ANGLE = 0.1; //
+  const double START_ANGLE = 2.87;
+  const double REST_ANGLE = 2.6;
+  const double HATCH_ANGLE = 2.11;
+  const double CARGO_ANGLE = 1.37;
+  const double HIGH_CARGO_ANGLE = 2.0;
+  //extra states
+  const double DOWN_ANGLE = 2.6; //
   const double EXTRA_ANGLE = 2.6;//
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;
 
+  const double ENC_START_ANGLE = START_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_HATCH_ANGLE = HATCH_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO; //hatch cargo extra
   const double ENC_CARGO_ANGLE = CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
-  const double ENC_MID_ANGLE = MID_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_HIGH_CARGO_ANGLE = HIGH_CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_DOWN_ANGLE = DOWN_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_EXTRA_ANGLE = EXTRA_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_REST_ANGLE = REST_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
@@ -83,7 +85,7 @@ public:
   		{INIT_STATE_H, "INIT"},
   		{HATCH_STATE_H, "UP"},
   		{CARGO_STATE_H, "HIGH"},
-  		{DRIVING_STATE_H, "MID"},
+  		{HIGH_CARGO_STATE_H, "MID"},
   		{DOWN_STATE_H, "LOW"},
   		{EXTRA_STATE_H, "DOWN"},
       {STOP_ARM_STATE_H, "STOP"}
@@ -146,7 +148,7 @@ private:
   // Safeties
   void UpperSoftLimit();
   void LowerSoftLimit();
-  void StallSafety();
+  bool StallSafety();
 
   // Output helpers
   void CapVoltage();

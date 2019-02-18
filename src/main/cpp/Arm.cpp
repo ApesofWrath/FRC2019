@@ -8,7 +8,7 @@ const int INIT_STATE = 0;
 const int REST_STATE = 1;
 const int HATCH_STATE = 2;
 const int CARGO_STATE = 3;
-const int DRIVING_STATE = 4;
+const int HIGH_CARGO_STATE = 4;
 const int DOWN_STATE = 5;
 const int EXTRA_STATE = 6;
 const int STOP_ARM_STATE = 7;
@@ -223,17 +223,18 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
       }
     }
 
-    void Arm::StallSafety() {
+    bool Arm::StallSafety() {
       // STALL
-      if (std::abs(GetAngularVelocity()) <= STALL_VEL_A && std::abs(arm_voltage) > STALL_VOLT_A) { //outputting current, not moving, should be moving
-        encoder_counter++;
+      if ((std::abs(GetAngularVelocity()) <= STALL_VEL_A) && (std::abs(talonArm->GetOutputCurrent())) > 0.2 && (talonArm->GetActiveTrajectoryVelocity() > 0.08)) {
+        encoder_counter+++;
       } else {
         encoder_counter = 0;
       }
-      if (encoder_counter > 10) {
-        arm_voltage = 0.0;
-        arm_safety = "stall";
+      if (encoder_counter > 3) {
+        return true;
+        frc::SmartDashboard::PutString("ARM SAFETY", "stall");
       }
+      return false;
     }
 
     void Arm::CapVoltage() {
@@ -273,21 +274,24 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     }
 
     void Arm::ArmStateMachine() {
+
+    //  if (!StallSafety()) {
+
       switch (arm_state) {
 
         case INIT_STATE:
         frc::SmartDashboard::PutString("ARM", "init");
-        if (std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 10) {
+        if (std::abs(talonArm->GetSelectedSensorPosition() - ENC_START_ANGLE) < 10) {
           arm_state = REST_STATE;
         } else {
-          talonArm->SetSelectedSensorPosition(ENC_REST_ANGLE, 0, 10);
+          talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 10);
         }
         last_arm_state = INIT_STATE;
         break;
 
         case REST_STATE:
         frc::SmartDashboard::PutString("ARM", "rest");
-        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE + 200);
+        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
         break;
 
         case HATCH_STATE:
@@ -302,10 +306,10 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         talonArm->Set(ControlMode::MotionMagic, ENC_CARGO_ANGLE);
         break;
 
-        case DRIVING_STATE://mid ang
-        frc::SmartDashboard::PutString("ARM", "driving");
-        //UpdateArmProfile(DRIVING_STATE_H, MID_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_MID_ANGLE);
+        case HIGH_CARGO_STATE:
+        frc::SmartDashboard::PutString("ARM", "high cargo");
+        //UpdateArmProfile(HIGH_CARGO_STATE_H, HIGH_CARGO_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_HIGH_CARGO_ANGLE);
         break;
 
         case DOWN_STATE:
@@ -326,7 +330,9 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         last_arm_state = STOP_ARM_STATE;
         break;
       }
-
+//} else {
+//  StopArm();
+//}
       // frc::SmartDashboard::PutNumber("ARM ENC",
       // 		talonArm->GetSensorCollection().GetQuadraturePosition());
       //

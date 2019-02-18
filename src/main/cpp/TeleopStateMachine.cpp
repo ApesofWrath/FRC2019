@@ -89,7 +89,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
   		arm->arm_state = arm->CARGO_STATE_H;
     } else if (arm_driving) {
   		state_arm = false;
-      arm->arm_state = arm->DRIVING_STATE_H;
+      arm->arm_state = arm->HIGH_CARGO_STATE_H;
   	}
 
     //elevator
@@ -187,7 +187,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       // TODO: add correct heights elevator class, bottom_Cargo probaly isn't the one we want for loading staiton
       if (state_elevator) {
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition() <= elevator->BOTTOM_HATCH_STATE_H) {
+        if (elevator->GetElevatorPosition() <= (elevator->BOTTOM_HATCH_POS + 0.2)) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
       }
@@ -203,8 +203,6 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       }
 
       if (hatch_pickup->HaveHatch() || post_intake_hatch) {
-        hatch_pickup->solenoid_state = hatch_pickup->OFF_STATE_H;
-
         state = POST_INTAKE_HATCH_STATE;
       }
 
@@ -313,7 +311,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
         if (elevator->GetElevatorPosition() <= elevator->BOTTOM_CARGO_POS) {
-          arm->arm_state = arm->DRIVING_STATE_H;
+          arm->arm_state = arm->HIGH_CARGO_STATE_H;
         }
       }
       if (state_bottom_intake) {
@@ -411,7 +409,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (state_elevator) {
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() <= elevator->BOTTOM_HATCH_POS) {
-          arm->arm_state = arm->DRIVING_STATE_H;
+          arm->arm_state = arm->HIGH_CARGO_STATE_H;
         }
       }
 
@@ -433,7 +431,7 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
       if (state_elevator){
         elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         if (elevator->GetElevatorPosition() <= elevator->BOTTOM_HATCH_POS) {
-          arm->arm_state = arm->DRIVING_STATE_H;
+          arm->arm_state = arm->HIGH_CARGO_STATE_H;
         }
       }
       if (state_top_intake) {

@@ -110,8 +110,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 //  }
 
   void Elevator::ElevatorStateMachine() {
-    PrintElevatorInfo();
+    //PrintElevatorInfo();
+    frc::SmartDashboard::PutString("ELEV ", GetState());
 
+//if (!StallSafety()) {
     switch (elevator_state) {
       case INIT_STATE:
       if (std::abs(talonElevator1->GetSelectedSensorPosition(0)) < 10) {
@@ -162,6 +164,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       last_elevator_state = STOP_STATE;
       break;
     }
+  //} else {
+//    Stop();
+  //  frc::SmartDashboard::PutString("ELEV STALL", "stalled");
+  //}
   }
 
   void Elevator::CheckElevatorGoal(int elevator_state, double goal_pos) {
@@ -336,17 +342,17 @@ void Elevator::ZeroElevator() {
   }
 }
 
-void Elevator::StallSafety() {
-  if (std::abs(GetElevatorVelocity()) <= 0.05
-  && std::abs(elevator_voltage) > 3.0) { //this has to be here at the end
-    encoder_counter_e++;
+bool Elevator::StallSafety() {
+  if (((std::abs(GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetActiveTrajectoryVelocity() > 0.08)) ||) { // std::abs(GetElevatorPosition() - ) <= 0.1
+    encoder_counter+++;
   } else {
-    encoder_counter_e = 0;
+    encoder_counter = 0;
   }
-  if (encoder_counter_e > STALLS_TILL_STOP) { //bypass the initial high voltage to accelerate from 0
-    elevator_voltage = 0.0;
-    elev_safety = "stall";
+  if (encoder_counter > 3) {
+    return true;
+    frc::SmartDashboard::PutString("ARM SAFETY", "stall");
   }
+  return false;
 }
 
 void Elevator::ArmSafety() {
