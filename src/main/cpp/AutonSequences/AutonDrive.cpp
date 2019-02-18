@@ -24,23 +24,6 @@ void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bo
   int length = candidate.length;
   // myfile << "LENGTH: " << std::to_string(length);
   Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
-  TrajectoryInfo *ti = &candidate.info;
-
-  // ti->impulse = 0;
-  // ti->length = 0;
-  // ti->filter1 = 0;
-  // ti->filter2 = 0;
-  // ti->v = 0;
-  // ti->u = 0;
-
-  frc::SmartDashboard::PutNumber("filter 1", ti->filter1);
-  frc::SmartDashboard::PutNumber("filter 2", ti->filter2);
-  frc::SmartDashboard::PutNumber("dt", ti->dt);
-  frc::SmartDashboard::PutNumber("u", ti->u);
-  frc::SmartDashboard::PutNumber("v", ti->v);
-  frc::SmartDashboard::PutNumber("impulse", ti->length);
-  frc::SmartDashboard::PutNumber("length", ti->length);
-
 
  int result = pathfinder_generate(&candidate, trajectory);
 
@@ -135,18 +118,16 @@ Waypoint AutonDrive::RightRocketFront(Waypoint start_point, bool isReversed) {
 
 void AutonDrive::FillRemainingTrajectory() {
   // Out of bounds
-  if (current_index <= 0 || current_index >= 1500){
-  //  return;
-} else {
-frc::SmartDashboard::PutString("fill", "y");
-  for (int i = current_index; i < 1500; i++) {
-    full_refs.at(i).at(0) = full_refs.at(i - 1).at(0);
-    full_refs.at(i).at(1) = full_refs.at(i - 1).at(1);
-    full_refs.at(i).at(2) = full_refs.at(i - 1).at(2);
-    full_refs.at(i).at(3) = full_refs.at(i - 1).at(3);
-    full_refs.at(i).at(4) = full_refs.at(i - 1).at(4);
+  if (current_index >= 0 && current_index <= 1500) {
+    frc::SmartDashboard::PutString("fill", "y");
+      for (int i = current_index; i < 1500; i++) {
+        full_refs.at(i).at(0) = full_refs.at(i - 1).at(0);
+        full_refs.at(i).at(1) = full_refs.at(i - 1).at(1);
+        full_refs.at(i).at(2) = full_refs.at(i - 1).at(2);
+        full_refs.at(i).at(3) = full_refs.at(i - 1).at(3);
+        full_refs.at(i).at(4) = full_refs.at(i - 1).at(4);
+    }
   }
-}
 }
 
 void AutonDrive::PrintTrajectory() {

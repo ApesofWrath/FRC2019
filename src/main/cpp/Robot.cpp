@@ -69,12 +69,8 @@ drive_controller->ZeroAll(true);
   drive_controller->SetAutonRefs(profile);
 }
 
-int counter = 0;
 void Robot::AutonomousPeriodic() {
-  frc::SmartDashboard::PutNumber("periodic", counter);
-  counter++;
   drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-
 }
 
 void Robot::TeleopInit() {

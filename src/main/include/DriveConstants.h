@@ -30,11 +30,11 @@ const double K_P_YAW_DIS = 0.0; //used in AutonDrive()
 const double K_I_YAW_DIS = 0.0;
 const double K_D_YAW_DIS = 0.0;
 
-const double K_P_RIGHT_DIS = 0.15;
+const double K_P_RIGHT_DIS = 0.0;
 const double K_I_RIGHT_DIS = 0.0;
 const double K_D_RIGHT_DIS = 0.0;
 
-const double K_P_LEFT_DIS = 0.15;
+const double K_P_LEFT_DIS = 0.0;
 const double K_I_LEFT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 
@@ -51,7 +51,7 @@ const double ACTUAL_MAX_Y_RPM_R_F = 590.0;
 const double ACTUAL_MAX_Y_RPM_R_B = 505.0;
 
 const double MAX_Y_RPM = 505.0; //smallest actual max
-const double ACTUAL_MAX_Y_RPM = 0.0;
+const double ACTUAL_MAX_Y_RPM = 600.0; // TODO: find
 const double MAX_YAW_RATE = 11.4;
 const double MAX_FPS = 15.0; //used in auton pathfinder
 
@@ -78,15 +78,15 @@ const double K_D_VISION_POS = 0.0;
 const double K_P_YAW_AU = 0.0; //gets sent to Controller()
 const double K_D_YAW_AU = 0.0;
 
-const double K_P_YAW_DIS = 0.15; //used in AutonDrive()
+const double K_P_YAW_DIS = 0.0; //used in AutonDrive()
 const double K_I_YAW_DIS = 0.0;
 const double K_D_YAW_DIS = 0.0;
 
-const double K_P_RIGHT_DIS = 0.15;
+const double K_P_RIGHT_DIS = 0.0;
 const double K_I_RIGHT_DIS = 0.0;
 const double K_D_RIGHT_DIS = 0.0;
 
-const double K_P_LEFT_DIS = 0.15;
+const double K_P_LEFT_DIS = 0.0;
 const double K_I_LEFT_DIS = 0.0;
 const double K_D_LEFT_DIS = 0.0;
 

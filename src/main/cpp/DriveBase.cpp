@@ -62,7 +62,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		//
 		// k_f_left_vel = 1.0 / actual_max_y_rpm;
 		// k_f_right_vel = 1.0 / actual_max_y_rpm;
-		//
+
 		// is_low_gear = true;
 
 	} else { //regular constants
@@ -340,11 +340,11 @@ void DriveBase::AutonDrive() {
 	double pf_l_vel = auton_row.at(3); //fps
 	double pf_r_vel = auton_row.at(4); //fps
 
-	// frc::SmartDashboard::PutNumber("A yaw distance", pf_yaw_dis);
-	// frc::SmartDashboard::PutNumber("A right distace", pf_r_dis);
-	// frc::SmartDashboard::PutNumber("A left distace", pf_l_dis);
-	// frc::SmartDashboard::PutNumber("A left velocity", pf_l_vel);
-	// frc::SmartDashboard::PutNumber("A right velocity", pf_r_vel);
+	frc::SmartDashboard::PutNumber("A yaw distance", pf_yaw_dis);
+	frc::SmartDashboard::PutNumber("A right distace", pf_r_dis);
+	frc::SmartDashboard::PutNumber("A left distace", pf_l_dis);
+	frc::SmartDashboard::PutNumber("A left velocity", pf_l_vel);
+	frc::SmartDashboard::PutNumber("A right velocity", pf_r_vel);
 
 	if (pf_yaw_dis > PI) { //get negative half and positive half on circle - left half is positive
 		pf_yaw_dis -= (2 * PI);
@@ -426,6 +426,8 @@ void DriveBase::AutonDrive() {
 	double target_fps_right = total_right * MAX_FPS;
 	double target_fps_left = total_left * MAX_FPS;
 
+	frc::SmartDashboard::PutNumber("target_fps_yaw_change", target_fps_yaw_change);
+
 	target_fps_right += (pf_r_vel + target_fps_yaw_change);
 	target_fps_left += (pf_l_vel - target_fps_yaw_change);
 
@@ -442,6 +444,9 @@ void DriveBase::AutonDrive() {
 	} else if (target_fps_right < -MAX_FPS) {
 		target_fps_right = -MAX_FPS;
 	}
+
+	frc::SmartDashboard::PutNumber("targ fps left", target_fps_left);
+	frc::SmartDashboard::PutNumber("trag fps right", target_fps_right);
 
 	Controller(0.0, 0.0, 0.0, 0.0, k_p_right_vel_au, k_p_left_vel_au,
 			0.0, k_p_yaw_au, k_d_yaw_au, k_d_left_vel_au, k_d_right_vel_au, 0.0, //sends all 0.0 gains
@@ -559,8 +564,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
   frc::SmartDashboard::PutNumber("l current", l_current);
   frc::SmartDashboard::PutNumber("r current", r_current);
 
-  	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
-  	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
+	frc::SmartDashboard::PutNumber("l vel targ", ref_left);
+	frc::SmartDashboard::PutNumber("r vel targ", ref_right);
 
 	d_left_vel = (l_error_vel_t - l_last_error_vel);
 	d_right_vel = (r_error_vel_t - r_last_error_vel);
@@ -622,9 +627,6 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	canTalonRight1->Set(ControlMode::PercentOutput, total_right * 10);
 
 
-		// canTalonRight1->Set(ControlMode::PercentOutput, 0.05);
-		// canTalonLeft1->Set(ControlMode::PercentOutput, -0.05);
-
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
 	r_last_error_vel = r_error_vel_t;
@@ -650,9 +652,8 @@ void DriveBase::ZeroAll(bool stop_motors) {
 
 //will stop all driven motors in the drive controller
 void DriveBase::StopAll() {
-	frc::SmartDashboard::PutString("STOPPED AUTO", "AUTO STOPPED");
-	// canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
-	// canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
+	canTalonLeft1->Set(ControlMode::PercentOutput, 0.0);
+	canTalonRight1->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
@@ -780,8 +781,9 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 //Pre: SetAutonRefs()
 //		row_index = 0, vision_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
 void DriveBase::RunAutonProfile() {
-frc::SmartDashboard::PutNumber("row index", row_index);
-  //fill next point horizontally
+	frc::SmartDashboard::PutNumber("row index", row_index);
+	frc::SmartDashboard::PutString("STOPPED", "");
+	//fill next point horizontally
 	for (int i = 0; i < auton_profile[row_index].size(); i++) {
 		auton_row.at(i) = auton_profile.at(row_index).at(i);
 	}
@@ -792,6 +794,7 @@ frc::SmartDashboard::PutNumber("row index", row_index);
 	}
 	if (row_index == next_zero_index) {
 		StopAll();
+		frc::SmartDashboard::PutString("STOPPED", "zero index");
 		if (zero_wait_counter < 10) {
 			ZeroAll(true);
 			zero_wait_counter++;
@@ -808,6 +811,7 @@ frc::SmartDashboard::PutNumber("row index", row_index);
 			row_index++;
 		} else {
 			StopAll();
+			frc::SmartDashboard::PutString("STOPPED", "else");
 		}
 	}
 
