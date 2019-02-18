@@ -314,7 +314,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         break;
 
         case GET_HATCH_GROUND_STATE:
-        frc::SmartDashboard::PutString("ARM", "down");
+        frc::SmartDashboard::PutString("ARM", "get hatch ground");
         //UpdateArmProfile(GET_HATCH_GROUND_STATE_H, GET_HATCH_GROUND_ANGLE);
         talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE);
         break;

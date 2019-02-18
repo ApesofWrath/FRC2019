@@ -23,7 +23,7 @@ HatchPickup::HatchPickup() {
 
 void HatchPickup::On() {
 
-  suction1->Set(ControlMode::PercentOutput, 0.6); //.3
+  suction1->Set(ControlMode::PercentOutput, -1.0); //.3
 ///  suction2->Set(ControlMode::PercentOutput, 0.3);
 
 
