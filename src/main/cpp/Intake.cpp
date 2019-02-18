@@ -37,13 +37,13 @@ void Intake::StopBottom() {
 
 void Intake::InBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, -0.3);
+  talonIntake2->Set(ControlMode::PercentOutput, 0.3);
 
 }
 
 void Intake::OutBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, 0.3);
+  talonIntake2->Set(ControlMode::PercentOutput, -0.3);
 
 }
 

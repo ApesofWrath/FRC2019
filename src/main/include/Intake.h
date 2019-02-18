@@ -9,8 +9,8 @@ public:
 
   TalonSRX *talonIntake1, *talonIntake2;
 
-  const int TALON_ID_TOP = 46;
-  const int TALON_ID_BOT = 26;
+  const int TALON_ID_TOP = 26;
+  const int TALON_ID_BOT = 46;
 
   const int STOP_STATE_H = 0;
   const int IN_STATE_H = 1;

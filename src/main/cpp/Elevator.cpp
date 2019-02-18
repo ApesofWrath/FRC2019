@@ -26,11 +26,20 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   talonElevator2 = new VictorSPX(TALON_ID_2);
 
   talonElevator2->Follow(*talonElevator1);
+  //
+  // talonElevator1->ConfigForwardSoftLimitThreshold(16000);
+  // talonElevator2->ConfigForwardSoftLimitThreshold(16000);
+  //
+  // talonElevator1->ConfigReverseSoftLimitThreshold(100);
+  // talonElevator2->ConfigReverseSoftLimitThreshold(100);
 
-  /* Factory default hardware to prevent unexpected behavior */
+  /* Factory default hardware to prevent unexpectetalonElevator1->ConfigForwardSoftLimitThreshold(16000);d behavior */
   talonElevator1->ConfigFactoryDefault();
   talonElevator2->ConfigFactoryDefault();
-
+  talonElevator1->ConfigVoltageCompSaturation(12.0);
+  talonElevator2->ConfigVoltageCompSaturation(12.0);
+  talonElevator1->EnableVoltageCompensation(true);
+  talonElevator2->EnableVoltageCompensation(true);
   /* Configure Sensor Source for Pirmary PID */
   talonElevator1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
     // Constants.kPIDLoopIdx,
@@ -57,7 +66,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
-    talonElevator1->Config_kF(0, .34, 10); //TODO:arbitrary ff
+    talonElevator1->Config_kF(0, .30, 10); //TODO:arbitrary ff
     talonElevator1->Config_kP(0, 0.07, 10);
     talonElevator1->Config_kI(0, 0.00004, 10); //middle number is the gain
     talonElevator1->Config_kD(0, 0, 10);

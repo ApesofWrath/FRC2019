@@ -16,11 +16,16 @@ const int STOP_ARM_STATE = 7;
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
   //TODO: backlash compensation - tension releases when direction changes
   talonArm = new TalonSRX(ARM_TALON_ID);
+
+    talonArm->ConfigFactoryDefault();
+    
   talonArm->ConfigVoltageCompSaturation(12.0);
   talonArm->EnableVoltageCompensation(true);
-  talonArm->ConfigFactoryDefault();
 
-  talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+//  talonArm->ConfigForwardSoftLimitThreshold(16000);
+//  talonArm->ConfigReverseSoftLimitThreshold(18300); or something
+
+    talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
     talonArm->SetSensorPhase(true);
     talonArm->SetInverted(true);
 
