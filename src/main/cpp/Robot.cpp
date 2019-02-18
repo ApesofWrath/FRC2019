@@ -64,13 +64,14 @@ drive_controller->ZeroAll(true);
 
   }
 
-  profile = move_forward->GetFullProfile();
-  frc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
-  drive_controller->SetAutonRefs(profile);
+  // profile = move_forward->GetFullProfile();
+  // frc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
+  // drive_controller->SetAutonRefs(profile);
 }
 
 void Robot::AutonomousPeriodic() {
-  drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  // drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  drive_controller->VisionDriveStateMachine();
 }
 
 void Robot::TeleopInit() {

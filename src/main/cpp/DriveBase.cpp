@@ -50,7 +50,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 		// max_y_rpm = MAX_Y_RPM_LOW;
 		// max_yaw_rate = MAX_YAW_RATE_LOW;
-		// actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;
+		// actual_max_y_rpm = ACTUAL_MAX_Y_RPM_LOW;two_speed
 		// max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 		//
 		// k_p_right_vel = K_P_RIGHT_VEL_LOW;
@@ -70,7 +70,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-		Kv = 1 / ACTUAL_MAX_Y_RPM;
+		Kv = 1.0 / ACTUAL_MAX_Y_RPM_AUTON;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
@@ -602,12 +602,16 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
   frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL*550.0);
 
 
-	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
-			+ (Kv * target_vel_right * ff_scale); //Kv only in auton, straight from motion profile
-	double total_left = D_LEFT_VEL + P_LEFT_VEL + feed_forward_l
-			+ (Kv * target_vel_left * ff_scale);
+	double total_right = //D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
+			 ((1.0/15.0) * target_vel_right * 1.0); //Kv only in auton, straight from motion profile
+	double total_left =// D_LEFT_VEL + P_LEFT_VEL + feed_forward_l
+			 ((1.0/15.0) * target_vel_left * 1.0);
 //	double total_kick = D_KICK_VEL + P_KICK_VEL + feed_forward_k
 //			+ (Kv_KICK * target_vel_kick);
+
+	frc::SmartDashboard::PutNumber("KV", Kv);
+	// frc::SmartDashboard::PutNumber("target_vel_right", target_vel_right);
+
 
 	if (total_right > 1.0) {
 		total_right = 1.0;
@@ -623,9 +627,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left * 10);
-	canTalonRight1->Set(ControlMode::PercentOutput, total_right * 10);
-
+	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -895,7 +898,8 @@ bool DriveBase::VisionDriveStateMachine() {
 
 		case CREATE_VIS_PROF:
 			frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
-		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
+		  // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
+			GenerateVisionProfile(3, d2r(15));
 			if (set_profile) {
 				vision_drive_state = FOLLOW_VIS_PROF;
 			}

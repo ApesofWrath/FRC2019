@@ -55,7 +55,7 @@ const double ACTUAL_MAX_Y_RPM = 600.0; // TODO: find
 const double MAX_YAW_RATE = 11.4;
 const double MAX_FPS = 15.0; //used in auton pathfinder
 
-const double FF_SCALE = 0.7; //auton
+const double FF_SCALE = 1.0; //auton
 
 #else //1st bot to have superstructure
 
@@ -96,7 +96,7 @@ const double MAX_JERK_VIS = 10000.0;
 
 //Drive maxes
 
-const double ACTUAL_MAX_Y_RPM_AUTON = 500.0;
+const double ACTUAL_MAX_Y_RPM_AUTON = 10.0;
 const double ACTUAL_MAX_Y_RPM_L_F = 610.0;
 const double ACTUAL_MAX_Y_RPM_L_B = 570.0;
 const double ACTUAL_MAX_Y_RPM_R_F = 580.0;
@@ -107,7 +107,7 @@ const double ACTUAL_MAX_Y_RPM = 550.0;
 const double MAX_YAW_RATE = 15.0;
 const double MAX_FPS = 15.0; //used in auton pathfinder
 
-const double FF_SCALE = 0.7; //auton
+const double FF_SCALE = 1.0; //auton
 
 #endif //both bots
 
