@@ -18,7 +18,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
   talonArm = new TalonSRX(ARM_TALON_ID);
 
     talonArm->ConfigFactoryDefault();
-    
+
   talonArm->ConfigVoltageCompSaturation(12.0);
   talonArm->EnableVoltageCompensation(true);
 
@@ -277,17 +277,17 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
         case INIT_STATE:
         frc::SmartDashboard::PutString("ARM", "init");
-        if (std::abs(talonArm->GetSelectedSensorPosition() - 13800) < 10) {
+        if (std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 10) {
           arm_state = REST_STATE;
         } else {
-          talonArm->SetSelectedSensorPosition(13800, 0, 10);
+          talonArm->SetSelectedSensorPosition(ENC_REST_ANGLE, 0, 10);
         }
         last_arm_state = INIT_STATE;
         break;
 
         case REST_STATE:
         frc::SmartDashboard::PutString("ARM", "rest");
-        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE + 200);
         break;
 
         case HATCH_STATE:
@@ -302,10 +302,10 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         talonArm->Set(ControlMode::MotionMagic, ENC_CARGO_ANGLE);
         break;
 
-        case DRIVING_STATE:
+        case DRIVING_STATE://mid ang
         frc::SmartDashboard::PutString("ARM", "driving");
         //UpdateArmProfile(DRIVING_STATE_H, MID_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_DOWN_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_MID_ANGLE);
         break;
 
         case DOWN_STATE:

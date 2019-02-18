@@ -19,13 +19,13 @@ void Intake::StopTop() {
 
 void Intake::InTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, -0.3);
+  talonIntake1->Set(ControlMode::PercentOutput, -1.0);
 
 }
 
 void Intake::OutTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, 0.3);
+  talonIntake1->Set(ControlMode::PercentOutput, 1.0);
 
 }
 
@@ -37,13 +37,13 @@ void Intake::StopBottom() {
 
 void Intake::InBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, 0.3);
+  talonIntake2->Set(ControlMode::PercentOutput, -1.0);
 
 }
 
 void Intake::OutBottom() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, -0.3);
+  talonIntake2->Set(ControlMode::PercentOutput, 1.0);
 
 }
 

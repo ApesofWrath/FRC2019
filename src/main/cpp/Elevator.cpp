@@ -66,9 +66,9 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
-    talonElevator1->Config_kF(0, .30, 10); //TODO:arbitrary ff
-    talonElevator1->Config_kP(0, 0.07, 10);
-    talonElevator1->Config_kI(0, 0.00004, 10); //middle number is the gain
+    talonElevator1->Config_kF(0, .26, 10); //TODO:arbitrary ff
+    talonElevator1->Config_kP(0, 0.13, 10);
+    talonElevator1->Config_kI(0, 0.00003, 10); //middle number is the gain
     talonElevator1->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */

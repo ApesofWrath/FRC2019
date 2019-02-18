@@ -40,9 +40,9 @@ public:
   const double TOP_CARGO_POS = 0.8; //.25 rot higher than tested so far
   const double MID_CARGO_POS = 0.5;
   const double BOTTOM_CARGO_POS = 0.2;
-  const double TOP_HATCH_POS = 0.8;
-  const double MID_HATCH_POS = 0.5;
-  const double BOTTOM_HATCH_POS = 0.3; //this one
+  const double TOP_HATCH_POS = 1.37;
+  const double MID_HATCH_POS = 0.72;
+  const double BOTTOM_HATCH_POS = 0.02; //this one
   const double BAY_CARGO_POS = 0.2;
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
