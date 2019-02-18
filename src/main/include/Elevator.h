@@ -39,11 +39,11 @@ public:
   // elevator posititons for the differnet states
   const double TOP_CARGO_POS = 0.8; //.25 rot higher than tested so far
   const double MID_CARGO_POS = 0.5;
-  const double BOTTOM_CARGO_POS = 0.01;
+  const double BOTTOM_CARGO_POS = 0.1;
   const double TOP_HATCH_POS = 0.8;
   const double MID_HATCH_POS = 0.5;
-  const double BOTTOM_HATCH_POS = 0.01;
-  const double BAY_CARGO_POS = 0.01;
+  const double BOTTOM_HATCH_POS = 0.1;
+  const double BAY_CARGO_POS = 0.1;
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
   const double ENC_MID_CARGO_POS = MID_CARGO_POS * METERS_TO_ENCS;

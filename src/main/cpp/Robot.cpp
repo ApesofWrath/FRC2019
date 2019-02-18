@@ -56,7 +56,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-  elevator->ElevatorStateMachine();
+  //elevator->ElevatorStateMachine();
   arm->ArmStateMachine();
   intake->IntakeTopStateMachine();
   intake->IntakeBottomStateMachine();
@@ -64,9 +64,9 @@ void Robot::TeleopPeriodic() {
   hatch_pickup->SolenoidStateMachine();
 
   //elevator
-  elevator_hatch_up = joyOp->GetRawButton(1);
-  elevator_hatch_mid = joyOp->GetRawButton(2); //doesnt work
-  elevator_hatch_low = joyOp->GetRawButton(3);
+  // elevator_hatch_up = joyOp->GetRawButton(1);
+  // elevator_hatch_mid = joyOp->GetRawButton(2); //doesnt work
+  // elevator_hatch_low = joyOp->GetRawButton(3);
   // elevator_cargo_up = joyOp->GetRawButton(4);
   // elevator_cargo_mid  = joyOp->GetRawButton(5);
   // elevator_cargo_low = joyOp->GetRawButton(6);

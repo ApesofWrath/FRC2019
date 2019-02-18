@@ -67,8 +67,8 @@ public:
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;
 
-  const double ENC_HATCH_ANGLE = 10000.0;//HATCH_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO; //hatch cargo extra
-  const double ENC_CARGO_ANGLE = 8000.0;//CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
+  const double ENC_HATCH_ANGLE = 10700.0;//HATCH_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO; //hatch cargo extra
+  const double ENC_CARGO_ANGLE = 7000.0;//CARGO_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_MID_ANGLE = 12000.0;//MID_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_DOWN_ANGLE = 10000.0;//DOWN_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
   const double ENC_EXTRA_ANGLE = 9000.0;//EXTRA_ANGLE * RAD_TO_ENC * ENC_GEAR_RATIO;
