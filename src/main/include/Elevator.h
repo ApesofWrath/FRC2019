@@ -37,13 +37,13 @@ public:
   const int STOP_STATE_H = 8;
 
   // elevator posititons for the differnet states
-  const double TOP_HATCH_POS = 1.37;
-  const double MID_HATCH_POS = 0.72;
-  const double BOTTOM_HATCH_POS = 0.02; //this one
+  const double TOP_HATCH_POS = 1.37; //top scoring
+  const double MID_HATCH_POS = 0.72; //mid scoring
+  const double BOTTOM_HATCH_POS = 0.02; //bottom scoring
   const double BAY_CARGO_POS = BOTTOM_HATCH_POS;
-  const double TOP_CARGO_POS = 0.8; //.25 rot higher than tested so far
-  const double MID_CARGO_POS = 0.5;
-  const double BOTTOM_CARGO_POS = BOTTOM_HATCH_POS;
+  const double TOP_CARGO_POS = 0.8;
+  const double MID_CARGO_POS = 0.45; //1st height for getting hatch ground
+  const double BOTTOM_CARGO_POS = 0.24; //2nd height for getting hatch ground
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
   const double ENC_MID_CARGO_POS = MID_CARGO_POS * METERS_TO_ENCS;

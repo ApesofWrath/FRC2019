@@ -10,6 +10,7 @@ const int sample_window = 10;
 int currents_intake[sample_window] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 double avg1 = 0.0;
 double avg2 = 0.0;
+//int encoder_counter = 0;
 
 HatchPickup::HatchPickup() {
 
@@ -86,7 +87,7 @@ bool HatchPickup::HaveHatch() {
 	}
 
 	currents_intake[sample_window - 1] =
-			talonArm->GetOutputCurrent();
+			suction1->GetOutputCurrent();
 
   for (int i = 0; i < 4; i++) {
     avg1++;

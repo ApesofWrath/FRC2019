@@ -343,12 +343,12 @@ void Elevator::ZeroElevator() {
 }
 
 bool Elevator::StallSafety() {
-  if (((std::abs(GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetActiveTrajectoryVelocity() > 0.08)) ||) { // std::abs(GetElevatorPosition() - ) <= 0.1
-    encoder_counter+++;
+  if (((std::abs(GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetActiveTrajectoryVelocity() > 0.08))) { // std::abs(GetElevatorPosition() - ) <= 0.1
+    encoder_counter_e++;
   } else {
-    encoder_counter = 0;
+    encoder_counter_e = 0;
   }
-  if (encoder_counter > 3) {
+  if (encoder_counter_e > 3) {
     return true;
     frc::SmartDashboard::PutString("ARM SAFETY", "stall");
   }

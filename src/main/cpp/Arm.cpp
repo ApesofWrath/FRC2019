@@ -3,6 +3,7 @@
 #define PI 3.14159265
 
 int counter = 0;
+int encoder_counter_i;
 
 const int INIT_STATE = 0;
 const int REST_STATE = 1;
@@ -42,8 +43,8 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     /* Set Motion Magic gains in slot0 - see documentation */
     talonArm->SelectProfileSlot(0, 0);
     talonArm->Config_kF(0, 0.0, 10); //1023/ max speed
-    talonArm->Config_kP(0, 0.4, 10);
-    talonArm->Config_kI(0, 0, 10); //middle number is the gain
+    talonArm->Config_kP(0, 0.75, 10);
+    talonArm->Config_kI(0, 0.00085, 10); //middle number is the gain
     talonArm->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
@@ -226,11 +227,11 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     bool Arm::StallSafety() {
       // STALL
       if ((std::abs(GetAngularVelocity()) <= STALL_VEL_A) && (std::abs(talonArm->GetOutputCurrent())) > 0.2 && (talonArm->GetActiveTrajectoryVelocity() > 0.08)) {
-        encoder_counter+++;
+        encoder_counter_i++;
       } else {
-        encoder_counter = 0;
+        encoder_counter_i = 0;
       }
-      if (encoder_counter > 3) {
+      if (encoder_counter_i > 3) {
         return true;
         frc::SmartDashboard::PutString("ARM SAFETY", "stall");
       }

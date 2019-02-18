@@ -221,29 +221,32 @@ void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_i
     case GET_HATCH_GROUND_STATE:
       frc::SmartDashboard::PutString("State", "GET HATCH GROUND");
 
-      if (state_elevator) {
+      if (state_elevator && arm->arm_state != arm->GET_HATCH_GROUND_STATE_H) {
         elevator->elevator_state = elevator->MID_CARGO_STATE_H;
-        if (elevator->GetElevatorPosition() >= .40) {
+        if (elevator->GetElevatorPosition() >= .30) {
           arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
         }
+      } else if (state_elevator && arm->GetAngularPosition() < 0.7) {
+         elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
       }
 
-      if (state_bottom_intake) {
-        intake->bottom_intake_state = intake->IN_STATE_H;
-      }
 
-      if (state_suction) {
-        hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
-      }
-
-      if (state_solenoids) {
-        hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-      }
-
-      if (hatch_pickup->HaveHatch() || post_intake_hatch) {
-        hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
-        state = POST_INTAKE_HATCH_STATE;
-      }
+      // if (state_bottom_intake) {
+      //   intake->bottom_intake_state = intake->IN_STATE_H;
+      // }
+      //
+      // if (state_suction) {
+      //   hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
+      // }
+      //
+      // if (state_solenoids) {
+      //   hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+      // }
+      //
+      // if (hatch_pickup->HaveHatch() || post_intake_hatch) {
+      //   hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+      //   state = POST_INTAKE_HATCH_STATE;
+      // }
 
       last_state = GET_HATCH_GROUND_STATE;
       break;

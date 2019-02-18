@@ -63,7 +63,8 @@ public:
   const double CARGO_ANGLE = 1.37; //place cargo
   const double HIGH_CARGO_ANGLE = 2.0; //place high cargo
   //extra states
-  const double GET_HATCH_GROUND_ANGLE = 1.0; //
+
+  const double GET_HATCH_GROUND_ANGLE = 0.5; //
   const double EXTRA_ANGLE = 2.6;//
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;
@@ -130,7 +131,7 @@ private:
   int init_counter_a = 0;
   int counter_a = 0;
   int a = 0;
-  int encoder_counter = 0;
+  //int encoder_counter = 0;
   double arm_voltage = 0.0;
 
   void InitializeArm();
