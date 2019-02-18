@@ -16,7 +16,8 @@ const int STOP_ARM_STATE = 7;
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 //TODO: backlash compensation - tension releases when direction changes
   talonArm = new TalonSRX(ARM_TALON_ID);
-
+talonArm->ConfigVoltageCompSaturation(12.0);
+talonArm->EnableVoltageCompensation(true);
   talonArm->ConfigFactoryDefault();
 
   talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
@@ -35,14 +36,14 @@ talonArm->SetSensorPhase(true);
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonArm->SelectProfileSlot(0, 0);
-    talonArm->Config_kF(0, 2.18, 10); //1023/ max speed
-    talonArm->Config_kP(0, 0.0, 10);
+    talonArm->Config_kF(0, 0.0, 10); //1023/ max speed
+    talonArm->Config_kP(0, 0.4, 10);
     talonArm->Config_kI(0, 0, 10); //middle number is the gain
     talonArm->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonArm->ConfigMotionCruiseVelocity(100, 10);
-    talonArm->ConfigMotionAcceleration(60, 10);
+    talonArm->ConfigMotionCruiseVelocity(1000, 10);
+    talonArm->ConfigMotionAcceleration(1000, 10);
 
     arm_profiler = arm_profiler_;
 

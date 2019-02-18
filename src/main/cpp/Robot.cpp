@@ -75,17 +75,19 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-double arb = cos(3.14 - arm->GetAngularPosition()) * 0.158 * -1.0;// * 5.0;
+double arb = cos(3.14 - arm->GetAngularPosition()) * 0.158 * -1.0 * 1.7;
 
 frc::SmartDashboard::PutNumber("arb", arb);
 frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
 
 if (joyOp->GetRawButton(1)) {
   frc::SmartDashboard::PutNumber("here", 8);
-arm->talonArm->Set(ControlMode::MotionMagic, 7000, DemandType_ArbitraryFeedForward, arb);
+arm->talonArm->Set(ControlMode::MotionMagic, 10000);
 
+} else if (joyOp->GetRawButton(2)) {
+  arm->talonArm->Set(ControlMode::MotionMagic, 13700);
 } else {
-//arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
+arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
 }
 //arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
 //  arm->talonArm->Set(ControlMode::PercentOutput, joyOp->GetY());
