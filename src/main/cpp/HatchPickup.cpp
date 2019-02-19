@@ -7,7 +7,7 @@ const int OUT_STATE = 0;
 const int IN_STATE = 1;
 
 const int sample_window = 10;
-int currents_intake[sample_window] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+double currents_intake[sample_window] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 double avg1 = 0.0;
 double avg2 = 0.0;
 //int encoder_counter = 0;
@@ -89,7 +89,7 @@ bool HatchPickup::HaveHatch() {
 	// currents_intake[sample_window - 1] =
 	// 		suction1->GetOutputCurrent();
   //
-  //       frc::SmartDashboard::PutNumber("newest", currents_intake[sample_window - 1]);
+        frc::SmartDashboard::PutNumber("newest", suction1->GetOutputCurrent());
   //
   // for (int i = 0; i < 4; i++) {
   //   avg1++;
@@ -104,11 +104,13 @@ bool HatchPickup::HaveHatch() {
   // frc::SmartDashboard::PutNumber("avg1", avg1);
   // frc::SmartDashboard::PutNumber("avg2", avg2);
 
-  if (suction1->GetOutputCurrent() < 3.5) {
+  if (suction1->GetOutputCurrent() < 2.5) {
+    frc::SmartDashboard::PutNumber("have",1);
     return true;
-  }
+  } else {
+    frc::SmartDashboard::PutNumber("have",0);
   return false;
-
+}
 }
 
 bool HatchPickup::ReleasedHatch() {

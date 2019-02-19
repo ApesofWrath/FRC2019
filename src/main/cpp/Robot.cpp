@@ -55,19 +55,8 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-frc::SmartDashboard::PutBoolean("HAVE", hatch_pickup->HaveHatch());
-  hatch_pickup->SuctionStateMachine();
 
-
-  if ( joyOp->GetRawButton(1)) {
-  //  state_suction = false;
-    //    frc::SmartDashboard::PutString("suction on", "8");
-    hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
-  } else {
-    hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-  }
-
-/*
+//frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
   elevator->ElevatorStateMachine();
   arm->ArmStateMachine();
   intake->IntakeTopStateMachine();
@@ -141,7 +130,7 @@ get_cargo = joyWheel->GetRawButton(12);
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
     place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-*/
+
 }
 
 void Robot::TestPeriodic() {}

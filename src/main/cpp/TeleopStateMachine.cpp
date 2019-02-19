@@ -206,8 +206,16 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
 
+        if (state_arm && (hatch_pickup->suction_state != hatch_pickup->ON_STATE_H)) {
+            arm->arm_state = arm->HATCH_STATE_H; //place hatch
+        }
+
         // Once the arm gets close (0.2) to the correct position, pistons out, suction on
         if (std::abs(arm->GetAngularPosition() - arm->HATCH_ANGLE) <= 0.2) {
+          if (hatch_pickup->HaveHatch() && hatch_pickup->suction_state == hatch_pickup->ON_STATE_H) {
+            arm->arm_state = arm->REST_STATE_H;
+            state = POST_INTAKE_HATCH_STATE;
+          }
           if (state_suction) {
             hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
           }
@@ -216,17 +224,9 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           }
         }
 
-        if (state_arm && (hatch_pickup->suction_state != hatch_pickup->ON_STATE_H)) {
-            arm->arm_state = arm->HATCH_STATE_H; //place hatch
-        }
-
-        if (bottom_intake_stop) {
-          arm->arm_state = arm->REST_STATE_H;
-        }
-
-        if (false || post_intake_hatch) { //hatch_pickup->HaveHatch()
-          state = POST_INTAKE_HATCH_STATE;
-        }
+        // if (std::abs(arm->GetAngularPosition() - arm->REST_ANGLE) <= 0.2) { //hatch_pickup->HaveHatch()
+        //   state = POST_INTAKE_HATCH_STATE;
+        // }
 
         last_state = GET_HATCH_STATION_STATE;
         break;
