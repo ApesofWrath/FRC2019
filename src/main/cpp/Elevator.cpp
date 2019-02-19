@@ -11,6 +11,7 @@ const int MID_HATCH_STATE = 5;
 const int BOTTOM_HATCH_STATE = 6; // Same for rocket and cargo bay, only need one
 const int BAY_CARGO_STATE = 7;
 const int STOP_STATE = 8;
+const int LIFTING_ARM_STATE = 9;
 
 double elevator_voltage = 0.0;
 
@@ -162,6 +163,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       case STOP_STATE:
       Stop();
       last_elevator_state = STOP_STATE;
+      break;
+
+      case LIFTING_ARM_STATE:
+      talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
     }
   //} else {

@@ -35,14 +35,16 @@ public:
   const int BOTTOM_HATCH_STATE_H = 6; // Same for rocket and cargo bay, only need one
   const int BAY_CARGO_STATE_H = 7;
   const int STOP_STATE_H = 8;
+  const int LIFTING_ARM_STATE_H = 9;
 
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.37; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
   const double BOTTOM_HATCH_POS = 0.02; //bottom scoring
   const double BAY_CARGO_POS = BOTTOM_HATCH_POS;
-  const double TOP_CARGO_POS = 0.8;
-  const double MID_CARGO_POS = 0.45; //1st height for getting hatch ground
+  const double TOP_CARGO_POS = 1.44;
+  const double MID_CARGO_POS = 0.95; //1st height for getting hatch ground
+  const double LIFTING_ARM_POS = 0.45;
   const double BOTTOM_CARGO_POS = 0.28; //2nd height for getting hatch ground
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
@@ -52,6 +54,7 @@ public:
   const double ENC_MID_HATCH_POS = MID_HATCH_POS * METERS_TO_ENCS;
   const double ENC_BOTTOM_HATCH_POS = BOTTOM_HATCH_POS * METERS_TO_ENCS;
   const double ENC_BAY_CARGO_POS = BAY_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_LIFTING_ARM_POS = LIFTING_ARM_POS * METERS_TO_ENCS;
 
   int last_elevator_state = INIT_STATE_H;
   int elevator_state = INIT_STATE_H;

@@ -1,8 +1,10 @@
 #include "Intake.h"
 
 const int STOP_STATE = 0;
-const int IN_STATE = 1;
-const int OUT_STATE = 2;
+const int HOLD_STATE = 1;
+const int IN_STATE = 2;
+const int OUT_STATE = 3;
+const int OUT_SLOW_STATE = 4;
 
 Intake::Intake() {
 
@@ -17,15 +19,25 @@ void Intake::StopTop() {
 
 }
 
+void Intake::HoldTop() {
+
+  talonIntake1->Set(ControlMode::PercentOutput, 0.0 - 0.2);
+
+}
+
 void Intake::InTop() {
 
   talonIntake1->Set(ControlMode::PercentOutput, -1.0);
 
 }
 
-void Intake::OutTop() {
+void Intake::OutTop(bool slow) {
 
+  if (!slow) {
   talonIntake1->Set(ControlMode::PercentOutput, 1.0);
+} else {
+  talonIntake1->Set(ControlMode::PercentOutput, 0.72);
+}
 
 }
 
@@ -35,15 +47,24 @@ void Intake::StopBottom() {
 
 }
 
+void Intake::HoldBottom() {
+
+  talonIntake2->Set(ControlMode::PercentOutput, 0.0 - 0.2);
+
+}
+
 void Intake::InBottom() {
 
   talonIntake2->Set(ControlMode::PercentOutput, -1.0);
 
 }
 
-void Intake::OutBottom() {
-
+void Intake::OutBottom(bool slow) {
+if (!slow) {
   talonIntake2->Set(ControlMode::PercentOutput, 1.0);
+} else {
+    talonIntake2->Set(ControlMode::PercentOutput, 0.72);
+}
 
 }
 
@@ -56,13 +77,23 @@ void Intake::IntakeTopStateMachine() { //TODO: add current limit?
     frc::SmartDashboard::PutString("TOP INTAKE", "stop");
     break;
 
+    case HOLD_STATE:
+    HoldTop();
+    frc::SmartDashboard::PutString("TOP INTAKE", "hold");
+    break;
+
     case IN_STATE:
     InTop();
     frc::SmartDashboard::PutString("TOP INTAKE", "in");
     break;
 
     case OUT_STATE:
-    OutTop();
+    OutTop(false);
+    frc::SmartDashboard::PutString("TOP INTAKE", "out");
+    break;
+
+    case OUT_SLOW_STATE:
+    OutTop(true);
     frc::SmartDashboard::PutString("TOP INTAKE", "out");
     break;
 
@@ -79,13 +110,23 @@ void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
     frc::SmartDashboard::PutString("BOT INTAKE", "stop");
     break;
 
+    case HOLD_STATE:
+    HoldBottom();
+    frc::SmartDashboard::PutString("BOT INTAKE", "hold");
+    break;
+
     case IN_STATE:
     InBottom();
     frc::SmartDashboard::PutString("BOT INTAKE", "in");
     break;
 
     case OUT_STATE:
-    OutBottom();
+    OutBottom(false);
+    frc::SmartDashboard::PutString("BOT INTAKE", "out");
+    break;
+
+    case OUT_SLOW_STATE:
+    OutBottom(true);
     frc::SmartDashboard::PutString("BOT INTAKE", "out");
     break;
 

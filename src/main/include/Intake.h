@@ -13,8 +13,10 @@ public:
   const int TALON_ID_BOT = 46;
 
   const int STOP_STATE_H = 0;
-  const int IN_STATE_H = 1;
-  const int OUT_STATE_H = 2;
+  const int HOLD_STATE_H = 1;
+  const int IN_STATE_H = 2;
+  const int OUT_STATE_H = 3;
+  const int OUT_SLOW_STATE_H = 4;
   int top_intake_state = STOP_STATE_H;
   int bottom_intake_state = STOP_STATE_H;
 
@@ -29,12 +31,15 @@ public:
   Intake();
 
   void StopTop();
+  void HoldTop();
+  void Slow();
   void InTop();
-  void OutTop();
+  void OutTop(bool slow);
 
   void StopBottom();
+  void HoldBottom();
   void InBottom();
-  void OutBottom();
+  void OutBottom(bool slow);
 
   void IntakeTopStateMachine();
   void IntakeBottomStateMachine();

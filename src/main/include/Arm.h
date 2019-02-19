@@ -61,7 +61,7 @@ public:
   const double REST_ANGLE = 2.6;
   const double HATCH_ANGLE = 2.11; //place hatch
   const double CARGO_ANGLE = 1.37; //place cargo
-  const double HIGH_CARGO_ANGLE = 2.0; //place high cargo
+  const double HIGH_CARGO_ANGLE = 1.83; //place high cargo
   //extra states
 
   const double GET_HATCH_GROUND_ANGLE = 0.4; //
