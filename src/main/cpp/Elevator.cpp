@@ -152,7 +152,11 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
       case BOTTOM_HATCH_STATE:
       //CheckElevatorGoal(BOTTOM_HATCH_STATE, BOTTOM_HATCH_POS);
-      talonElevator1->Set(ControlMode::MotionMagic, ENC_BOTTOM_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
+      if (std::abs(talonElevator1->GetSelectedSensorPosition() - ENC_BOTTOM_HATCH_POS) < 200) {
+        Stop();
+      } else {
+        talonElevator1->Set(ControlMode::MotionMagic, ENC_BOTTOM_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
+      }
       break;
 
       case BAY_CARGO_STATE:
