@@ -98,10 +98,12 @@ void Robot::TeleopPeriodic() {
 
 //  bottom_intake_out = joyWheel->GetRawButton(7);
 
-  top_intake_in  = joyWheel->GetRawButton(9);
+//  top_intake_in  = joyWheel->GetRawButton(9);
   top_intake_out  = joyWheel->GetRawButton(10);
   top_intake_stop = joyWheel->GetRawButton(11);
-  
+
+  place_cargo_bay = joyWheel->GetRawButton(9);
+
 get_hatch_ground = joyOp->GetRawButton(12);
 post_intake_hatch = joyOp->GetRawButton(4);
 
@@ -126,7 +128,7 @@ get_cargo = joyWheel->GetRawButton(12);
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
     suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_driving, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
-    place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, post_outtake_hatch, post_outtake_cargo, extra_button);
+    place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
   // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 }
 

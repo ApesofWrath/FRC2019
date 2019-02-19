@@ -13,9 +13,10 @@ const int PLACE_HATCH_HIGH_STATE = 9;
 const int PLACE_CARGO_LOW_STATE = 10;
 const int PLACE_CARGO_MID_STATE = 11;
 const int PLACE_CARGO_HIGH_STATE = 12;
-const int POST_OUTTAKE_HATCH_STATE = 13;
-const int POST_OUTTAKE_CARGO_STATE = 14;
-
+const int PLACE_CARGO_BAY_STATE = 13;
+const int POST_OUTTAKE_HATCH_STATE = 14;
+const int POST_OUTTAKE_CARGO_STATE = 15;
+int state = INIT_STATE;
 
 int last_state = 0;
 
@@ -47,7 +48,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
     bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low, bool elevator_cargo_up,
     bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo, bool get_hatch_ground,
     bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low,
-    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
+    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
@@ -187,6 +188,8 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           state = PLACE_CARGO_MID_STATE;
         } else if (place_cargo_high) {
           state = PLACE_CARGO_HIGH_STATE;
+        } else if (place_cargo_bay) {
+          state = PLACE_CARGO_BAY_STATE;
         } else if (post_outtake_hatch) {
           state = POST_OUTTAKE_HATCH_STATE;
         } else if (post_outtake_cargo) {
@@ -351,6 +354,8 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           state = PLACE_CARGO_MID_STATE;
         } else if (place_cargo_high) {
           state = PLACE_CARGO_HIGH_STATE;
+        } else if (place_cargo_bay) {
+          state = PLACE_CARGO_BAY_STATE;
         }
         last_state = POST_INTAKE_CARGO_STATE;
         break;
@@ -464,6 +469,24 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         }
 
         last_state = PLACE_CARGO_HIGH_STATE;
+        break;
+
+        case PLACE_CARGO_BAY_STATE:
+        frc::SmartDashboard::PutString("State", "BAY CARGO");
+
+        if (state_arm) {
+          arm->arm_state = arm->CARGO_STATE_H;
+        }
+
+        elevator->elevator_state = elevator->MID_CARGO_STATE_H;
+        if (!place_cargo_bay) { //placeholder //and arm height at pos
+          intake->top_intake_state = intake->OUT_STATE_H;
+          intake->bottom_intake_state = intake->OUT_STATE_H;
+          if (bottom_intake_in) { //intake->ReleasedBall(
+            state = POST_OUTTAKE_CARGO_STATE;
+          }
+        }
+        last_state = PLACE_CARGO_BAY_STATE;
         break;
 
         case POST_OUTTAKE_HATCH_STATE:
