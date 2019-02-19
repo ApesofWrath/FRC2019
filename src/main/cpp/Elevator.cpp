@@ -118,7 +118,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     switch (elevator_state) {
       case INIT_STATE:
       if (std::abs(talonElevator1->GetSelectedSensorPosition(0)) < 10) {
-        elevator_state = BOTTOM_HATCH_STATE; // TODO: Change to actual starting position,(current is testing) probably BOTTOM_HATCH
+        elevator_state = BOTTOM_HATCH_STATE;
       } else {
         talonElevator1->SetSelectedSensorPosition(0, 0, 100);
       }
@@ -150,9 +150,9 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       talonElevator1->Set(ControlMode::MotionMagic, ENC_MID_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
-      case BOTTOM_HATCH_STATE:
+      case BOTTOM_HATCH_STATE: //lowest  pos
       //CheckElevatorGoal(BOTTOM_HATCH_STATE, BOTTOM_HATCH_POS);
-      if (std::abs(talonElevator1->GetSelectedSensorPosition() - ENC_BOTTOM_HATCH_POS) < 200) {
+      if (talonElevator1->GetActiveTrajectoryPosition() < 200) { //std::abs(talonElevator1->GetSelectedSensorPosition() - ENC_BOTTOM_HATCH_POS) < 200
         Stop();
       } else {
         talonElevator1->Set(ControlMode::MotionMagic, ENC_BOTTOM_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);

@@ -289,8 +289,8 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         break;
 
         case REST_STATE:
-        frc::SmartDashboard::PutString("ARM", "rest");
-        if (std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200) {
+        frc::SmartDashboard::PutString("ARM", "rest"); 
+        if (talonArm->GetActiveTrajectoryPosition() > (ENC_REST_ANGLE - 200)) { //std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200
           StopArm();
         } else {
         talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
