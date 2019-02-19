@@ -456,13 +456,13 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         case PLACE_CARGO_HIGH_STATE:
         frc::SmartDashboard::PutString("State", "HIGH CARGO");
         if (state_arm) {
-          arm->arm_state = arm->HIGH_CARGO_STATE_H;
+          arm->arm_state = arm->HIGH_CARGO_STATE_H;//arm->HIGH_CARGO_STATE_H;
         }
 
         elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
         if (!place_cargo_high) { //placeholder //and arm height at pos
-          intake->top_intake_state = intake->OUT_SLOW_STATE_H;
-          intake->bottom_intake_state = intake->OUT_SLOW_STATE_H;
+          intake->top_intake_state = intake->OUT_STATE_H;
+          intake->bottom_intake_state = intake->OUT_STATE_H;
           if (bottom_intake_in) { //intake->ReleasedBall(
             state = POST_OUTTAKE_CARGO_STATE;
           }

@@ -285,7 +285,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         if (std::abs(talonArm->GetSelectedSensorPosition() - ENC_START_ANGLE) < 10) {
           arm_state = REST_STATE;
         } else {
-          talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 10);
+          talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 100);
         }
         last_arm_state = INIT_STATE;
         break;

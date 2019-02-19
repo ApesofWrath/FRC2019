@@ -120,7 +120,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       if (std::abs(talonElevator1->GetSelectedSensorPosition(0)) < 10) {
         elevator_state = BOTTOM_CARGO_STATE; // TODO: Change to actual starting position,(current is testing) probably BOTTOM_HATCH
       } else {
-        talonElevator1->SetSelectedSensorPosition(0, 0, 10);
+        talonElevator1->SetSelectedSensorPosition(0, 0, 100);
       }
       last_elevator_state = INIT_STATE;
       break;

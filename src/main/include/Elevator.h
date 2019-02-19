@@ -42,7 +42,7 @@ public:
   const double MID_HATCH_POS = 0.72; //mid scoring
   const double BOTTOM_HATCH_POS = 0.02; //bottom scoring
   const double BAY_CARGO_POS = BOTTOM_HATCH_POS;
-  const double TOP_CARGO_POS = 1.44;
+  const double TOP_CARGO_POS = 1.42;
   const double MID_CARGO_POS = 0.95; //1st height for getting hatch ground
   const double LIFTING_ARM_POS = 0.45;
   const double BOTTOM_CARGO_POS = 0.28; //2nd height for getting hatch ground
