@@ -3,19 +3,19 @@
 
 #include "Constants.h"
 
-#define COMP 1 //0 uses the consts on the bottom
+#define PRACTICE 1 //0 uses the consts on the bottom
 
-#if COMP //bot still w/o superstructure
+#if PRACTICE //bot still w/o superstructure
 
 //Teleop
 
-const double K_P_RIGHT_VEL = 0.001;//0.0001; //no gear shift
-const double K_D_RIGHT_VEL = 0.0000;// 0.0005;
+const double K_P_RIGHT_VEL = 0.003;//0.0001; //no gear shift
+const double K_D_RIGHT_VEL = 0.0;// 0.0005;
 
-const double K_P_LEFT_VEL = 0.001; //voltage compensation //ff //p
+const double K_P_LEFT_VEL = 0.003; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
-const double K_P_YAW_VEL = 0.0;
+const double K_P_YAW_VEL = 13.0;
 const double K_D_YAW_VEL = 0.0;
 
 const double K_P_YAW_HEADING_POS = 0.0; //special controllers - yaw vision
@@ -61,10 +61,10 @@ const double FF_SCALE = 0.7; //auton
 
 //Teleop
 
-const double K_P_RIGHT_VEL = 0.002;//0.0001; //no gear shift
+const double K_P_RIGHT_VEL = 0.00;//0.0001; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;// 0.0005;
 
-const double K_P_LEFT_VEL = 0.002; //voltage compensation //ff //p
+const double K_P_LEFT_VEL = 0.00; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
 const double K_P_YAW_VEL = 0.0;
