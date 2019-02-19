@@ -82,7 +82,7 @@ class Robot : public frc::TimedRobot {
   frc::Joystick *joyThrottle, *joyWheel;
   DriveController *drive_controller;
   Vision *vision;
-  MoveForward *move_forward;
+  //MoveForward *move_forward;
 
   bool is_rotation, is_vision, is_regular;
 

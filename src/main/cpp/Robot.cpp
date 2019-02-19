@@ -31,7 +31,7 @@ void Robot::RobotInit() {
   drive_controller = new DriveController();
   vision = new Vision();
   start = {0,0,0};
-  move_forward = new MoveForward(start);
+//  move_forward = new MoveForward(start);
 
   //  elevator_profiler = new ElevatorMotionProfiler(0.5, 2.0, 0.02);
   elevator = new Elevator(elevator_profiler);

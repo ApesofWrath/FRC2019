@@ -1,7 +1,5 @@
 #include "Arm.h"
 
-#define PI 3.14159265
-
 int counter = 0;
 int encoder_counter_i;
 
