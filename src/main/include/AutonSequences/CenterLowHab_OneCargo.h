@@ -17,7 +17,10 @@ class CenterLowHabOneCargo : public AutonDrive {
 public:
   CenterLowHabOneCargo(Waypoint start);
   void BuildTotalTrajectory();
-//
+  void CenterLowHabOneCargoStateMachine();
+
+const int PLACE_ELEMENT_H = 0;
+const int STOP_STATE_H = 1;
 // protected:
 //   double MAX_VELOCITY;
 //   double MAX_ACCELERATION;

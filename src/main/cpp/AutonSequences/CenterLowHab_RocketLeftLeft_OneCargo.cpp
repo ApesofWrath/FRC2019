@@ -1,5 +1,8 @@
 #include "../../include/AutonSequences/CenterLowHab_RocketLeftLeft_OneCargo.h"
 
+const int PLACE_ELEMENT = 0;
+const int STOP_STATE = 1;
+
 CenterLowHabRocketLeftLeftOneCargo::CenterLowHabRocketLeftLeftOneCargo(Waypoint start) {
   start_pos = start;
   MAX_VELOCITY = 11.0;
@@ -13,4 +16,26 @@ void CenterLowHabRocketLeftLeftOneCargo::BuildTotalTrajectory() {
   LeftRocketLeft(start_pos, false);
   FillRemainingTrajectory();
   PrintTrajectory();
+}
+
+void CenterLowHabRocketLeftLeftOneCargo::CenterLowHabRocketLeftLeftOneCargoStateMachine(bool *place_cargo) {
+
+  switch (rocket_left_left_one_cargo_state) {
+
+    case PLACE_ELEMENT:
+      if (auton_state_machine->shoot_counter == 0) {
+        *place_cargo = true;
+        if (auton_state_machine->GetLeftVel() < 0.5) {
+          auton_state_machine->place_rocket_cargo = true;
+        } else {
+          auton_state_machine->place_rocket_cargo = false;
+        }
+      }
+      state = STOP_STATE
+      break;
+
+    case STOP_STATE:
+      auton_state_machine->stop = true;
+      break;
+  }
 }

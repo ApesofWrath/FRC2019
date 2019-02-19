@@ -9,6 +9,10 @@ class CenterLowHabRocketLeftLeftOneCargo : public AutonDrive {
 public:
   CenterLowHabRocketLeftLeftOneCargo(Waypoint start);
   void BuildTotalTrajectory();
+  void CenterLowHabRocketLeftLeftOneCargoStateMachine();
+
+  const int PLACE_ELEMENT_H = 0;
+  const int STOP_STATE_H = 1;
 //
 // protected:
 //   double MAX_VELOCITY;
