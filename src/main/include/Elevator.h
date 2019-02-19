@@ -43,7 +43,7 @@ public:
   const double BAY_CARGO_POS = BOTTOM_HATCH_POS;
   const double TOP_CARGO_POS = 0.8;
   const double MID_CARGO_POS = 0.45; //1st height for getting hatch ground
-  const double BOTTOM_CARGO_POS = 0.23; //2nd height for getting hatch ground
+  const double BOTTOM_CARGO_POS = 0.28; //2nd height for getting hatch ground
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
   const double ENC_MID_CARGO_POS = MID_CARGO_POS * METERS_TO_ENCS;

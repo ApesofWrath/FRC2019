@@ -64,7 +64,7 @@ public:
   const double HIGH_CARGO_ANGLE = 2.0; //place high cargo
   //extra states
 
-  const double GET_HATCH_GROUND_ANGLE = 0.5; //
+  const double GET_HATCH_GROUND_ANGLE = 0.4; //
   const double EXTRA_ANGLE = 2.6;//
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;

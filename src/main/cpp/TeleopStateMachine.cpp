@@ -47,7 +47,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
     bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low, bool elevator_cargo_up,
     bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo, bool get_hatch_ground,
     bool get_hatch_station, bool post_intake_cargo, bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low,
-    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool post_outtake_hatch, bool post_outtake_cargo) {
+    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
@@ -365,16 +365,16 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         if (std::abs(elevator->GetElevatorPosition() - elevator->BOTTOM_HATCH_POS) < 0.2 && !place_hatch_low) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-        //  if (false) { //hatch_pickup->ReleasedHatch()
+          if (extra_button) { //hatch_pickup->ReleasedHatch()
             state = POST_OUTTAKE_HATCH_STATE;
-        //  }
+          }
         }
         last_state = PLACE_HATCH_LOW_STATE;
         break;
 
         case PLACE_HATCH_MID_STATE:
         frc::SmartDashboard::PutString("State", "MID HATCH");
-
+        elevator->elevator_state = elevator->MID_HATCH_STATE_H;
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
@@ -383,10 +383,9 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
         }
 
-        elevator->elevator_state = elevator->MID_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition() >= elevator->MID_HATCH_POS && !place_hatch_mid) { //placeholder
+        if (std::abs(elevator->GetElevatorPosition() - elevator->MID_HATCH_POS) < 0.2 && !place_hatch_mid) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-          if (hatch_pickup->ReleasedHatch()){
+          if (extra_button) { //hatch_pickup->ReleasedHatch()
             state = POST_OUTTAKE_HATCH_STATE;
           }
         }
@@ -395,7 +394,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         case PLACE_HATCH_HIGH_STATE:
         frc::SmartDashboard::PutString("State", "HIGH HATCH");
-
+        elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
@@ -404,13 +403,11 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
         }
 
-        elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
-        if (elevator->GetElevatorPosition() >= elevator->TOP_HATCH_POS && !place_hatch_high) { //placeholder
+        if (std::abs(elevator->GetElevatorPosition() - elevator->TOP_HATCH_POS) < 0.2 && !place_hatch_high) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-          if (hatch_pickup->ReleasedHatch()) {
+          if (extra_button) { //hatch_pickup->ReleasedHatch()
             state = POST_OUTTAKE_HATCH_STATE;
           }
-
         }
         last_state = PLACE_HATCH_HIGH_STATE;
         break;

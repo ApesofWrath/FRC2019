@@ -40,7 +40,7 @@ class Robot : public frc::TimedRobot {
        bottom_intake_stop,  top_intake_in,  top_intake_out,  top_intake_stop,
        suction_on,  suction_off,  hatch_out,  hatch_in,  arm_up, arm_mid, arm_driving, arm_down,
        elevator_hatch_up,  elevator_hatch_mid,  elevator_hatch_low,  elevator_cargo_up,  elevator_cargo_mid,  elevator_cargo_low,  get_cargo,  get_hatch_ground, get_hatch_station,  post_intake_cargo,  post_intake_hatch,
-       place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, post_outtake_hatch,  post_outtake_cargo;
+       place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, post_outtake_hatch,  post_outtake_cargo, extra_button;
 
   ElevatorMotionProfiler *elevator_profiler;
   ArmMotionProfiler *arm_profiler;
