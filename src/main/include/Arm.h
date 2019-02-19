@@ -15,7 +15,7 @@
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include "ArmMotionProfiler.h"
+#include "MotionProfiling/ArmMotionProfiler.h"
 #include "ArmConstants.h"
 
 class Arm {

@@ -89,7 +89,7 @@ bool HatchPickup::HaveHatch() {
 	// currents_intake[sample_window - 1] =
 	// 		suction1->GetOutputCurrent();
   //
-        frc::SmartDashboard::PutNumber("newest", suction1->GetOutputCurrent());
+
   //
   // for (int i = 0; i < 4; i++) {
   //   avg1++;
@@ -104,7 +104,7 @@ bool HatchPickup::HaveHatch() {
   // frc::SmartDashboard::PutNumber("avg1", avg1);
   // frc::SmartDashboard::PutNumber("avg2", avg2);
 
-  if (suction1->GetOutputCurrent() < 2.5) {
+  if ((suction1->GetOutputCurrent() < 2.5) || (suction2->GetOutputCurrent() < 2.5)) {
     frc::SmartDashboard::PutNumber("have",1);
     return true;
   } else {

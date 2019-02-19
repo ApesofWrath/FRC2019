@@ -5,7 +5,7 @@
  *      Author: DriversStation
  */
 
-#include "ArmMotionProfiler.h"
+#include "../../include/MotionProfiling/ArmMotionProfiler.h"
 
 ArmMotionProfiler::ArmMotionProfiler(double max_vel, double max_acc,
 		double time_step) {

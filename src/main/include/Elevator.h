@@ -8,7 +8,7 @@
 #include <ctre/Phoenix.h>
 #include <map>
 #include <vector>
-#include "ElevatorMotionProfiler.h"
+#include "MotionProfiling/ElevatorMotionProfiler.h"
 #include "ElevatorConstants.h"
 
 class Elevator {

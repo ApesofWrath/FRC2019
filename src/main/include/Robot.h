@@ -12,17 +12,17 @@
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include "TeleopStateMachine.h"
-#include "ArmMotionProfiler.h"
+#include "MotionProfiling/ArmMotionProfiler.h"
 #include "Arm.h"
 #include "Intake.h"
 #include "Elevator.h"
-#include "ElevatorMotionProfiler.h"
+#include "MotionProfiling/ElevatorMotionProfiler.h"
 #include "HatchPickup.h"
 #include <frc/Joystick.h>
 #include <pathfinder.h>
 #include "AutonSequences/MoveForward.h"
-#include "DriveController.h"
-#include "Vision.h"
+#include "Drive/DriveController.h"
+#include "Drive/Vision.h"
 
 class Robot : public frc::TimedRobot {
  public:

@@ -1,4 +1,4 @@
-#include "Vision.h"
+#include "../../include/Drive/Vision.h"
 
 nt::NetworkTableEntry yawEntry;
 nt::NetworkTableEntry depthEntry;
