@@ -82,24 +82,29 @@ void HatchPickup::SolenoidStateMachine() {
 
 bool HatchPickup::HaveHatch() {
 
-  for (int i = 0; i < (sample_window - 2); i++) { //to index 18
-		currents_intake[i] = currents_intake[i + 1];
-	}
+  // for (int i = 0; i < (sample_window - 2); i++) { //to index 18
+	// 	currents_intake[i] = currents_intake[i + 1];
+	// }
+  //
+	// currents_intake[sample_window - 1] =
+	// 		suction1->GetOutputCurrent();
+  //
+  //       frc::SmartDashboard::PutNumber("newest", currents_intake[sample_window - 1]);
+  //
+  // for (int i = 0; i < 4; i++) {
+  //   avg1++;
+  // }
+  // avg1 /= sample_window / 2;
+  //
+  // for (int i = 5; i < (sample_window - 1); i++) {
+  //   avg2++;
+  // }
+  // avg2 /= sample_window / 2;
+  //
+  // frc::SmartDashboard::PutNumber("avg1", avg1);
+  // frc::SmartDashboard::PutNumber("avg2", avg2);
 
-	currents_intake[sample_window - 1] =
-			suction1->GetOutputCurrent();
-
-  for (int i = 0; i < 4; i++) {
-    avg1++;
-  }
-  avg1 /= sample_window / 2;
-
-  for (int i = 5; i < (sample_window - 1); i++) {
-    avg2++;
-  }
-  avg2 /= sample_window / 2;
-
-  if ((avg1 - avg2) > 0.5) {
+  if (suction1->GetOutputCurrent() < 3.5) {
     return true;
   }
   return false;
