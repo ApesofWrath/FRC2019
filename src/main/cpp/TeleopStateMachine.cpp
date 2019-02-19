@@ -75,8 +75,8 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         state_bottom_intake = false;
         intake->bottom_intake_state = intake->OUT_STATE_H;
       } else if (bottom_intake_stop) {
-        state_bottom_intake = false;
-        intake->bottom_intake_state = intake->STOP_STATE_H;
+        // state_bottom_intake = false;
+        // intake->bottom_intake_state = intake->STOP_STATE_H;
       } else {
         state_bottom_intake = true;
       }
@@ -201,9 +201,6 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         // TODO: add correct heights elevator class, bottom_Cargo probaly isn't the one we want for loading staiton
         if (state_elevator) {
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-          if (elevator->GetElevatorPosition() <= (elevator->BOTTOM_HATCH_POS + 0.2)) {
-            arm->arm_state = arm->HATCH_STATE_H;
-          }
         }
 
         // Once the arm gets close (0.2) to the correct position, pistons out, suction on
@@ -216,18 +213,17 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           }
         }
 
-        if (hatch_pickup->HaveHatch() || post_intake_hatch) {
-          state = POST_INTAKE_HATCH_STATE;
+        if (state_arm && (hatch_pickup->suction_state != hatch_pickup->ON_STATE_H)) {
+            arm->arm_state = arm->HATCH_STATE_H; //place hatch
         }
 
-        // General progression
-        // Elevator to the correct position
-        // Arm is in the correct position
-        // solenoids on
-        // turn on suction
-        // check if have hatch
-        // turn off solenoids
-        // post intake hatch state (leave suction on)
+        if (bottom_intake_stop) {
+          arm->arm_state = arm->REST_STATE_H;
+        }
+
+        if (false || post_intake_hatch) { //hatch_pickup->HaveHatch()
+          state = POST_INTAKE_HATCH_STATE;
+        }
 
         last_state = GET_HATCH_STATION_STATE;
         break;
@@ -267,11 +263,16 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         case POST_INTAKE_HATCH_STATE:
         frc::SmartDashboard::PutString("State", "POST INTAKE HATCH");
 
+        if (state_bottom_intake) {
         intake->bottom_intake_state = intake->STOP_STATE_H; // from GET_HATCH_GROUND_STATE state
+        }
+
+        if (state_top_intake) {
+        intake->top_intake_state = intake->STOP_STATE_H; // from GET_HATCH_GROUND_STATE state
+        }
 
         if (state_arm) {
           arm->arm_state = arm->REST_STATE_H;
-          frc::SmartDashboard::PutNumber("arm rest!", 3);
         }
         if ((arm->GetAngularPosition() > 0.7) && state_elevator) {
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
@@ -290,10 +291,6 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         } else if (place_hatch_low) {
           state = PLACE_HATCH_LOW_STATE;
         }
-
-        // General progression
-        // put arm back to regular position
-        // keep suction on
 
         last_state = POST_INTAKE_HATCH_STATE;
         break;

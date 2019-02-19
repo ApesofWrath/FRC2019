@@ -96,11 +96,12 @@ void Robot::TeleopPeriodic() {
   // intakes //top and bottom switch, bottom switch in/out
 
 
-  bottom_intake_out = joyWheel->GetRawButton(7);
-  bottom_intake_stop = joyWheel->GetRawButton(8);
+//  bottom_intake_out = joyWheel->GetRawButton(7);
+
   top_intake_in  = joyWheel->GetRawButton(9);
   top_intake_out  = joyWheel->GetRawButton(10);
   top_intake_stop = joyWheel->GetRawButton(11);
+  
 get_hatch_ground = joyOp->GetRawButton(12);
 post_intake_hatch = joyOp->GetRawButton(4);
 
@@ -112,9 +113,12 @@ place_cargo_low =  joyOp->GetRawButton(7);
 place_cargo_mid =  joyOp->GetRawButton(8);
 place_cargo_high = joyWheel->GetRawButton(1);
 
+//have suctioned hatch from station
+  bottom_intake_stop = joyWheel->GetRawButton(8);
 //have shot ball
-
 bottom_intake_in = joyWheel->GetRawButton(6);
+
+get_hatch_station =  joyWheel->GetRawButton(7);
 post_outtake_hatch = joyWheel->GetRawButton(5);
 extra_button = joyOp->GetRawButton(3);
 post_intake_cargo = joyWheel->GetRawButton(3);
