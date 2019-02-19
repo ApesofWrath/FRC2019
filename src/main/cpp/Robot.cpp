@@ -56,7 +56,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-//frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
   elevator->ElevatorStateMachine();
   arm->ArmStateMachine();
   intake->IntakeTopStateMachine();
