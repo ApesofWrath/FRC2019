@@ -5,8 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
 #ifndef SRC_ROBOT_H_
 #define SRC_ROBOT_H_
 
@@ -21,9 +19,14 @@
 #include "ElevatorMotionProfiler.h"
 #include "HatchPickup.h"
 #include <frc/Joystick.h>
+#include <pathfinder.h>
+#include "AutonSequences/MoveForward.h"
+#include "DriveController.h"
+#include "Vision.h"
 
 class Robot : public frc::TimedRobot {
  public:
+
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;
@@ -33,7 +36,7 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
   TeleopStateMachine *tsm;
-  frc::Joystick *joyOp, *joyWheel;
+  frc::Joystick *joyOp1, *joyOp2;
 
 
   bool  wait_for_button,  bottom_intake_in,  bottom_intake_out,
@@ -53,9 +56,35 @@ class Robot : public frc::TimedRobot {
 
 
  private:
-  frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Default";
-  const std::string kAutoNameCustom = "My Auto";
+
+  nt::NetworkTableEntry xEntry;
+
+  //auton sequence
+  frc::SendableChooser<std::string> auton_chooser;
+  const std::string kDoNothing = "DoNothing";
+  const std::string kDriveForward = "DriveForward";
+  const std::string kCenterLowHabOneCargo = "CenterLowHabOneCargo";
   std::string m_autoSelected;
+
+  //where robot starts on the field
+  frc::SendableChooser<std::string> start_chooser;
+  const std::string kLeft = "Left";
+  const std::string kCenter = "Center";
+  const std::string kRight = "Right";
+  std::string m_startSelected;
+  Waypoint start;
+
+  const int JOY_THROTTLE = 0;
+  const int JOY_WHEEL = 1;
+  const int JOY_OP = 2;
+
+  PowerDistributionPanel *pdp;
+  frc::Joystick *joyThrottle, *joyWheel;
+  DriveController *drive_controller;
+  Vision *vision;
+  MoveForward *move_forward;
+
+  bool is_rotation, is_vision, is_regular;
+
 };
 #endif
