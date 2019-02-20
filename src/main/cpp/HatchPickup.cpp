@@ -24,7 +24,7 @@ HatchPickup::HatchPickup() {
 void HatchPickup::On() {
 
   suction1->Set(ControlMode::PercentOutput, -1.0); //.3
-///  suction2->Set(ControlMode::PercentOutput, 0.3);
+  ///  suction2->Set(ControlMode::PercentOutput, 0.3);
 
 
 
@@ -33,7 +33,7 @@ void HatchPickup::On() {
 void HatchPickup::Off() {
 
   suction1->Set(ControlMode::PercentOutput, 0.0);
-//  suction2->Set(ControlMode::PercentOutput, 0.0);
+  //  suction2->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
@@ -52,14 +52,14 @@ void HatchPickup::Out() {
 void HatchPickup::SuctionStateMachine() {
 
   switch (suction_state) {
-      case ON_STATE:
-          On();
-          frc::SmartDashboard::PutString("SUCTION", "On");
-          break;
-      case OFF_STATE:
-          Off();
-          frc::SmartDashboard::PutString("SUCTION", "Off");
-          break;
+    case ON_STATE:
+    On();
+    frc::SmartDashboard::PutString("SUCTION", "On");
+    break;
+    case OFF_STATE:
+    Off();
+    frc::SmartDashboard::PutString("SUCTION", "Off");
+    break;
   }
 }
 
@@ -68,51 +68,38 @@ void HatchPickup::SolenoidStateMachine() {
 
   switch (solenoid_state) {
     case OUT_STATE:
-      Out();
-      frc::SmartDashboard::PutString("SOLENOID", "Out");
-      break;
+    Out();
+    frc::SmartDashboard::PutString("SOLENOID", "Out");
+    break;
 
     case IN_STATE:
-      In();
-      frc::SmartDashboard::PutString("SOLENOID", "In");
-      break;
+    In();
+    frc::SmartDashboard::PutString("SOLENOID", "In");
+    break;
   }
 
 }
 
 bool HatchPickup::HaveHatch() {
 
-  // for (int i = 0; i < (sample_window - 2); i++) { //to index 18
-	// 	currents_intake[i] = currents_intake[i + 1];
-	// }
-  //
-	// currents_intake[sample_window - 1] =
-	// 		suction1->GetOutputCurrent();
-  //
-
-  //
-  // for (int i = 0; i < 4; i++) {
-  //   avg1++;
-  // }
-  // avg1 /= sample_window / 2;
-  //
-  // for (int i = 5; i < (sample_window - 1); i++) {
-  //   avg2++;
-  // }
-  // avg2 /= sample_window / 2;
-  //
-  // frc::SmartDashboard::PutNumber("avg1", avg1);
-  // frc::SmartDashboard::PutNumber("avg2", avg2);
-
   if ((suction1->GetOutputCurrent() < 2.5) || (suction2->GetOutputCurrent() < 2.5)) {
     frc::SmartDashboard::PutNumber("have",1);
     return true;
   } else {
     frc::SmartDashboard::PutNumber("have",0);
-  return false;
-}
+    return false;
+  }
+
 }
 
 bool HatchPickup::ReleasedHatch() {
-  return false;
+
+  if ((suction1->GetOutputCurrent() > 2.5) || (suction2->GetOutputCurrent() > 2.5)) {
+    frc::SmartDashboard::PutNumber("released",1);
+    return true;
+  } else {
+    frc::SmartDashboard::PutNumber("released",0);
+    return false;
+  }
+
 }

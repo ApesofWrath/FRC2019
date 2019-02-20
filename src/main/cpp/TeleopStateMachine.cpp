@@ -480,20 +480,20 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         break;
 
         case PLACE_CARGO_BAY_STATE:
-        frc::SmartDashboard::PutString("State", "BAY CARGO");
-
-        if (state_arm) {
-          arm->arm_state = arm->CARGO_STATE_H;
-        }
-
-        elevator->elevator_state = elevator->MID_CARGO_STATE_H;
-        if (!place_cargo_bay) { //placeholder //and arm height at pos
-          intake->top_intake_state = intake->OUT_STATE_H;
-          intake->bottom_intake_state = intake->OUT_STATE_H;
-          if (bottom_intake_in) { //intake->ReleasedBall(
-            state = POST_OUTTAKE_CARGO_STATE;
-          }
-        }
+        frc::SmartDashboard::PutString("State", "not used - BAY CARGO");
+        //use mid cargo state for bay cargo placing
+        // if (state_arm) {
+        //   arm->arm_state = arm->CARGO_STATE_H;
+        // }
+        //
+        // elevator->elevator_state = elevator->MID_CARGO_STATE_H;
+        // if (!place_cargo_bay) { //placeholder //and arm height at pos
+        //   intake->top_intake_state = intake->OUT_STATE_H;
+        //   intake->bottom_intake_state = intake->OUT_STATE_H;
+        //   if (bottom_intake_in) { //intake->ReleasedBall(
+        //     state = POST_OUTTAKE_CARGO_STATE;
+        //   }
+        // }
         last_state = PLACE_CARGO_BAY_STATE;
         break;
 
