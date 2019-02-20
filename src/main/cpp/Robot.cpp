@@ -102,7 +102,7 @@ void Robot::TeleopInit() {
   tsm->Initialize();
   drive_controller->set_profile = false; //prep for visiondrive
   drive_controller->ZeroAll(true);
-  elevator->talonElevator1->SetSelectedSensorPosition(0,0,100);
+//  elevator->talonElevator1->SetSelectedSensorPosition(0,0,100);
 }
 
 void Robot::TeleopPeriodic() {
@@ -111,11 +111,15 @@ void Robot::TeleopPeriodic() {
   is_rotation = false;
   is_vision = false;
   is_regular = true;
-if (joyOp1->GetRawButton(1)) {
-  elevator->talonElevator1->Set(ControlMode::MotionMagic, 2000, DemandType_ArbitraryFeedForward, 0.07);
-} else {
-  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
-}
+// if (joyOp1->GetRawButton(1)) {
+//   elevator->talonElevator1->Set(ControlMode::MotionMagic, 2000, DemandType_ArbitraryFeedForward, 0.07);
+// //  arm->talonArm->Set(ControlMode::MotionMagic, 2000);
+// } else {
+//   elevator->talonElevator1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
+// //  arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetY());
+// }
+
+
 // drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 // drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 frc::SmartDashboard::PutNumber("elev enc" , elevator->talonElevator1->GetSelectedSensorPosition(0));
@@ -125,12 +129,12 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
 //  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
   //frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
-  // elevator->ElevatorStateMachine();
-  // arm->ArmStateMachine();
-  // intake->IntakeTopStateMachine();
-  // intake->IntakeBottomStateMachine();
-  // hatch_pickup->SuctionStateMachine();
-  // hatch_pickup->SolenoidStateMachine();
+  elevator->ElevatorStateMachine();
+  arm->ArmStateMachine();
+  intake->IntakeTopStateMachine();
+  intake->IntakeBottomStateMachine();
+  hatch_pickup->SuctionStateMachine();
+  hatch_pickup->SolenoidStateMachine();
 
   hatch_out = joyOp1->GetRawButton(1);
 
@@ -143,6 +147,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   post_intake_hatch = joyOp1->GetRawButton(7);
   place_hatch_low = joyOp1->GetRawButton(8);
   place_hatch_mid = joyOp1->GetRawButton(9);
+
   place_hatch_high = joyOp1->GetRawButton(10);
   extra_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
@@ -158,10 +163,10 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   top_intake_in = joyOp2->GetRawButton(7);
 
 
-//  tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
-//    suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_driving, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
-  //  elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
-  //  place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
+ tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
+   suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_driving, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
+   elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
+   place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 
   }

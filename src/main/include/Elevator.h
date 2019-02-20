@@ -40,7 +40,7 @@ public:
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.37; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.02; //bottom scoring
+  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring
   const double BAY_CARGO_POS = 0.29; //
   const double TOP_CARGO_POS = 1.42;
   const double MID_CARGO_POS = 0.95; //1st height for getting hatch ground
