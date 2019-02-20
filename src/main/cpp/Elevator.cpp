@@ -1,6 +1,6 @@
 #include "Elevator.h"
 
-#define PI 3.14159265
+//#define PI 3.14159265
 
 const int INIT_STATE = 0;
 const int TOP_CARGO_STATE = 1;
@@ -68,13 +68,13 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
     talonElevator1->Config_kF(0, .26, 10); //TODO:arbitrary ff
-    talonElevator1->Config_kP(0, 0.23, 10);
-    talonElevator1->Config_kI(0, 0.00003, 10); //middle number is the gain
+    talonElevator1->Config_kP(0, 0.25, 10);
+    talonElevator1->Config_kI(0, 0.000032, 10); //middle number is the gain
     talonElevator1->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonElevator1->ConfigMotionCruiseVelocity(5000, 10);//3120
-    talonElevator1->ConfigMotionAcceleration(2000, 10);
+    talonElevator1->ConfigMotionCruiseVelocity(10000, 10);//3120
+    talonElevator1->ConfigMotionAcceleration(3500, 10);
 
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);
@@ -112,11 +112,12 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
   void Elevator::ElevatorStateMachine() {
     //PrintElevatorInfo();
-    frc::SmartDashboard::PutString("ELEV ", GetState());
+  //  frc::SmartDashboard::PutString("ELEV ", GetState());
 
 //if (!StallSafety()) {
     switch (elevator_state) {
       case INIT_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "init");
       if (std::abs(talonElevator1->GetSelectedSensorPosition(0)) < 10) {
         elevator_state = BOTTOM_HATCH_STATE;
       } else {
@@ -126,31 +127,37 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       break;
 
       case TOP_CARGO_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "top cargo");
       //CheckElevatorGoal(TOP_CARGO_STATE, TOP_CARGO_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_TOP_CARGO_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case MID_CARGO_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "mid cargo");
       //CheckElevatorGoal(MID_CARGO_STATE, MID_CARGO_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_MID_CARGO_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case BOTTOM_CARGO_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "bot cargo");
       //CheckElevatorGoal(BOTTOM_CARGO_STATE, BOTTOM_CARGO_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_BOTTOM_CARGO_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case TOP_HATCH_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "top hatch");
       //CheckElevatorGoal(TOP_HATCH_STATE, TOP_HATCH_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_TOP_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case MID_HATCH_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "mid hatch");
       //CheckElevatorGoal(MID_HATCH_STATE, MID_HATCH_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_MID_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case BOTTOM_HATCH_STATE: //lowest  pos
+        frc::SmartDashboard::PutString("ELEV ", "bot hatch");
       //CheckElevatorGoal(BOTTOM_HATCH_STATE, BOTTOM_HATCH_POS);
       if (talonElevator1->GetActiveTrajectoryPosition() < 200) { //std::abs(talonElevator1->GetSelectedSensorPosition() - ENC_BOTTOM_HATCH_POS) < 200
         Stop();
@@ -160,16 +167,19 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       break;
 
       case BAY_CARGO_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "bay cargo");
       //CheckElevatorGoal(BAY_CARGO_STATE, BAY_CARGO_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_BAY_CARGO_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case STOP_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "stop");
       Stop();
       last_elevator_state = STOP_STATE;
       break;
 
       case LIFTING_ARM_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "lift arm");
       talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
     }
@@ -203,7 +213,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   double Elevator::GetElevatorPosition() {
 
     return (((talonElevator1->GetSelectedSensorPosition(0)) / TICKS_PER_ROT_E)
-    * (PI * PULLEY_DIAMETER) * 2.0); //*2 for cascading elev
+    * (3.1415 * PULLEY_DIAMETER) * 2.0); //*2 for cascading elev
 
   }
 
@@ -223,7 +233,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     //native units are ticks per 100 ms so we multiply the whole thing by 10 to get it into per second. Then divide by ticks per rotation to get into
     //RPS then muliply by circumference for m/s
   return ((talonElevator1->GetSelectedSensorVelocity(0)
-    / (TICKS_PER_ROT_E)) * (PULLEY_DIAMETER * PI) * (10.0));
+    / (TICKS_PER_ROT_E)) * (PULLEY_DIAMETER * 3.14159) * (10.0));
 
   }
 

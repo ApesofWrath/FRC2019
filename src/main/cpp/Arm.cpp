@@ -46,8 +46,8 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     talonArm->Config_kD(0, 0, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonArm->ConfigMotionCruiseVelocity(1000, 10);
-    talonArm->ConfigMotionAcceleration(1000, 10);
+    talonArm->ConfigMotionCruiseVelocity(2000, 10);
+    talonArm->ConfigMotionAcceleration(2000, 10);
 
     arm_profiler = arm_profiler_;
 
@@ -252,7 +252,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
       //Native vel units are in ticks per 100ms so divide by TICKS_PER_ROT to get rotations per 100ms then multiply 10 to get per second
       //multiply by 2pi to get into radians per second (2pi radians are in one revolution)
       return (talonArm->GetSelectedSensorVelocity(0)
-      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI) * (10.0));
+      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 *  3.14159265) * (10.0));
 
     }
 
@@ -260,7 +260,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     double Arm::GetAngularPosition() {
 
       return (talonArm->GetSelectedSensorPosition(0)
-      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 * PI));
+      / (TICKS_PER_ROT_A * ENC_GEAR_RATIO) * (2.0 *  3.14159265));
 
     }
 
@@ -289,7 +289,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         break;
 
         case REST_STATE:
-        frc::SmartDashboard::PutString("ARM", "rest"); 
+        frc::SmartDashboard::PutString("ARM", "rest");
         if (talonArm->GetActiveTrajectoryPosition() > (ENC_REST_ANGLE - 200)) { //std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200
           StopArm();
         } else {

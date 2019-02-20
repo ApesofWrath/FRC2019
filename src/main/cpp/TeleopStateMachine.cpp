@@ -58,8 +58,8 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
       //top intake
       if (top_intake_in) {
-        state_top_intake = false;
-        intake->top_intake_state = intake->IN_STATE_H;
+        // state_top_intake = false;
+        // intake->top_intake_state = intake->IN_STATE_H;
       } else if (top_intake_out) {
         state_top_intake = false;
         intake->top_intake_state = intake->OUT_STATE_H;
@@ -72,14 +72,14 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
       //bottom intake
       if (bottom_intake_in) {
-      //  state_bottom_intake = false;
-      //  intake->bottom_intake_state = intake->IN_STATE_H;
+       state_bottom_intake = false;
+       intake->bottom_intake_state = intake->IN_STATE_H;
       } else if (bottom_intake_out) {
         state_bottom_intake = false;
         intake->bottom_intake_state = intake->OUT_STATE_H;
       } else if (bottom_intake_stop) {
-        // state_bottom_intake = false;
-        // intake->bottom_intake_state = intake->STOP_STATE_H;
+        state_bottom_intake = false;
+        intake->bottom_intake_state = intake->STOP_STATE_H;
       } else {
         state_bottom_intake = true;
       }
@@ -248,7 +248,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
             arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
           }
         } else if (state_elevator && arm->GetAngularPosition() < 0.7) {
-          elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
+          elevator->elevator_state = elevator->BAY_CARGO_STATE_H;
           if (state_suction) {
             hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
           }
@@ -344,7 +344,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         frc::SmartDashboard::PutString("State", "POST INTAKE CARGO");
 
         if (state_elevator) {
-          elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
+          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
 
         if (state_arm) {
@@ -436,7 +436,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (!place_cargo_low) { //placeholder //and arm height at pos
           intake->top_intake_state = intake->OUT_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
-          if (bottom_intake_in) { //intake->ReleasedBall(
+          if (top_intake_in) { //intake->ReleasedBall(
             state = POST_OUTTAKE_CARGO_STATE;
           }
         }

@@ -108,6 +108,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
   canTalonLeft3->Follow(*canTalonLeft1);
 
 	canTalonRight1 = new TalonSRX(RF);
+	canTalonRight1->SetInverted(true);
 	canTalonRight1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
 	canTalonRight2 = new VictorSPX(R2);
   canTalonRight2->Follow(*canTalonRight1);
@@ -616,7 +617,7 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", total_right);
 
-  canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
+  canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
 
 	yaw_last_error = yaw_error;
@@ -674,7 +675,7 @@ double DriveBase::GetLeftVel() { //550 left back //590 left forward
 
 double DriveBase::GetRightVel() { //580 right back //580 right forward
 
-	double r_current = ((double) canTalonRight1->GetSelectedSensorVelocity(0)
+	double r_current = -1.0 * ((double) canTalonRight1->GetSelectedSensorVelocity(0)
 			/ (double) TICKS_PER_ROT) * MINUTE_CONVERSION;
 
 	return r_current;
@@ -739,7 +740,7 @@ double DriveBase::GetLeftPosition() {
 
 double DriveBase::GetRightPosition() {
 
-	double r_dis = ((double) canTalonRight1->GetSelectedSensorPosition(0)
+	double r_dis = -1.0 * ((double) canTalonRight1->GetSelectedSensorPosition(0)
 			/ TICKS_PER_FOOT);
 
 	return r_dis;

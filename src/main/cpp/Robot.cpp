@@ -21,7 +21,7 @@ void Robot::RobotInit() {
   start_chooser.AddOption(kRight, kRight);
   frc::SmartDashboard::PutData("Start Placement", &start_chooser);
 
-  pdp = new PowerDistributionPanel(3); // 0 is the vcm
+  pdp = new PowerDistributionPanel(0); // 0 is the vcm
 
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
@@ -105,11 +105,17 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
+//  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
 
   is_rotation = false;
   is_vision = false;
   is_regular = true;
-
+// drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
+// drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
+frc::SmartDashboard::PutNumber("left vel!" , drive_controller->GetLeftVel());
+frc::SmartDashboard::PutNumber("right vel!" , drive_controller->GetRightVel());
+frc::SmartDashboard::PutNumber("left pos!" , drive_controller->GetLeftPosition());
+frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition());
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
   //frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
@@ -120,67 +126,31 @@ void Robot::TeleopPeriodic() {
   hatch_pickup->SuctionStateMachine();
   hatch_pickup->SolenoidStateMachine();
 
-  //elevator
-  //  elevator_hatch_up = joyOp1->GetRawButton(1);
-  //  elevator_hatch_mid = joyOp1->GetRawButton(2); //doesnt work
-  //  elevator_hatch_low = joyOp1->GetRawButton(3);
-  // elevator_cargo_up = joyOp1->GetRawButton(4);
-  // elevator_cargo_mid  = joyOp1->GetRawButton(5);
-  // elevator_cargo_low = joyOp1->GetRawButton(6);
+  hatch_out = joyOp1->GetRawButton(1);
 
+  bottom_intake_in  = joyOp1->GetRawButton(2);
+  bottom_intake_out  = joyOp1->GetRawButton(3);
+  bottom_intake_stop = joyOp1->GetRawButton(4);
 
+  get_hatch_station =  joyOp1->GetRawButton(5);
+  get_hatch_ground = joyOp1->GetRawButton(6);
+  post_intake_hatch = joyOp1->GetRawButton(7);
+  place_hatch_low = joyOp1->GetRawButton(8);
+  place_hatch_mid = joyOp1->GetRawButton(9);
+  place_hatch_high = joyOp1->GetRawButton(10);
+  extra_button = joyOp1->GetRawButton(11);
+  post_outtake_hatch = joyOp1->GetRawButton(12);
 
-  // suction
-
-  //  suction_on =  joyOp1->GetRawButton(7);
-  //  suction_off =  joyOp1->GetRawButton(8);
-
-
-  // hatch -solenoid
-  //  hatch_in = joyOp2->GetRawButton(1);
-  hatch_out = joyOp2->GetRawButton(2);
-
-
-  // arm
-  //arm_up = joyOp2->GetRawButton(3); //hatch
-  arm_mid
-  = joyOp2->GetRawButton(4);//e
-
-  //arm_driving = joyOp2->GetRawButton(12);
-  //  arm_down = joyOp2->GetRawButton(5);//cargo
-
-  // intakes //top and bottom switch, bottom switch in/out
-
-
-  //  bottom_intake_out = joyOp2->GetRawButton(7);
-
-  //  top_intake_in  = joyOp2->GetRawButton(9);
-  top_intake_out  = joyOp2->GetRawButton(10);
-  top_intake_stop = joyOp2->GetRawButton(11);
-
-  place_cargo_bay = joyOp2->GetRawButton(9);
-
-  get_hatch_ground = joyOp1->GetRawButton(12);
-  post_intake_hatch = joyOp1->GetRawButton(4);
-
-  place_hatch_low = joyOp1->GetRawButton(5);
-  place_hatch_mid = joyOp1->GetRawButton(6);
-  place_hatch_high = joyOp1->GetRawButton(1);
-
-  place_cargo_low =  joyOp1->GetRawButton(7);
-  place_cargo_mid =  joyOp1->GetRawButton(8);
-  place_cargo_high = joyOp2->GetRawButton(1);
-
-  //have suctioned hatch from station
-  bottom_intake_stop = joyOp2->GetRawButton(8);
+  get_cargo = joyOp2->GetRawButton(1);
+  post_intake_cargo = joyOp2->GetRawButton(2);
+  place_cargo_bay = joyOp2->GetRawButton(3);
+  place_cargo_low =  joyOp2->GetRawButton(4);
+  place_cargo_mid =  joyOp2->GetRawButton(5);
+  place_cargo_high = joyOp2->GetRawButton(6);
   //have shot ball
-  bottom_intake_in = joyOp2->GetRawButton(6);
+  top_intake_in = joyOp2->GetRawButton(7);
 
-  get_hatch_station =  joyOp2->GetRawButton(7);
-  post_outtake_hatch = joyOp2->GetRawButton(5);
-  extra_button = joyOp1->GetRawButton(3);
-  post_intake_cargo = joyOp2->GetRawButton(3);
-  get_cargo = joyOp2->GetRawButton(12);
+
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
     suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_driving, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,

@@ -1,7 +1,7 @@
 #ifndef SRC_ARMCONSTANTS_H_
 #define SRC_ARMCONSTANTS_H_
 
-#define PI 3.14159265
+//#define PI 3.14159265
 
 const double Kp = 0.0;
 const double Ki = 0.0;
@@ -16,7 +16,7 @@ const double MIN_VOLTAGE_A = -12.0;
 const double free_speed_a = 18730.0; //rpm
 const double G_a = (831.0 / 1.0); //gear ratio
 const double ENC_GEAR_RATIO = 7.5; //ENC_GEAR_RATIO encoder rot for each arm rot
-const double MAX_THEORETICAL_VELOCITY_A = ((free_speed_a/ G_a)) * (2.0 * PI)
+const double MAX_THEORETICAL_VELOCITY_A = ((free_speed_a/ G_a)) * (2.0 * 3.14159265)
 		/ 60.0; //rad/s
 const double Kv_a = 1 / MAX_THEORETICAL_VELOCITY_A;
 
