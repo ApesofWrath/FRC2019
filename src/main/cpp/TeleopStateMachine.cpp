@@ -469,7 +469,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
         if (!place_cargo_high) { //placeholder //and arm height at pos
-          intake->top_intake_state = intake->OUT_STATE_H;
+          intake->top_intake_state = intake->IN_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
           if (top_intake_in) { //intake->ReleasedBall(
             state = POST_OUTTAKE_CARGO_STATE;
