@@ -17,6 +17,7 @@ public:
   const int IN_STATE_H = 2;
   const int OUT_STATE_H = 3;
   const int OUT_SLOW_STATE_H = 4;
+  const int IN_SLOW_STATE_H = 5;
   int top_intake_state = STOP_STATE_H;
   int bottom_intake_state = STOP_STATE_H;
 
@@ -38,7 +39,7 @@ public:
 
   void StopBottom();
   void HoldBottom();
-  void InBottom();
+  void InBottom(bool slow);
   void OutBottom(bool slow);
 
   void IntakeTopStateMachine();

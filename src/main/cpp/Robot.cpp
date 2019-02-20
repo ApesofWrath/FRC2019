@@ -128,8 +128,8 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
 
   hatch_out = joyOp1->GetRawButton(1);
 
-  bottom_intake_in  = joyOp1->GetRawButton(2);
-  bottom_intake_out  = joyOp1->GetRawButton(3);
+  bottom_intake_in  = joyOp1->GetRawButton(3);
+  bottom_intake_out  =  joyOp1->GetRawButton(2);
   bottom_intake_stop = joyOp1->GetRawButton(4);
 
   get_hatch_station =  joyOp1->GetRawButton(5);
@@ -148,6 +148,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   place_cargo_mid =  joyOp2->GetRawButton(5);
   place_cargo_high = joyOp2->GetRawButton(6);
   //have shot ball
+
   top_intake_in = joyOp2->GetRawButton(7);
 
 

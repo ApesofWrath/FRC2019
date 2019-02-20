@@ -5,6 +5,7 @@ const int HOLD_STATE = 1;
 const int IN_STATE = 2;
 const int OUT_STATE = 3;
 const int OUT_SLOW_STATE = 4;
+const int IN_SLOW_STATE = 5;
 
 Intake::Intake() {
 
@@ -53,9 +54,13 @@ void Intake::HoldBottom() {
 
 }
 
-void Intake::InBottom() {
+void Intake::InBottom(bool slow) {
 
+  if (!slow) {
   talonIntake2->Set(ControlMode::PercentOutput, -1.0);
+} else {
+  talonIntake2->Set(ControlMode::PercentOutput, -0.6);
+}
 
 }
 
@@ -116,7 +121,7 @@ void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
     break;
 
     case IN_STATE:
-    InBottom();
+    InBottom(false);
     frc::SmartDashboard::PutString("BOT INTAKE", "in");
     break;
 
@@ -128,6 +133,10 @@ void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
     case OUT_SLOW_STATE:
     OutBottom(true);
     frc::SmartDashboard::PutString("BOT INTAKE", "out");
+    break;
+
+    case IN_SLOW_STATE:
+    InBottom(true);
     break;
 
   }

@@ -73,10 +73,10 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
       //bottom intake
       if (bottom_intake_in) {
        state_bottom_intake = false;
-       intake->bottom_intake_state = intake->IN_STATE_H;
+       intake->bottom_intake_state = intake->IN_SLOW_STATE_H;
       } else if (bottom_intake_out) {
         state_bottom_intake = false;
-        intake->bottom_intake_state = intake->OUT_STATE_H;
+        intake->bottom_intake_state = intake->OUT_SLOW_STATE_H;
       } else if (bottom_intake_stop) {
         state_bottom_intake = false;
         intake->bottom_intake_state = intake->STOP_STATE_H;
@@ -454,7 +454,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (!place_cargo_mid) { //placeholder //and arm height at pos
           intake->top_intake_state = intake->OUT_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
-          if (bottom_intake_in) { //intake->ReleasedBall(
+          if (top_intake_in) { //intake->ReleasedBall(
             state = POST_OUTTAKE_CARGO_STATE;
           }
         }
@@ -471,7 +471,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (!place_cargo_high) { //placeholder //and arm height at pos
           intake->top_intake_state = intake->OUT_STATE_H;
           intake->bottom_intake_state = intake->OUT_STATE_H;
-          if (bottom_intake_in) { //intake->ReleasedBall(
+          if (top_intake_in) { //intake->ReleasedBall(
             state = POST_OUTTAKE_CARGO_STATE;
           }
         }
