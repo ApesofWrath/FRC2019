@@ -63,7 +63,7 @@ void CenterLowHabTwoCargo::CenterLowHabTwoCargoStateMachine(bool *place_cargo, b
       break;
 
     case STOP_STATE:
-      if ()
+      auton_state_machine=?stop = true;
       break;
   }
 }
