@@ -33,19 +33,22 @@ public:
   const int TOP_HATCH_STATE_H = 4;
   const int MID_HATCH_STATE_H = 5;
   const int BOTTOM_HATCH_STATE_H = 6; // Same for rocket and cargo bay, only need one
-  const int BAY_CARGO_STATE_H = 7;
+  const int HOLD_HATCH_STATE_H = 7;
   const int STOP_STATE_H = 8;
   const int LIFTING_ARM_STATE_H = 9;
 
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.37; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.02; //bottom scoring
-  const double BAY_CARGO_POS = 0.29; //
-  const double TOP_CARGO_POS = 1.42;
-  const double MID_CARGO_POS = 0.95; //1st height for getting hatch ground
-  const double LIFTING_ARM_POS = 0.45;
-  const double BOTTOM_CARGO_POS = 0.295; //2nd height for getting hatch ground
+  const double BOTTOM_HATCH_POS = 0.02; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
+
+  const double TOP_CARGO_POS = 1.42; //top scoring
+  const double MID_CARGO_POS = 0.95; //mid rocket, bay
+  const double BOTTOM_CARGO_POS = 0.295; //bottom scoring
+
+  const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
+  const double HOLD_HATCH_POS = 0.29; //get hatch ground, get cargo
+  //
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
   const double ENC_MID_CARGO_POS = MID_CARGO_POS * METERS_TO_ENCS;
@@ -53,7 +56,7 @@ public:
   const double ENC_TOP_HATCH_POS = TOP_HATCH_POS * METERS_TO_ENCS;
   const double ENC_MID_HATCH_POS = MID_HATCH_POS * METERS_TO_ENCS;
   const double ENC_BOTTOM_HATCH_POS = BOTTOM_HATCH_POS * METERS_TO_ENCS;
-  const double ENC_BAY_CARGO_POS = BAY_CARGO_POS * METERS_TO_ENCS;
+  const double ENC_HOLD_HATCH_POS = HOLD_HATCH_POS * METERS_TO_ENCS;
   const double ENC_LIFTING_ARM_POS = LIFTING_ARM_POS * METERS_TO_ENCS;
 
   int last_elevator_state = INIT_STATE_H;
@@ -116,7 +119,7 @@ private:
     {TOP_HATCH_STATE_H, "ROCKET TOP HATCH"},
     {MID_HATCH_STATE_H, "ROCKET TOP HATCH"},
     {BOTTOM_HATCH_STATE_H, "HATCH BOTTOM"},
-    {BAY_CARGO_STATE_H, "BAY CARGO"},
+    {HOLD_HATCH_STATE_H, "BAY CARGO"},
     {STOP_STATE_H, "STOP"}
   };
 

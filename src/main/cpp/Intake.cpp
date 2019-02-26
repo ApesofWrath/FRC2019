@@ -144,9 +144,28 @@ void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
 }
 
 bool Intake::HaveBall() {
-  return false;
+
+  frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
+
+  if ((talonIntake1->GetOutputCurrent() > 3.5)) {
+    return true;
+  } else {
+    return false;
+  }
+
 }
 
 bool Intake::ReleasedBall() {
+
+  frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
+
+  if ((talonIntake1->GetOutputCurrent() < 1.5)) {
+    return true;
+  } else {
+    return false;
+  }
+
   return false;
 }

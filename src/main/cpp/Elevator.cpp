@@ -9,7 +9,7 @@ const int BOTTOM_CARGO_STATE = 3;
 const int TOP_HATCH_STATE = 4;
 const int MID_HATCH_STATE = 5;
 const int BOTTOM_HATCH_STATE = 6; // Same for rocket and cargo bay, only need one
-const int BAY_CARGO_STATE = 7;
+const int HOLD_HATCH_STATE = 7;
 const int STOP_STATE = 8;
 const int LIFTING_ARM_STATE = 9;
 
@@ -127,10 +127,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       }
       break;
 
-      case BAY_CARGO_STATE:
+      case HOLD_HATCH_STATE:
         frc::SmartDashboard::PutString("ELEV ", "bay cargo");
-      //CheckElevatorGoal(BAY_CARGO_STATE, BAY_CARGO_POS);
-      talonElevator1->Set(ControlMode::MotionMagic, ENC_BAY_CARGO_POS, DemandType_ArbitraryFeedForward, 0.07);
+      //CheckElevatorGoal(HOLD_HATCH_STATE, HOLD_HATCH_POS);
+      talonElevator1->Set(ControlMode::MotionMagic, ENC_HOLD_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
       case STOP_STATE:

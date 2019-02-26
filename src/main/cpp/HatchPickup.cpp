@@ -12,6 +12,8 @@ double avg1 = 0.0;
 double avg2 = 0.0;
 //int encoder_counter = 0;
 
+nt::NetworkTableEntry hatchEntry;
+
 HatchPickup::HatchPickup() {
 
   suction1 = new TalonSRX(12);
@@ -82,37 +84,33 @@ void HatchPickup::SolenoidStateMachine() {
 
 bool HatchPickup::HaveHatch() {
 
-  // for (int i = 0; i < (sample_window - 2); i++) { //to index 18
-	// 	currents_intake[i] = currents_intake[i + 1];
-	// }
-  //
-	// currents_intake[sample_window - 1] =
-	// 		suction1->GetOutputCurrent();
-  //
-
-  //
-  // for (int i = 0; i < 4; i++) {
-  //   avg1++;
-  // }
-  // avg1 /= sample_window / 2;
-  //
-  // for (int i = 5; i < (sample_window - 1); i++) {
-  //   avg2++;
-  // }
-  // avg2 /= sample_window / 2;
-  //
-  // frc::SmartDashboard::PutNumber("avg1", avg1);
-  // frc::SmartDashboard::PutNumber("avg2", avg2);
-
   if ((suction1->GetOutputCurrent() < 2.5) || (suction2->GetOutputCurrent() < 2.5)) {
     frc::SmartDashboard::PutNumber("have",1);
     return true;
   } else {
     frc::SmartDashboard::PutNumber("have",0);
   return false;
-}
+  }
+
 }
 
 bool HatchPickup::ReleasedHatch() {
+
+  if ((suction1->GetOutputCurrent() > 3.5) || (suction2->GetOutputCurrent() > 3.5)) {
+    frc::SmartDashboard::PutNumber("released",1);
+    return true;
+  } else {
+    frc::SmartDashboard::PutNumber("released",0);
   return false;
+  }
+
+}
+
+bool HatchPickup::SeeHatch() {
+
+  auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
+  auto table = inst.GetTable("SmartDashboard");
+
+  return table->GetBoolean("hatch", false);
+
 }

@@ -4,6 +4,9 @@
 #include <frc/WPILib.h>
 #include "ctre/Phoenix.h"
 #include <frc/DoubleSolenoid.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableEntry.h>
+#include <networktables/NetworkTableInstance.h>
 
 class HatchPickup {
 public:
@@ -38,6 +41,7 @@ public:
 
   bool HaveHatch();
   bool ReleasedHatch();
+  bool SeeHatch();
 
 
 };
