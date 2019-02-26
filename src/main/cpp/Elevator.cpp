@@ -34,7 +34,6 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   // talonElevator1->ConfigReverseSoftLimitThreshold(100);
   // talonElevator2->ConfigReverseSoftLimitThreshold(100);
 
-  /* Factory default hardware to prevent unexpectetalonElevator1->ConfigForwardSoftLimitThreshold(16000);d behavior */
   talonElevator1->ConfigFactoryDefault();
   talonElevator2->ConfigFactoryDefault();
   talonElevator1->ConfigVoltageCompSaturation(12.0);
@@ -42,18 +41,9 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   talonElevator1->EnableVoltageCompensation(true);
   talonElevator2->EnableVoltageCompensation(true);
   /* Configure Sensor Source for Pirmary PID */
-  talonElevator1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-    // Constants.kPIDLoopIdx,
-    // 30);
+  talonElevator1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
 
-    /**
-    * Configure Talon SRX Output and Sesnor direction accordingly
-    * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
-    * Phase sensor to have positive increment when driving Talon Forward (Green LED)
-    */
-    //talon->SetSensorPhase(true);
     talonElevator1->SetInverted(true);
-//    talonElevator2->SetInverted(true);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
     talonElevator1->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
@@ -67,48 +57,19 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonElevator1->SelectProfileSlot(0, 0);
-    talonElevator1->Config_kF(0, .26, 10); //TODO:arbitrary ff
-    talonElevator1->Config_kP(0, 0.25, 10);
-    talonElevator1->Config_kI(0, 0.000032, 10); //middle number is the gain
-    talonElevator1->Config_kD(0, 0, 10);
+    talonElevator1->Config_kF(0, Kf_e, 10);
+    talonElevator1->Config_kP(0, Kp_e, 10);
+    talonElevator1->Config_kI(0, Ki_e, 10);
+    talonElevator1->Config_kD(0, Kd_e, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonElevator1->ConfigMotionCruiseVelocity(10000, 10);//3120
-    talonElevator1->ConfigMotionAcceleration(3500, 10);
+    talonElevator1->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL_E, 10);//3120
+    talonElevator1->ConfigMotionAcceleration(ENC_CRUISE_ACC_E, 10);
 
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);
     hallEffectBottom = new frc::DigitalInput(BOT_HALL);
   }
-
-//  void Elevator::SetuptalonElevator1() {
-//
-
-    // Previous Year's code
-
-    // talonElevator1->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 0);
-    // talonElevator1->EnableCurrentLimit(false);
-
-
-    // talonElevator1->ConfigVelocityMeasurementPeriod(VelocityMeasPeriod::Period_10Ms, 0);
-    // talonElevator1->ConfigVelocityMeasurementWindow(5, 0); //5 samples for every talon return
-    // talonElevator1->SetControlFramePeriod(ControlFrame::Control_3_General, 5); //set talons every 5ms, default is 10
-    // talonElevator1->SetStatusFramePeriod(StatusFrameEnhanced::Status_2_Feedback0, 10, 0); //for getselectedsensor //getselectedsensor defaults to 10ms anyway. don't use getsensorcollection because that defaults to 160ms
-
-//  }
-
-  //void Elevator::SetuptalonElevator2() {
-    // additional setup for talonElevator2, previous year's code below
-
-    // if (TALON_ID_2 >= 0) {
-    // talonElevator2 = new TalonSRX(TALON_ID_2); //0
-    // 	talonElevator2->Set(ControlMode::Follower, TALON_ID_1); //re-slaved
-    // 	talonElevator2->EnableCurrentLimit(false);
-    // 	talonElevator2->ConfigContinuousCurrentLimit(40, 0);
-    // 	talonElevator2->ConfigPeakCurrentLimit(80, 0);
-    // 	talonElevator2->ConfigPeakCurrentDuration(100, 0);
-    // }
-//  }
 
   void Elevator::ElevatorStateMachine() {
     //PrintElevatorInfo();

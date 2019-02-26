@@ -1,7 +1,7 @@
 #include "Arm.h"
 
 int counter = 0;
-int encoder_counter_i;
+int encoder_counter_i = 0;
 
 const int INIT_STATE = 0;
 const int REST_STATE = 1;
@@ -13,41 +13,41 @@ const int EXTRA_STATE = 6;
 const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
-  //TODO: backlash compensation - tension releases when direction changes
+
   talonArm = new TalonSRX(ARM_TALON_ID);
 
-    talonArm->ConfigFactoryDefault();
+  talonArm->ConfigFactoryDefault();
 
   talonArm->ConfigVoltageCompSaturation(12.0);
   talonArm->EnableVoltageCompensation(true);
 
-//  talonArm->ConfigForwardSoftLimitThreshold(16000);
-//  talonArm->ConfigReverseSoftLimitThreshold(18300); or something
+  //  talonArm->ConfigForwardSoftLimitThreshold(16000);
+  //  talonArm->ConfigReverseSoftLimitThreshold(18300); or something
 
-    talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+  talonArm->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);//configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
     talonArm->SetSensorPhase(true);
     talonArm->SetInverted(true);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
-    talonArm->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
-    talonArm->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
+    talonArm->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, FRAME_PERIOD, TIMEOUT_MS);
+    talonArm->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, FRAME_PERIOD, TIMEOUT_MS);
 
     /* Set the peak and nominal outputs */
-    talonArm->ConfigNominalOutputForward(0, 10);
-    talonArm->ConfigNominalOutputReverse(0, 10);
-    talonArm->ConfigPeakOutputForward(1, 10);
-    talonArm->ConfigPeakOutputReverse(-1, 10);
+    talonArm->ConfigNominalOutputForward(0, TIMEOUT_MS);
+    talonArm->ConfigNominalOutputReverse(0, TIMEOUT_MS);
+    talonArm->ConfigPeakOutputForward(1, TIMEOUT_MS);
+    talonArm->ConfigPeakOutputReverse(-1, TIMEOUT_MS);
 
     /* Set Motion Magic gains in slot0 - see documentation */
     talonArm->SelectProfileSlot(0, 0);
-    talonArm->Config_kF(0, 0.0, 10); //1023/ max speed
-    talonArm->Config_kP(0, 0.75, 10);
-    talonArm->Config_kI(0, 0.00085, 10); //middle number is the gain
-    talonArm->Config_kD(0, 0, 10);
+    talonArm->Config_kF(0, Kf, TIMEOUT_MS); //1023/ max speed
+    talonArm->Config_kP(0, Kp, TIMEOUT_MS);
+    talonArm->Config_kI(0, Ki, TIMEOUT_MS); //middle number is the gain
+    talonArm->Config_kD(0, Kd, TIMEOUT_MS);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    talonArm->ConfigMotionCruiseVelocity(2000, 10);
-    talonArm->ConfigMotionAcceleration(2000, 10);
+    talonArm->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL, TIMEOUT_MS);
+    talonArm->ConfigMotionAcceleration(ENC_CRUISE_ACC, TIMEOUT_MS);
 
     arm_profiler = arm_profiler_;
 
@@ -274,7 +274,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
     void Arm::ArmStateMachine() {
 
-    //  if (!StallSafety()) {
+      //  if (!StallSafety()) {
 
       switch (arm_state) {
 
@@ -293,7 +293,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         if (talonArm->GetActiveTrajectoryPosition() > (ENC_REST_ANGLE - 200)) { //std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200
           StopArm();
         } else {
-        talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
+          talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
         }
         break;
 
@@ -333,9 +333,9 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         last_arm_state = STOP_ARM_STATE;
         break;
       }
-//} else {
-//  StopArm();
-//}
+      //} else {
+      //  StopArm();
+      //}
       // frc::SmartDashboard::PutNumber("ARM ENC",
       // 		talonArm->GetSensorCollection().GetQuadraturePosition());
       //
