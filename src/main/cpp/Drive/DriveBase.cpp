@@ -617,7 +617,7 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", total_right);
 
-  canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+  canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
 
 	yaw_last_error = yaw_error;

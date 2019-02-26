@@ -21,7 +21,7 @@ void Robot::RobotInit() {
   start_chooser.AddOption(kRight, kRight);
   frc::SmartDashboard::PutData("Start Placement", &start_chooser);
 
-  pdp = new PowerDistributionPanel(0); // 0 is the vcm
+  pdp = new PowerDistributionPanel(3); // 0 is the vcm
 
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
@@ -114,19 +114,27 @@ void Robot::TeleopPeriodic() {
 // if (joyOp1->GetRawButton(1)) {
 //   elevator->talonElevator1->Set(ControlMode::MotionMagic, 2000, DemandType_ArbitraryFeedForward, 0.07);
 // //  arm->talonArm->Set(ControlMode::MotionMagic, 2000);
+// }  else if (joyOp1->GetRawButton(2)) {
+//   elevator->talonElevator1->Set(ControlMode::MotionMagic, elevator->ENC_MID_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
+// } else if (joyOp1->GetRawButton(3)) {
+//   elevator->talonElevator1->Set(ControlMode::MotionMagic, elevator->ENC_TOP_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
 // } else {
+//   elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
+// }
+//
+// else {
 //   elevator->talonElevator1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
-// //  arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetY());
+//  arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 // }
 
-/*
+
 // drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 // drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 frc::SmartDashboard::PutNumber("elev enc" , elevator->talonElevator1->GetSelectedSensorPosition(0));
 frc::SmartDashboard::PutNumber("right vel!" , drive_controller->GetRightVel());
 frc::SmartDashboard::PutNumber("left pos!" , drive_controller->GetLeftPosition());
 frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition());
-//  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
   //frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
   elevator->ElevatorStateMachine();
@@ -138,8 +146,8 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
 
   hatch_out = joyOp1->GetRawButton(1);
 
-  bottom_intake_in  = joyOp1->GetRawButton(3);
-  bottom_intake_out  =  joyOp1->GetRawButton(2);
+  hatch_in = joyOp1->GetRawButton(3);
+  suction_off  =  joyOp1->GetRawButton(2);
   bottom_intake_stop = joyOp1->GetRawButton(4);
 
   get_hatch_station =  joyOp1->GetRawButton(5);
@@ -168,7 +176,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
    elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
    place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-*/
+
   }
 
   void Robot::TestPeriodic() {}
