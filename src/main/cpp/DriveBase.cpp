@@ -197,7 +197,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
   target_r = target_l;
 
-  if (!hybrid) {
+  if (!hybrid) { //normal teleop wc wheel input
 
     double reverse_x = 1.0;
 
@@ -223,14 +223,20 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
   } else {
 
+
     double target_heading = init_heading
-        + visionDrive->GetYawToTarget();
+        + 0.5;//visionDrive->GetYawToTarget();
+
+    frc::SmartDashboard::PutNumber("targ head", target_heading);
+
 
     double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+frc::SmartDashboard::PutNumber("cur head", current_heading);
+    double error_heading = target_heading - current_heading;
 
-    double error_heading_h = target_heading - current_heading;
+    target_yaw_rate = k_p_yaw_heading_pos * error_heading * max_yaw_rate;
+    frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
 
-    target_yaw_rate = k_p_yaw_heading_pos * error_heading_h;
 
   }
 
@@ -485,7 +491,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((0.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((0.5 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
@@ -586,20 +592,20 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	D_KICK_VEL = k_d_kick * d_kick_vel;
 
    // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
-   frc::SmartDashboard::PutNumber("R1", canTalonRight1->GetOutputCurrent());
+  // frc::SmartDashboard::PutNumber("R1", canTalonRight1->GetOutputCurrent());
   // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
   //  frc::SmartDashboard::PutNumber("R2",canTalonRight2->GetOutputCurrent());
   //  frc::SmartDashboard::PutNumber("R3", canTalonRight3->GetOutputCurrent());
   //
-    frc::SmartDashboard::PutNumber("L1", canTalonLeft1->GetOutputCurrent());
+  //  frc::SmartDashboard::PutNumber("L1", canTalonLeft1->GetOutputCurrent());
   // //  frc::SmartDashboard::PutNumber("R1", drive_controller->GetRightVel());
   //  frc::SmartDashboard::PutNumber("L2", canTalonLeft2->GetOutputCurrent());
   //  frc::SmartDashboard::PutNumber("L3", canTalonLeft3->GetOutputCurrent());
 
-  frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL *550.0);
-  frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL*550.0);
-  frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL*550.0);
-  frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL*550.0);
+  // frc::SmartDashboard::PutNumber("D r Vel", D_RIGHT_VEL *550.0);
+  // frc::SmartDashboard::PutNumber("P r Vel", P_RIGHT_VEL*550.0);
+  // frc::SmartDashboard::PutNumber("D l Vel", D_LEFT_VEL*550.0);
+  // frc::SmartDashboard::PutNumber("P l Vel", P_LEFT_VEL*550.0);
 
 
 	double total_right = D_RIGHT_VEL + P_RIGHT_VEL + feed_forward_r
@@ -623,8 +629,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-	canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+	// canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
+	// canTalonRight1->Set(ControlMode::PercentOutput, total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -842,10 +848,12 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		switch (teleop_drive_state) {
 
 			case REGULAR:
+      frc::SmartDashboard::PutString("DRIVE", "reg");
 			TeleopWCDrive(JoyThrottle, JoyWheel, false);
 			break;
 
 			case VISION_PF:
+      frc::SmartDashboard::PutString("DRIVE", "vision pf");
 			is_vision_done = VisionDriveStateMachine();
 			if (is_vision_done) {
 				teleop_drive_state = REGULAR;
@@ -853,10 +861,12 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 			break;
 
       case VISION_YAW:
+      frc::SmartDashboard::PutString("DRIVE", "vis yaw");
       TeleopWCDrive(JoyThrottle, JoyWheel, true);
       break;
 
 			case ROTATION_CONTROLLER:
+      frc::SmartDashboard::PutString("DRIVE", "rot");
 			RotationController(JoyWheel);
 			break;
 		}

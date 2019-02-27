@@ -15,7 +15,7 @@ const double K_D_LEFT_VEL = 0.0;
 const double K_P_YAW_VEL = 0.0;
 const double K_D_YAW_VEL = 0.0;
 
-const double K_P_YAW_HEADING_POS = 0.0; //special controllers
+const double K_P_YAW_HEADING_POS = 0.5; //special controllers TODO: change back
 const double K_D_VISION_POS = 0.0;
 
 //		Auton

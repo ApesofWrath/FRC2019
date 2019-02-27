@@ -65,8 +65,8 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 
     is_rotation = joyThrottle->GetRawButton(-1);
-		is_vision = joyThrottle->GetRawButton(-1);
-		is_regular = joyThrottle->GetRawButton(-1);
+		is_vision = joyThrottle->GetRawButton(1);
+		is_regular = joyThrottle->GetRawButton(2);
 
   //   double y = joyThrottle->GetY();
   //
