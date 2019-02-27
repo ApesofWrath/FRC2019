@@ -25,3 +25,10 @@ double Vision::GetDepthToTarget() {
   return table->GetNumber("depth", -1.0);
 
 }
+
+double Vision::GetRobotExitAngle() {
+  auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
+  auto table = inst.GetTable("SmartDashboard");
+
+  return table->GetNumber("exit_angle", -1.0);
+}

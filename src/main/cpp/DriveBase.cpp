@@ -274,7 +274,7 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 }
 
 //only to be used in teleop; auton will already have this essentially
-void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target) {
+void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target, double exit_angle) {
 
 	ZeroAll(true);
 
@@ -283,10 +283,15 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
 
+	double x_dist = dist_to_target * tan(yaw_to_target);
+  if (yaw_to_target < 0.0) {
+    x_dist *= -1.0; //left is neg
+  }
+
 	Waypoint p1, p2;
 
 	p1 = {0.0, 0.0, 0.0};
-	p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
+	p2 = {dist_to_target, x_dist, d2r(exit_angle)}; //y, x, exit angle
 
 	points[0] = p1;
 	points[1] = p2;
@@ -912,7 +917,7 @@ bool DriveBase::VisionDriveStateMachine() {
 
 		case CREATE_VIS_PROF:
 			frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
-		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget());
+		  GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget(), visionDrive->GetRobotExitAngle());
 			if (set_profile) {
 				vision_drive_state = FOLLOW_VIS_PROF;
 			}
