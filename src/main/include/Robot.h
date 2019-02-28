@@ -53,7 +53,7 @@ class Robot : public frc::TimedRobot {
   Intake *intake;
   HatchPickup *hatch_pickup;
 
-
+  double init_climb_height, robot_length, target_enc_height, ang_error, height_error;
 
  private:
 

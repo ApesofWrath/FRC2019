@@ -42,9 +42,15 @@ void Robot::RobotInit() {
 
   tsm = new TeleopStateMachine(elevator, intake, arm, hatch_pickup);
 
+  init_climb_height = (0.49 -0.0) * elevator->METERS_TO_ENCS; //replace -0.0 with arm segment height, add gearbox height (m)
+  robot_length = -0.0; //m
+
 }
 
 void Robot::RobotPeriodic() {
+
+  frc::SmartDashboard::PutNumber("roll", drive_controller->ahrs->GetRoll());
+  frc::SmartDashboard::PutNumber("pitch", drive_controller->ahrs->GetPitch());
 
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
@@ -105,8 +111,25 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-//  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
 
+  if (joyOp1->GetRawButton(1)) {
+    elevator->talonElevator1->Set(ControlMode::MotionMagic, init_climb_height, DemandType_ArbitraryFeedForward, 0.07);
+    if (elevator->GetElevatorPosition() > elevator->LIFTING_ARM_POS) {
+      arm->talonArm->Set(ControlMode::MotionMagic, arm->ENC_GET_HATCH_GROUND_ANGLE); //should keep commanding to stay here
+    }
+  } else {
+    ang_error = drive_controller->ahrs->GetRoll() * 3.14159 / 180.0;
+    height_error = sin(ang_error) * robot_length * elevator->METERS_TO_ENCS;
+    target_enc_height = elevator->talonElevator1->GetSelectedSensorPosition(0) + height_error;
+    elevator->talonElevator1->Set(ControlMode::MotionMagic, target_enc_height, DemandType_ArbitraryFeedForward, 0.07);
+  }
+
+if (joyOp1->GetRawButton(2)) {
+  arm->talonArm->Set(ControlMode::MotionMagic, arm->ENC_REST_ANGLE);
+}
+
+  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
+/*
   is_rotation = false;
   is_vision = false;
   is_regular = true;
@@ -157,7 +180,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
     place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-
+*/
   }
 
   void Robot::TestPeriodic() {}

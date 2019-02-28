@@ -1,5 +1,3 @@
-// TODO: check states and positins for elevator
-
 #ifndef SRC_ELEVATOR_H
 #define SRC_ELEVATOR_H
 
@@ -12,9 +10,6 @@
 #include "ElevatorConstants.h"
 
 class Elevator {
-//12,40 -
-//solenoid 0,1
-
 
 public:
 
@@ -86,6 +81,7 @@ public:
   std::string GetState();
 
   void ManualElevator(frc::Joystick *joyOpElev);
+  void Climbing();
 
   void PrintElevatorInfo();
   double GetElevatorPosition();

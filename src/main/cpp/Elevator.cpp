@@ -167,6 +167,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     SetVoltage(output);
   }
 
+  void Elevator::Climbing() {
+    
+  }
+
   void Elevator::Stop() {
     talonElevator1->Set(ControlMode::PercentOutput, 0.0);
   }
