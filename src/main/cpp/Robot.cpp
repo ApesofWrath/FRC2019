@@ -42,8 +42,8 @@ void Robot::RobotInit() {
 
   tsm = new TeleopStateMachine(elevator, intake, arm, hatch_pickup);
 
-  init_climb_height = (0.49 -0.0) * elevator->METERS_TO_ENCS; //replace -0.0 with arm segment height, add gearbox height (m)
-  robot_length = -0.0; //m
+  init_climb_height = (0.49 -0.0) * elevator->METERS_TO_ENCS; //replace -0.0 with arm segment height
+  robot_length = -0.0; //from navx to elev m
 
 }
 
@@ -111,7 +111,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-
+/*
   if (joyOp1->GetRawButton(1)) {
     elevator->talonElevator1->Set(ControlMode::MotionMagic, init_climb_height, DemandType_ArbitraryFeedForward, 0.07);
     if (elevator->GetElevatorPosition() > elevator->LIFTING_ARM_POS) {
@@ -127,7 +127,7 @@ void Robot::TeleopPeriodic() {
 if (joyOp1->GetRawButton(2)) {
   arm->talonArm->Set(ControlMode::MotionMagic, arm->ENC_REST_ANGLE);
 }
-
+*/
   elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
 /*
   is_rotation = false;
