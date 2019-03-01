@@ -461,7 +461,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-          if (atch_pickup->ReleasedHatch()) { //extra_button
+          if (hatch_pickup->ReleasedHatch()) { //extra_button
             state = POST_OUTTAKE_HATCH_STATE;
           }
         }

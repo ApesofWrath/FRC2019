@@ -141,7 +141,8 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   extra_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
 
-  get_cargo = joyOp2->GetRawButton(1);
+  get_cargo_ground = joyOp2->GetRawButton(1);
+  get_cargo_station = joyOp2->GetRawButton(8);
   post_intake_cargo = joyOp2->GetRawButton(2);
   place_cargo_bay = joyOp2->GetRawButton(3);
   place_cargo_low =  joyOp2->GetRawButton(4);
@@ -154,7 +155,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
 
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
     suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_high_cargo, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
-    elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
+    elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo_ground, get_cargo_station, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
     place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 
