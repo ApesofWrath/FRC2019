@@ -81,6 +81,7 @@ public:
 		double GetYawPos();
 		double GetLeftVel();
 		double GetRightVel();
+		double GetRoll();
 
 		void SetMaxRpm(double rpm);
 		double GetMaxRpm();

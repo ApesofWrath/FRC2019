@@ -747,6 +747,13 @@ double DriveBase::GetRightPosition() {
 
 }
 
+//returns rad
+double DriveBase::GetRoll() {
+
+	return (ahrs->GetRoll() * 3.14159 / 180.0);
+
+}
+
 bool DriveBase::IsLastIndex() {
 
 	return is_last_index;

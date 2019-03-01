@@ -35,6 +35,8 @@ bool state_elevator = false;
 bool state_suction = false;
 bool state_solenoids = false;
 
+bool auto_balanced = false;
+
 TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
   Arm *arm_, HatchPickup *hatch_pickup_){
     state = INIT_STATE;
@@ -48,6 +50,25 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
   void TeleopStateMachine::Initialize(){
     state = INIT_STATE;
+  }
+
+//only used in place high states
+  void TeleopStateMachine::AutoBalance() {
+
+    if (std::abs(drive_controller->GetRoll()) > 0.2 && elevator->GetElevatorPosition() > elevator->LIFTING_ARM_POS) { //0.2 rad ~11 deg
+        state_elevator = false; //override manual control
+        state_arm = false;
+        arm->arm_state = arm->REST_STATE_H;
+        if (arm->GetAngularPosition() > 2.0) {
+        elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+        }
+        auto_balanced = true;
+    } else if (auto_balanced) {
+        state_elevator = true;
+        state_arm = true;
+        auto_balanced = false; //allow manual control again
+    }
+
   }
 
   void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_in, bool bottom_intake_out,
@@ -432,6 +453,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         case PLACE_HATCH_MID_STATE:
         frc::SmartDashboard::PutString("State", "MID HATCH");
+        //AutoBalance();
         elevator->elevator_state = elevator->MID_HATCH_STATE_H;
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
@@ -450,6 +472,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         break;
 
         case PLACE_HATCH_HIGH_STATE:
+        //AutoBalance();
         frc::SmartDashboard::PutString("State", "HIGH HATCH");
         elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
         if (state_arm) {
@@ -488,7 +511,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         case PLACE_CARGO_MID_STATE:
         frc::SmartDashboard::PutString("State", "MID CARGO");
-
+        //AutoBalance();
         if (state_arm) {
           arm->arm_state = arm->CARGO_STATE_H;
         }
@@ -506,6 +529,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         case PLACE_CARGO_HIGH_STATE:
         frc::SmartDashboard::PutString("State", "HIGH CARGO");
+        //AutoBalance();
         if (state_arm) {
           arm->arm_state = arm->HIGH_CARGO_STATE_H;//arm->HIGH_CARGO_STATE_H;
         }
@@ -524,7 +548,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 
         case PLACE_CARGO_BAY_STATE:
         frc::SmartDashboard::PutString("State", "BAY CARGO");
-
+        //AutoBalance();
         if (state_arm) {
           arm->arm_state = arm->CARGO_STATE_H;
         }

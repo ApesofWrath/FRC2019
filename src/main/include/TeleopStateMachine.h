@@ -27,6 +27,7 @@ public:
     bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button);
 
   void Initialize();
+  void AutoBalance();
 
   Elevator *elevator;
   Intake *intake;
