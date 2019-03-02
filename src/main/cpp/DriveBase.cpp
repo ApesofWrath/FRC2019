@@ -630,6 +630,20 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 
 }
 
+//77 rpm for 10 deg ang
+void DriveBase::AutoBalanceDrive() {
+
+	double scaling = 0.9;
+
+	double roll_ang = ahrs->GetRoll() * 3.14159 / 180.0;
+	double target_r  = sin(roll_ang) * -1 * max_y_rpm * scaling;
+	double target_l = sin(roll_ang) * -1 * max_y_rpm * scaling;
+
+	Controller(0.0, target_r, target_l, 0.0, k_p_right_vel,
+			k_p_left_vel, 0.0, k_p_yaw_vel, 0.0, k_d_left_vel, k_d_right_vel, 0.0,
+			0.0, 0.0, 0.0);
+}
+
 void DriveBase::ZeroAll(bool stop_motors) {
 
 	if (stop_motors) {
@@ -836,7 +850,11 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		switch (teleop_drive_state) {
 			case REGULAR:
 			frc::SmartDashboard::PutString("DRIVE", "reg");
-			TeleopWCDrive(JoyThrottle, JoyWheel);
+			if (std::abs(ahrs->GetRoll()) > 10) {
+				//AutoBalanceDrive();
+			} else {
+				TeleopWCDrive(JoyThrottle, JoyWheel);
+			}
 			break;
 			case VISION_DRIVE:
 			frc::SmartDashboard::PutString("DRIVE", "vis");
@@ -874,7 +892,6 @@ void DriveBase::RunAutonDrive(Joystick *JoyThrottle,
     //zeroall(true) ?
     break;
     case TELEOP_DRIVE: //clear old auton
-
     RunTeleopDrive(JoyThrottle, JoyWheel, is_regular, is_vision, is_rotation);
     break;
 

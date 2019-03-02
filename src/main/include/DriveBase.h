@@ -66,6 +66,7 @@ public:
 		double k_p_yaw, double k_d_yaw, double k_d_right, double k_d_left,
 		double k_d_kick, double target_vel_left, double target_vel_right,
 		double target_vel_kick); //The final controller, will take the references set by either teleop or auton drive function
+	void AutoBalanceDrive();
 
 	bool VisionDriveStateMachine();
 
