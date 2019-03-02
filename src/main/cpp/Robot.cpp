@@ -40,7 +40,7 @@ void Robot::RobotInit() {
   intake = new Intake();
   hatch_pickup = new HatchPickup();
 
-  tsm = new TeleopStateMachine(elevator, intake, arm, hatch_pickup);
+  tsm = new TeleopStateMachine(drive_controller, elevator, intake, arm, hatch_pickup);
 
 }
 

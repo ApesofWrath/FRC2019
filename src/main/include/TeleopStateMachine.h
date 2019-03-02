@@ -6,6 +6,7 @@
 #include <frc/WPILib.h>
 
 // Includes of our code
+#include "Drive/DriveController.h"
 #include "Arm.h"
 #include "Elevator.h"
 #include "Intake.h"
@@ -14,7 +15,7 @@
 
 class TeleopStateMachine {
 public:
-  TeleopStateMachine(Elevator *elevator_, Intake *intake_,
+  TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
       Arm *arm_, HatchPickup *hatch_pickup_);
 
   void StateMachine(bool wait_for_button, bool bottom_intake_in, bool bottom_intake_out,
@@ -29,6 +30,7 @@ public:
   void Initialize();
   void AutoBalance();
 
+  DriveController *drive;
   Elevator *elevator;
   Intake *intake;
   Arm *arm;

@@ -3,25 +3,27 @@
 const int INIT_STATE = 0;
 const int WAIT_FOR_BUTTON_STATE = 1;
 
-const int GET_HATCH_STATION_STATE = 2;
-const int GET_HATCH_GROUND_STATE = 3;
-const int POST_INTAKE_HATCH_STATE = 4;
+const int GET_HATCH_STATION_INIT_STATE = 2;
+const int GET_HATCH_STATION_SUCTION_STATE = 3;
+const int GET_HATCH_GROUND_INIT_STATE = 4;
+const int GET_HATCH_GROUND_SUCTION_STATE = 5;
+const int POST_INTAKE_HATCH_STATE = 6;
 
-const int GET_CARGO_GROUND_STATE = 5;
-const int GET_CARGO_STATION_STATE = 6;
-const int POST_INTAKE_CARGO_STATE = 7;
+const int GET_CARGO_GROUND_STATE = 7;
+const int GET_CARGO_STATION_STATE = 8;
+const int POST_INTAKE_CARGO_STATE = 9;
 
-const int PLACE_HATCH_LOW_STATE = 8;
-const int PLACE_HATCH_MID_STATE = 9;
-const int PLACE_HATCH_HIGH_STATE = 10;
+const int PLACE_HATCH_LOW_STATE = 10;
+const int PLACE_HATCH_MID_STATE = 11;
+const int PLACE_HATCH_HIGH_STATE = 12;
 
-const int PLACE_CARGO_LOW_STATE = 11;
-const int PLACE_CARGO_MID_STATE = 12;
-const int PLACE_CARGO_HIGH_STATE = 13;
-const int PLACE_CARGO_BAY_STATE = 14;
+const int PLACE_CARGO_LOW_STATE = 13;
+const int PLACE_CARGO_MID_STATE = 14;
+const int PLACE_CARGO_HIGH_STATE = 15;
+const int PLACE_CARGO_BAY_STATE = 16;
 
-const int POST_OUTTAKE_HATCH_STATE = 15;
-const int POST_OUTTAKE_CARGO_STATE = 16;
+const int POST_OUTTAKE_HATCH_STATE = 17;
+const int POST_OUTTAKE_CARGO_STATE = 18;
 int state = INIT_STATE;
 
 int last_state = 0;
@@ -37,10 +39,12 @@ bool state_solenoids = false;
 
 bool auto_balanced = false;
 
-TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
+TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
   Arm *arm_, HatchPickup *hatch_pickup_){
+
     state = INIT_STATE;
 
+    drive = drive_;
     elevator = elevator_;
     intake = intake_;
     arm = arm_;
@@ -55,7 +59,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
 //only used in place high states
   void TeleopStateMachine::AutoBalance() {
 
-    if (std::abs(drive_controller->GetRoll()) > 0.2 && elevator->GetElevatorPosition() > elevator->LIFTING_ARM_POS) { //0.2 rad ~11 deg
+    if (std::abs(drive->GetRoll()) > 0.2 && elevator->GetElevatorPosition() > elevator->LIFTING_ARM_POS) { //0.2 rad ~11 deg
         state_elevator = false; //override manual control
         state_arm = false;
         arm->arm_state = arm->REST_STATE_H;
@@ -195,9 +199,9 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         frc::SmartDashboard::PutString("State", "WAIT FOR BUTTON");
 
         if (get_hatch_station) {
-          state = GET_HATCH_STATION_STATE;
+          state = GET_HATCH_STATION_INIT_STATE;
         } else if (get_hatch_ground) {
-          state = GET_HATCH_GROUND_STATE;
+          state = GET_HATCH_GROUND_INIT_STATE;
         } else if (post_intake_hatch) {
           state = POST_INTAKE_HATCH_STATE;
         } else if (get_cargo_ground) {
@@ -229,40 +233,45 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         last_state = WAIT_FOR_BUTTON_STATE;
         break;
 
-        case GET_HATCH_STATION_STATE:
-        frc::SmartDashboard::PutString("State", "GET HATCH STATION");
-
+        case GET_HATCH_STATION_INIT_STATE:
+        frc::SmartDashboard::PutString("State", "GET HATCH STATION INIT");
         if (state_elevator) {
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
-
-        if (state_arm && (hatch_pickup->suction_state != hatch_pickup->ON_STATE_H)) {
+        if (state_arm) {
             arm->arm_state = arm->HATCH_STATE_H; //place hatch
         }
-
-        // Once the arm gets close (0.2) to the correct position, pistons out, suction on
         if (std::abs(arm->GetAngularPosition() - arm->HATCH_ANGLE) <= 0.2) {
-          counter_suction++;
-          frc::SmartDashboard::PutNumber("counter", counter_suction);
-          if (hatch_pickup->HaveHatch() && hatch_pickup->suction_state == hatch_pickup->ON_STATE_H && counter_suction > 10) { //havehatch() needs suction current to have ramped up already; wait 10 counts
-            arm->arm_state = arm->REST_STATE_H;
-          }
-          if (state_suction) {
-            hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
-          }
-          if (state_solenoids) {
-            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-          }
+          counter_suction = 0;
+          state = GET_HATCH_STATION_SUCTION_STATE;
         }
-
-        if (std::abs(arm->GetAngularPosition() - arm->REST_ANGLE) <= 0.2 && counter_suction > 10) {
-          state = POST_INTAKE_HATCH_STATE;
-        }
-
-        last_state = GET_HATCH_STATION_STATE;
+        last_state = GET_HATCH_STATION_INIT_STATE;
         break;
 
-        case GET_HATCH_GROUND_STATE:
+        case GET_HATCH_STATION_SUCTION_STATE:
+        frc::SmartDashboard::PutString("State", "GET HATCH STATION SUCTION");
+
+        counter_suction++;
+        frc::SmartDashboard::PutNumber("counter", counter_suction);
+
+        if (state_suction) {
+          hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
+        }
+        if (state_solenoids) {
+          hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+        }
+
+        if (hatch_pickup->HaveHatch() && counter_suction > 10) { //havehatch() needs suction current to have ramped up already; wait 10 counts
+          arm->arm_state = arm->REST_STATE_H;
+          if (std::abs(arm->GetAngularPosition() - arm->REST_ANGLE) <= 0.2) {
+            state = POST_INTAKE_HATCH_STATE;
+          }
+        }
+
+        last_state = GET_HATCH_STATION_SUCTION_STATE;
+        break;
+
+        case GET_HATCH_GROUND_INIT_STATE:
         frc::SmartDashboard::PutString("State", "GET HATCH GROUND");
 
         if (state_elevator && arm->arm_state != arm->GET_HATCH_GROUND_STATE_H) {
@@ -270,54 +279,57 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
           if (elevator->GetElevatorPosition() >= .30) {
             arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
           }
-        } else if (state_elevator && arm->GetAngularPosition() < 0.7) {
-          intake->bottom_intake_state = intake->IN_STATE_H; //start spin once arm is in position
-          elevator->elevator_state = elevator->HOLD_HATCH_STATE_H;
-          if (state_suction) {
-            hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
-          }
-          if (state_solenoids) { //seeHatch() TODO: last check to be made
-            //intake->bottom_intake_state = intake->STOP_STATE_H;       //stop spin once see hatch
-        //    hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-          /*  if (intake->HaveHatch()) { //may see hatch, but need to wait until we suction it
-              hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
-              hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
-              intake->bottom_intake_state = intake->STOP_STATE_H;
-              state = POST_INTAKE_HATCH_STATE;
-            } */
-          }
+        } else if (arm->GetAngularPosition() < 0.7) {
+          state = GET_HATCH_GROUND_SUCTION_STATE;
         }
 
-        if (false || post_intake_hatch) { //hatch_pickup->HaveHatch()
+        last_state = GET_HATCH_GROUND_INIT_STATE;
+        break;
+
+        case GET_HATCH_GROUND_SUCTION_STATE:
+        frc::SmartDashboard::PutString("State", "GET HATCH GROUND SUCTION");
+
+        intake->bottom_intake_state = intake->IN_STATE_H; //start spin once arm is in position
+        elevator->elevator_state = elevator->HOLD_HATCH_STATE_H;
+        if (state_suction) {
+          hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
+        }
+        if (state_solenoids) { //seeHatch() TODO: last check to be made
+          //intake->bottom_intake_state = intake->STOP_STATE_H;       //stop spin once see hatch
+      //    hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+        /*  if (intake->HaveHatch()) { //may see hatch, but need to wait until we suction it
+            hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+            hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
+            intake->bottom_intake_state = intake->STOP_STATE_H;
+            state = POST_INTAKE_HATCH_STATE;
+          } */
+        }
+
+        if (false || post_intake_hatch) { //hatch_pickup->HaveHatch() - may need to add counter like get hatch station
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
           intake->bottom_intake_state = intake->STOP_STATE_H;
           state = POST_INTAKE_HATCH_STATE;
         }
 
-        last_state = GET_HATCH_GROUND_STATE;
+        last_state = GET_HATCH_GROUND_SUCTION_STATE;
         break;
 
         case POST_INTAKE_HATCH_STATE:
         frc::SmartDashboard::PutString("State", "POST INTAKE HATCH");
 
-        counter_suction = 0; //for next cycle
-
         if (state_bottom_intake) {
         intake->bottom_intake_state = intake->STOP_STATE_H; // from GET_HATCH_GROUND_STATE state
         }
-
         if (state_top_intake) {
         intake->top_intake_state = intake->STOP_STATE_H; // from GET_HATCH_GROUND_STATE state
         }
-
         if (state_arm) {
           arm->arm_state = arm->REST_STATE_H;
         }
         if ((arm->GetAngularPosition() > 0.7) && state_elevator) {
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
-
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
@@ -341,15 +353,12 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         }
-
         if (state_solenoids) {
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         }
-
         if (state_bottom_intake) {
           intake->bottom_intake_state = intake->IN_STATE_H;
         }
-
         if (state_top_intake) {
           intake->top_intake_state = intake->IN_STATE_H;
         }
@@ -375,15 +384,12 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         }
-
         if (state_solenoids) {
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         }
-
         if (state_bottom_intake) {
           intake->bottom_intake_state = intake->IN_STATE_H;
         }
-
         if (state_top_intake) {
           intake->top_intake_state = intake->IN_STATE_H;
         }
@@ -410,7 +416,6 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (state_elevator) {
           elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
-
         if (state_arm) {
           arm->arm_state = arm->REST_STATE_H;
         }
@@ -420,6 +425,7 @@ TeleopStateMachine::TeleopStateMachine(Elevator *elevator_, Intake *intake_,
         if (state_top_intake) {
           intake->top_intake_state = intake->HOLD_STATE_H;
         }
+
         if (place_cargo_low) { //as opposed to having to go through wfb to get to a PLACE STATE
           state = PLACE_CARGO_LOW_STATE;
         } else if (place_cargo_mid) {
