@@ -291,7 +291,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	Waypoint p1, p2;
 
 	p1 = {0.0, 0.0, 0.0};
-	p2 = {dist_to_target, x_dist, d2r(exit_angle)}; //y, x, exit angle
+	p2 = {dist_to_target - CAM_OFF_VERTICAL, x_dist - CAM_OFF_HORIZANTAL, d2r(exit_angle)}; //y, x, exit angle
 
 	points[0] = p1;
 	points[1] = p2;

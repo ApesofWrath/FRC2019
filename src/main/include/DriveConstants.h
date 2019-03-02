@@ -3,6 +3,10 @@
 
 #include "Constants.h"
 
+// TODO: assign constants, find sign (subtracting x and y input to pathfinder)
+const double CAM_OFF_VERTICAL = -1.0; // distance the camera is from the front of the robot in feet/whatever unit pathfinder is using
+const double CAM_OFF_HORIZANTAL = 0.0; // distance camera is off center, same thing for units
+
 #define COMP COMP_BOT
 
 #if COMP //bot still w/o superstructure
