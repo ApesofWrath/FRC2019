@@ -72,7 +72,7 @@ class Robot : public frc::TimedRobot {
   const std::string kCenter = "Center";
   const std::string kRight = "Right";
   std::string m_startSelected;
-  Waypoint start;
+//  Waypoint start;
 
   const int JOY_THROTTLE = 0;
   const int JOY_WHEEL = 1;

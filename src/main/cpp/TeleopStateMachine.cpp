@@ -90,8 +90,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
       //top intake
       if (top_intake_in) {
-        // state_top_intake = false;
-        // intake->top_intake_state = intake->IN_STATE_H;
+        state_top_intake = false;
+        intake->top_intake_state = intake->IN_STATE_H;
       } else if (top_intake_out) {
         state_top_intake = false;
         intake->top_intake_state = intake->OUT_STATE_H;

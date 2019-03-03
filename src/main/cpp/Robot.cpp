@@ -30,7 +30,7 @@ void Robot::RobotInit() {
 
   drive_controller = new DriveController();
   vision = new Vision();
-  start = {0,0,0};
+//  start = {0,0,0};
 //  move_forward = new MoveForward(start);
 
   //  elevator_profiler = new ElevatorMotionProfiler(0.5, 2.0, 0.02);
@@ -57,6 +57,9 @@ void Robot::RobotPeriodic() {
 
   frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
   frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
+
+  frc::SmartDashboard::PutNumber("tal top", intake->talonIntake1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("tal bot", intake->talonIntake2->GetOutputCurrent());
 }
 
 void Robot::AutonomousInit() {
@@ -72,12 +75,12 @@ void Robot::AutonomousInit() {
   kCenter); //default
 
   if (m_startSelected == kCenter) {
-    start = { 0.0 , 0.0, 0.0 };
+  //  start = { 0.0 , 0.0, 0.0 };
     frc::SmartDashboard::PutNumber("waypoint", 0);
   } else if (m_startSelected == kLeft) {
-    start = { 0.0 , 0.0, 0.0 }; //TODO:
+  //  start = { 0.0 , 0.0, 0.0 }; //TODO:
   } else if (m_startSelected == kRight) {
-    start = { 0.0 , 0.0, 0.0 };
+  //  start = { 0.0 , 0.0, 0.0 };
   }
 
   if (m_autoSelected == kCenterLowHabOneCargo) {
@@ -140,6 +143,16 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   place_hatch_high = joyOp1->GetRawButton(10);
   extra_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
+
+
+  // top_intake_in =  joyOp1->GetRawButton(5);
+  // top_intake_out = joyOp1->GetRawButton(6);
+  // top_intake_stop = joyOp1->GetRawButton(7);
+  // suction_on = joyOp1->GetRawButton(8);
+  // suction_off = joyOp1->GetRawButton(9);
+  // arm_up = joyOp1->GetRawButton(10);
+  // arm_mid = joyOp1->GetRawButton(11);
+  // elevator_hatch_mid = joyOp1->GetRawButton(12);
 
   get_cargo_ground = joyOp2->GetRawButton(1);
   get_cargo_station = joyOp2->GetRawButton(8);

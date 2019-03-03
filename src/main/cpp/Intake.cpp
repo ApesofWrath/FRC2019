@@ -75,6 +75,8 @@ if (!slow) {
 
 void Intake::IntakeTopStateMachine() { //TODO: add current limit?
 
+    frc::SmartDashboard::PutString("TOP INTAKE state", "yes");
+
   switch (top_intake_state) {
 
     case STOP_STATE:
@@ -107,6 +109,8 @@ void Intake::IntakeTopStateMachine() { //TODO: add current limit?
 }
 
 void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
+
+  frc::SmartDashboard::PutString("BOT INTAKE state", "yes");
 
   switch (bottom_intake_state) {
 
