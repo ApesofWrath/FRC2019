@@ -40,7 +40,7 @@ public:
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.37; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.02; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
+  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
 
   const double TOP_CARGO_POS = 1.42; //top scoring
   const double MID_CARGO_POS = 0.95; //mid rocket, bay

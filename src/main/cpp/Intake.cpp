@@ -152,7 +152,7 @@ bool Intake::HaveBall() {
   frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
   frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
 
-  if ((talonIntake1->GetOutputCurrent() > 3.5)) {
+  if ((talonIntake2->GetOutputCurrent() > 20.0)) {
     return true;
   } else {
     return false;

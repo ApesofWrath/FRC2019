@@ -3,16 +3,18 @@
 
 //CTRE settings
 
-const double Kf = 0.0; //works like this
-const double Kp = 0.75;
-const double Ki = 0.00085;
+const double Kf = 0.4;//0.3 //works like this
+const double Kp = 0.0;//0.75; //0.0
+const double Ki = 0.0;//0.00085;
 const double Kd = 0.0;
+
+const double arb_ff_percent = 0.0;//1.0; //0.1
 
 const double CRUISE_VEL = 0.0;//0.041; //rad/sec
 const double ENC_CRUISE_VEL = 2000.0; // conversion incorrect - CRUISE_VEL * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (1.0 / 10.0); //ticks/100ms
 
 const double CRUISE_ACC = 0.0; //acceleration, which is in velocity units per second (where velocity units = change in sensor per 100ms)
-const double ENC_CRUISE_ACC = 2000.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
+const double ENC_CRUISE_ACC = 100.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
 
 const int TIMEOUT_MS = 10;
 const int FRAME_PERIOD = 10;

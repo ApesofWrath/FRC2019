@@ -263,6 +263,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         if (hatch_pickup->HaveHatch() && counter_suction > 10) { //havehatch() needs suction current to have ramped up already; wait 10 counts
           arm->arm_state = arm->REST_STATE_H;
+          hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
           if (std::abs(arm->GetAngularPosition() - arm->REST_ANGLE) <= 0.2) {
             state = POST_INTAKE_HATCH_STATE;
           }
@@ -370,11 +371,11 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           }
         } else if (state_elevator && arm->GetAngularPosition() < 0.7) {
           elevator->elevator_state = elevator->HOLD_HATCH_STATE_H; //same as hold cargo height
+          if (intake->HaveBall() || post_intake_cargo) { //
+            state = POST_INTAKE_CARGO_STATE;
+          }
         }
 
-        if (intake->HaveBall() || post_intake_cargo) {
-          state = POST_INTAKE_CARGO_STATE;
-        }
         last_state = GET_CARGO_GROUND_STATE;
         break;
 

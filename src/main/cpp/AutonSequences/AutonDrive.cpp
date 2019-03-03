@@ -88,14 +88,14 @@ Waypoint AutonDrive::RightFrontCargoBay(Waypoint start_point, bool isReversed) {
 }
 
 Waypoint AutonDrive::TestModule(Waypoint start_point) {
-  int num_points = 3;
-  Waypoint points[num_points]; // Assuming start and end point only
-  Waypoint p2 = { -16, 0, d2r(0) };             // Waypoint @ x=-1, y= 2, exit angle= 0 radians
-  Waypoint p3 = {  -21.5, 1.1, d2r(-10) };             // Waypoint @ x= 2, y= 4, exit angle= 0 radians
-  points[0] = start_point;
-  points[1] = p2;
-  points[2] = p3;
-  GeneratePartialTrajectory(num_points, points, false);
+  // int num_points = 3;
+  // Waypoint points[num_points]; // Assuming start and end point only
+  // Waypoint p2 = { -16, 0, d2r(0) };             // Waypoint @ x=-1, y= 2, exit angle= 0 radians
+   Waypoint p3 = {  -21.5, 1.1, d2r(-10) };             // Waypoint @ x= 2, y= 4, exit angle= 0 radians
+  // points[0] = start_point;
+  // points[1] = p2;
+  // points[2] = p3;
+  // GeneratePartialTrajectory(num_points, points, false);
   return p3;
 }
 

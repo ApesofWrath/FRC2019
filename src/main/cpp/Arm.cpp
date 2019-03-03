@@ -293,7 +293,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         if (talonArm->GetActiveTrajectoryPosition() > (ENC_REST_ANGLE - 200)) { //std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200
           StopArm();
         } else {
-          talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE);
+          talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE,  DemandType_ArbitraryFeedForward, 0.0);
         }
         break;
 
@@ -316,9 +316,11 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         break;
 
         case GET_HATCH_GROUND_STATE:
+        frc::SmartDashboard::PutNumber("arb ff", cos(GetAngularPosition() - 0.75) * 0.47);
         frc::SmartDashboard::PutString("ARM", "get hatch ground");
         //UpdateArmProfile(GET_HATCH_GROUND_STATE_H, GET_HATCH_GROUND_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - 0.75) * 0.47);
+        //
         break;
 
         case EXTRA_STATE:

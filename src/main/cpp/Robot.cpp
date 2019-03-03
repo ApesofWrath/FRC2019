@@ -11,6 +11,8 @@
 
 void Robot::RobotInit() {
 
+    frc::SmartDashboard::PutNumber("arb ff", 0);
+
   auton_chooser.SetDefaultOption(kDoNothing, kDoNothing);
   auton_chooser.AddOption(kDriveForward, kDriveForward);
   auton_chooser.AddOption(kCenterLowHabOneCargo, kCenterLowHabOneCargo);
@@ -45,6 +47,9 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
+//1.63 hatch scorings
+//1.05 ball scoring
+//0.05 hatch ground pickup, ball ground pickup
 
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
@@ -58,8 +63,8 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
   frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
 
-  frc::SmartDashboard::PutNumber("tal top", intake->talonIntake1->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("tal bot", intake->talonIntake2->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
+  frc::SmartDashboard::PutNumber("elev height", elevator->GetElevatorPosition());
 }
 
 void Robot::AutonomousInit() {
