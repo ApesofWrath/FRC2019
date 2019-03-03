@@ -28,7 +28,7 @@ void Intake::HoldTop() {
 
 void Intake::InTop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, -1.0);
+  talonIntake1->Set(ControlMode::PercentOutput, -0.6);
 
 }
 

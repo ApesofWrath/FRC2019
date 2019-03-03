@@ -45,6 +45,8 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     talonArm->Config_kI(0, Ki, TIMEOUT_MS); //middle number is the gain
     talonArm->Config_kD(0, Kd, TIMEOUT_MS);
 
+    talonArm->Config_IntegralZone(0, 500, 10);
+
     /* Set acceleration and vcruise velocity - see documentation */
     talonArm->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL, TIMEOUT_MS);
     talonArm->ConfigMotionAcceleration(ENC_CRUISE_ACC, TIMEOUT_MS);
@@ -293,40 +295,40 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         if (talonArm->GetActiveTrajectoryPosition() > (ENC_REST_ANGLE - 200)) { //std::abs(talonArm->GetSelectedSensorPosition() - ENC_REST_ANGLE) < 200
           StopArm();
         } else {
-          talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE,  DemandType_ArbitraryFeedForward, 0.0);
+          talonArm->Set(ControlMode::MotionMagic, ENC_REST_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         }
         break;
 
         case HATCH_STATE:
         frc::SmartDashboard::PutString("ARM", "hatch");
         //UpdateArmProfile(HATCH_STATE, HATCH_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_HATCH_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_HATCH_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         break;
 
         case CARGO_STATE:
         frc::SmartDashboard::PutString("ARM", "cargo");
         //UpdateArmProfile(CARGO_STATE, CARGO_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_CARGO_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_CARGO_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         break;
 
         case HIGH_CARGO_STATE:
         frc::SmartDashboard::PutString("ARM", "high cargo");
         //UpdateArmProfile(HIGH_CARGO_STATE_H, HIGH_CARGO_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_HIGH_CARGO_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_HIGH_CARGO_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         break;
 
         case GET_HATCH_GROUND_STATE:
-        frc::SmartDashboard::PutNumber("arb ff", cos(GetAngularPosition() - 0.75) * 0.47);
+        frc::SmartDashboard::PutNumber("arb ff", cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         frc::SmartDashboard::PutString("ARM", "get hatch ground");
         //UpdateArmProfile(GET_HATCH_GROUND_STATE_H, GET_HATCH_GROUND_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - 0.75) * 0.47);
+        talonArm->Set(ControlMode::MotionMagic, ENC_GET_HATCH_GROUND_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         //
         break;
 
         case EXTRA_STATE:
         frc::SmartDashboard::PutString("ARM", "extra");
         //UpdateArmProfile(EXTRA_STATE_H, EXTRA_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE);
+        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
         break;
 
         case STOP_ARM_STATE:

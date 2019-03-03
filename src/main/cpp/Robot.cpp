@@ -51,6 +51,9 @@ void Robot::RobotPeriodic() {
 //1.05 ball scoring
 //0.05 hatch ground pickup, ball ground pickup
 
+frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
 
@@ -65,6 +68,8 @@ void Robot::RobotPeriodic() {
 
   frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
   frc::SmartDashboard::PutNumber("elev height", elevator->GetElevatorPosition());
+
+    frc::SmartDashboard::PutNumber("arm error", arm->talonArm->GetActiveTrajectoryPosition() - arm->talonArm->GetSelectedSensorPosition(0));
 }
 
 void Robot::AutonomousInit() {
@@ -149,7 +154,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   extra_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
 
-
+//bigger outtake cargo speed
   // top_intake_in =  joyOp1->GetRawButton(5);
   // top_intake_out = joyOp1->GetRawButton(6);
   // top_intake_stop = joyOp1->GetRawButton(7);
@@ -158,7 +163,7 @@ frc::SmartDashboard::PutNumber("right pos!" , drive_controller->GetRightPosition
   // arm_up = joyOp1->GetRawButton(10);
   // arm_mid = joyOp1->GetRawButton(11);
   // elevator_hatch_mid = joyOp1->GetRawButton(12);
-
+wait_for_button = joyOp2->GetRawButton(12);
   get_cargo_ground = joyOp2->GetRawButton(1);
   get_cargo_station = joyOp2->GetRawButton(8);
   post_intake_cargo = joyOp2->GetRawButton(2);

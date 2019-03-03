@@ -241,7 +241,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
             arm->arm_state = arm->HATCH_STATE_H; //place hatch
         }
-        if (std::abs(arm->GetAngularPosition() - arm->HATCH_ANGLE) <= 0.2) {
+        if (std::abs(arm->GetAngularPosition() - HATCH_ANGLE) <= 0.2) {
           counter_suction = 0;
           state = GET_HATCH_STATION_SUCTION_STATE;
         }
@@ -257,16 +257,15 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
-        if (state_solenoids) {
-          hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-        }
 
-        if (hatch_pickup->HaveHatch() && counter_suction > 10) { //havehatch() needs suction current to have ramped up already; wait 10 counts
+        if (hatch_pickup->HaveHatch() && counter_suction > 100) { //havehatch() needs suction current to have ramped up already; wait 10 counts
           arm->arm_state = arm->REST_STATE_H;
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
-          if (std::abs(arm->GetAngularPosition() - arm->REST_ANGLE) <= 0.2) {
+          if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
             state = POST_INTAKE_HATCH_STATE;
           }
+        } else if (state_solenoids) {
+            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
         }
 
         last_state = GET_HATCH_STATION_SUCTION_STATE;
@@ -358,7 +357,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         }
         if (state_bottom_intake) {
-          intake->bottom_intake_state = intake->IN_STATE_H;
+          intake->bottom_intake_state = intake->IN_SLOW_STATE_H;
         }
         if (state_top_intake) {
           intake->top_intake_state = intake->IN_STATE_H;
@@ -369,12 +368,17 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (elevator->GetElevatorPosition() >= .30) {
             arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
           }
-        } else if (state_elevator && arm->GetAngularPosition() < 0.7) {
-          elevator->elevator_state = elevator->HOLD_HATCH_STATE_H; //same as hold cargo height
-          if (intake->HaveBall() || post_intake_cargo) { //
+        }
+
+        if (arm->GetAngularPosition() < 0.7) {
+          elevator->elevator_state = elevator->HOLD_HATCH_STATE_H;
+        }
+        //else if (state_elevator && arm->GetAngularPosition() > 1.5) {
+        //  elevator->elevator_state = elevator->HOLD_HATCH_STATE_H; //same as hold cargo height
+          if ((intake->HaveBall() || post_intake_cargo) &&  arm->arm_state == arm->GET_HATCH_GROUND_STATE_H) { //
             state = POST_INTAKE_CARGO_STATE;
           }
-        }
+      //  }
 
         last_state = GET_CARGO_GROUND_STATE;
         break;
@@ -414,12 +418,14 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         frc::SmartDashboard::PutString("State", "POST INTAKE CARGO");
 
-        if (state_elevator) {
-          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        }
         if (state_arm) {
           arm->arm_state = arm->REST_STATE_H;
         }
+
+        if (state_elevator && arm->GetAngularPosition() > 1.5) {
+          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+        }
+
         if (state_bottom_intake) {
           intake->bottom_intake_state = intake->HOLD_STATE_H;
         }
@@ -451,9 +457,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-          if (hatch_pickup->ReleasedHatch()) { //extra_button
+  //        if (hatch_pickup->ReleasedHatch()) { //extra_button
             state = POST_OUTTAKE_HATCH_STATE;
-          }
+//          }
         }
         last_state = PLACE_HATCH_LOW_STATE;
         break;
@@ -471,9 +477,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-          if (hatch_pickup->ReleasedHatch()) { //extra_button
+      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
             state = POST_OUTTAKE_HATCH_STATE;
-          }
+      //    }
         }
         last_state = PLACE_HATCH_MID_STATE;
         break;
@@ -491,9 +497,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-          if (hatch_pickup->ReleasedHatch()) { //extra_button
+      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
             state = POST_OUTTAKE_HATCH_STATE;
-          }
+      //    }
         }
         last_state = PLACE_HATCH_HIGH_STATE;
         break;

@@ -3,11 +3,13 @@
 
 #include "Constants.h"
 
-#define PRACTICE 1 //0 uses the consts on the bottom
+#define PRACTICE 1 //0 uses the consts on the bottom //comp gains work ok on practice bot too
 
 #if PRACTICE //bot still w/o superstructure
 
 //Teleop
+
+const double reverse_output = -1.0;
 
 const double K_P_RIGHT_VEL = 0.003;//0.0001; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;// 0.0005;
@@ -60,6 +62,8 @@ const double FF_SCALE = 0.7; //auton
 #else //1st bot to have superstructure
 
 //Teleop
+
+const double reverse_output = 1.0;
 
 const double K_P_RIGHT_VEL = 0.00;//0.0001; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;// 0.0005;
