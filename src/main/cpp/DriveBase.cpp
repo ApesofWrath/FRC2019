@@ -850,11 +850,11 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		switch (teleop_drive_state) {
 			case REGULAR:
 			frc::SmartDashboard::PutString("DRIVE", "reg");
-			if (std::abs(ahrs->GetRoll()) > 10) {
-				//AutoBalanceDrive();
-			} else {
+			//if (std::abs(ahrs->GetRoll()) > 10) {
+			//	AutoBalanceDrive();
+		//	} else {
 				TeleopWCDrive(JoyThrottle, JoyWheel);
-			}
+		//	}
 			break;
 			case VISION_DRIVE:
 			frc::SmartDashboard::PutString("DRIVE", "vis");
