@@ -16,11 +16,11 @@ const double GET_HATCH_GROUND_ANGLE = 0.05; //
 const double EXTRA_ANGLE = 2.6;//
 
 const double Kf = 0.4;//0.3 //works like this
-const double Kp = 0.20;//0.75; //0.0
-const double Ki = 0.0009;//0.00085;
-const double Kd = 3.5;
+const double Kp = 0.0;//0.15;//0.75; //0.0
+const double Ki = 0.0;//0.0015;//0.00085; 0.0009
+const double Kd = 0.0;//100.5;
 
-const double arb_ff_percent = 0.47;//1.0; //0.1
+const double arb_ff_percent = 0.27;//0.47;//1.0; //0.1
 const double arb_ff_offset = 0.75;
 
 const double CRUISE_VEL = 0.0;//0.041; //rad/sec

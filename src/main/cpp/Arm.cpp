@@ -45,7 +45,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
     talonArm->Config_kI(0, Ki, TIMEOUT_MS); //middle number is the gain
     talonArm->Config_kD(0, Kd, TIMEOUT_MS);
 
-    talonArm->Config_IntegralZone(0, 500, 10);
+    talonArm->Config_IntegralZone(0, 1000, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
     talonArm->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL, TIMEOUT_MS);
