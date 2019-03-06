@@ -89,6 +89,7 @@ public:
   void ArmStateMachine();
   void Rotate(); //main control loop
   void ZeroEnc();
+  double Interpolate(double angle);
 
   double GetAngularVelocity();
   double GetAngularPosition();

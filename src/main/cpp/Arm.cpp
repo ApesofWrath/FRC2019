@@ -57,6 +57,34 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
   }
 
+//call this over and over with current angle until desired angle reached
+  double Arm::Interpolate(double angle) {
+
+    vector<double> angles = {2.8, 2.6, 2.4};
+    vector<double> outputs = {};
+
+    int size = angles.size();
+
+    int i = 0;
+    for (int j = 0; j < angles.size() - 2; j++) { //find right bound
+      if (angle >= angles[j]) {
+        i++;
+      } else {
+        break;
+      }
+    }
+
+   double xL = angles[i];
+   double yL = outputs[i];
+   double xR = angles[i-1];
+   double yR = outputs[i-1];
+
+   double dydx = ( yR - yL ) / ( xR - xL );
+
+   return yL + dydx * ( angle - xL );
+
+  }
+
   void Arm::InitializeArm() {
     if (!is_init_arm) { //this has to be here for some reason
       SetVoltageArm(3.5); //	MAYBE SHOULDNT BE NEGATIVE - CHECK
@@ -328,7 +356,10 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         case EXTRA_STATE:
         frc::SmartDashboard::PutString("ARM", "extra");
         //UpdateArmProfile(EXTRA_STATE_H, EXTRA_ANGLE);
-        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, cos(GetAngularPosition() - arb_ff_offset) * arb_ff_percent);
+        // if (GetAngularPosition() + 0.2 < EXTRA_ANGLE) {
+        //talonArm->Set(ControlMode::PercentOutput, Interpolate(GetAngularPosition() + 0.2));
+      //}
+        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, #);
         break;
 
         case STOP_ARM_STATE:
