@@ -122,7 +122,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         arm->arm_state = arm->REST_STATE_H;
       } else if (arm_mid) {
         state_arm = false;
-        arm->arm_state = arm->HATCH_STATE_H;
+        arm->arm_state = arm->EXTRA_STATE_H; //TODO: CHANGE BACK!
       } else if (arm_down) {
         state_arm = false;
         arm->arm_state = arm->CARGO_STATE_H;

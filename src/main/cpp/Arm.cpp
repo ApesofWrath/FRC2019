@@ -359,7 +359,7 @@ return 0;
         // if (GetAngularPosition() + 0.2 < EXTRA_ANGLE) {
         //talonArm->Set(ControlMode::PercentOutput, Interpolate(GetAngularPosition() + 0.2));
       //}
-        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, 0.0);
+        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, -0.3);
         break;
 
         case STOP_ARM_STATE:
