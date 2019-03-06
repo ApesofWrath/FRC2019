@@ -60,29 +60,29 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 //call this over and over with current angle until desired angle reached
   double Arm::Interpolate(double angle) {
 
-    vector<double> angles = {2.8, 2.6, 2.4};
-    vector<double> outputs = {};
-
-    int size = angles.size();
-
-    int i = 0;
-    for (int j = 0; j < angles.size() - 2; j++) { //find right bound
-      if (angle >= angles[j]) {
-        i++;
-      } else {
-        break;
-      }
-    }
-
-   double xL = angles[i];
-   double yL = outputs[i];
-   double xR = angles[i-1];
-   double yR = outputs[i-1];
-
-   double dydx = ( yR - yL ) / ( xR - xL );
-
-   return yL + dydx * ( angle - xL );
-
+   //  std::vector<double> angles = {2.8, 2.6, 2.4};
+   //  std::vector<double> outputs = {};
+   //
+   //  int size = angles.size();
+   //
+   //  int i = 0;
+   //  for (int j = 0; j < angles.size() - 2; j++) { //find right bound
+   //    if (angle >= angles[j]) {
+   //      i++;
+   //    } else {
+   //      break;
+   //    }
+   //  }
+   //
+   // double xL = angles[i];
+   // double yL = outputs[i];
+   // double xR = angles[i-1];
+   // double yR = outputs[i-1];
+   //
+   // double dydx = ( yR - yL ) / ( xR - xL );
+   //
+   // return yL + dydx * ( angle - xL );
+return 0;
   }
 
   void Arm::InitializeArm() {
@@ -359,7 +359,7 @@ Arm::Arm(ArmMotionProfiler *arm_profiler_) {
         // if (GetAngularPosition() + 0.2 < EXTRA_ANGLE) {
         //talonArm->Set(ControlMode::PercentOutput, Interpolate(GetAngularPosition() + 0.2));
       //}
-        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, #);
+        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, 0.0);
         break;
 
         case STOP_ARM_STATE:

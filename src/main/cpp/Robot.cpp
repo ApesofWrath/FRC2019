@@ -51,7 +51,7 @@ void Robot::RobotPeriodic() {
 //1.05 ball scoring
 //0.05 hatch ground pickup, ball ground pickup
 
-frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
 frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
 
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
@@ -118,8 +118,8 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-//  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyOp1->GetY());
-
+ arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetRawAxis(3));
+/*
   is_rotation = false;
   is_vision = false;
   is_regular = true;
@@ -181,7 +181,7 @@ wait_for_button = joyOp2->GetRawButton(12);
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo_ground, get_cargo_station, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
     place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
-
+*/
   }
 
   void Robot::TestPeriodic() {}
