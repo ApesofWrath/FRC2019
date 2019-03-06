@@ -140,24 +140,24 @@ void Robot::TeleopPeriodic() {
   bottom_intake_out  =  joyOp1->GetRawButton(2);
   bottom_intake_stop = joyOp1->GetRawButton(4);
 
-  // get_hatch_station =  joyOp1->GetRawButton(5);
-  // get_hatch_ground = joyOp1->GetRawButton(6);
-  // post_intake_hatch = joyOp1->GetRawButton(7);
-  // place_hatch_low = joyOp1->GetRawButton(8);
-  // place_hatch_mid = joyOp1->GetRawButton(9);
-  // place_hatch_high = joyOp1->GetRawButton(10);
-  // extra_button = joyOp1->GetRawButton(11);
-  // post_outtake_hatch = joyOp1->GetRawButton(12);
+  get_hatch_station =  joyOp1->GetRawButton(5);
+  get_hatch_ground = joyOp1->GetRawButton(6);
+  post_intake_hatch = joyOp1->GetRawButton(7);
+  place_hatch_low = joyOp1->GetRawButton(8);
+  place_hatch_mid = joyOp1->GetRawButton(9);
+  place_hatch_high = joyOp1->GetRawButton(10);
+  extra_button = joyOp1->GetRawButton(11);
+  post_outtake_hatch = joyOp1->GetRawButton(12);
 
 //bigger outtake cargo speed
-  top_intake_in =  joyOp1->GetRawButton(5);
-  top_intake_out = joyOp1->GetRawButton(6);
-  top_intake_stop = joyOp1->GetRawButton(7);
-  suction_on = joyOp1->GetRawButton(8);
-  suction_off = joyOp1->GetRawButton(9);
-  arm_up = joyOp1->GetRawButton(10);
-  arm_mid = joyOp1->GetRawButton(11);
-  
+  // top_intake_in =  joyOp1->GetRawButton(5);
+  // top_intake_out = joyOp1->GetRawButton(6);
+  // top_intake_stop = joyOp1->GetRawButton(7);
+  // suction_on = joyOp1->GetRawButton(8);
+  // suction_off = joyOp1->GetRawButton(9);
+  // arm_up = joyOp1->GetRawButton(10);
+  // arm_mid = joyOp1->GetRawButton(11);
+
   elevator_hatch_mid = joyOp1->GetRawButton(12);
 wait_for_button = joyOp2->GetRawButton(12);
   get_cargo_ground = joyOp2->GetRawButton(1);
@@ -165,6 +165,7 @@ wait_for_button = joyOp2->GetRawButton(12);
   post_intake_cargo = joyOp2->GetRawButton(2);
   place_cargo_bay = joyOp2->GetRawButton(3);
   place_cargo_low =  joyOp2->GetRawButton(4);
+
   place_cargo_mid =  joyOp2->GetRawButton(5);
   place_cargo_high = joyOp2->GetRawButton(6);
   //have shot ball
