@@ -241,6 +241,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
             arm->arm_state = arm->HATCH_STATE_H; //place hatch
         }
+        if (state_solenoids) {
+           hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+       }
         if (std::abs(arm->GetAngularPosition() - HATCH_ANGLE) <= 0.2) {
           counter_suction = 0;
           state = GET_HATCH_STATION_SUCTION_STATE;
@@ -251,6 +254,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         case GET_HATCH_STATION_SUCTION_STATE:
         frc::SmartDashboard::PutString("State", "GET HATCH STATION SUCTION");
 
+
+
         counter_suction++;
         frc::SmartDashboard::PutNumber("counter", counter_suction);
 
@@ -260,12 +265,11 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         if (hatch_pickup->HaveHatch() && counter_suction > 100) { //havehatch() needs suction current to have ramped up already; wait 10 counts
           arm->arm_state = arm->REST_STATE_H;
+            frc::SmartDashboard::PutString("have hatch", "y");
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
           if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
             state = POST_INTAKE_HATCH_STATE;
           }
-        } else if (state_solenoids) {
-            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
         }
 
         last_state = GET_HATCH_STATION_SUCTION_STATE;

@@ -84,7 +84,7 @@ void HatchPickup::SolenoidStateMachine() {
 
 bool HatchPickup::HaveHatch() {
 
-  if ((suction1->GetOutputCurrent() < 2.5 && suction1->GetOutputCurrent() > 0.5) || (suction2->GetOutputCurrent() < 2.5 && suction1->GetOutputCurrent() > 0.5)) {
+  if ((suction1->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5) || (suction2->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5)) {
     frc::SmartDashboard::PutNumber("have",1);
     return true;
   } else {

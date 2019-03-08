@@ -53,7 +53,10 @@ void Robot::RobotPeriodic() {
 
 frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
 frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
 
+  frc::SmartDashboard::PutString("have hatch", "n");
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
 
