@@ -13,6 +13,8 @@ HatchPickup::HatchPickup() {
   suction2->Follow(*suction1);
 
   solenoid = new frc::DoubleSolenoid(9, SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
+
+  hatch_sensor =  new frc::DigitalInput::DigitalInput(HATCH_SENSOR_CHANNEL);
 }
 
 void HatchPickup::On() {
@@ -75,7 +77,12 @@ void HatchPickup::SolenoidStateMachine() {
 }
 
 bool HatchPickup::HaveHatch() {
-  return false;
+  if(hatch_sensor->Get() == 1){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 bool HatchPickup::ReleasedHatch() {

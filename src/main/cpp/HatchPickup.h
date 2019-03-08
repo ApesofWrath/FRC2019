@@ -1,0 +1,48 @@
+#ifndef SRC_SUCTION_H_
+#define SRC_SUCTION_H_
+
+#include <frc/WPILib.h>
+#include "ctre/Phoenix.h"
+#include <frc/DoubleSolenoid.h>
+#include <frc/DigitalInput.h>
+
+class HatchPickup {
+public:
+
+  TalonSRX *suction1, *suction2;
+  frc::DoubleSolenoid *solenoid;
+  frc::DigitalInput::DigitalInput *hatch_sensor
+
+  const int ON_STATE_H = 0;
+  const int OFF_STATE_H = 1;
+
+  const int OUT_STATE_H = 0;
+  const int IN_STATE_H = 1;
+
+  int suction_state = OFF_STATE_H;
+  int solenoid_state = IN_STATE_H;
+
+  const int SUCTION_CHANNEL = 0;
+
+  const int SOLENOID_FORWARD_CHANNEL = 0;
+  const int SOLENOID_REVERSE_CHANNEL = 1;
+
+  const int HATCH_SENSOR_CHANNEL = 2;
+
+  HatchPickup();
+
+  void On();
+  void Off();
+  void SuctionStateMachine();
+
+  void In();
+  void Out();
+  void SolenoidStateMachine();
+
+  bool HaveHatch();
+  bool ReleasedHatch();
+
+
+};
+
+#endif
