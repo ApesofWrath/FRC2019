@@ -10,13 +10,13 @@
 const double START_ANGLE = 2.87;
 const double REST_ANGLE = 2.8;
 const double HATCH_ANGLE = 1.63; //place hatch
-const double CARGO_ANGLE = 1.05; //place cargo
+const double CARGO_ANGLE = 1.00; //place cargo
 const double HIGH_CARGO_ANGLE = 2.7; //place high cargo
-const double GET_HATCH_GROUND_ANGLE = 0.05; //
-const double EXTRA_ANGLE = 2.6;//
+const double GET_HATCH_GROUND_ANGLE = 0.10; //
+const double EXTRA_ANGLE = 1.0; // get ball from recttangle next to hab
 
 const double Kf = 0.4;//0.3 //works like this
-const double Kp = 0.75;//0.15;//0.75; //0.0
+const double Kp = 0.85;//0.15;//0.75; //0.0
 const double Ki = 0.0;//0.0015;//0.00085; 0.0009
 const double Kd = 0.0;//100.5;
 
@@ -27,7 +27,7 @@ const double CRUISE_VEL = 0.0;//0.041; //rad/sec
 const double ENC_CRUISE_VEL = 2000.0; // conversion incorrect - CRUISE_VEL * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (1.0 / 10.0); //ticks/100ms
 
 const double CRUISE_ACC = 0.0; //acceleration, which is in velocity units per second (where velocity units = change in sensor per 100ms)
-const double ENC_CRUISE_ACC = 800.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
+const double ENC_CRUISE_ACC = 1700.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
 
 #else
 
@@ -51,7 +51,7 @@ const double HATCH_ANGLE = 1.63; //place hatch
 const double CARGO_ANGLE = 1.05; //place cargo
 const double HIGH_CARGO_ANGLE = 2.7; //place high cargo
 const double GET_HATCH_GROUND_ANGLE = 0.05; //
-const double EXTRA_ANGLE = 2.6;//
+const double EXTRA_ANGLE = 2.6; // get ball from recttangle next to hab
 
 #endif
 

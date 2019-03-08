@@ -128,7 +128,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       break;
 
       case HOLD_HATCH_STATE:
-        frc::SmartDashboard::PutString("ELEV ", "bay cargo");
+        frc::SmartDashboard::PutString("ELEV ", "hold hatch");
       //CheckElevatorGoal(HOLD_HATCH_STATE, HOLD_HATCH_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_HOLD_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;

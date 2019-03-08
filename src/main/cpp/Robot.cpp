@@ -159,7 +159,7 @@ void Robot::TeleopPeriodic() {
   // arm_mid = joyOp1->GetRawButton(11);
 
   elevator_hatch_mid = joyOp1->GetRawButton(12);
-wait_for_button = joyOp2->GetRawButton(12);
+  wait_for_button = joyOp2->GetRawButton(12);
   get_cargo_ground = joyOp2->GetRawButton(1);
   get_cargo_station = joyOp2->GetRawButton(8);
   post_intake_cargo = joyOp2->GetRawButton(2);

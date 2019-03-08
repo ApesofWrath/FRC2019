@@ -7,6 +7,8 @@ const int OUT_STATE = 3;
 const int OUT_SLOW_STATE = 4;
 const int IN_SLOW_STATE = 5;
 
+int out_counter = 0;
+
 Intake::Intake() {
 
   talonIntake1 = new TalonSRX(TALON_ID_TOP);
@@ -65,6 +67,7 @@ void Intake::InBottom(bool slow) {
 }
 
 void Intake::OutBottom(bool slow) {
+  out_counter++;
 if (!slow) {
   talonIntake2->Set(ControlMode::PercentOutput, 1.0);
 } else {
@@ -152,7 +155,7 @@ bool Intake::HaveBall() {
   frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
   frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
 
-  if ((talonIntake2->GetOutputCurrent() > 20.0)) {
+  if ((talonIntake1->GetOutputCurrent() > 13.0)) { // has to be top because bottom spikes if it hits the ground
     return true;
   } else {
     return false;
@@ -161,11 +164,11 @@ bool Intake::HaveBall() {
 }
 
 bool Intake::ReleasedBall() {
-
   frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
   frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
 
-  if ((talonIntake1->GetOutputCurrent() < 1.5)) {
+  if (out_counter > 20) {
+    out_counter = 0;
     return true;
   } else {
     return false;

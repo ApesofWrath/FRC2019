@@ -519,6 +519,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
             state = POST_OUTTAKE_CARGO_STATE;
           }
         }
+
         last_state = PLACE_CARGO_LOW_STATE;
         break;
 
