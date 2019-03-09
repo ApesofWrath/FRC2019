@@ -12,6 +12,8 @@ double avg1 = 0.0;
 double avg2 = 0.0;
 //int encoder_counter = 0;
 
+int has_counter = 0; // make sure not drawing current for drive
+
 nt::NetworkTableEntry hatchEntry;
 
 HatchPickup::HatchPickup() {
@@ -83,13 +85,18 @@ void HatchPickup::SolenoidStateMachine() {
 }
 
 bool HatchPickup::HaveHatch() {
-
+  frc::SmartDashboard::PutNumber("have hatch counter", has_counter);
   if ((suction1->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5) || (suction2->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5)) {
-    frc::SmartDashboard::PutNumber("have",1);
-    return true;
+    has_counter++;
+    if (has_counter > 10) {
+      frc::SmartDashboard::PutNumber("have", 1);
+      has_counter = 0;
+      return true;
+    }
   } else {
-    frc::SmartDashboard::PutNumber("have",0);
-  return false;
+    has_counter = 0;
+    frc::SmartDashboard::PutNumber("have", 0);
+    return false;
   }
 
 }

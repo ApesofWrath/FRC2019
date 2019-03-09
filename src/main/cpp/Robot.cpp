@@ -144,7 +144,7 @@ void Robot::TeleopPeriodic() {
   bottom_intake_stop = joyOp1->GetRawButton(4);
 
   get_hatch_station =  joyOp1->GetRawButton(5);
-  get_hatch_ground = joyOp1->GetRawButton(6);
+
   post_intake_hatch = joyOp1->GetRawButton(7);
   place_hatch_low = joyOp1->GetRawButton(8);
   place_hatch_mid = joyOp1->GetRawButton(9);

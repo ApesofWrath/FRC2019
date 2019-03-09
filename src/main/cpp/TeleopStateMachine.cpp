@@ -236,7 +236,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         case GET_HATCH_STATION_INIT_STATE:
         frc::SmartDashboard::PutString("State", "GET HATCH STATION INIT");
         if (state_elevator) {
-          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+          elevator->elevator_state = elevator->STATION_HATCH_STATE_H;
         }
         if (state_arm) {
             arm->arm_state = arm->HATCH_STATE_H; //place hatch
@@ -337,7 +337,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
-        if (state_solenoids) {
+        if (state_solenoids && arm->GetAngularPosition() > 2.2) {
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         }
         if (place_hatch_high) {

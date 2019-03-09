@@ -614,11 +614,13 @@ void DriveBase::Controller(double ref_kick,
 		total_left = -1.0;
 	}
 
-	// frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
-	// frc::SmartDashboard::PutNumber("% OUT RIGHT", total_right);
+	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
+	frc::SmartDashboard::PutNumber("% OUT RIGHT", total_right);
 
   canTalonLeft1->Set(ControlMode::PercentOutput, reverse_output * total_left);
 	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
+
+	// canTalonRight2->Set(ControlMode::PercentOutput, -total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
