@@ -68,7 +68,7 @@ public:
 
   TalonSRX *talonElevator1;
   VictorSPX *talonElevator2;
-  frc::DigitalInput *hallEffectTop, *hallEffectBottom; // http://first.wpi.edu/FRC/roborio/release/docs/cpp/classfrc_1_1DigitalInput.html
+//  frc::DigitalInput *hallEffectTop, *hallEffectBottom; // http://first.wpi.edu/FRC/roborio/release/docs/cpp/classfrc_1_1DigitalInput.html
 
   ElevatorMotionProfiler *elevator_profiler;
 

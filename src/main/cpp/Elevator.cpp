@@ -66,9 +66,6 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     talonElevator1->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL_E, 10);//3120
     talonElevator1->ConfigMotionAcceleration(ENC_CRUISE_ACC_E, 10);
 
-
-    hallEffectTop = new frc::DigitalInput(TOP_HALL);
-    hallEffectBottom = new frc::DigitalInput(BOT_HALL);
   }
 
   void Elevator::ElevatorStateMachine() {
