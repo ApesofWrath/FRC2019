@@ -41,7 +41,7 @@ public:
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.28; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
+  const double BOTTOM_HATCH_POS = 0.055; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
   const double STATION_HATCH_POS = 0.055; // for the human players station hatch position
 
   const double TOP_CARGO_POS = 1.42; //top scoring

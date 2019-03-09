@@ -9,7 +9,7 @@
 
 const double START_ANGLE = 2.87;
 const double REST_ANGLE = 2.8;
-const double HATCH_ANGLE = 1.66; //place hatch
+const double HATCH_ANGLE = 1.75; //place hatch
 const double CARGO_ANGLE = 1.00; //place cargo
 const double HIGH_CARGO_ANGLE = 2.7; //place high cargo
 const double GET_HATCH_GROUND_ANGLE = 0.10; //
