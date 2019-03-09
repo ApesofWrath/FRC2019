@@ -25,6 +25,8 @@ void Robot::RobotInit() {
 
   pdp = new PowerDistributionPanel(0); // 0 is the vcm
 
+  led_solenoid = new Solenoid(9, 2);
+
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
   joyOp1 = new frc::Joystick(2);
@@ -122,7 +124,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
  //arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetRawAxis(3));
-
+  led_solenoid->Set(true);
   is_rotation = false;
   is_vision = false;
   is_regular = true;
