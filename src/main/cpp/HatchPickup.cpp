@@ -22,6 +22,8 @@ HatchPickup::HatchPickup() {
   suction2 = new TalonSRX(40);
   suction2->Follow(*suction1);
 
+  colordetector = new frc::DigitalInput(0);
+
   solenoid = new frc::DoubleSolenoid(9, SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
 }
 
@@ -85,17 +87,10 @@ void HatchPickup::SolenoidStateMachine() {
 }
 
 bool HatchPickup::HaveHatch() {
-  frc::SmartDashboard::PutNumber("have hatch counter", has_counter);
-  if ((suction1->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5) || (suction2->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5)) {
-    has_counter++;
-    if (has_counter > 10) {
-      frc::SmartDashboard::PutNumber("have", 1);
-      has_counter = 0;
-      return true;
-    }
+
+  if (colordetector->Get() == 1) {
+    return true;
   } else {
-    has_counter = 0;
-    frc::SmartDashboard::PutNumber("have", 0);
     return false;
   }
 

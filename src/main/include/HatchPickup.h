@@ -4,6 +4,7 @@
 #include <frc/WPILib.h>
 #include "ctre/Phoenix.h"
 #include <frc/DoubleSolenoid.h>
+#include <frc/DigitalInput.h>
 #include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
@@ -13,6 +14,7 @@ public:
 
   TalonSRX *suction1, *suction2;
   frc::DoubleSolenoid *solenoid;
+  frc::DigitalInput *colordetector;
 
   const int ON_STATE_H = 0;
   const int OFF_STATE_H = 1;
@@ -27,6 +29,7 @@ public:
 
   const int SOLENOID_FORWARD_CHANNEL = 0;
   const int SOLENOID_REVERSE_CHANNEL = 1;
+
 
 
   HatchPickup();
