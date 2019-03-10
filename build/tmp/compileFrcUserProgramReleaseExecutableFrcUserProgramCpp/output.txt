@@ -1,4 +1,4 @@
-See file:///C:/Users/DriversStation/Music/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+See file:///C:/Users/ApesOfWrath/Desktop/newauton2019/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
 compiling DriveBase.cpp successful.
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/Music/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/ApesOfWrath/Desktop/newauton2019/FRC2019/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

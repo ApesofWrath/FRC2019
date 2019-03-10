@@ -65,8 +65,8 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		Kv = 1 / ACTUAL_MAX_Y_RPM;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
-		k_p_right_vel = K_P_RIGHT_VEL;
-		k_p_left_vel = K_P_LEFT_VEL;
+		k_p_right_vel = 0.015;
+		k_p_left_vel = 0.015;
 		k_p_yaw_vel = K_P_YAW_VEL;
 		k_d_yaw_vel = K_D_YAW_VEL;
 		k_d_right_vel = K_D_RIGHT_VEL;
@@ -204,9 +204,9 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
     double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
 
     if (wheel < 0.0) {
-      reverse_x = -1.0;
+      reverse_x = 1.0;//for black wheel, is opposite
     } else {
-      reverse_x = 1.0;
+      reverse_x = -1.0;
     }
 
     double joy_wheel_val = reverse_x * wheel * wheel;
@@ -220,21 +220,20 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
     }
 
     target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
-
+    	frc::SmartDashboard::PutNumber("teleopwc targ yaw", target_yaw_rate);
   } else {
 
 
-    double target_heading = init_heading
-        + 0.5;//visionDrive->GetYawToTarget();
-
+    double target_heading = init_heading - (visionDrive->GetYawToTarget() * 3.14 / 180.0);
+frc::SmartDashboard::PutNumber("init head", init_heading);
     frc::SmartDashboard::PutNumber("targ head", target_heading);
-
+  frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
 
     double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
 frc::SmartDashboard::PutNumber("cur head", current_heading);
     double error_heading = target_heading - current_heading;
-
-    target_yaw_rate = k_p_yaw_heading_pos * error_heading * max_yaw_rate;
+frc::SmartDashboard::PutNumber("error head", error_heading);
+    target_yaw_rate = -1.0 * 0.2 * error_heading * max_yaw_rate;
     frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
 
 
@@ -356,7 +355,7 @@ void DriveBase::AutonDrive() {
 
 	//fps //not needed besides check for jitter
 	// double r_current = -((double) canTalonRight1->GetSelectedSensorVelocity(0)
-	// 		/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
+	// 		/ (doufble) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
 	// double l_current = ((double) canTalonLeft1->GetSelectedSensorVelocity(0)
 	// 		/ (double) TICKS_PER_FOOT) * MINUTE_CONVERSION / 60;
 
@@ -466,15 +465,23 @@ void DriveBase::Controller(double ref_kick,
 	double yaw_rate_current = -1.0 * (double) ahrs->GetRate(); //might be rad/ss
 		//	* (double) ((PI) / 180.0); //left should be positive
 
-	 // frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
-	 // frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
+	  frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	  frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
 	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
-	 frc::SmartDashboard::PutNumber("max_yaw_rate", max_yaw_rate);
+
 
 	double target_yaw_rate = ref_yaw;
+  	frc::SmartDashboard::PutNumber("target_yaw_rate", target_yaw_rate);
 
-	ref_left = ref_left - (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //left should be positive
-	ref_right = ref_right + (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //ff
+
+  frc::SmartDashboard::PutNumber("ref r 1", ref_right);
+  frc::SmartDashboard::PutNumber("ref l 1", ref_left);
+
+	ref_left = ref_left + (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //left should be positive
+	ref_right = ref_right - (target_yaw_rate * (max_y_rpm / max_yaw_rate)); //ff
+
+  frc::SmartDashboard::PutNumber("ref r 2", ref_right);
+  frc::SmartDashboard::PutNumber("ref l 2", ref_left);
 
 	double yaw_error = target_yaw_rate - yaw_rate_current;
 
@@ -491,8 +498,9 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((0.5 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((20.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 frc::SmartDashboard::PutNumber("yaw p", yaw_output);
+
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;
 
@@ -545,8 +553,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   }
 
 
-	frc::SmartDashboard::PutNumber("kf r", k_f_right_vel);
-	frc::SmartDashboard::PutNumber("kf l", k_f_left_vel);
+	frc::SmartDashboard::PutNumber("kf r", ref_right);
+	frc::SmartDashboard::PutNumber("kf l", ref_left);
 
 	frc::SmartDashboard::PutNumber("ff r", feed_forward_r *550.0);
 	frc::SmartDashboard::PutNumber("ff l", feed_forward_l*550.0);
@@ -627,10 +635,10 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	}
 
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
-	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
+	frc::SmartDashboard::PutNumber("% OUT RIGHT", total_right);
 
-	// canTalonLeft1->Set(ControlMode::PercentOutput, -total_left);
-	// canTalonRight1->Set(ControlMode::PercentOutput, total_right);
+	canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
+	canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -840,6 +848,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 		if (is_regular) {
 			teleop_drive_state = REGULAR;
 		} else if (is_vision) {
+      init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0;
 			teleop_drive_state = VISION_YAW; //left out pf
 		} else if (is_rotation) {
 			teleop_drive_state = ROTATION_CONTROLLER;

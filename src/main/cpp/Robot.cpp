@@ -17,13 +17,15 @@ void Robot::RobotInit() {
 	joyWheel = new Joystick(JOY_WHEEL);
 	joyOp = new Joystick(JOY_OP);
 
+  solenoid = new Solenoid(3, 3);
+
   drive_controller = new DriveController();
   vision = new Vision();
 
 }
 
 void Robot::RobotPeriodic() {
-
+solenoid->Set(true);
 }
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
