@@ -35,4 +35,6 @@ public:
   void Down();
   void Stop();
 
+  double GetClimberPosition();
+
 };

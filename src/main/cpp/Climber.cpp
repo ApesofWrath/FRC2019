@@ -71,6 +71,11 @@ void Climber::ClimberStateMachine() {
   switch (climber_state) {
     case INIT_STATE:
       SmartDashboard::PutString("Climber", "INIT");
+      if (std::abs(talonClimb1->GetSelectedSensorPosition(0)) < 10) {
+        climber_state = STOP_STATE;
+      } else {
+        talonClimb1->SetSelectedSensorPosition(0, 0, 100);
+      }
       climber_state = STOP_STATE;
       break;
     case STOP_STATE:
@@ -86,4 +91,11 @@ void Climber::ClimberStateMachine() {
       Down();
       break;
   }
+}
+
+double Climber::GetClimberPosition() {
+
+  return (((talonClimb1->GetSelectedSensorPosition(0)) / 4096.0)
+  * (3.1415 * 0.0381) * 2.0); //*2 for cascading elev
+
 }
