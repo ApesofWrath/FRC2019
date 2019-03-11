@@ -36,16 +36,14 @@ public:
   const int HOLD_HATCH_STATE_H = 7;
   const int STOP_STATE_H = 8;
   const int LIFTING_ARM_STATE_H = 9;
-  const int STATION_HATCH_STATE_H = 10;
 
   // elevator posititons for the differnet states
-  const double TOP_HATCH_POS = 1.28; //top scoring
+  const double TOP_HATCH_POS = 1.38; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.055; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
-  const double STATION_HATCH_POS = 0.055; // for the human players station hatch position
+  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
 
   const double TOP_CARGO_POS = 1.42; //top scoring
-  const double MID_CARGO_POS = 0.95; //mid rocket, bay
+  const double MID_CARGO_POS = 0.97; //mid rocket, bay
   const double BOTTOM_CARGO_POS = 0.295; //bottom scoring
 
   const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
@@ -60,7 +58,6 @@ public:
   const double ENC_BOTTOM_HATCH_POS = BOTTOM_HATCH_POS * METERS_TO_ENCS;
   const double ENC_HOLD_HATCH_POS = HOLD_HATCH_POS * METERS_TO_ENCS;
   const double ENC_LIFTING_ARM_POS = LIFTING_ARM_POS * METERS_TO_ENCS;
-  const double ENC_STATION_HATCH_POS = STATION_HATCH_POS * METERS_TO_ENCS;
 
   int last_elevator_state = INIT_STATE_H;
   int elevator_state = INIT_STATE_H;

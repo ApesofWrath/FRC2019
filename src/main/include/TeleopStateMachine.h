@@ -24,8 +24,9 @@ public:
     bool arm_high_cargo, bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
     bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo_ground,
     bool get_cargo_station, bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo,
-    bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low, bool place_cargo_high,
-    bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button);
+    bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low,
+    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay,
+    bool place_cargo_bay_fast, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button);
 
   void Initialize();
   void AutoBalance();

@@ -11,7 +11,7 @@ const double CRUISE_VEL_E = 0;
 const double ENC_CRUISE_VEL_E = 10000; //CRUISE_VEL_E * ((1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0 / 2.0) / 10.0;
 
 const double CRUISE_ACC_E = 0;
-const double ENC_CRUISE_ACC_E = 3500; //CRUISE_ACC_E * ((1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0 / 2.0) / 100.0; //1/sec^2 to 1/100sec^2
+const double ENC_CRUISE_ACC_E = 3000; //CRUISE_ACC_E * ((1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0 / 2.0) / 100.0; //1/sec^2 to 1/100sec^2
 //
 
 const double EL_SAFETY_HEIGHT = 0.7; //lowest position for elev in order for arm to move backward

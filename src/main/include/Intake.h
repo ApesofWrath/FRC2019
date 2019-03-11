@@ -18,6 +18,7 @@ public:
   const int OUT_STATE_H = 3;
   const int OUT_SLOW_STATE_H = 4;
   const int IN_SLOW_STATE_H = 5;
+  const int OUT_FAST_STATE_H = 6;
   int top_intake_state = STOP_STATE_H;
   int bottom_intake_state = STOP_STATE_H;
 
@@ -36,11 +37,13 @@ public:
   void Slow();
   void InTop();
   void OutTop(bool slow);
+  void OutFastTop(bool fast);
 
   void StopBottom();
   void HoldBottom();
   void InBottom(bool slow);
   void OutBottom(bool slow);
+  void OutFastBottom(bool fast);
 
   void IntakeTopStateMachine();
   void IntakeBottomStateMachine();

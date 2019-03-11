@@ -12,11 +12,11 @@ const int BOTTOM_HATCH_STATE = 6; // Same for rocket and cargo bay, only need on
 const int HOLD_HATCH_STATE = 7;
 const int STOP_STATE = 8;
 const int LIFTING_ARM_STATE = 9;
-const int STATION_HATCH_STATE = 10;
 
 double elevator_voltage = 0.0;
 
 int encoder_counter_e = 0;
+int zeroing_counter_e  = 0;
 
 Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
@@ -81,10 +81,19 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       case INIT_STATE:
         frc::SmartDashboard::PutString("ELEV ", "init");
       if (std::abs(talonElevator1->GetSelectedSensorPosition(0)) < 10) {
+        if (zeroing_counter_e > 10) {
         elevator_state = BOTTOM_HATCH_STATE;
+        }
+        zeroing_counter_e++;
       } else {
         talonElevator1->SetSelectedSensorPosition(0, 0, 100);
+        talonElevator1->Set(ControlMode::PercentOutput, 0.0);
       }
+      // if (std::abs(talonArm->GetSelectedSensorPosition(0) - ENC_START_ANGLE) < 10) {
+      //   arm_state = REST_STATE;
+      // } else {
+      //   talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 100);
+      // }
       last_elevator_state = INIT_STATE;
       break;
 
@@ -143,11 +152,6 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       case LIFTING_ARM_STATE:
         frc::SmartDashboard::PutString("ELEV ", "lift arm");
       talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
-      break;
-
-      case STATION_HATCH_STATE:
-        frc::SmartDashboard::PutString("ELEV ", "statino hatch state");
-      talonElevator1->Set(ControlMode::MotionMagic, ENC_STATION_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
     }
   //} else {

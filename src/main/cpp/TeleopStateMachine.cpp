@@ -21,14 +21,16 @@ const int PLACE_CARGO_LOW_STATE = 13;
 const int PLACE_CARGO_MID_STATE = 14;
 const int PLACE_CARGO_HIGH_STATE = 15;
 const int PLACE_CARGO_BAY_STATE = 16;
+const int PLACE_CARGO_BAY_FAST_STATE = 17;
 
-const int POST_OUTTAKE_HATCH_STATE = 17;
-const int POST_OUTTAKE_CARGO_STATE = 18;
+const int POST_OUTTAKE_HATCH_STATE = 18;
+const int POST_OUTTAKE_CARGO_STATE = 19;
 int state = INIT_STATE;
 
 int last_state = 0;
 
 int counter_suction = 0;
+int counter_hatch = 0;
 
 bool state_top_intake = false; //set to false to override the states set in the state machine
 bool state_bottom_intake = false;
@@ -81,8 +83,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
     bool arm_high_cargo, bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
     bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo_ground,
     bool get_cargo_station, bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo,
-    bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low, bool place_cargo_high,
-    bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
+    bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low,
+    bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay,
+    bool place_cargo_bay_fast, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
@@ -92,6 +95,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       if (top_intake_in) {
         state_top_intake = false;
         intake->top_intake_state = intake->IN_STATE_H;
+        intake->bottom_intake_state = intake->IN_STATE_H;
       } else if (top_intake_out) {
         state_top_intake = false;
         intake->top_intake_state = intake->OUT_STATE_H;
@@ -122,7 +126,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         arm->arm_state = arm->REST_STATE_H;
       } else if (arm_mid) {
         state_arm = false;
-        arm->arm_state = arm->EXTRA_STATE_H; //TODO: CHANGE BACK!
+        arm->arm_state = arm->HATCH_STATE_H; //TODO: CHANGE BACK!
       } else if (arm_down) {
         state_arm = false;
         arm->arm_state = arm->CARGO_STATE_H;
@@ -224,6 +228,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           state = PLACE_CARGO_HIGH_STATE;
         } else if (place_cargo_bay) {
           state = PLACE_CARGO_BAY_STATE;
+        } else if (place_cargo_bay_fast) {
+          state = PLACE_CARGO_BAY_FAST_STATE;
         } else if (post_outtake_hatch) {
           state = POST_OUTTAKE_HATCH_STATE;
         } else if (post_outtake_cargo) {
@@ -236,7 +242,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         case GET_HATCH_STATION_INIT_STATE:
         frc::SmartDashboard::PutString("State", "GET HATCH STATION INIT");
         if (state_elevator) {
-          elevator->elevator_state = elevator->STATION_HATCH_STATE_H;
+          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
         }
         if (state_arm) {
             arm->arm_state = arm->HATCH_STATE_H; //place hatch
@@ -348,6 +354,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         }
 
         last_state = POST_INTAKE_HATCH_STATE;
+
         break;
 
         case GET_CARGO_GROUND_STATE:
@@ -581,6 +588,24 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         last_state = PLACE_CARGO_BAY_STATE;
         break;
 
+        case PLACE_CARGO_BAY_FAST_STATE:
+        frc::SmartDashboard::PutString("State", "BAY FAST CARGO");
+        //AutoBalance();
+        if (state_arm) {
+          arm->arm_state = arm->CARGO_STATE_H;
+        }
+
+        elevator->elevator_state = elevator->MID_CARGO_STATE_H;
+        if (!place_cargo_bay_fast) { //placeholder //and arm height at pos
+          intake->top_intake_state = intake->OUT_FAST_STATE_H;
+          intake->bottom_intake_state = intake->OUT_FAST_STATE_H;
+          if (bottom_intake_in) { //intake->ReleasedBall(
+            state = POST_OUTTAKE_CARGO_STATE;
+          }
+        }
+        last_state = PLACE_CARGO_BAY_FAST_STATE;
+        break;
+
         case POST_OUTTAKE_HATCH_STATE:
         frc::SmartDashboard::PutString("State", "POST OUTTAKE HATCH");
 
@@ -588,19 +613,27 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           arm->arm_state = arm->REST_STATE_H;
         }
 
-        if (state_elevator && arm->GetAngularPosition() > 2.0) {
-          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
-        }
-
-        if (state_solenoids) {
-          hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+        if (arm->GetAngularPosition() > 1.85) {
+          if (state_elevator){
+            elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+          }
+          if (state_solenoids) {
+            hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+          }
         }
 
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         }
 
-        state = WAIT_FOR_BUTTON_STATE;
+        if (counter_hatch > 25) {
+          state = WAIT_FOR_BUTTON_STATE;
+          counter_hatch = 0;
+        } else {
+          counter_hatch++;
+        }
+
+
         last_state = POST_OUTTAKE_HATCH_STATE;
         break;
 
