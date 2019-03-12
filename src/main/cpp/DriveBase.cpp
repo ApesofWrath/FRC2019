@@ -59,10 +59,10 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	} else { //regular constants
 
-		max_y_rpm = MAX_Y_RPM;
+		max_y_rpm = MAX_Y_FPS_AUTON;
 		max_yaw_rate = MAX_YAW_RATE;
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-		Kv = 1 / ACTUAL_MAX_Y_RPM;
+		Kv = 1 / MAX_Y_FPS_AUTON;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = 0.015;
@@ -368,6 +368,9 @@ void DriveBase::AutonDrive() {
 	double pf_l_vel = auton_row.at(3); //fps
 	double pf_r_vel = auton_row.at(4); //fps
 
+  frc::SmartDashboard::PutNumber("left vel pfder", pf_l_vel);
+  frc::SmartDashboard::PutNumber("right vel pfder", pf_r_vel);
+
 	if (pf_yaw_dis > PI) { //get negative half and positive half on circle - left half is positive
 		pf_yaw_dis -= (2 * PI);
 	}
@@ -484,13 +487,13 @@ void DriveBase::Controller(double ref_kick,
 	double yaw_rate_current = -1.0 * (double) ahrs->GetRate(); //might be rad/ss
 		//	* (double) ((PI) / 180.0); //left should be positive
 
-	  frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
-	  frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
+	  // frc::SmartDashboard::PutNumber("yaw vel", yaw_rate_current);
+	  // frc::SmartDashboard::PutNumber("yaw pos", ahrs->GetYaw());
 	 frc::SmartDashboard::PutNumber("max_y_rpm", max_y_rpm);
 
 
 	double target_yaw_rate = ref_yaw;
-  	frc::SmartDashboard::PutNumber("target_yaw_rate", target_yaw_rate);
+  	// frc::SmartDashboard::PutNumber("target_yaw_rate", target_yaw_rate);
 
 
   frc::SmartDashboard::PutNumber("ref r 1", ref_right);
@@ -547,15 +550,15 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   } else {
 
     if (ref_right < 0.0) {
-      k_f_right_vel = 1.0 / 580.0;
+      k_f_right_vel = 1.0 / MAX_Y_FPS_AUTON;
     } else {
-      k_f_right_vel = 1.0 / 580.0;
+      k_f_right_vel = 1.0 / MAX_Y_FPS_AUTON;
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / 570.0;
+      k_f_left_vel = 1.0 / MAX_Y_FPS_AUTON;
     } else {
-      k_f_left_vel = 1.0 / 610.0;
+      k_f_left_vel = 1.0 / MAX_Y_FPS_AUTON;
     }
 
     // const double MAX_Y_RPM = 500.0;
@@ -571,12 +574,6 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   	feed_forward_k = 0.0 * ref_kick;//kf kick vel
   }
 
-
-	frc::SmartDashboard::PutNumber("kf r", ref_right);
-	frc::SmartDashboard::PutNumber("kf l", ref_left);
-
-	frc::SmartDashboard::PutNumber("ff r", feed_forward_r *550.0);
-	frc::SmartDashboard::PutNumber("ff l", feed_forward_l*550.0);
 
 	//conversion to RPM from native unit
 	double l_current = -((double) canTalonLeft1->GetSelectedSensorVelocity(0)
@@ -908,7 +905,7 @@ bool DriveBase::VisionDriveStateMachine() {
 		case CREATE_PROFILE:
       frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
       // FOR PATH FINDER HYBRID DRIVE
-            GenerateVisionProfile(3.28, d2r(0), d2r(45)); // <-- testing version
+            GenerateVisionProfile(10, d2r(0), d2r(45)); // <-- testing version
 	   // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget(), visionDrive->GetRobotExitAngle());
 
      if (set_profile) {
