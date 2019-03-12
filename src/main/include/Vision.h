@@ -12,6 +12,7 @@ public:
 	Vision();
 	double GetYawToTarget();
 	double GetDepthToTarget();
+	double GetRobotExitAngle();
 
 };
 

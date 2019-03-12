@@ -267,7 +267,7 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 
 	double error_heading_h = target_heading - current_heading;
 
-	double total_heading_h = k_p_yaw_heading_pos * error_heading_h;
+	double total_heading_h = -1.0 * k_p_yaw_heading_pos * error_heading_h;
 
 	if (total_heading > max_yaw_rate) {
 		total_heading = max_yaw_rate;
@@ -282,7 +282,11 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 }
 
 //only to be used in teleop; auton will already have this essentially
-void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target) {
+// @PARAM: distance in meters, yaw in radians, exit angle in radians
+void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target, double exit_angle) {
+  frc::SmartDashboard::PutNumber("dist to tape", dist_to_target);
+  frc::SmartDashboard::PutNumer("yaw to tape", yaw_to_target);
+  frc::SmartDashboard::PutNumer("exit angle", exit_angle);
 
 	ZeroAll(true);
 
@@ -291,10 +295,20 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 
 	Waypoint *points = (Waypoint*) malloc(sizeof(Waypoint) * POINT_LENGTH);
 
+	double x_dist = dist_to_target * cos(std::abs(yaw_to_target));
+  double y_dist = dist_to_target * sin(std::abs(yaw_to_target));
+
+  if (yaw_to_target < 0.0) {
+    x_dist *= -1.0; //left is neg
+  }
+
+  frc::SmartDashboard::PutNumer("x dist", x_dist);
+  frc::SmartDashboard::PutNumer("y dist", y_dist);
+
 	Waypoint p1, p2;
 
 	p1 = {0.0, 0.0, 0.0};
-	p2 = {dist_to_target, 0.0, d2r(yaw_to_target)}; //y, x, yaw
+	p2 = {y_dist, x_dist, exit_angle}; //y, x, exit angle
 
 	points[0] = p1;
 	points[1] = p2;
@@ -336,9 +350,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	free(rightTrajectory);
 
 	SetAutonRefs(vision_profile);
-
 }
-
 //position controlller
 //auton targets, actually just pd
 void DriveBase::AutonDrive() {
@@ -887,13 +899,23 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-		//	GenerateVisionProfile((double)visionDrive->GetYawToTarget(), (double)visionDrive->GetDepthToTarget());
-			if (set_profile) {
+      // frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
+      // FOR PATH FINDER HYBRID DRIVE
+            // GenerateVisionProfile(3.28, d2r(0), d2r(45)); // <-- testing version
+	   // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget(), visionDrive->GetRobotExitAngle());
+
+     // if (set_profile) {
+			// 	vision_drive_state = FOLLOW_VIS_PROF;
+			// }
+
+      // FOR YAW ANGLE DRIVE
+      if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
 			return false;
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
+      frc::SmartDashboard::PutString("VIS DRIVE", "follow prof");
 			RunVisionDrive();
 			// if (row_index >= vision_profile.size()) {
 			// 	vision_drive_state = RESET;

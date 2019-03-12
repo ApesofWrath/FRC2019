@@ -17,7 +17,7 @@ void Robot::RobotInit() {
 	joyWheel = new Joystick(JOY_WHEEL);
 	joyOp = new Joystick(JOY_OP);
 
-  solenoid = new Solenoid(3, 3);
+  led_solenoid = new Solenoid(3, 3);
 
   drive_controller = new DriveController();
   vision = new Vision();
@@ -25,7 +25,7 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
-solenoid->Set(true);
+  led_solenoid->Set(true);
 }
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
@@ -66,7 +66,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() {
 
-    is_rotation = joyThrottle->GetRawButton(-1);
+    is_rotation = joyThrottle->GetRawButton(3);
 		is_vision = joyThrottle->GetRawButton(1);
 		is_regular = joyThrottle->GetRawButton(2);
 

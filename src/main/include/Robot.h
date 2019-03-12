@@ -41,7 +41,7 @@ class Robot : public frc::TimedRobot {
   const int JOY_OP = 2;
 
   Joystick *joyThrottle, *joyWheel, *joyOp;
-  Solenoid *solenoid;
+  Solenoid *led_solenoid;
   DriveController *drive_controller;
   Vision *vision;
 
