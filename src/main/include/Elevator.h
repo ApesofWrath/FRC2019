@@ -45,6 +45,8 @@ public:
 
   const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
   const double HOLD_HATCH_POS = 0.26; //get hatch ground, get cargo
+
+  const double INIT_CLIMB_HEIGHT = 0.6; //m - about
   //
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
@@ -136,9 +138,11 @@ private:
   std::vector<std::vector<double>> error_e = { {  0.0, 0.0}, { 0.0, 0.0 } };
   std::vector<std::vector<double>> K_e = { {  0.0, 0.0}, { 0.0, 0.0 } }; //just stores which gains being used
 
+  //climbing state
   double target, last_target, output, error, current, ang_error, height_error, ahrs_pitch;
   double robot_length = 1.5; //m
   double Kp_c = 0.08;
+  void GetRoll(double roll);
 
   // Constructor helpers
   void SetupTalon1();
