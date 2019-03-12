@@ -384,6 +384,20 @@ double Elevator::GetVoltageElevator() { //not voltage sent to the motor. the vol
   return u_e;
 }
 
+void Elevator::Climb() {
+
+  target = last_target - 0.1;
+  error = target - current;
+
+  ang_error = ahrs_pitch * 3.14159 / 180.0;
+  height_error = sin(ang_error) * robot_length;
+  error += height_error;
+  
+  output = error * Kp_c; //error is in m, so 0.08
+  talonElevator1->Set(ControlMode::PercentOutput, output);
+
+}
+
 void Elevator::SetZeroOffset() {
   position_offset_e =
   talonElevator1->GetSelectedSensorPosition(0);

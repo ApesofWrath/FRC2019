@@ -12,9 +12,6 @@
 #include "ElevatorConstants.h"
 
 class Elevator {
-//12,40 -
-//solenoid 0,1
-
 
 public:
 
@@ -102,6 +99,8 @@ public:
   void Move();
   void ElevatorStateMachine();
 
+  void Climb();
+
   bool IsElevatorHigh();
   void IsArmBack(double arm_angle);
 
@@ -136,6 +135,10 @@ private:
   double goal_pos_e = 0.0;
   std::vector<std::vector<double>> error_e = { {  0.0, 0.0}, { 0.0, 0.0 } };
   std::vector<std::vector<double>> K_e = { {  0.0, 0.0}, { 0.0, 0.0 } }; //just stores which gains being used
+
+  double target, last_target, output, error, current, ang_error, height_error, ahrs_pitch;
+  double robot_length = 1.5; //m
+  double Kp_c = 0.08;
 
   // Constructor helpers
   void SetupTalon1();
