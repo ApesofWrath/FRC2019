@@ -3,6 +3,11 @@ C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\exe\\frcUserProgr
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\2gcc2mxqqjvhu1mcdcnnnuhuf\\Vision.o
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\4ipmwnvld91t21754bsvxe4fw\\DriveBase.o
+C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5errbgsog0ibnqinc1remhvfz\\CenterLowHab_RocketRight_OneCargo.o
+C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\7ym19bilhxgqytfxda7w6awxb\\CenterLowHab_OneCargo.o
+C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\9lmnkjsuu16vypckm24cfj8xs\\MoveForward.o
+C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\bcm8b7gv7tj5n6k9zy1fzfw4a\\AutonDrive.o
+C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\bwzctwd29du3zkt3briyjflas\\CenterLowHab_TwoCargo.o
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\tmp\\expandedArchives\\wpilibc-cpp-2019.4.1-linuxathenadebug.zip_2b489a347709c84cd95758c39aa0c0b1\\linux\\athena\\shared\\libwpilibcd.so
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\tmp\\expandedArchives\\hal-cpp-2019.4.1-linuxathenadebug.zip_00691c549be86c0d1985658076a87dbd\\linux\\athena\\shared\\libwpiHald.so
 C:\\Users\\ApesOfWrath\\Desktop\\newauton2019\\FRC2019\\build\\tmp\\expandedArchives\\wpiutil-cpp-2019.4.1-linuxathenadebug.zip_c2efc78f7d04dada0598f87a51cdefa1\\linux\\athena\\shared\\libwpiutild.so

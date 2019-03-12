@@ -285,8 +285,8 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 // @PARAM: distance in meters, yaw in radians, exit angle in radians
 void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target, double exit_angle) {
   frc::SmartDashboard::PutNumber("dist to tape", dist_to_target);
-  frc::SmartDashboard::PutNumer("yaw to tape", yaw_to_target);
-  frc::SmartDashboard::PutNumer("exit angle", exit_angle);
+  frc::SmartDashboard::PutNumber("yaw to tape", yaw_to_target);
+  frc::SmartDashboard::PutNumber("exit angle", exit_angle);
 
 	ZeroAll(true);
 
@@ -302,22 +302,27 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
     x_dist *= -1.0; //left is neg
   }
 
-  frc::SmartDashboard::PutNumer("x dist", x_dist);
-  frc::SmartDashboard::PutNumer("y dist", y_dist);
+  frc::SmartDashboard::PutNumber("x dist", x_dist);
+  frc::SmartDashboard::PutNumber("y dist", y_dist);
 
 	Waypoint p1, p2;
 
 	p1 = {0.0, 0.0, 0.0};
-	p2 = {y_dist, x_dist, exit_angle}; //y, x, exit angle
+	p2 = {x_dist, y_dist, exit_angle}; //y, x, exit angle
 
 	points[0] = p1;
 	points[1] = p2;
 
 	TrajectoryCandidate candidate;
-	pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
-	PATHFINDER_SAMPLES_FAST, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
+
+  pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
+	PATHFINDER_SAMPLES_FAST, 0.02, 19.0, 10.0, 100000.0, &candidate);
+
+	// pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
+	// PATHFINDER_SAMPLES_FAST, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
 
 	length = candidate.length;
+  frc::SmartDashboard::PutNumber("candidate length", length);
 	Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
 
 	pathfinder_generate(&candidate, trajectory);
@@ -330,7 +335,9 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	pathfinder_modify_tank(trajectory, length, leftTrajectory, rightTrajectory,
 			wheelbase_width);
 
-	 vision_profile.resize(length, std::vector<double>(5));
+	 vision_profile.resize(length);
+   for (int i = 0; i < length; i++)
+      vision_profile[i].resize(5);
 
 	for (int i = 0; i < length; i++) {
 
@@ -843,7 +850,7 @@ void DriveBase::RunAutonDrive() {
 
 //Increments through target points of the motion profile
 void DriveBase::RunVisionDrive() {
-
+  // frc::SmartDashboard::PutNumber("row ")
 	//fill next point
 	for (int i = 0; i < vision_profile[0].size(); i++) { //can reuse after auto
 		auton_row.at(i) = vision_profile.at(row_index).at(i);
@@ -899,27 +906,27 @@ bool DriveBase::VisionDriveStateMachine() {
 	switch (vision_drive_state) {
 
 		case CREATE_PROFILE:
-      // frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
+      frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
       // FOR PATH FINDER HYBRID DRIVE
-            // GenerateVisionProfile(3.28, d2r(0), d2r(45)); // <-- testing version
+            GenerateVisionProfile(3.28, d2r(0), d2r(45)); // <-- testing version
 	   // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget(), visionDrive->GetRobotExitAngle());
 
-     // if (set_profile) {
-			// 	vision_drive_state = FOLLOW_VIS_PROF;
-			// }
-
-      // FOR YAW ANGLE DRIVE
-      if (set_profile) {
+     if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
 			}
+
+      // FOR YAW ANGLE DRIVE
+      // if (set_profile) {
+			// 	vision_drive_state = FOLLOW_PROFILE;
+			// }
 			return false;
 		break;
 		case FOLLOW_PROFILE: //TODO: add button for user to end visionDrive
       frc::SmartDashboard::PutString("VIS DRIVE", "follow prof");
 			RunVisionDrive();
-			// if (row_index >= vision_profile.size()) {
-			// 	vision_drive_state = RESET;
-			// }
+			if (row_index >= vision_profile.size()) {
+				vision_drive_state = RESET;
+			}
 			return false;
 		break;
 		case RESET:

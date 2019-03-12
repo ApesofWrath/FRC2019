@@ -53,7 +53,7 @@ void Robot::AutonomousPeriodic() {
     // Default Auto goes here
   }
 
-  //  drive_controller->RunAutonDrive();
+   drive_controller->RunAutonDrive();
 
 }
 
@@ -79,8 +79,13 @@ void Robot::TeleopPeriodic() {
   // 	   drive_controller->canTalonRight1->Set(ControlMode::PercentOutput, y);
   // 	   drive_controller->canTalonRight2->Set(ControlMode::PercentOutput, y);
   // 	   drive_controller->canTalonRight3->Set(ControlMode::PercentOutput, y);
-  //
-  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+
+
+
+  // drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  drive_controller->VisionDriveStateMachine();
+  // drive_controller->GenerateVisionProfile(3.28, d2r(0), d2r(45));
+
   // frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());
   //  // frc::SmartDashboard::PutNumber("L2", drive_controller->canTalonLeft2->GetOutputCurrent());
   //  frc::SmartDashboard::PutNumber("R1", drive_controller->canTalonRight1->GetOutputCurrent());
