@@ -85,14 +85,13 @@ double previous_yaw = 0.0;
 
 void Robot::TeleopPeriodic() {
 
-    is_rotation = joyThrottle->GetRawButton(-1);
-		is_vision = joyThrottle->GetRawButton(-1);
-		is_regular = joyThrottle->GetRawButton(-1);
-    is_regular = true;
+    is_rotation = joyThrottle->GetRawButton(3);
+    is_vision = joyThrottle->GetRawButton(1);
+    is_regular = joyThrottle->GetRawButton(2);
 
     drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
-    double y = joyThrottle->GetY();
+    // double y = joyThrottle->GetY();
     // double x = joyWheel->GetX();
 
     //  drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, x);
