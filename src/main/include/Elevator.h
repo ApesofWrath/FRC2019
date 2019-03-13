@@ -15,6 +15,21 @@ class Elevator {
 
 public:
 
+  // elevator posititons for the differnet states
+  const double TOP_HATCH_POS = 1.37; //top scoring
+  const double MID_HATCH_POS = 0.72; //mid scoring
+  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
+
+  const double TOP_CARGO_POS = 1.42; //top scoring
+  const double MID_CARGO_POS = 0.95; //mid rocket, bay
+  const double BOTTOM_CARGO_POS = 0.295; //bottom scoring
+
+  const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
+  const double HOLD_HATCH_POS = 0.26; //get hatch ground, get cargo
+
+  const double INIT_CLIMB_POS = 1.0; //m - about
+  //
+
   const double METERS_TO_ENCS = (1.0 / (3.14 * PULLEY_DIAMETER)) * 4096.0 / 2.0; //enc value of x results in enc height of 2x
 
   const int TALON_ID_1 = 14;//master
@@ -31,23 +46,9 @@ public:
   const int MID_HATCH_STATE_H = 5;
   const int BOTTOM_HATCH_STATE_H = 6; // Same for rocket and cargo bay, only need one
   const int HOLD_HATCH_STATE_H = 7;
-  const int STOP_STATE_H = 8;
+  const int CLIMB_STATE_H = 8;
   const int LIFTING_ARM_STATE_H = 9;
-
-  // elevator posititons for the differnet states
-  const double TOP_HATCH_POS = 1.37; //top scoring
-  const double MID_HATCH_POS = 0.72; //mid scoring
-  const double BOTTOM_HATCH_POS = 0.05; //bottom scoring, get hatch station state, post intake hatch, post intake cargo, post outtake hatch, post outtake cargo
-
-  const double TOP_CARGO_POS = 1.42; //top scoring
-  const double MID_CARGO_POS = 0.95; //mid rocket, bay
-  const double BOTTOM_CARGO_POS = 0.295; //bottom scoring
-
-  const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
-  const double HOLD_HATCH_POS = 0.26; //get hatch ground, get cargo
-
-  const double INIT_CLIMB_HEIGHT = 0.6; //m - about
-  //
+  const int INIT_CLIMB_STATE_H = 10;
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
   const double ENC_MID_CARGO_POS = MID_CARGO_POS * METERS_TO_ENCS;
@@ -57,6 +58,7 @@ public:
   const double ENC_BOTTOM_HATCH_POS = BOTTOM_HATCH_POS * METERS_TO_ENCS;
   const double ENC_HOLD_HATCH_POS = HOLD_HATCH_POS * METERS_TO_ENCS;
   const double ENC_LIFTING_ARM_POS = LIFTING_ARM_POS * METERS_TO_ENCS;
+  const double ENC_INIT_CLIMB_POS = INIT_CLIMB_POS * METERS_TO_ENCS;
 
   int last_elevator_state = INIT_STATE_H;
   int elevator_state = INIT_STATE_H;
@@ -121,7 +123,7 @@ private:
     {MID_HATCH_STATE_H, "ROCKET TOP HATCH"},
     {BOTTOM_HATCH_STATE_H, "HATCH BOTTOM"},
     {HOLD_HATCH_STATE_H, "BAY CARGO"},
-    {STOP_STATE_H, "STOP"}
+    {CLIMB_STATE_H, "STOP"}
   };
 
   //Move()

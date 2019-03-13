@@ -24,6 +24,12 @@ const int PLACE_CARGO_BAY_STATE = 16;
 
 const int POST_OUTTAKE_HATCH_STATE = 17;
 const int POST_OUTTAKE_CARGO_STATE = 18;
+
+const int INIT_CLIMB_STATE = 19;
+const int CLIMBING_STATE = 20;
+const int DRIVE_ON_STATE = 21;
+const int RESET_STATE = 22;
+
 int state = INIT_STATE;
 
 int last_state = 0;
@@ -36,11 +42,12 @@ bool state_arm = false;
 bool state_elevator = false;
 bool state_suction = false;
 bool state_solenoids = false;
+bool state_climber = false;
 
 bool auto_balanced = false;
 
 TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
-  Arm *arm_, HatchPickup *hatch_pickup_){
+  Arm *arm_, HatchPickup *hatch_pickup_, Climber *climber_){
 
     state = INIT_STATE;
 
@@ -49,6 +56,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
     intake = intake_;
     arm = arm_;
     hatch_pickup = hatch_pickup_;
+    climber = climber_;
 
   }
 
@@ -76,13 +84,13 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
   }
 
   void TeleopStateMachine::StateMachine(bool wait_for_button, bool bottom_intake_in, bool bottom_intake_out,
-    bool bottom_intake_stop, bool top_intake_in, bool top_intake_out, bool top_intake_stop,
+    bool climber_legs_up, bool top_intake_in, bool top_intake_out, bool top_intake_stop,
     bool suction_on, bool suction_off, bool hatch_out, bool hatch_in, bool arm_up, bool arm_mid,
     bool arm_high_cargo, bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
     bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo_ground,
     bool get_cargo_station, bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo,
     bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low, bool place_cargo_high,
-    bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button) {
+    bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay, bool post_outtake_hatch, bool post_outtake_cargo, bool climb_button) {
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
@@ -109,9 +117,6 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (bottom_intake_out) {
         state_bottom_intake = false;
         intake->bottom_intake_state = intake->OUT_SLOW_STATE_H;
-      } else if (bottom_intake_stop) {
-        state_bottom_intake = false;
-        intake->bottom_intake_state = intake->STOP_STATE_H;
       } else {
         state_bottom_intake = true;
       }
@@ -228,6 +233,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           state = POST_OUTTAKE_HATCH_STATE;
         } else if (post_outtake_cargo) {
           state = POST_OUTTAKE_CARGO_STATE;
+        } else if (climb_button) {
+          state = INIT_CLIMB_STATE;
         }
 
         last_state = WAIT_FOR_BUTTON_STATE;
@@ -457,7 +464,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-  //        if (hatch_pickup->ReleasedHatch()) { //extra_button
+  //        if (hatch_pickup->ReleasedHatch()) { //climb_button
             state = POST_OUTTAKE_HATCH_STATE;
 //          }
         }
@@ -477,7 +484,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
+      //    if (hatch_pickup->ReleasedHatch()) { //climb_button
             state = POST_OUTTAKE_HATCH_STATE;
       //    }
         }
@@ -497,7 +504,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (state_solenoids) {
             hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
           }
-      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
+      //    if (hatch_pickup->ReleasedHatch()) { //climb_button
             state = POST_OUTTAKE_HATCH_STATE;
       //    }
         }
@@ -625,6 +632,76 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
         last_state = POST_OUTTAKE_CARGO_STATE;
         break;
+
+        case INIT_CLIMB_STATE:
+        frc::SmartDashboard::PutString("State", "INIT CLIMB");
+
+        if (state_elevator) {
+          elevator->elevator_state = elevator->INIT_CLIMB_STATE_H; //height might work
+        }
+        if (elevator->GetElevatorPosition() >= .70) {
+          arm->arm_state = arm->GET_HATCH_GROUND_STATE_H;
+        }
+        if (state_top_intake) {
+          intake->top_intake_state = intake->STOP_STATE_H;
+        }
+        if (state_bottom_intake) {
+          intake->bottom_intake_state = intake->STOP_STATE_H;
+        }
+        if (state_solenoids) {
+          hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+        }
+        if (state_suction) {
+          hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+        }
+        if (!climb_button) { //start moving elev/climbers
+          state = CLIMBING_STATE;
+        }
+        break;
+
+        case CLIMBING_STATE:
+        frc::SmartDashboard::PutString("State", "CLIMBING");
+
+        climber->GetAngles(drive->ahrs->GetPitch(), drive->ahrs->GetRoll());
+
+        if (state_elevator) {
+          elevator->elevator_state = elevator->CLIMB_STATE_H;
+        }
+        if (state_climber) {
+          climber->climber_state = climber->UP_STATE_H;
+        }
+        if (climb_button) { //same button for now
+          state = DRIVE_ON_STATE;
+        }
+        //TODO: button safeties
+        break;
+
+        case DRIVE_ON_STATE:
+        frc::SmartDashboard::PutString("State", "DRIVE ON");
+        if (state_climber) {
+          climber->climber_state = climber->HOLD_STATE_H;
+        }
+        if (state_elevator) {
+          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+        }
+        if (climber_legs_up) {
+          state = RESET_STATE;
+        }
+        break;
+
+        case RESET_STATE:
+        frc::SmartDashboard::PutString("State", "RESET");
+        if (state_arm) {
+          arm->arm_state = arm->REST_STATE_H;
+        }
+        if (arm->GetAngularPosition() > 1.0) {
+          climber->climber_state = climber->RETRACT_STATE_H;
+        }
+        if (state_elevator) {
+          elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+        }
+        break;
+
       }
 
     }

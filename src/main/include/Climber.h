@@ -1,3 +1,6 @@
+#ifndef SRC_CLIMBER_H_
+#define SRC_CLIMBER_H_
+
 #include "Arm.h"
 #include "Elevator.h"
 #include "MotionProfiling/ElevatorMotionProfiler.h"
@@ -32,15 +35,17 @@ public:
   const int INIT_STATE_H = 0;
   const int STOP_STATE_H = 1;
   const int UP_STATE_H = 2;
-  const int DOWN_STATE_H = 3;
+  const int HOLD_STATE_H = 3;
+  const int RETRACT_STATE_H = 4;
   int climber_state = INIT_STATE_H;
 
   Climber(Elevator *elevator_);
   void ClimberStateMachine();
   void Up();
-  void Down();
+  void Hold();
   void Stop();
-  void GetPitch(double pitch);
+  void Retract();
+  void GetAngles(double pitch, double roll);
 
 private:
 
@@ -50,3 +55,5 @@ private:
 
 
 };
+
+#endif

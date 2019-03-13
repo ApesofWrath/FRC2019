@@ -10,8 +10,9 @@ const int TOP_HATCH_STATE = 4;
 const int MID_HATCH_STATE = 5;
 const int BOTTOM_HATCH_STATE = 6; // Same for rocket and cargo bay, only need one
 const int HOLD_HATCH_STATE = 7;
-const int STOP_STATE = 8;
+const int CLIMB_STATE = 8;
 const int LIFTING_ARM_STATE = 9;
+const int INIT_CLIMB_STATE = 10;
 
 double elevator_voltage = 0.0;
 
@@ -130,16 +131,20 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       talonElevator1->Set(ControlMode::MotionMagic, ENC_HOLD_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
 
-      case STOP_STATE:
-        frc::SmartDashboard::PutString("ELEV ", "stop");
-      Stop();
-      last_elevator_state = STOP_STATE;
+      case CLIMB_STATE:
+        frc::SmartDashboard::PutString("ELEV ", "climb");
+      Climb();
+      last_elevator_state = CLIMB_STATE;
       break;
 
       case LIFTING_ARM_STATE:
         frc::SmartDashboard::PutString("ELEV ", "lift arm");
       talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
+
+      case INIT_CLIMB_STATE:
+      frc::SmartDashboard::PutString("ELEV ", "init climb");
+    talonElevator1->Set(ControlMode::MotionMagic, ENC_INIT_CLIMB_POS, DemandType_ArbitraryFeedForward, 0.07);
     }
   //} else {
 //    Stop();
@@ -196,7 +201,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
   }
 
   void Elevator::Move() {
-    if (elevator_state != STOP_STATE) {
+    if (elevator_state != CLIMB_STATE) {
       UpdateMoveCoordinates();
       UpdateMoveError();
 
@@ -390,7 +395,7 @@ void Elevator::GetRoll(double roll) {
 
 void Elevator::Climb() {
 
-  target = last_target - 0.1;
+  target = last_target - 0.01; //0.5 m/s
   error = target - GetElevatorPosition();
 
   output = error * Kp_c; //error is in m, so 0.08

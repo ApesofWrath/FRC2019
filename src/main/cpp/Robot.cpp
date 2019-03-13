@@ -41,8 +41,9 @@ void Robot::RobotInit() {
   arm = new Arm(arm_profiler);
   intake = new Intake();
   hatch_pickup = new HatchPickup();
+  climber = new Climber(elevator);
 
-  tsm = new TeleopStateMachine(drive_controller, elevator, intake, arm, hatch_pickup);
+  tsm = new TeleopStateMachine(drive_controller, elevator, intake, arm, hatch_pickup, climber);
 
 }
 
@@ -138,7 +139,7 @@ void Robot::TeleopPeriodic() {
 
   bottom_intake_in  = joyOp1->GetRawButton(3);
   bottom_intake_out  =  joyOp1->GetRawButton(2);
-  bottom_intake_stop = joyOp1->GetRawButton(4);
+  //bottom_intake_stop = joyOp1->GetRawButton(4);
 
   get_hatch_station =  joyOp1->GetRawButton(5);
   get_hatch_ground = joyOp1->GetRawButton(6);
@@ -146,7 +147,7 @@ void Robot::TeleopPeriodic() {
   place_hatch_low = joyOp1->GetRawButton(8);
   place_hatch_mid = joyOp1->GetRawButton(9);
   place_hatch_high = joyOp1->GetRawButton(10);
-  extra_button = joyOp1->GetRawButton(11);
+  climb_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
 
 //bigger outtake cargo speed
@@ -173,13 +174,16 @@ wait_for_button = joyOp2->GetRawButton(12);
   top_intake_in = joyOp2->GetRawButton(7);
 
 
-  tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
+  tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, climber_legs_up, top_intake_in, top_intake_out, top_intake_stop,
     suction_on, suction_off, hatch_out, hatch_in, arm_up, arm_mid, arm_high_cargo, arm_down, elevator_hatch_up, elevator_hatch_mid, elevator_hatch_low,
     elevator_cargo_up, elevator_cargo_mid, elevator_cargo_low, get_cargo_ground, get_cargo_station, get_hatch_ground, get_hatch_station, post_intake_cargo, post_intake_hatch,
-    place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, extra_button);
+    place_hatch_high, place_hatch_mid, place_hatch_low, place_cargo_high, place_cargo_mid, place_cargo_low, place_cargo_bay, post_outtake_hatch, post_outtake_cargo, climb_button);
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 
   }
+
+  void Robot::DisabledInit() {}
+
 
   void Robot::TestPeriodic() {}
 

@@ -3,7 +3,8 @@
 const int INIT_STATE = 0;
 const int STOP_STATE = 1;
 const int UP_STATE = 2;
-const int DOWN_STATE = 3;
+const int HOLD_STATE = 3;
+const int RETRACT_STATE = 4;
 int climber_state = INIT_STATE;
 
 Climber::Climber(Elevator *elevator_) {
@@ -31,12 +32,15 @@ Climber::Climber(Elevator *elevator_) {
   talonClimb2->ConfigPeakOutputForward(1, 10);
   talonClimb2->ConfigPeakOutputReverse(-1, 10);
 
+  //no motion magic because no encoders
+
 }
 
+//thinking separate controllers for the diff angles will be better. more control over each angle controller.
 void Climber::Up() { //bring robot up
 
   //feedforward
-  target_left = elevator_climber->INIT_CLIMB_HEIGHT - elevator_climber->GetElevatorPosition(); //should be positive
+  target_left = elevator_climber->INIT_CLIMB_POS - elevator_climber->GetElevatorPosition(); //should be positive
   target_right = target_left;
 
   //forward/backward controller
@@ -54,29 +58,37 @@ void Climber::Up() { //bring robot up
   //side/side controller
   side_angle_error = ahrs_roll * 3.14159 / 180.0;
   side_left_error += sin(side_angle_error) * robot_width / 2.0; //or opposite +-
-  side_right_error -= sin(side_angle_error) * robot_width / 2.0;
+  side_right_error -= sin(side_angle_error) * robot_width / 2.0; //CG is about line down the robot
 
   side_left_output = left_error * Kp_l_c_s;
   side_right_output = right_error * Kp_r_c_s;
 
   //combine, + ff
-  left_output = forward_left_output + side_left_output + Kf_l_c * target_left;
-  right_output = forward_right_output + side_right_output + Kf_r_c * target_right;
+  left_output = forward_left_output + side_left_output;
+  right_output = forward_right_output + side_right_output;
 
   talonClimb1->Set(ControlMode::PercentOutput, left_output);
   talonClimb2->Set(ControlMode::PercentOutput, right_output);
 }
 
-void Climber::Down() { //bring robot down
-  talonClimb1->Set(ControlMode::PercentOutput, 0.0);
+void Climber::Hold() {
+  talonClimb1->Set(ControlMode::PercentOutput, -0.0);
+  talonClimb2->Set(ControlMode::PercentOutput, -0.0);
 }
 
 void Climber::Stop() {
   talonClimb1->Set(ControlMode::PercentOutput, 0.0);
+  talonClimb2->Set(ControlMode::PercentOutput, -0.0);
 }
 
-void Climber::GetPitch(double pitch) {
+void Climber::Retract() {
+  talonClimb1->Set(ControlMode::PercentOutput, 0.0);
+  talonClimb2->Set(ControlMode::PercentOutput, -0.0);
+}
 
+void Climber::GetAngles(double pitch, double roll) {
+  ahrs_pitch = pitch;
+  ahrs_roll = roll;
 }
 
 void Climber::ClimberStateMachine() {
@@ -84,11 +96,6 @@ void Climber::ClimberStateMachine() {
   switch (climber_state) {
     case INIT_STATE:
       SmartDashboard::PutString("Climber", "INIT");
-      if (std::abs(talonClimb1->GetSelectedSensorPosition(0)) < 10) {
-        climber_state = STOP_STATE;
-      } else {
-        talonClimb1->SetSelectedSensorPosition(0, 0, 100);
-      }
       climber_state = STOP_STATE;
       break;
     case STOP_STATE:
@@ -99,9 +106,13 @@ void Climber::ClimberStateMachine() {
       SmartDashboard::PutString("Climber", "UP");
       Up();
       break;
-    case DOWN_STATE:
-      SmartDashboard::PutString("Climber", "DOWN");
-      Down();
+    case HOLD_STATE:
+      SmartDashboard::PutString("Climber", "HOLD");
+      Hold();
+      break;
+    case RETRACT_STATE:
+      SmartDashboard::PutString("Climber", "RETRACT");
+      Retract();
       break;
   }
 }
