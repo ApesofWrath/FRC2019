@@ -25,7 +25,7 @@ void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bo
   // myfile << "LENGTH: " << std::to_string(length);
   Segment *trajectory = (Segment*) malloc(length * sizeof(Segment));
 
- int result = pathfinder_generate(&candidate, trajectory);
+  int result = pathfinder_generate(&candidate, trajectory);
 
   Segment *leftTrajectory = (Segment*) malloc(sizeof(Segment) * length);
 	Segment *rightTrajectory = (Segment*) malloc(sizeof(Segment) * length);
@@ -59,8 +59,8 @@ void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bo
 
 Waypoint AutonDrive::BottomCargoRefill(Waypoint start_point, bool isReversed) {
   Waypoint points[3];
-  Waypoint mid = {9.5, 3, d2r(180)};
-  Waypoint end = {8.5, -4, d2r(-90)};
+  Waypoint mid = {3, 9.5, d2r(180)};
+  Waypoint end = {-4, 8.5, d2r(-90)};
   points[0] = start_point;
   points[1] = mid;
   points[2] = end;
@@ -71,7 +71,7 @@ Waypoint AutonDrive::BottomCargoRefill(Waypoint start_point, bool isReversed) {
 // May need to add option to go through further point to make sure it doesn't hit the hab platform
 Waypoint AutonDrive::LeftFrontCargoBay(Waypoint start_point, bool isReversed) {
   Waypoint points[2];
-  Waypoint end = {-1, 12, d2r(0)};
+  Waypoint end = {12, -1, d2r(0)};
   points[0] = start_point;
   points[1] = end;
   GeneratePartialTrajectory(2, points, isReversed);
@@ -80,7 +80,7 @@ Waypoint AutonDrive::LeftFrontCargoBay(Waypoint start_point, bool isReversed) {
 
 Waypoint AutonDrive::RightFrontCargoBay(Waypoint start_point, bool isReversed) {
   Waypoint points[2];
-  Waypoint end = {1, 12, d2r(0)};
+  Waypoint end = {12, 1, d2r(0)};
   points[0] = start_point;
   points[1] = end;
   GeneratePartialTrajectory(2, points, isReversed);
@@ -90,8 +90,8 @@ Waypoint AutonDrive::RightFrontCargoBay(Waypoint start_point, bool isReversed) {
 Waypoint AutonDrive::TestModule(Waypoint start_point) {
   int num_points = 3;
   Waypoint points[num_points]; // Assuming start and end point only
-  Waypoint p2 = { -16, 0, d2r(0) };             // Waypoint @ x=-1, y= 2, exit angle= 0 radians
-  Waypoint p3 = {  -21.5, 1.1, d2r(-10) };             // Waypoint @ x= 2, y= 4, exit angle= 0 radians
+  Waypoint p2 = { 0, -16, d2r(0) };             // Waypoint @ x=-1, y= 2, exit angle= 0 radians
+  Waypoint p3 = {  1.1, 21.5, d2r(-10) };             // Waypoint @ x= 2, y= 4, exit angle= 0 radians
   points[0] = start_point;
   points[1] = p2;
   points[2] = p3;
@@ -110,23 +110,73 @@ Waypoint AutonDrive::Forward(Waypoint start_point, bool isReversed) {
 
 Waypoint AutonDrive::RightRocketFront(Waypoint start_point, bool isReversed) {
   Waypoint points[2];
-  Waypoint end = { 10.5 , 13 , d2r(90) };
+  Waypoint end = { 13 , 10.5 , d2r(90) };
   points[0] = start_point;
   points[1] = end;
   GeneratePartialTrajectory(2,points, isReversed);
 }
 
+Waypoint AutonDrive::LeftRocketFront(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { 13, -10.5, d2r(-90) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::LeftRocketLeft(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { 11, -11.5, d2r(-28.75) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::RightRocketRight(Waypoint start_point, bool isReversed){
+  Waypoint points[2];
+  Waypoint end = { 11, 11.5, d2r(28.75) };
+  points[0] = start_point;
+  points[1] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::LeftRocketBack(Waypoint start_point, bool isReversed) {
+  Waypoint points[4];
+  Waypoint pt1 = { 9, -2.5, d2r(-10) };
+  Waypoint pt2 = { 17, -6.5, d2r(-50) };
+  Waypoint end = { 15, -11.5, d2r(-151.25) };
+  points[0] = start_point;
+  points[1] = pt1;
+  points[2] = pt2;
+  points[3] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
+Waypoint AutonDrive::RightRocketBack(Waypoint start_point, bool isReversed) {
+  Waypoint points[4];
+  Waypoint pt1 = { 9, 2.5, d2r(10) };
+  Waypoint pt2 = { 17, 6.5, d2r(50) };
+  Waypoint end = { 15, 11.5, d2r(151.25) };
+  points[0] = start_point;
+  points[1] = pt1;
+  points[2] = pt2;
+  points[3] = end;
+  GeneratePartialTrajectory(2,points,isReversed);
+}
+
 void AutonDrive::FillRemainingTrajectory() {
   // Out of bounds
-  if (current_index >= 0 && current_index <= 1500) {
-    frc::SmartDashboard::PutString("fill", "y");
-      for (int i = current_index; i < 1500; i++) {
-        full_refs.at(i).at(0) = full_refs.at(i - 1).at(0);
-        full_refs.at(i).at(1) = full_refs.at(i - 1).at(1);
-        full_refs.at(i).at(2) = full_refs.at(i - 1).at(2);
-        full_refs.at(i).at(3) = full_refs.at(i - 1).at(3);
-        full_refs.at(i).at(4) = full_refs.at(i - 1).at(4);
-    }
+  if (current_index <= 0 || current_index >= 1500){
+    return;
+  }
+
+  for (int i = current_index; i < 1500; i++) {
+    full_refs.at(i).at(0) = full_refs.at(i - 1).at(0);
+    full_refs.at(i).at(1) = full_refs.at(i - 1).at(1);
+    full_refs.at(i).at(2) = full_refs.at(i - 1).at(2);
+    full_refs.at(i).at(3) = full_refs.at(i - 1).at(3);
+    full_refs.at(i).at(4) = full_refs.at(i - 1).at(4);
+    full_refs.at(i).at(5) = full_refs.at(i - 1).at(5);
   }
 }
 

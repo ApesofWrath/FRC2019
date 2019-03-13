@@ -70,7 +70,7 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		max_y_rpm = MAX_Y_RPM;
 		max_yaw_rate = MAX_YAW_RATE;
 		actual_max_y_rpm = ACTUAL_MAX_Y_RPM;
-		Kv = 1.0 / ACTUAL_MAX_Y_RPM_AUTON;
+		Kv = 1.0 / MAX_Y_FPS_AUTON;
 		//max_yaw_rate = (max_yaw_rate / actual_max_y_rpm) * max_y_rpm;
 
 		k_p_right_vel = K_P_RIGHT_VEL;
@@ -85,11 +85,11 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 
 	}
 
-  actual_max_y_rpm_auton = ACTUAL_MAX_Y_RPM_AUTON;
-  actual_max_y_rpm_l_f = ACTUAL_MAX_Y_RPM_L_F;
-  actual_max_y_rpm_l_b = ACTUAL_MAX_Y_RPM_L_B;
-  actual_max_y_rpm_r_f = ACTUAL_MAX_Y_RPM_R_F;
-  actual_max_y_rpm_r_b = ACTUAL_MAX_Y_RPM_R_B;
+  // actual_max_y_rpm_auton = ACTUAL_MAX_Y_RPM_AUTON;
+  // actual_max_y_rpm_l_f = ACTUAL_MAX_Y_RPM_L_F;
+  // actual_max_y_rpm_l_b = ACTUAL_MAX_Y_RPM_L_B;
+  // actual_max_y_rpm_r_f = ACTUAL_MAX_Y_RPM_R_F;
+  // actual_max_y_rpm_r_b = ACTUAL_MAX_Y_RPM_R_B;
 
 	LF = l1;
 	L2 = l2;
@@ -527,15 +527,15 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
   } else {
 
     if (ref_right < 0.0) {
-      k_f_right_vel = 1.0 / actual_max_y_rpm_r_b;
+      k_f_right_vel = 1.0 / MAX_Y_RPM; // TODO: CHANGE TO CORRECT MAX
     } else {
-      k_f_right_vel = 1.0 / actual_max_y_rpm_r_f;
+      k_f_right_vel = 1.0 / MAX_Y_RPM; // TODO: CHANGE TO CORRECT MAX
     }
 
     if (ref_left < 0.0) {
-      k_f_left_vel = 1.0 / actual_max_y_rpm_l_b;
+      k_f_left_vel = 1.0 / MAX_Y_RPM; // TODO: CHANGE TO CORRECT MAX
     } else {
-      k_f_left_vel = 1.0 / actual_max_y_rpm_l_f;
+      k_f_left_vel = 1.0 / MAX_Y_RPM; // TODO: CHANGE TO CORRECT MAX
     }
 
     feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
@@ -632,7 +632,8 @@ frc::SmartDashboard::PutNumber("r position", GetRightPosition());
 	frc::SmartDashboard::PutNumber("% OUT LEFT", total_left);
 	frc::SmartDashboard::PutNumber("% OUT RIGHT", -total_right);
 
-
+  canTalonRight1->Set(ControlMode::PercentOutput, -total_right);
+  canTalonLeft1->Set(ControlMode::PercentOutput, total_left);
 
 	yaw_last_error = yaw_error;
 	l_last_error_vel = l_error_vel_t;
@@ -789,7 +790,7 @@ std::vector<std::vector<double> > DriveBase::GetAutonProfile() {
 //		row_index = 0, vision_profile filled, zeroing_indeces filled if needed, zero_counter = 0 if needed, continue_profile set as needed
 void DriveBase::RunAutonProfile() {
 	frc::SmartDashboard::PutNumber("row index", row_index);
-	frc::SmartDashboard::PutString("STOPPED", "");
+	frc::SmartDashboard::PutString("STOPPED", "false");
 	//fill next point horizontally
 	for (int i = 0; i < auton_profile[row_index].size(); i++) {
 		auton_row.at(i) = auton_profile.at(row_index).at(i);

@@ -17,6 +17,7 @@
 #include <pathfinder.h>
 
 #include "AutonSequences/MoveForward.h"
+#include "AutonSequences/CenterLowHab_TwoCargo.h"
 #include "DriveController.h"
 #include "Vision.h"
 
@@ -57,7 +58,7 @@ class Robot : public frc::TimedRobot {
   Joystick *joyThrottle, *joyWheel, *joyOp;
   DriveController *drive_controller;
   Vision *vision;
-  MoveForward *move_forward;
+  CenterLowHabTwoCargo *sequence;
 
   bool is_rotation, is_vision, is_regular;
 

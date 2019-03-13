@@ -38,7 +38,7 @@ const double K_D_LEFT_DIS = 0.0;
 ///ROBOT DRIVE CONSTANTS///
 //TODO: find empirically
 const double MAX_FPS = 15.0; //used in auton pathfinder
-const double FF_SCALE = 0.7; //auton
+const double FF_SCALE = 1.0; //auton
 
 const double WHEEL_DIAMETER = 6.0; //inches, for fps for auton
 const double TICKS_PER_ROT = 4096;//1365.0; //about 3 encoder rotations for each actual rotation // 4096 ticks per rotation for mag encoders
@@ -47,6 +47,8 @@ const double TICKS_PER_FOOT = 1315.0; //auton
 const double MAX_Y_RPM = 550.0;
 const double ACTUAL_MAX_Y_RPM = 550.0;
 const double MAX_YAW_RATE = 15.0;
+
+const double MAX_Y_FPS_AUTON = MAX_Y_RPM * TICKS_PER_ROT / TICKS_PER_FOOT / 60;
 
 //misc
 

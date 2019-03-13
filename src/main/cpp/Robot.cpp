@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2017-2018 FIRST. All RiFghts Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -26,8 +26,11 @@ void Robot::RobotInit() {
   drive_controller = new DriveController();
   vision = new Vision();
 
-  move_forward = new MoveForward();
-  move_forward->BuildTotalTrajectory();
+  // move_forward = new MoveForward();
+  // move_forward->BuildTotalTrajectory();
+  Waypoint start = {0.0, 0.0, 0.0};
+  sequence = new CenterLowHabTwoCargo(start);
+  sequence->BuildTotalTrajectory();
 }
 
 void Robot::RobotPeriodic() {
@@ -63,15 +66,18 @@ drive_controller->ZeroAll(true);
 
 
   }
-  drive_controller->RestartVision();
-  // profile = move_forward->GetFullProfile();
-  // frc::SmartDashboard::PutNumber("first", move_forward->GetFullProfile().at(1499).at(2));
-  // drive_controller->SetAutonRefs(profile);
+  // drive_controller->RestartVision();
+  profile = sequence->GetFullProfile();
+  frc::SmartDashboard::PutNumber("first", profile.at(1499).at(2));
+  drive_controller->SetAutonRefs(profile);
 }
 
 void Robot::AutonomousPeriodic() {
-  // drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-  drive_controller->VisionDriveStateMachine();
+  bool is_regular = false;
+  bool is_vision= false;
+  bool is_rotation = false;
+  drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  // drive_controller->VisionDriveStateMachine();
 }
 
 void Robot::TeleopInit() {

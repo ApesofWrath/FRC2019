@@ -9,7 +9,7 @@ CenterLowHabTwoCargo::CenterLowHabTwoCargo(Waypoint start) {
   WHEELBASE_WIDTH = 2.1; // TODO: determine (in meters)
 }
 
-void CenterLowHabTwoCargo::BuildTotalTrajectory() {
+void AutonDrive::BuildTotalTrajectory() {
   Waypoint end;
   end = LeftFrontCargoBay(start_pos, false);
   end = BottomCargoRefill(end, true);
