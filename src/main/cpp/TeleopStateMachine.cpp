@@ -1,4 +1,4 @@
-#include "TeleopStateMachine.h"
+ #include "TeleopStateMachine.h"
 
 const int INIT_STATE = 0;
 const int WAIT_FOR_BUTTON_STATE = 1;
@@ -58,6 +58,16 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
   void TeleopStateMachine::Initialize(){
     state = INIT_STATE;
+  }
+
+  void TeleopStateMachine::Disabled() {
+    arm->arm_state = arm->REST_STATE_H;
+    elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
+    intake->top_intake_state = intake->STOP_STATE_H;
+    intake->bottom_intake_state = intake->STOP_STATE_H;
+    hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+    hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+
   }
 
 //only used in place high states
@@ -385,6 +395,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         }
         //else if (state_elevator && arm->GetAngularPosition() > 1.5) {
         //  elevator->elevator_state = elevator->HOLD_HATCH_STATE_H; //same as hold cargo height
+    
           if ((intake->HaveBall() || post_intake_cargo) &&  arm->arm_state == arm->GET_HATCH_GROUND_STATE_H) { //
             state = POST_INTAKE_CARGO_STATE;
           }

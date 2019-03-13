@@ -278,7 +278,7 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 
 	Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
 			0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
-		0.0, 0.0, 0.0, 0.0);
+			0.0, 0.0, 0.0, 0.0);
 
 }
 
@@ -841,30 +841,36 @@ void DriveBase::RunVisionProfile() {
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
 
-		if (is_regular) {
-			teleop_drive_state = REGULAR;
-		} else if (is_vision) {
-			teleop_drive_state = VISION_DRIVE;
-		} else if (is_rotation) {
-			teleop_drive_state = ROTATION_CONTROLLER;
-		}
+		// if (is_regular) {
+		// 	teleop_drive_state = REGULAR;
+		// } else if (is_vision) {
+		// 	teleop_drive_state = VISION_DRIVE;
+		// } else if (is_rotation) {
+		// 	teleop_drive_state = ROTATION_CONTROLLER;
+		// }
+		//
+		// switch (teleop_drive_state) {
+		// 	case REGULAR:
+		// 	frc::SmartDashboard::PutString("DRIVE", "reg");
+		// 	TeleopWCDrive(JoyThrottle, JoyWheel);
+		// 	break;
+		// 	case VISION_DRIVE:
+		// 	frc::SmartDashboard::PutString("DRIVE", "vis");
+		// 	is_vision_done = VisionDriveStateMachine();
+		// 	if (is_vision_done) {
+		// 		teleop_drive_state = REGULAR;
+		// 	}
+		// 	break;
+		// 	case ROTATION_CONTROLLER:
+		// 	frc::SmartDashboard::PutString("DRIVE", "rot");
+		// 	RotationController(JoyWheel);
+		// 	break;
+		// }
 
-		switch (teleop_drive_state) {
-			case REGULAR:
-			frc::SmartDashboard::PutString("DRIVE", "reg");
-			TeleopWCDrive(JoyThrottle, JoyWheel);
-			break;
-			case VISION_DRIVE:
-			frc::SmartDashboard::PutString("DRIVE", "vis");
-			is_vision_done = VisionDriveStateMachine();
-			if (is_vision_done) {
-				teleop_drive_state = REGULAR;
-			}
-			break;
-			case ROTATION_CONTROLLER:
-			frc::SmartDashboard::PutString("DRIVE", "rot");
+		if (is_rotation) {
 			RotationController(JoyWheel);
-			break;
+		} else {
+			TeleopWCDrive(JoyThrottle, JoyWheel);
 		}
 
 }

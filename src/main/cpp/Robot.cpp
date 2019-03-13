@@ -114,7 +114,7 @@ void Robot::AutonomousPeriodic() {
     bottom_intake_out  =  joyOp1->GetRawButton(2);
     bottom_intake_stop = joyOp1->GetRawButton(4);
     get_hatch_station =  joyOpButtons->GetRawButton(12);
-    post_intake_hatch = joyOp1->GetRawButton(1);
+//    post_intake_hatch = joyOp1->GetRawButton(1);
 
     place_hatch_low = joyOpButtons->GetRawButton(15);
     place_hatch_mid = joyOpButtons->GetRawButton(2);
@@ -130,20 +130,22 @@ void Robot::AutonomousPeriodic() {
     // suction_on = joyOp1->GetRawButton(8);
     // suction_off = joyOp1->GetRawButton(9);
      arm_up = joyOpButtons->GetRawButton(6);
-     arm_mid = joyOpButtons->GetRawButton(5);
+     post_intake_hatch = joyOpButtons->GetRawButton(5);
 
     elevator_hatch_mid = joyOp1->GetRawButton(12);
 
     get_cargo_ground = joyOpButtons->GetRawButton(14);
     //get_cargo_station = joyOpButtons->GetRawButton(8);
-    post_intake_cargo = joyOpButtons->GetRawButton(1);
+    post_intake_hatch = joyOpButtons->GetRawButton(1);
     place_cargo_bay = joyOpButtons->GetRawButton(16); //same as mid
     place_cargo_low =  joyOpButtons->GetRawButton(9);
     place_cargo_mid =  joyOpButtons->GetRawButton(16);
     place_cargo_high = joyOpButtons->GetRawButton(3);
     //have shot ball
 
-    top_intake_in = joyOpButtons->GetRawButton(4);
+    top_intake_in = joyOpButtons->GetRawButton(5);
+  post_intake_cargo = joyOpButtons->GetRawButton(4);
+
 
 
     tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
@@ -168,9 +170,9 @@ void Robot::TeleopPeriodic() {
 
  //arm->talonArm->Set(ControlMode::PercentOutput, joyThrottle->GetRawAxis(3));
   led_solenoid->Set(true);
-  is_rotation = false;
+  is_rotation = joyWheel->GetRawButton(5);
   is_vision = false;
-  is_regular = true;
+  //is_regular = true;
 
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
@@ -182,10 +184,10 @@ void Robot::TeleopPeriodic() {
   hatch_pickup->SuctionStateMachine();
   hatch_pickup->SolenoidStateMachine();
 
-  hatch_out = joyOp1->GetRawButton(1);
-  bottom_intake_in  = joyOp1->GetRawButton(3);
-  bottom_intake_out  =  joyOp1->GetRawButton(2);
-  bottom_intake_stop = joyOp1->GetRawButton(4);
+  // hatch_out = joyOp1->GetRawButton(1);
+  // bottom_intake_in  = joyOp1->GetRawButton(3);
+  // bottom_intake_out  =  joyOp1->GetRawButton(2);
+  // bottom_intake_stop = joyOp1->GetRawButton(4);
   get_hatch_station =  joyOpButtons->GetRawButton(12);
   post_intake_hatch = joyOp1->GetRawButton(1);
 
@@ -205,18 +207,18 @@ void Robot::TeleopPeriodic() {
    arm_up = joyOpButtons->GetRawButton(6);
    arm_mid = joyOpButtons->GetRawButton(5);
 
-  elevator_hatch_mid = joyOp1->GetRawButton(12);
+//  elevator_hatch_mid = joyOp1->GetRawButton(12);
 
   get_cargo_ground = joyOpButtons->GetRawButton(14);
   //get_cargo_station = joyOpButtons->GetRawButton(8);
-  post_intake_cargo = joyOpButtons->GetRawButton(1);
+  post_intake_cargo = joyOpButtons->GetRawButton(4);
   place_cargo_bay = joyOpButtons->GetRawButton(16); //same as mid
   place_cargo_low =  joyOpButtons->GetRawButton(9);
   place_cargo_mid =  joyOpButtons->GetRawButton(16);
   place_cargo_high = joyOpButtons->GetRawButton(3);
   //have shot ball
 
-  top_intake_in = joyOpButtons->GetRawButton(4);
+  top_intake_in = joyOpButtons->GetRawButton(5);
 
 
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,
@@ -227,6 +229,10 @@ void Robot::TeleopPeriodic() {
     // set those buttons to change the states in ElevatorStateMachine. Use if/else statements. Ask me if you don't understand what to do.
 
   }
+
+  void Robot::DisabledInit() {
+   tsm->Disabled();
+   }
 
   void Robot::TestPeriodic() {}
 

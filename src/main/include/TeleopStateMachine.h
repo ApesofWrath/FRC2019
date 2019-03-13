@@ -15,6 +15,7 @@
 
 class TeleopStateMachine {
 public:
+
   TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
       Arm *arm_, HatchPickup *hatch_pickup_);
 
@@ -29,6 +30,7 @@ public:
     bool place_cargo_bay_fast, bool post_outtake_hatch, bool post_outtake_cargo, bool extra_button);
 
   void Initialize();
+  void Disabled();
   void AutoBalance();
 
   DriveController *drive;

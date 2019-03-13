@@ -185,7 +185,7 @@ bool Intake::HaveBall() {
   frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
   frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
 
-  if ((talonIntake1->GetOutputCurrent() > 13.0) || (talonIntake2->GetOutputCurrent() > 15.0)) { // has to be top because bottom spikes if it hits the ground
+  if ((talonIntake1->GetOutputCurrent() > 13.0) && (talonIntake2->GetOutputCurrent() > 15.0)) { // has to be top because bottom spikes if it hits the ground
     return true;
   } else {
     return false;
