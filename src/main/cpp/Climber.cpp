@@ -35,17 +35,33 @@ Climber::Climber(Elevator *elevator_) {
 
 void Climber::Up() { //bring robot up
 
-  target = elevator_climber->INIT_CLIMB_HEIGHT - elevator_climber->GetElevatorPosition(); //should be positive
-  left_error = target - GetClimberPosition();
-  right_error = left_error;
+  //feedforward
+  target_left = elevator_climber->INIT_CLIMB_HEIGHT - elevator_climber->GetElevatorPosition(); //should be positive
+  target_right = target_left;
 
-  ang_error = ahrs_pitch * 3.14159 / 180.0;
-  height_error = sin(ang_error) * robot_width;
-  left_error += height_error / 2.0; //or opposite +-
-  right_error -= height_error / 2.0;
+  //forward/backward controller
+  forward_angle_error = ahrs_pitch * 3.14159 / 180.0; //same for both legs
 
-  right_output = Kp_r_c * right_error + Kf_r_c * target;
-  left_output = Kp_l_c * left_error + Kf_l_c * target;
+  current_left_height = sin(forward_angle_error) * robot_width + elevator_climber->GetElevatorPosition();
+  current_right_height = current_left_height; //for purposes of forward angle
+
+  forward_left_error = target_left - current_left_height;
+  forward_right_error = target_right - current_right_height;
+
+  forward_left_output = forward_left_error * Kp_l_c_f;
+  forward_right_output = forward_right_error * Kp_r_c_f;
+
+  //side/side controller
+  side_angle_error = ahrs_roll * 3.14159 / 180.0;
+  side_left_error += sin(side_angle_error) * robot_width / 2.0; //or opposite +-
+  side_right_error -= sin(side_angle_error) * robot_width / 2.0;
+
+  side_left_output = left_error * Kp_l_c_s;
+  side_right_output = right_error * Kp_r_c_s;
+
+  //combine, + ff
+  left_output = forward_left_output + side_left_output + Kf_l_c * target_left;
+  right_output = forward_right_output + side_right_output + Kf_r_c * target_right;
 
   talonClimb1->Set(ControlMode::PercentOutput, left_output);
   talonClimb2->Set(ControlMode::PercentOutput, right_output);
@@ -88,11 +104,4 @@ void Climber::ClimberStateMachine() {
       Down();
       break;
   }
-}
-
-double Climber::GetClimberPosition() {
-
-  return (((talonClimb1->GetSelectedSensorPosition(0)) / 4096.0)
-  * (3.1415 * 0.0381) * 2.0); //*2 for cascading elev
-
 }

@@ -25,6 +25,8 @@ public:
   const double Ki_l_c = 0.0;
   const double Kd_l_c = 0.0;
 
+  double Kp_l_c_f, Kp_r_c_f, Kp_l_c_s, Kp_r_c_s;
+
   const double robot_width = 0.56; //m - dist from one leg to the other
 
   const int INIT_STATE_H = 0;
@@ -40,11 +42,11 @@ public:
   void Stop();
   void GetPitch(double pitch);
 
-  double GetClimberPosition();
-
 private:
 
-  double ahrs_pitch, target, left_error, right_error, ang_error, height_error, right_output, left_output;
+  double ahrs_pitch, ahrs_roll, target, left_error, right_error,
+  ang_error, height_error, right_output, left_output, target_left, target_right, forward_angle_error, current_left_height, current_right_height, forward_left_error, forward_right_error, forward_left_output, forward_right_output,
+  side_angle_error, side_left_error, side_right_error, side_left_output, side_right_output;
 
 
 };
