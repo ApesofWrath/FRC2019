@@ -4,5 +4,5 @@
 class CenterLowHabTwoCargo : public AutonDrive {
 public:
   CenterLowHabTwoCargo(Waypoint start);
-  // void BuildTotalTrajectory();
+  void BuildTotalTrajectory();
 };

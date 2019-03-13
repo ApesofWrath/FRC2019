@@ -58,7 +58,7 @@ class Robot : public frc::TimedRobot {
   Joystick *joyThrottle, *joyWheel, *joyOp;
   DriveController *drive_controller;
   Vision *vision;
-  AutonDrive *sequence;
+  CenterLowHabTwoCargo *sequence;
 
   bool is_rotation, is_vision, is_regular;
 

@@ -30,6 +30,7 @@ void Robot::RobotInit() {
   // move_forward->BuildTotalTrajectory();
   Waypoint start = {0.0, 0.0, 0.0};
   sequence = new CenterLowHabTwoCargo(start);
+  // sequence = new MoveForward();
   sequence->BuildTotalTrajectory();
 }
 

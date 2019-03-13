@@ -26,7 +26,7 @@ public:
   // AutonDrive(DriveController *dc, AutonStateMachine *ausm);
   AutonDrive();
   void PrintTrajectory();
-  void BuildTotalTrajectory();
+  // void BuildTotalTrajectory();
   std::vector<std::vector<double> > GetFullProfile();
 
 protected:
