@@ -569,8 +569,8 @@ frc::SmartDashboard::PutNumber("yaw p", yaw_output);
     // const double ACTUAL_MAX_Y_RPM_R_B = 550.0;
     // const double MAX_YAW_RATE = 0.17; //10.0 0.17 rad/s
 
-    feed_forward_r = k_f_right_vel * ref_right; //teleop only, controlled
-  	feed_forward_l = k_f_left_vel * ref_left;
+    feed_forward_r = k_f_right_vel * target_vel_right; //teleop only, controlled
+  	feed_forward_l = k_f_left_vel * target_vel_left;
   	feed_forward_k = 0.0 * ref_kick;//kf kick vel
   }
 
