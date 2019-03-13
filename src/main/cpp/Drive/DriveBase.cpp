@@ -252,21 +252,29 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 }
 
 void DriveBase::RotationController(Joystick *JoyWheel) {
+	frc::SmartDashboard::PutNumber("joyWheel", JoyWheel->GetX());
 
 	double target_heading = init_heading
 			+ (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0)); //scaling, conversion to radians,left should be positive
 
 	double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
 
-	double error_heading_h = target_heading - current_heading;
+	frc::SmartDashboard::PutNumber("current heading", current_heading);
+	frc::SmartDashboard::PutNumber("target heading", target_heading);
 
-	double total_heading_h = k_p_yaw_heading_pos * error_heading_h;
+	double error_heading_h = target_heading - current_heading;
+	double total_heading_h = k_p_yaw_heading_pos + error_heading_h;
+
+	frc::SmartDashboard::PutNumber("total heading", total_heading);
+	frc::SmartDashboard::PutNumber("k_p_yaw_heading_pos", k_p_yaw_heading_pos);
 
 	if (total_heading > max_yaw_rate) {
 		total_heading = max_yaw_rate;
 	} else if (total_heading < -max_yaw_rate) {
 		total_heading = -max_yaw_rate;
 	}
+
+	double k_p_yaw_h_vel = 20.0;
 
 	Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
 			0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
@@ -483,7 +491,7 @@ void DriveBase::Controller(double ref_kick,
 
 	d_yaw_dis = yaw_error - yaw_last_error;
 
-	double yaw_output = ((0.0 * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
+	double yaw_output = ((k_p_yaw * yaw_error) + (k_d_yaw * d_yaw_dis)); //pd for auton, p for teleop //fb //hardly any
 //frc::SmartDashboard::PutNumber("yaw p", yaw_output);
 	ref_right += yaw_output; //left should be positive
 	ref_left -= yaw_output;

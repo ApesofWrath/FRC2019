@@ -31,6 +31,8 @@ int last_state = 0;
 
 int counter_suction = 0;
 int counter_hatch = 0;
+int counter_release = 0;
+int counter_solenoids = 0;
 
 bool state_top_intake = false; //set to false to override the states set in the state machine
 bool state_bottom_intake = false;
@@ -259,9 +261,6 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case GET_HATCH_STATION_SUCTION_STATE:
         frc::SmartDashboard::PutString("State", "GET HATCH STATION SUCTION");
-
-
-
         counter_suction++;
         frc::SmartDashboard::PutNumber("counter", counter_suction);
 
@@ -326,7 +325,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case POST_INTAKE_HATCH_STATE:
         frc::SmartDashboard::PutString("State", "POST INTAKE HATCH");
-
+        counter_release = 0;
+        counter_solenoids = 0;
         if (state_bottom_intake) {
         intake->bottom_intake_state = intake->STOP_STATE_H; // from GET_HATCH_GROUND_STATE state
         }
@@ -342,7 +342,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
-        if (state_solenoids && arm->GetAngularPosition() > 2.2) {
+        if (state_solenoids && arm->GetAngularPosition() > 2.65) {
           hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         }
         if (place_hatch_high) {
@@ -461,15 +461,21 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
-
+        if (state_solenoids && arm->GetAngularPosition() < 1.9) {
+          hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+        }
         if (std::abs(elevator->GetElevatorPosition() - elevator->BOTTOM_HATCH_POS) < 0.2 && !place_hatch_low) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-          if (state_solenoids) {
-            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-          }
+          counter_release++;
+          if (counter_release > 20) {
+            counter_solenoids++;
+            hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
   //        if (hatch_pickup->ReleasedHatch()) { //extra_button
+            if (counter_solenoids > 20) {
             state = POST_OUTTAKE_HATCH_STATE;
+          }
 //          }
+}
         }
         last_state = PLACE_HATCH_LOW_STATE;
         break;
