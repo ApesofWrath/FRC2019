@@ -123,16 +123,21 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       } else {
         talonElevator1->Set(ControlMode::MotionMagic, ENC_BOTTOM_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
       }
+        last_elevator_state = BOTTOM_HATCH_STATE;
       break;
 
       case HOLD_HATCH_STATE:
         frc::SmartDashboard::PutString("ELEV ", "bay cargo");
       //CheckElevatorGoal(HOLD_HATCH_STATE, HOLD_HATCH_POS);
       talonElevator1->Set(ControlMode::MotionMagic, ENC_HOLD_HATCH_POS, DemandType_ArbitraryFeedForward, 0.07);
+        last_elevator_state = HOLD_HATCH_STATE;
       break;
 
       case CLIMB_STATE:
         frc::SmartDashboard::PutString("ELEV ", "climb");
+        if (last_elevator_state != CLIMB_STATE) {
+          target = INIT_CLIMB_POS;
+        }
       Climb();
       last_elevator_state = CLIMB_STATE;
       break;
@@ -140,11 +145,14 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       case LIFTING_ARM_STATE:
         frc::SmartDashboard::PutString("ELEV ", "lift arm");
       talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
+        last_elevator_state = LIFTING_ARM_STATE;
       break;
 
       case INIT_CLIMB_STATE:
       frc::SmartDashboard::PutString("ELEV ", "init climb");
     talonElevator1->Set(ControlMode::MotionMagic, ENC_INIT_CLIMB_POS, DemandType_ArbitraryFeedForward, 0.07);
+      last_elevator_state = INIT_CLIMB_STATE;
+    break;
     }
   //} else {
 //    Stop();
@@ -395,11 +403,13 @@ void Elevator::GetRoll(double roll) {
 
 void Elevator::Climb() {
 
-  target = last_target - 0.01; //0.5 m/s
+  target = last_target - 0.005; //0.25 m/s
   error = target - GetElevatorPosition();
 
   output = error * Kp_c; //error is in m, so 0.08
   talonElevator1->Set(ControlMode::PercentOutput, output);
+
+  last_target = target;
 
 }
 

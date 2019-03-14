@@ -96,6 +96,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
       }
 
+      state_climber = true;
+
       //top intake
       if (top_intake_in) {
         state_top_intake = false;

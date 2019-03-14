@@ -52,8 +52,8 @@ void Robot::RobotPeriodic() {
 //1.05 ball scoring
 //0.05 hatch ground pickup, ball ground pickup
 
-frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
-frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("roll", drive_controller->ahrs->GetRoll());
+frc::SmartDashboard::PutNumber("pitch",drive_controller->ahrs->GetPitch());
 
   frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
@@ -125,7 +125,7 @@ void Robot::TeleopPeriodic() {
   is_vision = false;
   is_regular = true;
 
-  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+//  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
   //frc::SmartDashboard::PutNumber("CUR", hatch_pickup->suction1->GetOutputCurrent());
   elevator->ElevatorStateMachine();
@@ -134,6 +134,7 @@ void Robot::TeleopPeriodic() {
   intake->IntakeBottomStateMachine();
   hatch_pickup->SuctionStateMachine();
   hatch_pickup->SolenoidStateMachine();
+  climber->ClimberStateMachine();
 
   hatch_out = joyOp1->GetRawButton(1);
 
@@ -149,6 +150,9 @@ void Robot::TeleopPeriodic() {
   place_hatch_high = joyOp1->GetRawButton(10);
   climb_button = joyOp1->GetRawButton(11);
   post_outtake_hatch = joyOp1->GetRawButton(12);
+
+  climber->talonClimb1->Set(ControlMode::PercentOutput, -joyThrottle->GetY()); //negative output makes robot go up
+  climber->talonClimb2->Set(ControlMode::PercentOutput, -joyThrottle->GetY());
 
 //bigger outtake cargo speed
   // top_intake_in =  joyOp1->GetRawButton(5);

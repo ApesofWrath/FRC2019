@@ -15,8 +15,8 @@ class Climber {
 
 public:
 
-  TalonSRX *talonClimb1;
-  VictorSPX *talonClimb2;
+  TalonSRX *talonClimb2, *talonWheels;
+  VictorSPX *talonClimb1;
   Elevator *elevator_climber;
 
   const double Kf_r_c = 1.0 / 2.0;
@@ -29,7 +29,9 @@ public:
   const double Ki_l_c = 0.0;
   const double Kd_l_c = 0.0;
 
-  double Kp_l_c_f, Kp_r_c_f, Kp_l_c_s, Kp_r_c_s;
+  double Kp_l_c_f = 0.5;
+  double Kp_r_c_f = 0.5;
+  double Kp_l_c_s, Kp_r_c_s;
 
   const double robot_width = 0.56; //m - dist from one leg to the other
 
@@ -40,8 +42,14 @@ public:
   const int RETRACT_STATE_H = 4;
   int climber_state = INIT_STATE_H;
 
+  const int FORWARD_STATE_H = 0;
+  const int BACKWARD_STATE_H = 1;
+  //const int STOP_STATE_H = 2;
+  int wheel_state = STOP_STATE_H;
+
   Climber(Elevator *elevator_);
   void ClimberStateMachine();
+  void WheelStateMachine();
   void Up();
   void Hold();
   void Stop();
