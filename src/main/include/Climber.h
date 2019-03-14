@@ -15,7 +15,8 @@ class Climber {
 
 public:
 
-  TalonSRX *talonClimb1, *talonClimb2;
+  TalonSRX *talonClimb1;
+  VictorSPX *talonClimb2;
   Elevator *elevator_climber;
 
   const double Kf_r_c = 1.0 / 2.0;

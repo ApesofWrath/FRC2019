@@ -11,8 +11,8 @@ Climber::Climber(Elevator *elevator_) {
 
   elevator_climber = elevator_;
 
-  talonClimb1 = new TalonSRX(-0);
-  talonClimb2 = new TalonSRX(-0);
+  talonClimb1 = new TalonSRX(5); //left
+  talonClimb2 = new VictorSPX(18); //right
 
   talonClimb1->ConfigFactoryDefault();
   talonClimb2->ConfigFactoryDefault();
