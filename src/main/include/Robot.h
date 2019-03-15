@@ -36,6 +36,8 @@ class Robot : public frc::TimedRobot {
   void DisabledInit() override;
   void TestPeriodic() override;
 
+  void UpdateButtons();
+  
   TeleopStateMachine *tsm;
   frc::Joystick *joyOp1, *joyOp2, *joyOpButtons;
 
