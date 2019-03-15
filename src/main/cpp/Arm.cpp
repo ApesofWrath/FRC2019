@@ -114,7 +114,7 @@ return 0;
     frc::SmartDashboard::PutBoolean("ARM HALL EFFECT", hallEffectArm->Get());
     frc::SmartDashboard::PutNumber("ARM POS", GetAngularPosition());
     frc::SmartDashboard::PutNumber("ARM VEL", GetAngularVelocity());
-    frc::SmartDashboard::PutNumber("counter", counter);
+  //  frc::SmartDashboard::PutNumber("counter", counter);
     // frc::SmartDashboard::PutNumber("ARM REF POS", ref_arm[0][0]);
     // frc::SmartDashboard::PutNumber("ARM REF VEL", ref_arm[1][0]);
 

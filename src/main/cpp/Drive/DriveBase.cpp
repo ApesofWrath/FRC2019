@@ -215,7 +215,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 	if (!pos_yaw) { //normal teleop wc wheel input
 
 	double reverse_x = 1.0;
-	double wheel = JoyWheel->GetX();
+	double wheel = -1.0 * JoyWheel->GetX();
 
 	if (wheel < 0.0) {
 		reverse_x = 1.0;//for black wheel, is opposite

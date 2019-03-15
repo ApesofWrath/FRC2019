@@ -50,14 +50,17 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
+
+  frc::SmartDashboard::PutNumber("!top cur",intake->talonIntake1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("!bot cur",intake->talonIntake2->GetOutputCurrent());
 //1.63 hatch scorings
 //1.05 ball scoring
 //0.05 hatch ground pickup, ball ground pickup
 //   frc::SmartDashboard::PutNumber("top!", intake->talonIntake1->GetOutputCurrent());
 // frc::SmartDashboard::PutNumber("bot!", intake->talonIntake2->GetOutputCurrent());
 // frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
-// frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
-// frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
 // frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
 //
 //   frc::SmartDashboard::PutString("have hatch", "n");
@@ -116,6 +119,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
+//  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
@@ -150,7 +154,7 @@ void Robot::TeleopPeriodic() {
     zero_elevator = joyThrottle->GetRawButton(9);
 
     get_hatch_station = joyOpButtons->GetRawButton(14);
-    post_intake_hatch = joyOpButtons->GetRawButton(1);
+    post_intake_hatch = joyOpButtons->GetRawButton(4);
     place_hatch_low = joyOpButtons->GetRawButton(15);
     place_hatch_mid = joyOpButtons->GetRawButton(2);
     place_hatch_high = joyOpButtons->GetRawButton(8);
@@ -159,7 +163,7 @@ void Robot::TeleopPeriodic() {
     arm_up = joyOpButtons->GetRawButton(6);
 
      get_cargo_ground = joyOpButtons->GetRawButton(12);
-    post_intake_cargo = joyOpButtons->GetRawButton(4);
+    post_intake_cargo = joyOpButtons->GetRawButton(1);
     place_cargo_low =  joyOpButtons->GetRawButton(9);
     place_cargo_mid =  joyOpButtons->GetRawButton(16);
     place_cargo_high = joyOpButtons->GetRawButton(3);
