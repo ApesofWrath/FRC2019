@@ -93,7 +93,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
     bool bottom_intake_stop, bool top_intake_in, bool top_intake_out, bool top_intake_stop,
     bool suction_on, bool suction_off, bool hatch_out, bool hatch_in, bool arm_up, bool arm_mid,
     bool arm_high_cargo, bool arm_down, bool elevator_hatch_up, bool elevator_hatch_mid, bool elevator_hatch_low,
-    bool elevator_cargo_up, bool elevator_cargo_mid, bool elevator_cargo_low, bool get_cargo_ground,
+    bool elevator_cargo_up, bool zero_elevator, bool zero_arm, bool get_cargo_ground,
     bool get_cargo_station, bool get_hatch_ground, bool get_hatch_station, bool post_intake_cargo,
     bool post_intake_hatch, bool place_hatch_high, bool place_hatch_mid, bool place_hatch_low,
     bool place_cargo_high, bool place_cargo_mid, bool place_cargo_low, bool place_cargo_bay,
@@ -145,7 +145,11 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (arm_high_cargo) {
         state_arm = false;
         arm->arm_state = arm->HIGH_CARGO_STATE_H;
-      } else {
+      }  else if (zero_arm) { //arm must be in rest state before
+        state_arm = false;
+        arm->arm_state = arm->INIT_STATE_H;
+      }
+       else {
         state_arm = true;
       }
 
@@ -162,12 +166,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (elevator_cargo_up) {
         state_elevator = false;
         elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
-      } else if (elevator_cargo_mid) {
+      } else if (zero_elevator) { //elevator must be in bottom hatch state before
         state_elevator = false;
-        elevator->elevator_state = elevator->MID_CARGO_STATE_H;
-      } else if (elevator_cargo_low) {
-        state_elevator = false;
-        elevator->elevator_state = elevator->BOTTOM_CARGO_STATE_H;
+        elevator->elevator_state = elevator->INIT_STATE_H;
       } else {
         state_elevator = true;
       }
@@ -395,7 +396,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         }
         //else if (state_elevator && arm->GetAngularPosition() > 1.5) {
         //  elevator->elevator_state = elevator->HOLD_HATCH_STATE_H; //same as hold cargo height
-    
+
           if ((intake->HaveBall() || post_intake_cargo) &&  arm->arm_state == arm->GET_HATCH_GROUND_STATE_H) { //
             state = POST_INTAKE_CARGO_STATE;
           }
