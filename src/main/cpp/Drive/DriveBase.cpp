@@ -192,7 +192,7 @@ void DriveBase::SetAutonGains(bool same_side_scale) {
 //PD on left and right
 //P on yaw
 void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
-		Joystick *JoyWheel) {
+		Joystick *JoyWheel, bool pos_yaw) {
 
 	double target_l, target_r, target_yaw_rate;
 
@@ -212,27 +212,42 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
 	target_r = target_l;
 
-	double reverse_x = 1.0;
+	if (!pos_yaw) { //normal teleop wc wheel input
 
-	double wheel = JoyWheel->GetX(); //not take time to get wheel/throttle values multiple times
+	double reverse_x = 1.0;
+	double wheel = JoyWheel->GetX();
 
 	if (wheel < 0.0) {
-		reverse_x = -1.0;
+		reverse_x = 1.0;//for black wheel, is opposite
 	} else {
-		reverse_x = 1.0;
+		reverse_x = -1.0;
 	}
 
 	double joy_wheel_val = reverse_x * wheel * wheel;
-
-//	if (!is_low_gear) { //squrare wheel in high gear
-//		joy_wheel_val *= reverse_x * JoyWheel->GetX();
-//	}
 
 	if (std::abs(joy_wheel_val) < .02) {
 		joy_wheel_val = 0.0;
 	}
 
 	target_yaw_rate = -1.0 * (joy_wheel_val) * max_yaw_rate; //Left will be positive
+
+} else {
+
+	double target_heading = init_heading + (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0));
+frc::SmartDashboard::PutNumber("init head", init_heading);
+	frc::SmartDashboard::PutNumber("targ head", target_heading);
+//frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
+
+	double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+frc::SmartDashboard::PutNumber("cur head", current_heading);
+	double error_heading = target_heading - current_heading;
+frc::SmartDashboard::PutNumber("error head", error_heading);
+	target_yaw_rate = -1.0 * 0.1 * error_heading * max_yaw_rate;
+	frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
+
+	k_p_yaw_vel = 10.0;
+
+}
 
 	if (target_l > max_y_rpm) {
 		target_l = max_y_rpm;
@@ -852,7 +867,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 			case REGULAR:
 			frc::SmartDashboard::PutString("DRIVE", "reg");
-			TeleopWCDrive(JoyThrottle, JoyWheel);
+			TeleopWCDrive(JoyThrottle, JoyWheel, false);
 			last_drive_state = REGULAR;
 			break;
 
@@ -870,7 +885,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 			if (last_drive_state != ROTATION_CONTROLLER) {
 				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp
 			}
-			RotationController(JoyWheel);
+			TeleopWCDrive(JoyThrottle, JoyWheel, true);
 			last_drive_state = ROTATION_CONTROLLER;
 			break;
 		}
