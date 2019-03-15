@@ -113,7 +113,8 @@ void Robot::AutonomousPeriodic() {
     bottom_intake_in  = joyOp1->GetRawButton(3);
     bottom_intake_out  =  joyOp1->GetRawButton(2);
     bottom_intake_stop = joyOp1->GetRawButton(4);
-    get_hatch_station =  joyOpButtons->GetRawButton(12);
+    get_hatch_station =  joyOpButtons->GetRawButton(14);
+    get_cargo_ground = joyOpButtons->GetRawButton(12);
 //    post_intake_hatch = joyOp1->GetRawButton(1);
 
     place_hatch_low = joyOpButtons->GetRawButton(15);
@@ -134,7 +135,7 @@ void Robot::AutonomousPeriodic() {
 
     elevator_hatch_mid = joyOp1->GetRawButton(12);
 
-    get_cargo_ground = joyOpButtons->GetRawButton(14);
+
     //get_cargo_station = joyOpButtons->GetRawButton(8);
     post_intake_hatch = joyOpButtons->GetRawButton(1);
     place_cargo_bay = joyOpButtons->GetRawButton(16); //same as mid

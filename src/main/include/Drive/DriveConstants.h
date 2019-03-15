@@ -3,7 +3,7 @@
 
 #include "Constants.h"
 
-#define PRACTICE 1 //0 uses the consts on the bottom //comp gains work ok on practice bot too
+#define PRACTICE 0 //0 uses the consts on the bottom //comp gains work ok on practice bot too
 
 #if PRACTICE //bot still w/o superstructure
 
@@ -65,13 +65,13 @@ const double FF_SCALE = 0.7; //auton
 
 const double reverse_output = 1.0;
 
-const double K_P_RIGHT_VEL = 0.00;//0.0001; //no gear shift
+const double K_P_RIGHT_VEL = 0.003;//0.0001; //no gear shift
 const double K_D_RIGHT_VEL = 0.0;// 0.0005;
 
-const double K_P_LEFT_VEL = 0.00; //voltage compensation //ff //p
+const double K_P_LEFT_VEL = 0.003; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
-const double K_P_YAW_VEL = 0.0;
+const double K_P_YAW_VEL = 13.0;
 const double K_D_YAW_VEL = 0.0;
 
 const double K_P_YAW_HEADING_POS = 0.0; //special controllers - yaw vision
@@ -108,8 +108,8 @@ const double ACTUAL_MAX_Y_RPM_R_B = 580.0;
 
 const double MAX_Y_RPM = 550.0;
 const double ACTUAL_MAX_Y_RPM = 550.0;
-const double MAX_YAW_RATE = 15.0;
-const double MAX_FPS = 15.0; //used in auton pathfinder
+const double MAX_YAW_RATE = 11.4;
+const double MAX_FPS = 10.0;//; //used in auton pathfinder
 
 const double FF_SCALE = 0.7; //auton
 
