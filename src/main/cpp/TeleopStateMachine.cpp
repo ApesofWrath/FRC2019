@@ -479,7 +479,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (std::abs(elevator->GetElevatorPosition() - elevator->BOTTOM_HATCH_POS) < 0.2 && !place_hatch_low) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
           counter_release++;
-          if (counter_release > 20) {
+          if (counter_release > 30) {
             counter_solenoids++;
             hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
   //        if (hatch_pickup->ReleasedHatch()) { //extra_button

@@ -59,8 +59,8 @@ void Robot::RobotPeriodic() {
 //   frc::SmartDashboard::PutNumber("top!", intake->talonIntake1->GetOutputCurrent());
 // frc::SmartDashboard::PutNumber("bot!", intake->talonIntake2->GetOutputCurrent());
 // frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
-// frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
-// frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+  frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
 // // frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
 // //
 // //   frc::SmartDashboard::PutString("have hatch", "n");
@@ -114,7 +114,7 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-//  tsm->Initialize();
+  tsm->Initialize();
   drive_controller->set_profile = false; //prep for visiondrive
   drive_controller->ZeroAll(true);
 }
@@ -145,7 +145,7 @@ void Robot::TeleopPeriodic() {
    tsm->Disabled();
    }
 
-  void Robot::TestPeriodic() {}
+   void Robot::TestPeriodic() {}
 
   void Robot::UpdateButtons() {
 
