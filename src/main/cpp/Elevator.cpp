@@ -84,6 +84,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
         if (zeroing_counter_e > 10) {
         elevator_state = BOTTOM_HATCH_STATE;
         }
+
         zeroing_counter_e++;
       } else {
         talonElevator1->SetSelectedSensorPosition(0, 0, 100);

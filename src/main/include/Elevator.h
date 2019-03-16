@@ -47,7 +47,7 @@ public:
   const double BOTTOM_CARGO_POS = 0.295; //bottom scoring
 
   const double LIFTING_ARM_POS = 0.45; //get hatch ground, get cargo
-  const double HOLD_HATCH_POS = 0.29; //get hatch ground, get cargo
+  const double HOLD_HATCH_POS = 0.34; //get hatch ground, get cargo
   //
 
   const double ENC_TOP_CARGO_POS = TOP_CARGO_POS * METERS_TO_ENCS;
