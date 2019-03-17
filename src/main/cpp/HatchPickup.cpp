@@ -86,16 +86,17 @@ void HatchPickup::SolenoidStateMachine() {
 
 bool HatchPickup::HaveHatch() {
   frc::SmartDashboard::PutNumber("have hatch counter", has_counter);
-  if ((suction1->GetOutputCurrent() < 4.3 && suction1->GetOutputCurrent() > 0.5) && (suction2->GetOutputCurrent() < 4.3 && suction1->GetOutputCurrent() > 0.5)) {
-    has_counter++;
-    if (has_counter > 10) {
-      frc::SmartDashboard::PutNumber("have", 1);
-      has_counter = 0;
-      return true;
-    }
+  if ((suction1->GetOutputCurrent() < 4.5 && suction1->GetOutputCurrent() > 0.5) && (suction2->GetOutputCurrent() < 4.5 && suction2->GetOutputCurrent() > 0.5)) {
+    // has_counter++;
+    // if (has_counter > 5) {
+    //   frc::SmartDashboard::PutNumber("have", 1);
+    //   has_counter = 0;
+    //   return true;
+    // }
+    return true;
   } else {
-    has_counter = 0;
-    frc::SmartDashboard::PutNumber("have", 0);
+    // has_counter = 0;
+    // frc::SmartDashboard::PutNumber("have", 0);
     return false;
   }
 

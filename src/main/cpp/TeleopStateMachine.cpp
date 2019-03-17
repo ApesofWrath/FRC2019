@@ -25,6 +25,7 @@ const int PLACE_CARGO_BAY_FAST_STATE = 17;
 
 const int POST_OUTTAKE_HATCH_STATE = 18;
 const int POST_OUTTAKE_CARGO_STATE = 19;
+const int REZERO_STATE = 20;
 int state = INIT_STATE;
 
 int last_state = 0;
@@ -101,6 +102,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
+      } else if (zero_elevator) {
+        state = REZERO_STATE;
       }
 
       //top intake
@@ -145,11 +148,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (arm_high_cargo) {
         state_arm = false;
         arm->arm_state = arm->HIGH_CARGO_STATE_H;
-      }  else if (zero_arm) { //arm must be in rest state before
-        state_arm = false;
-        arm->arm_state = arm->INIT_STATE_H;
-      }
-       else {
+      }  else {
         state_arm = true;
       }
 
@@ -166,9 +165,6 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (elevator_cargo_up) {
         state_elevator = false;
         elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
-      } else if (zero_elevator) { //elevator must be in bottom hatch state before
-        state_elevator = false;
-        elevator->elevator_state = elevator->INIT_STATE_H;
       } else {
         state_elevator = true;
       }
@@ -278,9 +274,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
-
+  frc::SmartDashboard::PutBoolean("have hatch", hatch_pickup->HaveHatch());
         if (hatch_pickup->HaveHatch() && counter_suction > 20) { //havehatch() needs suction current to have ramped up already; wait 10 counts
-          elevator->elevator_state = elevator->LIFTING_ARM_POS;
+          elevator->elevator_state = elevator->LIFTING_ARM_STATE_H;
           if (elevator->GetElevatorPosition() > 0.4) {
           arm->arm_state = arm->REST_STATE_H;
             frc::SmartDashboard::PutString("have hatch", "y");
@@ -689,6 +685,15 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         state = WAIT_FOR_BUTTON_STATE;
         last_state = POST_OUTTAKE_CARGO_STATE;
+        break;
+
+        case REZERO_STATE:
+        frc::SmartDashboard::PutString("State", "REZERO");
+        arm->arm_state = arm->STOP_ARM_STATE_H;
+        elevator->elevator_state = elevator->STOP_STATE_H;
+        if (!zero_elevator) {
+          state = INIT_STATE;
+        }
         break;
        }
 

@@ -53,7 +53,7 @@ void Robot::RobotPeriodic() {
 
   frc::SmartDashboard::PutNumber("!top cur",intake->talonIntake1->GetOutputCurrent());
   frc::SmartDashboard::PutNumber("!bot cur",intake->talonIntake2->GetOutputCurrent());
-//1.63 hatch scorings
+//1.63 hatch scorings  - none-5.0 yes -3.0
 //1.05 ball scoring
 //0.05 hatch ground pickup, ball ground pickup
 //   frc::SmartDashboard::PutNumber("top!", intake->talonIntake1->GetOutputCurrent());
@@ -114,13 +114,12 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
-  tsm->Initialize();
+//  tsm->Initialize();
   drive_controller->set_profile = false; //prep for visiondrive
   drive_controller->ZeroAll(true);
 }
 
 void Robot::TeleopPeriodic() {
-//  elevator->talonElevator1->Set(ControlMode::PercentOutput, joyThrottle->GetY());
 
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
@@ -151,7 +150,7 @@ void Robot::TeleopPeriodic() {
 
     is_rotation = joyWheel->GetRawButton(5);
 
-    zero_arm = joyThrottle->GetRawButton(8);
+  //  zero_arm = joyThrottle->GetRawButton(8);
     zero_elevator = joyThrottle->GetRawButton(9);
 
     get_hatch_station = joyOpButtons->GetRawButton(14);
