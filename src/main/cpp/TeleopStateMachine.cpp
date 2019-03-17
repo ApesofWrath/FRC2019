@@ -280,11 +280,14 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         }
 
         if (hatch_pickup->HaveHatch() && counter_suction > 20) { //havehatch() needs suction current to have ramped up already; wait 10 counts
+          elevator->elevator_state = elevator->LIFTING_ARM_POS;
+          if (elevator->GetElevatorPosition() > 0.4) {
           arm->arm_state = arm->REST_STATE_H;
             frc::SmartDashboard::PutString("have hatch", "y");
           if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
             state = POST_INTAKE_HATCH_STATE;
           }
+        }
         }
 
         last_state = GET_HATCH_STATION_SUCTION_STATE;
