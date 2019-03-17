@@ -64,17 +64,17 @@ void Robot::RobotPeriodic() {
 // // frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
 // //
 // //   frc::SmartDashboard::PutString("have hatch", "n");
-  frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
+//  frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
   frc::SmartDashboard::PutNumber("el targ pos", elevator->talonElevator1->GetActiveTrajectoryPosition());
-  frc::SmartDashboard::PutNumber("el targ vel", elevator->talonElevator1->GetActiveTrajectoryVelocity());
+//  frc::SmartDashboard::PutNumber("el targ vel", elevator->talonElevator1->GetActiveTrajectoryVelocity());
     frc::SmartDashboard::PutNumber("el error", elevator->talonElevator1->GetActiveTrajectoryPosition() - elevator->talonElevator1->GetSelectedSensorPosition(0));
 
   //
   // frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
-  // frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
+  frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
   //
-  // frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
+   frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
   // frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
   //
   // frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());

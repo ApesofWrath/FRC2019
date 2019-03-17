@@ -279,7 +279,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
 
-        if (hatch_pickup->HaveHatch() && counter_suction > 50) { //havehatch() needs suction current to have ramped up already; wait 10 counts
+        if (hatch_pickup->HaveHatch() && counter_suction > 20) { //havehatch() needs suction current to have ramped up already; wait 10 counts
           arm->arm_state = arm->REST_STATE_H;
             frc::SmartDashboard::PutString("have hatch", "y");
           if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
@@ -473,7 +473,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
-        if (state_solenoids && arm->GetAngularPosition() < 1.9) {
+        if (state_solenoids && arm->GetAngularPosition() < 2.5) {
           hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
         }
         if (std::abs(elevator->GetElevatorPosition() - elevator->BOTTOM_HATCH_POS) < 0.2 && !place_hatch_low) { //placeholder
@@ -482,13 +482,11 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
           if (counter_release > 30) {
             counter_solenoids++;
             hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
-  //        if (hatch_pickup->ReleasedHatch()) { //extra_button
             if (counter_solenoids > 20) {
             state = POST_OUTTAKE_HATCH_STATE;
           }
-//          }
 }
-        }
+}
         last_state = PLACE_HATCH_LOW_STATE;
         break;
 
@@ -499,36 +497,45 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
-
+        if (state_solenoids && arm->GetAngularPosition() < 2.5) {
+          hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+        }
         if (std::abs(elevator->GetElevatorPosition() - elevator->MID_HATCH_POS) < 0.2 && !place_hatch_mid) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-          if (state_solenoids) {
-            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-          }
-      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
+          counter_release++;
+          if (counter_release > 30) {
+            counter_solenoids++;
+            hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+            if (counter_solenoids > 20) {
             state = POST_OUTTAKE_HATCH_STATE;
-      //    }
-        }
+          }
+}
+}
         last_state = PLACE_HATCH_MID_STATE;
         break;
 
         case PLACE_HATCH_HIGH_STATE:
-        //AutoBalance();
+        AutoBalance();
         frc::SmartDashboard::PutString("State", "HIGH HATCH");
         elevator->elevator_state = elevator->TOP_HATCH_STATE_H;
         if (state_arm) {
           arm->arm_state = arm->HATCH_STATE_H;
         }
-
+        if (state_solenoids && arm->GetAngularPosition() < 2.5) {
+          hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
+        }
         if (std::abs(elevator->GetElevatorPosition() - elevator->TOP_HATCH_POS) < 0.2 && !place_hatch_high) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
-          if (state_solenoids) {
-            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
-          }
-      //    if (hatch_pickup->ReleasedHatch()) { //extra_button
+          counter_release++;
+          if (counter_release > 30) {
+            counter_solenoids++;
+            hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+            if (counter_solenoids > 20) {
             state = POST_OUTTAKE_HATCH_STATE;
-      //    }
+          }
+}
         }
+//
         last_state = PLACE_HATCH_HIGH_STATE;
         break;
 
@@ -680,6 +687,6 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
         last_state = POST_OUTTAKE_CARGO_STATE;
         break;
-      }
+       }
 
     }

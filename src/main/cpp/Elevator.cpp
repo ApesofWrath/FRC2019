@@ -67,6 +67,13 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
     talonElevator1->ConfigMotionCruiseVelocity(ENC_CRUISE_VEL_E, 10);//3120
     talonElevator1->ConfigMotionAcceleration(ENC_CRUISE_ACC_E, 10);
 
+    talonElevator1->ConfigOpenloopRamp(0.15, 0);
+    talonElevator2->ConfigOpenloopRamp(0.15, 0);
+
+    talonElevator1->ConfigVoltageCompSaturation(12.0);
+    talonElevator1->EnableVoltageCompensation(true);
+    talonElevator2->ConfigVoltageCompSaturation(12.0);
+    talonElevator2->EnableVoltageCompensation(true);
 
     hallEffectTop = new frc::DigitalInput(TOP_HALL);
     hallEffectBottom = new frc::DigitalInput(BOT_HALL);
