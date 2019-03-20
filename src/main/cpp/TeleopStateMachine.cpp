@@ -26,6 +26,7 @@ const int PLACE_CARGO_BAY_FAST_STATE = 17;
 const int POST_OUTTAKE_HATCH_STATE = 18;
 const int POST_OUTTAKE_CARGO_STATE = 19;
 const int REZERO_STATE = 20;
+
 int state = INIT_STATE;
 
 int last_state = 0;
@@ -102,7 +103,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
       if (wait_for_button) {
         state = WAIT_FOR_BUTTON_STATE;
-      } else if (zero_elevator) {
+      } else if (zero_elevator || zero_arm) {
         state = REZERO_STATE;
       }
 
@@ -148,7 +149,10 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (arm_high_cargo) {
         state_arm = false;
         arm->arm_state = arm->HIGH_CARGO_STATE_H;
-      }  else {
+      }  else if (zero_arm) {
+        state_arm = false;
+        arm->arm_state = arm->REINIT_STATE_H;
+      } else {
         state_arm = true;
       }
 
@@ -165,6 +169,8 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
       } else if (elevator_cargo_up) {
         state_elevator = false;
         elevator->elevator_state = elevator->TOP_CARGO_STATE_H;
+      } else if (zero_elevator) {
+        elevator->elevator_state = elevator->STOP_STATE_H; //rezero state
       } else {
         state_elevator = true;
       }
@@ -686,15 +692,9 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
         last_state = POST_OUTTAKE_CARGO_STATE;
         break;
-
-        case REZERO_STATE:
-        frc::SmartDashboard::PutString("State", "REZERO");
-        arm->arm_state = arm->STOP_ARM_STATE_H;
-        elevator->elevator_state = elevator->STOP_STATE_H;
-        if (!zero_elevator) {
-          state = INIT_STATE;
-        }
-        break;
        }
-
+       case REZERO_STATE:
+       frc::SmartDashboard::PutString("State", "REZERO");
+       //allow elevator/arm to reinitialize
+       break;
     }

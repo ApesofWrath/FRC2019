@@ -54,7 +54,7 @@ public:
   const int CARGO_STATE_H = 3;
   const int HIGH_CARGO_STATE_H = 4;
   const int GET_HATCH_GROUND_STATE_H = 5;
-  const int EXTRA_STATE_H = 6;
+  const int REINIT_STATE_H = 6;
   const int STOP_ARM_STATE_H = 7;
 
   const double RAD_TO_ENC = (1.0 / (2.0 * 3.14)) * 4096.0;

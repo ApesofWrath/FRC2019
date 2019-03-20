@@ -153,7 +153,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
       case STOP_STATE:
         frc::SmartDashboard::PutString("ELEV ", "stop");
-      Stop();
+        talonElevator1->Set(ControlMode::PercentOutput, 0.05);
+        if (talonElevator1->GetOutputCurrent() > 1.0) {
+          elevator_state = INIT_STATE_H;
+        }
       last_elevator_state = STOP_STATE;
       break;
 

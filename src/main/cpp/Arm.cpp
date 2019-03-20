@@ -9,7 +9,7 @@ const int HATCH_STATE = 2;
 const int CARGO_STATE = 3;
 const int HIGH_CARGO_STATE = 4;
 const int GET_HATCH_GROUND_STATE = 5;
-const int EXTRA_STATE = 6;
+const int REINIT_STATE = 6;
 const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
@@ -353,13 +353,16 @@ return 0;
         //
         break;
 
-        case EXTRA_STATE:
-        frc::SmartDashboard::PutString("ARM", "extra");
-        //UpdateArmProfile(EXTRA_STATE_H, EXTRA_ANGLE);
+        case REINIT_STATE:
+        frc::SmartDashboard::PutString("ARM", "reinit");
+        //UpdateArmProfile(REINIT_STATE_H, EXTRA_ANGLE);
         // if (GetAngularPosition() + 0.2 < EXTRA_ANGLE) {
         //talonArm->Set(ControlMode::PercentOutput, Interpolate(GetAngularPosition() + 0.2));
       //}
-        talonArm->Set(ControlMode::MotionMagic, ENC_EXTRA_ANGLE, DemandType_ArbitraryFeedForward, -0.089 * (GetAngularPosition()) * (GetAngularPosition()) + 0.0655681 * (GetAngularPosition()) + 0.293378);
+        talonArm->Set(ControlMode::PercentOutput, 0.3);
+        if (talonArm->GetOutputCurrent() > 0.5) {
+          arm_state = INIT_STATE;
+        }
         break;
 
         case STOP_ARM_STATE:
