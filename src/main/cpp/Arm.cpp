@@ -254,7 +254,7 @@ return 0;
 
     bool Arm::StallSafety() {
       // STALL
-      if ((std::abs(GetAngularVelocity()) <= STALL_VEL_A) && (std::abs(talonArm->GetOutputCurrent())) > 0.2 && (talonArm->GetActiveTrajectoryVelocity() > 0.08)) {
+      if ((std::abs(GetAngularVelocity()) < 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 4.0) { //GetActiveTrajectoryVelocity won't work because targ vel is 0 at end of profile
         encoder_counter_i++;
       } else {
         encoder_counter_i = 0;
@@ -262,8 +262,9 @@ return 0;
       if (encoder_counter_i > 3) {
         return true;
         frc::SmartDashboard::PutString("ARM SAFETY", "stall");
-      }
+      } else {
       return false;
+    }
     }
 
     void Arm::CapVoltage() {
@@ -304,7 +305,13 @@ return 0;
 
     void Arm::ArmStateMachine() {
 
-      //  if (!StallSafety()) {
+      frc::SmartDashboard::PutNumber("arm vel", GetAngularVelocity());
+      frc::SmartDashboard::PutNumber("arm current",talonArm->GetOutputCurrent());
+  //    (GetAngularVelocity()) <= 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 2.0)
+
+       if (!StallSafety()) {
+
+      //   frc::SmartDashboard::PutString("ARM SAFETY", "none");
 
       switch (arm_state) {
 
@@ -368,9 +375,9 @@ return 0;
         last_arm_state = STOP_ARM_STATE;
         break;
       }
-      //} else {
-      //  StopArm();
-      //}
+      } else {
+       StopArm();
+      }
       // frc::SmartDashboard::PutNumber("ARM ENC",
       // 		talonArm->GetSensorCollection().GetQuadraturePosition());
       //

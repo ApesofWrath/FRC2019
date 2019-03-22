@@ -369,7 +369,6 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case GET_CARGO_GROUND_STATE:
         frc::SmartDashboard::PutString("State", "GET CARGO GROUND");
-
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         }

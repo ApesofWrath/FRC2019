@@ -81,9 +81,15 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
   void Elevator::ElevatorStateMachine() {
     //PrintElevatorInfo();
-  //  frc::SmartDashboard::PutString("ELEV ", GetState());
 
-//if (!StallSafety()) {
+  frc::SmartDashboard::PutNumber("el cur vel", GetElevatorVelocity());
+    frc::SmartDashboard::PutNumber("el current", talonElevator1->GetOutputCurrent());
+      frc::SmartDashboard::PutNumber("el targ vel", talonElevator1->GetActiveTrajectoryVelocity());
+
+//  (GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetOutputCurrent() > 3.0 && (talonElevator1->GetActiveTrajectoryVelocity() > 300)))
+
+if (!StallSafety()) {
+//  frc::SmartDashboard::PutString("ELEV SAFETY", "none");
     switch (elevator_state) {
       case INIT_STATE:
         frc::SmartDashboard::PutString("ELEV ", "init");
@@ -162,10 +168,10 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
       talonElevator1->Set(ControlMode::MotionMagic, ENC_LIFTING_ARM_POS, DemandType_ArbitraryFeedForward, 0.07);
       break;
     }
-  //} else {
-//    Stop();
+  } else {
+    Stop();
   //  frc::SmartDashboard::PutString("ELEV STALL", "stalled");
-  //}
+  }
   }
 
   void Elevator::CheckElevatorGoal(int elevator_state, double goal_pos) {
@@ -341,16 +347,18 @@ void Elevator::ZeroElevator() {
 }
 
 bool Elevator::StallSafety() {
-  if (((std::abs(GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetActiveTrajectoryVelocity() > 0.08))) { // std::abs(GetElevatorPosition() - ) <= 0.1
+  if ((std::abs(GetElevatorVelocity()) < 0.05) && (talonElevator1->GetOutputCurrent() > 10.0)) { // std::abs(GetElevatorPosition() - ) <= 0.1
     encoder_counter_e++;
   } else {
     encoder_counter_e = 0;
   }
   if (encoder_counter_e > 3) {
     return true;
-    frc::SmartDashboard::PutString("ARM SAFETY", "stall");
-  }
+    frc::SmartDashboard::PutString("ELEV SAFETY", "stall");
+  } else {
+    //frc::SmartDashboard::PutString("ELEV SAFETY", "none");
   return false;
+}
 }
 
 void Elevator::ArmSafety() {
