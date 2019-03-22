@@ -3,7 +3,7 @@
 
 #include "Constants.h"
 
-#define PRACTICE 0 //0 uses the consts on the bottom //comp gains work ok on practice bot too
+#define PRACTICE 1 //0 uses the consts on the bottom //comp gains work ok on practice bot too
 
 #if PRACTICE //bot still w/o superstructure
 

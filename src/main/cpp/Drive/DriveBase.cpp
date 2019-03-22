@@ -242,7 +242,7 @@ frc::SmartDashboard::PutNumber("init head", init_heading);
 frc::SmartDashboard::PutNumber("cur head", current_heading);
 	double error_heading = target_heading - current_heading;
 frc::SmartDashboard::PutNumber("error head", error_heading);
-	target_yaw_rate = -1.0 * 0.1 * error_heading * max_yaw_rate;
+	target_yaw_rate = 1.0 * 0.1 * error_heading * max_yaw_rate;
 	frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
 
 	k_p_yaw_vel = 10.0;
@@ -856,11 +856,9 @@ void DriveBase::RunVisionProfile() {
 
 void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 	Joystick *JoyWheel, bool is_regular, bool is_vision, bool is_rotation) {
-
+//let go of rot button, force vel to 0 until wheel goes to 0
 		 if (is_rotation) {
 			teleop_drive_state = ROTATION_CONTROLLER;
-		} else {
-			teleop_drive_state = REGULAR;
 		}
 
 		switch (teleop_drive_state) {
@@ -882,10 +880,16 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 			case ROTATION_CONTROLLER:
 			frc::SmartDashboard::PutString("DRIVE", "rot");
-			if (last_drive_state != ROTATION_CONTROLLER) {
+      if (last_drive_state != ROTATION_CONTROLLER) {
 				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp
 			}
+			if (!is_rotation) {
+				if (JoyWheel->GetX() < 0.1) {
+					teleop_drive_state = REGULAR;
+				}
+			} else {
 			TeleopWCDrive(JoyThrottle, JoyWheel, true);
+			}
 			last_drive_state = ROTATION_CONTROLLER;
 			break;
 		}
