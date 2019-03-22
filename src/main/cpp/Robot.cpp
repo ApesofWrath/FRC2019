@@ -75,7 +75,7 @@ drive_controller->ZeroAll(true);
 
 void Robot::AutonomousPeriodic() {
   bool is_regular = false;
-  bool is_vision= false;
+  bool is_vision = false;
   bool is_rotation = false;
   drive_controller->RunAutonDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
   // drive_controller->VisionDriveStateMachine();

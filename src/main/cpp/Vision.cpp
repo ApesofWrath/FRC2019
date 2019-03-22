@@ -29,5 +29,5 @@ double Vision::GetRobotExitAngle() {
   auto inst = nt::NetworkTableInstance::GetDefault(); //TODO: figure out how to init once only
   auto table = inst.GetTable("SmartDashboard");
 
-  return table->GetNumber("exit_angle", -1.0);
+  return d2r(table->GetNumber("exit_angle", -1.0));
 }
