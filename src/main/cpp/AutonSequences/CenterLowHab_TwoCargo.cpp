@@ -25,7 +25,7 @@ void CenterLowHabTwoCargo::BuildTotalTrajectory() {
 
 void CenterLowHabTwoCargo::CenterLowHabTwoCargoStateMachine(bool *place_cargo, bool *get_cargo) {
 
-  switch (cargo_ship_two_cargo_state) {
+  switch (auton_sequence_state) {
 
     case PLACE_ELEMENT:
       if (auton_state_machine->shoot_counter == 0) {

@@ -10,7 +10,9 @@ std::vector<std::vector<double> > full_refs(1500, std::vector<double>(5)); // in
 
 int current_index = 0;
 
-AutonDrive::AutonDrive() {}
+AutonDrive::AutonDrive() {
+  auton_sequence_state = 0;
+}
 
 void AutonDrive::GeneratePartialTrajectory(int num_points, Waypoint points[], bool isReversed) {
   // TODO: current_index or current_index + 1 makes more sense?

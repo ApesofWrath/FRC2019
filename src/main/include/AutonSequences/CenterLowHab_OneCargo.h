@@ -18,9 +18,11 @@ public:
   CenterLowHabOneCargo(Waypoint start);
   void BuildTotalTrajectory();
   void CenterLowHabOneCargoStateMachine();
+  void UpdateState();
 
-const int PLACE_ELEMENT_H = 0;
-const int STOP_STATE_H = 1;
+const int IDLE_H = 0;
+const int PLACE_ELEMENT_H = 1;
+const int STOP_STATE_H = 2;
 // protected:
 //   double MAX_VELOCITY;
 //   double MAX_ACCELERATION;

@@ -18,7 +18,7 @@
 class AutonDrive {
 
 public:
-	// DriveController *drive_controller;
+	DriveController *drive_controller;
 	// AutonStateMachine *auton_state_machine;
 
   // Other variables that sequences need to have access to like Elevaotr, intake, etc.
@@ -29,12 +29,14 @@ public:
   std::vector<std::vector<double> > GetFullProfile();
 
 protected:
+    int auton_sequence_state;
+
     // SI units
     double MAX_VELOCITY = 11.0;
     double MAX_ACCELERATION = 6.0;
     double MAX_JERK = 100000.0;
     double dt = 0.02; // in seconds
-    double WHEELBASE_WIDTH = 2.1; // TODO: determine (in meters)
+    double WHEELBASE_WIDTH = 2.1; // TODO: determine (in feet)
 
     Waypoint start_pos; // All start points are relative to the center of the low hab platform as (0, 0, 0)
 		std::vector<int> zeroing_indeces; // can also add the profile refs here

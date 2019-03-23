@@ -20,7 +20,7 @@ void CenterLowHabRocketRightCenterOneCargo::BuildTotalTrajectory() {
 
 void CenterLowHabRocketRightCenterOneCargo::CenterLowHabOneCargoStateMachine(bool *place_cargo) {
 
-  switch (rocket_right_center_one_cargo_state) {
+  switch (auton_sequence_state) {
 
     case PLACE_ELEMENT:
       if (auton_state_machine->shoot_counter == 0) {

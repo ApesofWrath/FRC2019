@@ -1,7 +1,8 @@
 #include "../../include/AutonSequences/CenterLowHab_OneCargo.h"
 
-const int PLACE_ELEMENT = 0;
-const int STOP_STATE = 1;
+const int IDLE = 0;
+const int PLACE_ELEMENT = 1;
+const int STOP_STATE = 2;
 
 CenterLowHabOneCargo::CenterLowHabOneCargo(Waypoint start) {
   start_pos = start;
@@ -10,8 +11,6 @@ CenterLowHabOneCargo::CenterLowHabOneCargo(Waypoint start) {
   MAX_JERK = 100000.0;
   dt = 0.02; // in seconds
   WHEELBASE_WIDTH = 2.1; // TODO: determine (in meters)
-
-  int cargo_ship_one_cargo_state = 0;
 }
 
 void CenterLowHabOneCargo::BuildTotalTrajectory() {
@@ -20,9 +19,18 @@ void CenterLowHabOneCargo::BuildTotalTrajectory() {
   PrintTrajectory();
 }
 
+void CenterLowHabOneCargo::UpdateState() {
+  if (drive_controller->GetDriveIndex() == zeroing_indeces.at(0)) {
+
+  }
+}
+
 void CenterLowHabOneCargo::CenterLowHabOneCargoStateMachine(bool *place_cargo) {
 
-  switch (cargo_ship_one_cargo_state) {
+  switch (auton_sequence_state) {
+
+    case IDLE:
+    break;
 
     case PLACE_ELEMENT:
       if (auton_state_machine->shoot_counter == 0) {
