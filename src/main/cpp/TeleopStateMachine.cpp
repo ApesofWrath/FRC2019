@@ -44,6 +44,7 @@ bool state_solenoids = false;
 
 bool auto_balanced = false;
 bool is_arm_back = false;
+int rezero_encoder = 0;
 
 TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
   Arm *arm_, HatchPickup *hatch_pickup_){
@@ -105,6 +106,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
       } else if (zero_elevator) {
         state = REZERO_STATE;
+        rezero_encoder = arm->talonArm->GetAngularPosition();
       }
 
       //top intake
@@ -689,18 +691,15 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case REZERO_STATE:
         frc::SmartDashboard::PutString("State", "REZERO");
-        if (arm->talonArm->GetOutputCurrent() > 2.0) {
-          is_arm_back = true;
-        }
-        if (is_arm_back) { //first time current check is true, will stop arm for rest of state duration
+      //  if (std::abs(arm->talonArm->GetAngularPosition() - rezero_encoder) < 2.0) {
+      //    arm->arm_state = arm->REINIT_STATE_H;
+    //    } else {
           arm->arm_state = arm->STOP_ARM_STATE_H;
-        } else {
-          arm->arm_state = arm->REINIT_STATE_H;
-        }
-        if (arm->arm_state == arm->STOP_ARM_STATE_H) { //once arm is tucked safely
+    //    }
+        if (arm->arm_state == arm->STOP_ARM_STATE_H) { //once arm is tucked safely //reinit state will go to stop state
           elevator->elevator_state = elevator->STOP_STATE_H;
         }
-        if (!zero_elevator) {
+        if (!zero_elevator && !zero_arm) {
           state = INIT_STATE;
           is_arm_back = false;
         }

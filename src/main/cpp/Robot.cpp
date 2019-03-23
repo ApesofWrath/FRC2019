@@ -9,6 +9,8 @@
 #include <iostream>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+double count_zero = 0;
+
 void Robot::RobotInit() {
 
     frc::SmartDashboard::PutNumber("arb ff", 0);
@@ -160,7 +162,7 @@ void Robot::TeleopPeriodic() {
     place_hatch_high = joyOpButtons->GetRawButton(8);
 
     wait_for_button = joyOpButtons->GetRawButton(13);
-    arm_up = joyOpButtons->GetRawButton(6);
+    zero_arm = joyThrottle->GetRawButton(8);
 
      get_cargo_ground = joyOpButtons->GetRawButton(12);
     post_intake_cargo = joyOpButtons->GetRawButton(1);
