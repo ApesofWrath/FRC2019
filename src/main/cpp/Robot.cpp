@@ -81,7 +81,6 @@ void Robot::TeleopPeriodic() {
   // 	   drive_controller->canTalonRight3->Set(ControlMode::PercentOutput, y);
 
 
-
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
   // drive_controller->VisionDriveStateMachine();
   // drive_controller->GenerateVisionProfile(3.28, d2r(0), d2r(45));

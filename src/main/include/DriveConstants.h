@@ -12,7 +12,7 @@ const double K_D_RIGHT_VEL = 0.0;// 0.0005;
 const double K_P_LEFT_VEL = 0.002; //voltage compensation //ff //p
 const double K_D_LEFT_VEL = 0.0;
 
-const double K_P_YAW_VEL = 0.0;
+const double K_P_YAW_VEL = 13.0;
 const double K_D_YAW_VEL = 0.0;
 
 const double K_P_YAW_HEADING_POS = 0.5; //special controllers TODO: change back
