@@ -1,8 +1,16 @@
-See file:///C:/Users/ApesOfWrath/Desktop/newauton2019/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling Vision.cpp successful.
+See file:///C:/Users/DriversStation/Desktop/FRC2019_Auton-Path-Gen_Testing/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+compiling Vision.cpp failed.
+C:\Users\DriversStation\Desktop\FRC2019_Auton-Path-Gen_Testing\FRC2019\src\main\cpp\Vision.cpp: In member function 'double Vision::GetYawToTarget()':
+C:\Users\DriversStation\Desktop\FRC2019_Auton-Path-Gen_Testing\FRC2019\src\main\cpp\Vision.cpp:16:43: error: 'd2r' was not declared in this scope
+   return d2r(table->GetNumber("yaw", -1.0));
+                                           ^
+C:\Users\DriversStation\Desktop\FRC2019_Auton-Path-Gen_Testing\FRC2019\src\main\cpp\Vision.cpp: In member function 'double Vision::GetRobotExitAngle()':
+C:\Users\DriversStation\Desktop\FRC2019_Auton-Path-Gen_Testing\FRC2019\src\main\cpp\Vision.cpp:32:50: error: 'd2r' was not declared in this scope
+   return d2r(table->GetNumber("exit_angle", -1.0));
+                                                  ^
 
 compiling DriveBase.cpp successful.
 
 compiling Robot.cpp successful.
 
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/ApesOfWrath/Desktop/newauton2019/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/DriversStation/Desktop/FRC2019_Auton-Path-Gen_Testing/FRC2019/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

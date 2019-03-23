@@ -21,11 +21,11 @@ void Robot::RobotInit() {
 
   drive_controller = new DriveController();
   vision = new Vision();
-
+  led_solenoid->Set(true);
 }
 
 void Robot::RobotPeriodic() {
-  led_solenoid->Set(true);
+
 }
 
 void Robot::AutonomousInit() { //not go to periodic until prof sent to dc
@@ -82,8 +82,8 @@ void Robot::TeleopPeriodic() {
 
 
 
-  // drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
-  drive_controller->VisionDriveStateMachine();
+  drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
+  // drive_controller->VisionDriveStateMachine();
   // drive_controller->GenerateVisionProfile(3.28, d2r(0), d2r(45));
 
   // frc::SmartDashboard::PutNumber("L1", drive_controller->GetLeftVel());

@@ -284,9 +284,9 @@ void DriveBase::RotationController(Joystick *JoyWheel) {
 //only to be used in teleop; auton will already have this essentially
 // @PARAM: distance in meters, yaw in radians, exit angle in radians
 void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_target, double exit_angle) {
-  frc::SmartDashboard::PutNumber("dist to tape", dist_to_target);
-  frc::SmartDashboard::PutNumber("yaw to tape", yaw_to_target);
-  frc::SmartDashboard::PutNumber("exit angle", exit_angle);
+  frc::SmartDashboard::PutNumber("V dist to tape", dist_to_target);
+  frc::SmartDashboard::PutNumber("V yaw to tape", yaw_to_target);
+  frc::SmartDashboard::PutNumber("V exit angle", exit_angle);
 
 	ZeroAll(true);
 
@@ -302,8 +302,8 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
     x_dist *= -1.0; //left is neg
   }
 
-  frc::SmartDashboard::PutNumber("x dist", x_dist);
-  frc::SmartDashboard::PutNumber("y dist", y_dist);
+  frc::SmartDashboard::PutNumber("V x dist", x_dist);
+  frc::SmartDashboard::PutNumber("V y dist", y_dist);
 
 	Waypoint p1, p2;
 
@@ -865,7 +865,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 			teleop_drive_state = REGULAR;
 		} else if (is_vision) {
       init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0;
-			teleop_drive_state = VISION_YAW; //left out pf
+			teleop_drive_state = VISION_PF; //left out pf
 		} else if (is_rotation) {
 			teleop_drive_state = ROTATION_CONTROLLER;
 		}
@@ -905,8 +905,8 @@ bool DriveBase::VisionDriveStateMachine() {
 		case CREATE_PROFILE:
       frc::SmartDashboard::PutString("VIS DRIVE", "create prof");
       // FOR PATH FINDER HYBRID DRIVE
-            GenerateVisionProfile(10, d2r(0), d2r(45)); // <-- testing version
-	   // GenerateVisionProfile(visionDrive->GetDepthToTarget(), visionDrive->GetYawToTarget(), visionDrive->GetRobotExitAngle());
+            // GenerateVisionProfile(10, d2r(0), d2r(45)); // <-- testing version
+	   GenerateVisionProfile(visionDrive->GetDepthToTarget(), d2r(visionDrive->GetYawToTarget()), d2r(visionDrive->GetRobotExitAngle()));
 
      if (set_profile) {
 				vision_drive_state = FOLLOW_PROFILE;
