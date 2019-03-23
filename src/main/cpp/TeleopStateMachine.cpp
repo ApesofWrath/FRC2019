@@ -43,6 +43,7 @@ bool state_suction = false;
 bool state_solenoids = false;
 
 bool auto_balanced = false;
+bool is_arm_back = false;
 
 TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
   Arm *arm_, HatchPickup *hatch_pickup_){
@@ -688,11 +689,25 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case REZERO_STATE:
         frc::SmartDashboard::PutString("State", "REZERO");
-        arm->arm_state = arm->STOP_ARM_STATE_H;
-        elevator->elevator_state = elevator->STOP_STATE_H;
+        if (arm->talonArm->GetOutputCurrent() > 2.0) {
+          is_arm_back = true;
+        }
+        if (is_arm_back) { //first time current check is true, will stop arm for rest of state duration
+          arm->arm_state = arm->STOP_ARM_STATE_H;
+        } else {
+          arm->arm_state = arm->REINIT_STATE_H;
+        }
+        if (arm->arm_state == arm->STOP_ARM_STATE_H) { //once arm is tucked safely
+          elevator->elevator_state = elevator->STOP_STATE_H;
+        }
         if (!zero_elevator) {
           state = INIT_STATE;
+          is_arm_back = false;
         }
+        intake->top_intake_state = intake->STOP_STATE_H;
+        intake->bottom_intake_state = intake->STOP_STATE_H;
+        hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
+        hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
         break;
        }
 
