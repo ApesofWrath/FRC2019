@@ -316,7 +316,7 @@ void DriveBase::GenerateVisionProfile(double dist_to_target, double yaw_to_targe
 	TrajectoryCandidate candidate;
 
   pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
-	PATHFINDER_SAMPLES_FAST, 0.02, 19.0, 10.0, 100000.0, &candidate);
+	PATHFINDER_SAMPLES_FAST, 0.02, MAX_VEL_VIS, MAX_ACC_VIS, MAX_JERK_VIS, &candidate);
 
 	// pathfinder_prepare(points, POINT_LENGTH, FIT_HERMITE_CUBIC,
 	// PATHFINDER_SAMPLES_FAST, TIME_STEP, max_vel_vis, max_acc_vis, max_jerk_vis, &candidate);
