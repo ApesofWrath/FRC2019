@@ -25,8 +25,8 @@ public:
 
   const int SUCTION_CHANNEL = 0;
 
-  const int SOLENOID_FORWARD_CHANNEL = 0;
-  const int SOLENOID_REVERSE_CHANNEL = 1;
+  const int SOLENOID_FORWARD_CHANNEL = 7;//0;
+  const int SOLENOID_REVERSE_CHANNEL = 6;//1;
 
 
   HatchPickup();

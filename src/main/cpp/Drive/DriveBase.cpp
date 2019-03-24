@@ -25,6 +25,9 @@ int auton_drive_state = CREATE_AUTON_PROF;
 std::vector<std::vector<double>> vision_profile; //runautondrive looks at auton_row size
 std::vector<std::vector<double> > auton_profile(1500, std::vector<double>(5)); //rows stacked on rows, all points // can't be in .h for some reason
 
+double last_target_heading = 0.0;
+double last_yaw_angle = 0.0;
+
 //WestCoast, 2-speed transmission option
 DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 		int r1, int r2, int r3, int r4, int pcm, int f_channel, int r_channel, bool two_speed) {
@@ -237,18 +240,26 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 	// k_p_yaw_vel = 20.0;
 
     double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+		double yaw_angle = (visionDrive->GetYawToTarget() * PI / 180.0);
+		double target_heading = last_target_heading;
 
-    double target_heading = current_heading - (visionDrive->GetYawToTarget() * PI / 180.0);
+		// if the yaw angle has changed, recalculate the target heading, otherwise keep the same one
+		if (yaw_angle != last_yaw_angle) {
+			target_heading = current_heading - yaw_angle;
+		}
+
 		frc::SmartDashboard::PutNumber("init head", init_heading);
     frc::SmartDashboard::PutNumber("targ head", target_heading);
-  	frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
+  	frc::SmartDashboard::PutNumber("targ yaw to", yaw_angle);
 
 		frc::SmartDashboard::PutNumber("cur head", current_heading);
     double error_heading = target_heading - current_heading;
 		frc::SmartDashboard::PutNumber("error head", error_heading);
-    target_yaw_rate = 1.0  * 0.30 * error_heading * max_yaw_rate;
+    target_yaw_rate = 1.0  * 0.20 * error_heading * max_yaw_rate;
     frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
 
+		last_yaw_angle = yaw_angle;
+		last_target_heading = target_heading;
 
 } else { //vel control wheel
 
