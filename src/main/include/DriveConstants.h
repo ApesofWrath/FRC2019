@@ -20,7 +20,7 @@ const double K_D_VISION_POS = 0.0;
 
 //		Auton
 
-const double K_P_YAW_AU = 0.0; //gets sent to Controller()
+const double K_P_YAW_AU = 10.0; //gets sent to Controller()
 const double K_D_YAW_AU = 0.0;
 
 const double K_P_YAW_DIS = 0.0; //used in AutonDrive()

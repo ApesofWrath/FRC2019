@@ -31,3 +31,9 @@ double Vision::GetRobotExitAngle() {
 
   return table->GetNumber("exit_angle", -1.0);
 }
+
+
+
+	// Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
+	// 		0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
+	// 		0.0, 0.0, 0.0, 0.0);

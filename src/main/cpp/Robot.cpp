@@ -70,6 +70,7 @@ void Robot::TeleopPeriodic() {
 		is_vision = joyThrottle->GetRawButton(1);
 		is_regular = joyThrottle->GetRawButton(2);
 
+    is_vision = true;
   //   double y = joyThrottle->GetY();
   //
   //    drive_controller->canTalonLeft1->Set(ControlMode::PercentOutput, -y);

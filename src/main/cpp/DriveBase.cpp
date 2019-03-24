@@ -223,8 +223,9 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
     	frc::SmartDashboard::PutNumber("teleopwc targ yaw", target_yaw_rate);
   } else {
 
+		// target_yaw_rate = VisionYawController();
 
-    double target_heading = init_heading - (visionDrive->GetYawToTarget() * 3.14 / 180.0);
+		double target_heading = init_heading - (visionDrive->GetYawToTarget() * PI / 180.0);
 		frc::SmartDashboard::PutNumber("init head", init_heading);
     frc::SmartDashboard::PutNumber("targ head", target_heading);
   	frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
@@ -233,9 +234,10 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		frc::SmartDashboard::PutNumber("cur head", current_heading);
     double error_heading = target_heading - current_heading;
 		frc::SmartDashboard::PutNumber("error head", error_heading);
-    target_yaw_rate = -1.0 * 0.2 * error_heading * max_yaw_rate;
+    target_yaw_rate = 1.0  * error_heading / (PI) * max_yaw_rate;
     frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
 
+		k_p_yaw_vel = 12.0;
 
   }
 
@@ -256,6 +258,36 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 			0.0, 0.0, 0.0);
 
 }
+
+
+double DriveBase::VisionYawController() {
+	double target_heading = init_heading
+			// + (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0)); //scaling, conversion to radians,left should be positive
+			- d2r(visionDrive->GetYawToTarget());
+
+	double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+
+//	frc::SmartDashboard::PutNumber("current heading", current_heading);
+//	frc::SmartDashboard::PutNumber("target heading", target_heading);
+
+	double error_heading_h = target_heading - current_heading;
+	double total_heading_h = k_p_yaw_heading_pos + error_heading_h;
+
+	//frc::SmartDashboard::PutNumber("total heading", total_heading);
+	//frc::SmartDashboard::PutNumber("k_p_yaw_heading_pos", k_p_yaw_heading_pos);
+
+	if (total_heading > max_yaw_rate) {
+		total_heading = max_yaw_rate;
+	} else if (total_heading < -max_yaw_rate) {
+		total_heading = -max_yaw_rate;
+	}
+
+	Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
+			0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
+			0.0, 0.0, 0.0, 0.0);
+
+}
+
 
 //teleop wc has one more param total_heading, k_p_yaw
 void DriveBase::RotationController(Joystick *JoyWheel) {
@@ -896,6 +928,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
       case VISION_YAW:
       frc::SmartDashboard::PutString("DRIVE", "vis yaw");
       TeleopWCDrive(JoyThrottle, JoyWheel, true);
+			// VisionYawController();
       break;
 
 			case ROTATION_CONTROLLER:
