@@ -232,21 +232,23 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 
 } else if (vis_yaw) { //pos control vision
 
-	k_p_left_vel = 0.015;
-	k_p_right_vel = 0.015;
-	k_p_yaw_vel = 20.0;
-
-	double target_heading = init_heading - (visionDrive->GetYawToTarget() * 3.14 / 180.0);
-frc::SmartDashboard::PutNumber("init head", init_heading);
-    frc::SmartDashboard::PutNumber("targ head", target_heading);
-  frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
+	// k_p_left_vel = 0.015;
+	// k_p_right_vel = 0.015;
+	// k_p_yaw_vel = 20.0;
 
     double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
-frc::SmartDashboard::PutNumber("cur head", current_heading);
+
+    double target_heading = current_heading - (visionDrive->GetYawToTarget() * PI / 180.0);
+		frc::SmartDashboard::PutNumber("init head", init_heading);
+    frc::SmartDashboard::PutNumber("targ head", target_heading);
+  	frc::SmartDashboard::PutNumber("targ yaw to", visionDrive->GetYawToTarget());
+
+		frc::SmartDashboard::PutNumber("cur head", current_heading);
     double error_heading = target_heading - current_heading;
-frc::SmartDashboard::PutNumber("error head", error_heading);
-    target_yaw_rate = -1.0 * 0.2 * error_heading * max_yaw_rate;
+		frc::SmartDashboard::PutNumber("error head", error_heading);
+    target_yaw_rate = 1.0  * 0.30 * error_heading * max_yaw_rate;
     frc::SmartDashboard::PutNumber("targ RATE", target_yaw_rate); //fine
+
 
 } else { //vel control wheel
 

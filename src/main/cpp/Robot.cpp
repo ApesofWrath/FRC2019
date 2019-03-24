@@ -27,7 +27,7 @@ void Robot::RobotInit() {
 
   pdp = new PowerDistributionPanel(0); // 0 is the vcm
 
-  led_solenoid = new Solenoid(9, 2);
+  led_solenoid = new Solenoid(3, 3);
 
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
@@ -122,6 +122,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
+  led_solenoid->Set(true);
 
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
@@ -149,7 +150,7 @@ void Robot::TeleopPeriodic() {
    void Robot::TestPeriodic() {}
 
   void Robot::UpdateButtons() {
-
+    is_regular = joyWheel->GetRawButton(3);
     is_rotation = joyWheel->GetRawButton(5);
     is_vision = joyWheel->GetRawButton(6);
   //  zero_arm = joyThrottle->GetRawButton(8);
