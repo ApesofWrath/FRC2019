@@ -151,7 +151,7 @@ void Robot::TeleopPeriodic() {
   void Robot::UpdateButtons() {
 
     is_rotation = joyWheel->GetRawButton(5);
-
+    is_vision = joyWheel->GetRawButton(6);
   //  zero_arm = joyThrottle->GetRawButton(8);
     zero_elevator = joyThrottle->GetRawButton(9);
 
