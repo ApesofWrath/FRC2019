@@ -106,7 +106,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         state = WAIT_FOR_BUTTON_STATE;
       } else if (zero_elevator) {
         state = REZERO_STATE;
-        rezero_encoder = arm->talonArm->GetAngularPosition();
+        rezero_encoder = arm->GetAngularPosition();
       }
 
       //top intake

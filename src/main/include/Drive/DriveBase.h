@@ -60,6 +60,7 @@ public:
 	void TeleopWCDrive(Joystick *JoyThrottle, Joystick *JoyWheel, bool pos_yaw); //creates velocity references based on joysticks, for normal west coast drive train
 	void AutonDrive(); //makes velocity references based on motion profiles
 	void RotationController(Joystick *JoyWheel);
+	void VisionYawController();
 	void GenerateVisionProfile(double dist_to_target, double yaw_to_target);
 	void Controller(double ref_kick, double ref_right, double ref_left,
 		double ref_yaw, double k_p_right, double k_p_left, double k_p_kick,

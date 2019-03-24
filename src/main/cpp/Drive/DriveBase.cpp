@@ -267,6 +267,36 @@ frc::SmartDashboard::PutNumber("error head", error_heading);
 
 }
 
+void DriveBase::VisionYawController() {
+	double target_heading = init_heading
+			// + (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0)); //scaling, conversion to radians,left should be positive
+			- d2r(visionDrive->GetYawToTarget());
+
+	double current_heading = -1.0 * ahrs->GetYaw() * ( PI / 180.0); //degrees to radians, left should be positive
+
+//	frc::SmartDashboard::PutNumber("current heading", current_heading);
+//	frc::SmartDashboard::PutNumber("target heading", target_heading);
+
+	double error_heading_h = target_heading - current_heading;
+	double total_heading_h = k_p_yaw_heading_pos + error_heading_h;
+
+	//frc::SmartDashboard::PutNumber("total heading", total_heading);
+	//frc::SmartDashboard::PutNumber("k_p_yaw_heading_pos", k_p_yaw_heading_pos);
+
+	if (total_heading > max_yaw_rate) {
+		total_heading = max_yaw_rate;
+	} else if (total_heading < -max_yaw_rate) {
+		total_heading = -max_yaw_rate;
+	}
+
+	k_p_yaw_h_vel = 2.0;
+
+	Controller(0.0, 0.0, 0.0, total_heading_h, k_p_right_vel, k_p_left_vel,
+			0.0, k_p_yaw_h_vel, 0.0, k_d_right_vel, k_d_left_vel,
+			0.0, 0.0, 0.0, 0.0);
+
+}
+
 void DriveBase::RotationController(Joystick *JoyWheel) {
 //	frc::SmartDashboard::PutNumber("joyWheel", JoyWheel->GetX());
 
@@ -871,10 +901,10 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 
 			case VISION_DRIVE:
 			frc::SmartDashboard::PutString("DRIVE", "vis");
-			is_vision_done = VisionDriveStateMachine();
-			if (is_vision_done) {
-				teleop_drive_state = REGULAR;
+			if (last_drive_state != VISION_DRIVE) {
+				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp
 			}
+			VisionYawController();
 			last_drive_state = VISION_DRIVE;
 			break;
 
@@ -883,7 +913,7 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
       if (last_drive_state != ROTATION_CONTROLLER) {
 				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp
 			}
-			if (!is_rotation) {
+			if (!is_rotation) { //for transition back to vel wheel control
 				if (JoyWheel->GetX() < 0.1) {
 					teleop_drive_state = REGULAR;
 				}
