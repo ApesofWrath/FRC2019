@@ -91,7 +91,7 @@ bool HatchPickup::HaveHatch() {
     // if (has_counter > 5) {
     //   frc::SmartDashboard::PutNumber("have", 1);
     //   has_counter = 0;
-    //   return true;
+    //   return true; 0 to 7 and 1 to 6
     // }
     return true;
   } else {

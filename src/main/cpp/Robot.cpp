@@ -27,7 +27,7 @@ void Robot::RobotInit() {
 
   pdp = new PowerDistributionPanel(0); // 0 is the vcm
 
-  led_solenoid = new Solenoid(3, 3);
+  led_solenoid = new Solenoid(9, 3);
 
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
