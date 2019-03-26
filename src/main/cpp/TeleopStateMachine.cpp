@@ -44,6 +44,7 @@ bool state_solenoids = false;
 
 bool auto_balanced = false;
 bool is_arm_back = false;
+bool have_hatch = false;
 int rezero_encoder = 0;
 
 TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevator_, Intake *intake_,
@@ -277,18 +278,22 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->ON_STATE_H;
         }
-  frc::SmartDashboard::PutBoolean("have hatch", hatch_pickup->HaveHatch());
-        // if (hatch_pickup->HaveHatch() && counter_suction > 20) { //havehatch() needs suction current to have ramped up already; wait 10 counts
-        //   elevator->elevator_state = elevator->LIFTING_ARM_STATE_H;
-        //   if (elevator->GetElevatorPosition() > 0.4) {
-        //   arm->arm_state = arm->REST_STATE_H;
-        //     frc::SmartDashboard::PutString("have hatch", "y");
-        //   if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
-        //     state = POST_INTAKE_HATCH_STATE;
-        //   }
-        // }
-        // }
+        frc::SmartDashboard::PutBoolean("have hatch", hatch_pickup->HaveHatch());
+        if ((hatch_pickup->HaveHatch() && counter_suction > 20) || post_intake_hatch) { //havehatch() needs suction current to have ramped up already; wait 10 counts
+          have_hatch = true;
+        }
 
+        if (have_hatch) { //go through whole intaking sequence the first time havehatch() returns true
+          elevator->elevator_state = elevator->LIFTING_ARM_STATE_H;
+          if (elevator->GetElevatorPosition() > 0.4) {
+          arm->arm_state = arm->REST_STATE_H;
+            frc::SmartDashboard::PutString("have hatch", "y");
+          if (std::abs(arm->GetAngularPosition() - REST_ANGLE) <= 0.2) {
+            have_hatch = false;
+            state = POST_INTAKE_HATCH_STATE;
+          }
+        }
+      }
         last_state = GET_HATCH_STATION_SUCTION_STATE;
         break;
 
@@ -480,7 +485,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (std::abs(elevator->GetElevatorPosition() - elevator->BOTTOM_HATCH_POS) < 0.2 && !place_hatch_low) { //placeholder
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
           counter_release++;
-          if (counter_release > 30) {
+          if (counter_release > 100) {
             counter_solenoids++;
             hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
             if (counter_solenoids > 20) {

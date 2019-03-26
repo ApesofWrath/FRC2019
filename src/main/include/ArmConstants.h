@@ -16,8 +16,8 @@ const double GET_HATCH_GROUND_ANGLE = 0.10; //
 const double EXTRA_ANGLE = 1.0; // get ball from recttangle next to hab
 
 const double Kf = 0.4;//0.3 //works like this
-const double Kp = 0.9;//0.15;//0.75; //0.0
-const double Ki = 0.0;//0.0015;//0.00085; 0.0009
+const double Kp = 1.9;//0.15;//0.75; //0.0
+const double Ki = 0.0006;//0.0015;//0.00085; 0.0009
 const double Kd = 0.0;//100.5;
 
 const double arb_ff_percent = 0.27;//0.47;//1.0; //0.1

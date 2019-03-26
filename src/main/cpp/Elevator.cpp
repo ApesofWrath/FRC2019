@@ -17,6 +17,7 @@ double elevator_voltage = 0.0;
 
 int encoder_counter_e = 0;
 int zeroing_counter_e  = 0;
+int stall_count_e = 0;
 
 Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 
@@ -89,7 +90,7 @@ Elevator::Elevator(ElevatorMotionProfiler *elevator_profiler_) {
 //  (GetElevatorVelocity()) <= 0.1) && (talonElevator1->GetOutputCurrent() > 3.0 && (talonElevator1->GetActiveTrajectoryVelocity() > 300)))
 
 if (!StallSafety()) {
-//  frc::SmartDashboard::PutString("ELEV SAFETY", "none");
+
     switch (elevator_state) {
       case INIT_STATE:
         frc::SmartDashboard::PutString("ELEV ", "init");
@@ -347,12 +348,14 @@ void Elevator::ZeroElevator() {
 }
 
 bool Elevator::StallSafety() {
+    frc::SmartDashboard::PutNumber("ELEV STALLS", stall_count_e);
   if ((std::abs(GetElevatorVelocity()) < 0.05) && (talonElevator1->GetOutputCurrent() > 10.0)) { // std::abs(GetElevatorPosition() - ) <= 0.1
     encoder_counter_e++;
   } else {
     encoder_counter_e = 0;
   }
-  if (encoder_counter_e > 3) {
+  if (encoder_counter_e > 8) {
+    stall_count_e++;
     return true;
     frc::SmartDashboard::PutString("ELEV SAFETY", "stall");
   } else {

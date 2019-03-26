@@ -2,6 +2,7 @@
 
 int counter = 0;
 int encoder_counter_i = 0;
+int stall_count = 0;
 
 const int INIT_STATE = 0;
 const int REST_STATE = 1;
@@ -253,15 +254,19 @@ return 0;
     }
 
     bool Arm::StallSafety() {
+
+      frc::SmartDashboard::PutNumber("ARM STALLS", stall_count);
+      frc::SmartDashboard::PutNumber("ARM error", talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition());
       // STALL
-      if ((std::abs(GetAngularVelocity()) < 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 4.0) { //GetActiveTrajectoryVelocity won't work because targ vel is 0 at end of profile
+      if ((std::abs(GetAngularVelocity()) < 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 6.0 && std::abs(talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition()) > 0.2 * RAD_TO_ENC) { //GetActiveTrajectoryVelocity won't work because targ vel is 0 at end of profile
         encoder_counter_i++;
       } else {
         encoder_counter_i = 0;
       }
-      if (encoder_counter_i > 3) {
-        return true;
+      if (encoder_counter_i > 8) {
+        stall_count++;
         frc::SmartDashboard::PutString("ARM SAFETY", "stall");
+        return true;
       } else {
       return false;
     }
@@ -305,7 +310,7 @@ return 0;
 
     void Arm::ArmStateMachine() {
 
-      frc::SmartDashboard::PutNumber("arm vel", GetAngularVelocity());
+    //  frc::SmartDashboard::PutNumber("arm vel", GetAngularVelocity());
       frc::SmartDashboard::PutNumber("arm current",talonArm->GetOutputCurrent());
   //    (GetAngularVelocity()) <= 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 2.0)
 

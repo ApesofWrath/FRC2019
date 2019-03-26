@@ -73,11 +73,11 @@ void Robot::RobotPeriodic() {
     frc::SmartDashboard::PutNumber("el error", elevator->talonElevator1->GetActiveTrajectoryPosition() - elevator->talonElevator1->GetSelectedSensorPosition(0));
 
   //
-  // frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
+  frc::SmartDashboard::PutNumber("arm vel", arm->talonArm->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("arm pos", arm->talonArm->GetSelectedSensorPosition(0));
   //
    frc::SmartDashboard::PutNumber("arm targ pos", arm->talonArm->GetActiveTrajectoryPosition());
-  // frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
+  frc::SmartDashboard::PutNumber("arm targ vel", arm->talonArm->GetActiveTrajectoryVelocity());
   //
   // frc::SmartDashboard::PutNumber("arm ang", arm->GetAngularPosition());
   // frc::SmartDashboard::PutNumber("elev height", elevator->GetElevatorPosition());

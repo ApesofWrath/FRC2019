@@ -27,7 +27,7 @@ HatchPickup::HatchPickup() {
 
 void HatchPickup::On() {
 
-  suction1->Set(ControlMode::PercentOutput, -1.0); //.3
+  suction1->Set(ControlMode::PercentOutput, -0.9); //.3
 ///  suction2->Set(ControlMode::PercentOutput, 0.3);
 
 
@@ -86,16 +86,16 @@ void HatchPickup::SolenoidStateMachine() {
 
 bool HatchPickup::HaveHatch() {
   frc::SmartDashboard::PutNumber("have hatch counter", has_counter);
-  if ((suction1->GetOutputCurrent() < 3.0 && suction1->GetOutputCurrent() > 0.5) && (suction2->GetOutputCurrent() < 3.0 && suction2->GetOutputCurrent() > 0.5)) {
-    // has_counter++;
-    // if (has_counter > 5) {
+  if ((suction1->GetOutputCurrent() < 3.5 && suction1->GetOutputCurrent() > 0.5) && (suction2->GetOutputCurrent() < 3.5 && suction2->GetOutputCurrent() > 0.5)) {
+    has_counter++;
+    if (has_counter > 7) { //there are downspikes in current when driving
     //   frc::SmartDashboard::PutNumber("have", 1);
-    //   has_counter = 0;
-    //   return true; 0 to 7 and 1 to 6
-    // }
-    return true;
+       has_counter = 0;
+      return true;
+     }
+
   } else {
-    // has_counter = 0;
+     has_counter = 0;
     // frc::SmartDashboard::PutNumber("have", 0);
     return false;
   }
