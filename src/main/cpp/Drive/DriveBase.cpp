@@ -244,7 +244,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		double target_heading = last_target_heading;
 
 		// if the yaw angle has changed, recalculate the target heading, otherwise keep the same one
-		if (yaw_angle != last_yaw_angle) {
+		if (yaw_angle != last_yaw_angle) { //may need to set threshold
 			target_heading = current_heading - yaw_angle;
 		}
 
@@ -931,8 +931,6 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 			teleop_drive_state = ROTATION_CONTROLLER;
 		} if (is_vision) {
 			teleop_drive_state = VISION_DRIVE;
-		} if (is_regular) {
-			teleop_drive_state = REGULAR;
 		}
 
 		switch (teleop_drive_state) {
@@ -943,13 +941,16 @@ void DriveBase::RunTeleopDrive(Joystick *JoyThrottle,
 			last_drive_state = REGULAR;
 			break;
 
-			case VISION_DRIVE:
+			case VISION_DRIVE: //just press button, do not have wheel turned
 			frc::SmartDashboard::PutString("DRIVE", "vis");
 			if (last_drive_state != VISION_DRIVE) {
-				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp
+				 init_heading = -1.0 * ahrs->GetYaw() * 3.14 / 180.0; //stamp, not used
 			}
 			TeleopWCDrive(JoyThrottle, JoyWheel, false, true);
 			last_drive_state = VISION_DRIVE;
+			if (!is_vision) {
+				teleop_drive_state = REGULAR;
+			}
 			break;
 
 			case ROTATION_CONTROLLER:

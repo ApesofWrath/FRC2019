@@ -150,7 +150,9 @@ void Robot::TeleopPeriodic() {
    void Robot::TestPeriodic() {}
 
   void Robot::UpdateButtons() {
-    is_regular = joyWheel->GetRawButton(3);
+  //  is_regular = joyWheel->GetRawButton(3);
+
+  //drive
     is_rotation = joyWheel->GetRawButton(5);
     is_vision = joyWheel->GetRawButton(6);
   //  zero_arm = joyThrottle->GetRawButton(8);
@@ -163,7 +165,7 @@ void Robot::TeleopPeriodic() {
     place_hatch_high = joyOpButtons->GetRawButton(8);
 
     wait_for_button = joyOpButtons->GetRawButton(13);
-    zero_arm = joyThrottle->GetRawButton(8);
+//    zero_arm = joyThrottle->GetRawButton(8);
 
      get_cargo_ground = joyOpButtons->GetRawButton(12);
     post_intake_cargo = joyOpButtons->GetRawButton(1);
