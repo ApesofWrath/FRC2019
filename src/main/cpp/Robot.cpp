@@ -155,7 +155,7 @@ void Robot::TeleopPeriodic() {
   //drive
     is_rotation = joyWheel->GetRawButton(5);
     is_vision = joyWheel->GetRawButton(6);
-  //  zero_arm = joyThrottle->GetRawButton(8);
+    zero_arm = joyThrottle->GetRawButton(8);
     zero_elevator = joyThrottle->GetRawButton(9);
 
     get_hatch_station = joyOpButtons->GetRawButton(14);

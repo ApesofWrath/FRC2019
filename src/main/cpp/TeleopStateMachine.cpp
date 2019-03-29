@@ -703,12 +703,16 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
     intake->bottom_intake_state = intake->STOP_STATE_H;
     hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
     hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+    if (zero_arm) {
+      arm->arm_state = arm->REINIT_STATE_H;
+    } else {
           arm->arm_state = arm->STOP_ARM_STATE_H;
+        }
     //    }
         if (arm->arm_state == arm->STOP_ARM_STATE_H) { //once arm is tucked safely //reinit state will go to stop state
           elevator->elevator_state = elevator->STOP_STATE_H;
         }
-        if (!zero_elevator) {
+        if (!zero_elevator && !zero_arm) {
           state = INIT_STATE;
           is_arm_back = false;
         }
