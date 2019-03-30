@@ -27,8 +27,6 @@ void Robot::RobotInit() {
 
   pdp = new PowerDistributionPanel(0); // 0 is the vcm
 
-  led_solenoid = new Solenoid(9, 3);
-
   joyThrottle = new frc::Joystick(0);
   joyWheel = new frc::Joystick(1);
   joyOp1 = new frc::Joystick(2);
@@ -52,20 +50,20 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
-
-  frc::SmartDashboard::PutNumber("!top cur",intake->talonIntake1->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("!bot cur",intake->talonIntake2->GetOutputCurrent());
-//1.63 hatch scorings  - none-5.0 yes -3.0
-//1.05 ball scoring
-//0.05 hatch ground pickup, ball ground pickup
-//   frc::SmartDashboard::PutNumber("top!", intake->talonIntake1->GetOutputCurrent());
-// frc::SmartDashboard::PutNumber("bot!", intake->talonIntake2->GetOutputCurrent());
-// frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
-  frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
-// // frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
-// //
-// //   frc::SmartDashboard::PutString("have hatch", "n");
+//
+//   frc::SmartDashboard::PutNumber("!top cur",intake->talonIntake1->GetOutputCurrent());
+//   frc::SmartDashboard::PutNumber("!bot cur",intake->talonIntake2->GetOutputCurrent());
+// //1.63 hatch scorings  - none-5.0 yes -3.0
+// //1.05 ball scoring
+// //0.05 hatch ground pickup, ball ground pickup
+// //   frc::SmartDashboard::PutNumber("top!", intake->talonIntake1->GetOutputCurrent());
+// // frc::SmartDashboard::PutNumber("bot!", intake->talonIntake2->GetOutputCurrent());
+// // frc::SmartDashboard::PutNumber("arm slider", joyThrottle->GetRawAxis(3));
+//   frc::SmartDashboard::PutNumber("suction2",hatch_pickup->suction2->GetOutputCurrent());
+//   frc::SmartDashboard::PutNumber("suction1",hatch_pickup->suction1->GetOutputCurrent());
+// // // frc::SmartDashboard::PutBoolean("have hatch?", hatch_pickup->HaveHatch());
+// // //
+// // //   frc::SmartDashboard::PutString("have hatch", "n");
 //  frc::SmartDashboard::PutNumber("el vel", elevator->talonElevator1->GetSelectedSensorVelocity(0));
   frc::SmartDashboard::PutNumber("el pos", elevator->talonElevator1->GetSelectedSensorPosition(0));
   frc::SmartDashboard::PutNumber("el targ pos", elevator->talonElevator1->GetActiveTrajectoryPosition());
@@ -122,7 +120,6 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-  led_solenoid->Set(true);
 
   drive_controller->RunTeleopDrive(joyThrottle, joyWheel, is_regular, is_vision, is_rotation);
 
@@ -132,7 +129,7 @@ void Robot::TeleopPeriodic() {
   intake->IntakeBottomStateMachine();
   hatch_pickup->SuctionStateMachine();
   hatch_pickup->SolenoidStateMachine();
-
+  
   UpdateButtons();
 
   tsm->StateMachine(wait_for_button, bottom_intake_in, bottom_intake_out, bottom_intake_stop, top_intake_in, top_intake_out, top_intake_stop,

@@ -36,7 +36,6 @@ public:
   const int HOLD_HATCH_STATE_H = 7;
   const int STOP_STATE_H = 8;
   const int LIFTING_ARM_STATE_H = 9;
-
   // elevator posititons for the differnet states
   const double TOP_HATCH_POS = 1.38; //top scoring
   const double MID_HATCH_POS = 0.72; //mid scoring

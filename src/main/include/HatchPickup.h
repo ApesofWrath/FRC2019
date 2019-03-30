@@ -12,7 +12,7 @@ class HatchPickup {
 public:
 
   TalonSRX *suction1, *suction2;
-  frc::DoubleSolenoid *solenoid;
+//  frc::DoubleSolenoid *solenoid;//, *alignment_solenoid, *release_solenoid;
 
   const int ON_STATE_H = 0;
   const int OFF_STATE_H = 1;
@@ -38,6 +38,9 @@ public:
   void In();
   void Out();
   void SolenoidStateMachine();
+
+  void PistonOut();
+  void PistonIn();
 
   bool HaveHatch();
   bool ReleasedHatch();

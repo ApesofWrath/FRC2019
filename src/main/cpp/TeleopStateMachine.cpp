@@ -207,6 +207,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         intake->bottom_intake_state = intake->STOP_STATE_H;
         hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         hatch_pickup->solenoid_state = hatch_pickup->IN_STATE_H;
+        hatch_pickup->PistonIn();
 
         state = WAIT_FOR_BUTTON_STATE;
         last_state = INIT_STATE;
@@ -263,6 +264,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_solenoids) {
            hatch_pickup->solenoid_state = hatch_pickup->OUT_STATE_H;
        }
+       hatch_pickup->PistonOut();
         if (std::abs(arm->GetAngularPosition() - HATCH_ANGLE) <= 0.2) {
           counter_suction = 0;
           state = GET_HATCH_STATION_SUCTION_STATE;
@@ -377,6 +379,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case GET_CARGO_GROUND_STATE:
         frc::SmartDashboard::PutString("State", "GET CARGO GROUND");
+        hatch_pickup->PistonIn();
         if (state_suction) {
           hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;
         }
@@ -643,7 +646,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
         if (state_arm) {
           arm->arm_state = arm->REST_STATE_H;
         }
-
+        hatch_pickup->PistonIn();
         if (arm->GetAngularPosition() > 1.85) {
           if (state_elevator){
             elevator->elevator_state = elevator->BOTTOM_HATCH_STATE_H;
@@ -696,9 +699,7 @@ TeleopStateMachine::TeleopStateMachine(DriveController *drive_, Elevator *elevat
 
         case REZERO_STATE:
         frc::SmartDashboard::PutString("State", "REZERO");
-      //  if (std::abs(arm->talonArm->GetAngularPosition() - rezero_encoder) < 2.0) {
-      //    arm->arm_state = arm->REINIT_STATE_H;
-    //    } else {
+
     intake->top_intake_state = intake->STOP_STATE_H;
     intake->bottom_intake_state = intake->STOP_STATE_H;
     hatch_pickup->suction_state = hatch_pickup->OFF_STATE_H;

@@ -27,7 +27,7 @@ const double CRUISE_VEL = 0.0;//0.041; //rad/sec
 const double ENC_CRUISE_VEL = 2000.0; // conversion incorrect - CRUISE_VEL * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (1.0 / 10.0); //ticks/100ms
 
 const double CRUISE_ACC = 0.0; //acceleration, which is in velocity units per second (where velocity units = change in sensor per 100ms)
-const double ENC_CRUISE_ACC = 800.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
+const double ENC_CRUISE_ACC = 1000.0; //CRUISE_ACC * (1.0 / (2.0 * 3.14159)) * 4096.0 * 7.5 * (100.0); //ticks/100ms/sec = ticks/100sec
 
 // #else
 //

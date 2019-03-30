@@ -175,7 +175,10 @@ DriveBase::DriveBase(int l1, int l2, int l3, int l4,
 	visionDrive = new Vision();
 
   //shifter
-	if (pcm != -1) solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
+	// if (pcm != -1) {
+	// 	solenoid = new DoubleSolenoid(PCM, F_CHANNEL, R_CHANNEL);
+	// 	led_solenoid = new Solenoid(PCM, 3);
+	// }
 
 }
 
@@ -197,6 +200,8 @@ void DriveBase::SetAutonGains(bool same_side_scale) {
 void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Controller()
 		Joystick *JoyWheel, bool pos_yaw, bool vis_yaw) {
 
+	//		led_solenoid->Set(true);
+
 	double target_l, target_r, target_yaw_rate;
 
 	double throttle = JoyThrottle->GetY();
@@ -216,6 +221,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 	target_r = target_l;
 
 	if (pos_yaw) { //pos control wheel
+	///	led_solenoid->Set(false);
 
 			double target_heading = init_heading + (-1.0 * JoyWheel->GetX() * (90.0 * PI / 180.0));
 		frc::SmartDashboard::PutNumber("init head", init_heading);
@@ -234,7 +240,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 			k_p_right_vel = K_P_LEFT_VEL;
 
 } else if (vis_yaw) { //pos control vision
-
+	//	led_solenoid->Set(true);
 	// k_p_left_vel = 0.015;
 	// k_p_right_vel = 0.015;
 	// k_p_yaw_vel = 20.0;
@@ -262,7 +268,7 @@ void DriveBase::TeleopWCDrive(Joystick *JoyThrottle, //finds targets for the Con
 		last_target_heading = target_heading;
 
 } else { //vel control wheel
-
+//	led_solenoid->Set(false);
 	double reverse_x = 1.0;
 	double wheel = -1.0 * JoyWheel->GetX();
 

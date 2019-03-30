@@ -15,7 +15,7 @@ const int STOP_ARM_STATE = 7;
 
 Arm::Arm(ArmMotionProfiler *arm_profiler_) {
 
-  talonArm = new TalonSRX(ARM_TALON_ID);
+  talonArm = new TalonSRX(43);
 
   talonArm->ConfigFactoryDefault();
 
@@ -255,21 +255,23 @@ return 0;
 
     bool Arm::StallSafety() {
 
-      frc::SmartDashboard::PutNumber("ARM STALLS", stall_count);
-      frc::SmartDashboard::PutNumber("ARM error", talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition());
-      // STALL
-      if ((std::abs(GetAngularVelocity()) < 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 6.0 && std::abs(talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition()) > 0.2 * RAD_TO_ENC) { //GetActiveTrajectoryVelocity won't work because targ vel is 0 at end of profile
-        encoder_counter_i++;
-      } else {
-        encoder_counter_i = 0;
-      }
-      if (encoder_counter_i > 8) {
-        stall_count++;
-        frc::SmartDashboard::PutString("ARM SAFETY", "stall");
-        return true;
-      } else {
-      return false;
-    }
+    //   frc::SmartDashboard::PutNumber("ARM STALLS", stall_count);
+    //   frc::SmartDashboard::PutNumber("ARM error", talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition());
+    //   // STALL
+    //   if ((std::abs(GetAngularVelocity()) < 0.1) && (std::abs(talonArm->GetOutputCurrent())) > 6.0 && std::abs(talonArm->GetSelectedSensorPosition(0) - talonArm->GetActiveTrajectoryPosition()) > 0.2 * RAD_TO_ENC) { //GetActiveTrajectoryVelocity won't work because targ vel is 0 at end of profile
+    //     encoder_counter_i++;
+    //   } else {
+    //     encoder_counter_i = 0;
+    //   }
+    //   if (encoder_counter_i > 8) {
+    //     stall_count++;
+    //     frc::SmartDashboard::PutString("ARM SAFETY", "stall");
+    //     return true;
+    //   } else {
+    //   return false;
+    // }
+
+    return false;
     }
 
     void Arm::CapVoltage() {
@@ -323,7 +325,7 @@ return 0;
         case INIT_STATE:
         frc::SmartDashboard::PutString("ARM", "init");
         if (std::abs(talonArm->GetSelectedSensorPosition(0) - ENC_START_ANGLE) < 10) {
-          arm_state = REST_STATE;
+        //  arm_state = REST_STATE;
         } else {
           talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 100);
         }

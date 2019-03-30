@@ -28,7 +28,8 @@ public:
 	VictorSPX *canTalonLeft2, *canTalonLeft3,  *canTalonRight2,
 			*canTalonRight3;
 
-	DoubleSolenoid *solenoid;
+///	DoubleSolenoid *solenoid;
+//	frc::Solenoid *led_solenoid;
 
 	AHRS *ahrs;
 
