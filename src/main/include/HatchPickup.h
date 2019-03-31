@@ -12,7 +12,7 @@ class HatchPickup {
 public:
 
   TalonSRX *suction1, *suction2;
-//  frc::DoubleSolenoid *solenoid;//, *alignment_solenoid, *release_solenoid;
+  frc::DoubleSolenoid *solenoid, *release_solenoid_left, *release_solenoid_right;
 
   const int ON_STATE_H = 0;
   const int OFF_STATE_H = 1;
@@ -25,8 +25,8 @@ public:
 
   const int SUCTION_CHANNEL = 0;
 
-  const int SOLENOID_FORWARD_CHANNEL = 7;//0;
-  const int SOLENOID_REVERSE_CHANNEL = 6;//1;
+  const int SOLENOID_FORWARD_CHANNEL = 0;//0;
+  const int SOLENOID_REVERSE_CHANNEL = 1;//1;
 
 
   HatchPickup();

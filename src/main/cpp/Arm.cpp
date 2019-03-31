@@ -325,7 +325,7 @@ return 0;
         case INIT_STATE:
         frc::SmartDashboard::PutString("ARM", "init");
         if (std::abs(talonArm->GetSelectedSensorPosition(0) - ENC_START_ANGLE) < 10) {
-        //  arm_state = REST_STATE;
+          arm_state = REST_STATE;
         } else {
           talonArm->SetSelectedSensorPosition(ENC_START_ANGLE, 0, 100);
         }
