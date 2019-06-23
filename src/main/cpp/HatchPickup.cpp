@@ -23,9 +23,9 @@ HatchPickup::HatchPickup() {
   suction2->Follow(*suction1);
 
   solenoid = new frc::DoubleSolenoid(9, SOLENOID_FORWARD_CHANNEL, SOLENOID_REVERSE_CHANNEL);
-  // release_solenoid_left = new frc::Solenoid(3, 0);
-  //   release_solenoid_right = new frc::Solenoid(3, 1);
- release_solenoid = new frc::DoubleSolenoid(9, -0, -0);
+  release_solenoid_left = new frc::Solenoid(3, 0);
+  release_solenoid_right = new frc::Solenoid(3, 1);
+ // release_solenoid = new frc::DoubleSolenoid(9, -0, -0);
 }
 
 void HatchPickup::PistonIn() {
