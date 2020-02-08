@@ -1,0 +1,14 @@
+See file:///C:/Users/Robotics/Desktop/FRC2020/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling DriveBase.cpp successful.
+In file included from c:\users\robotics\desktop\frc2020\src\main\include\drive\drivebase.h:5:0,
+                 from C:\Users\Robotics\Desktop\FRC2020\src\main\cpp\Drive\DriveBase.cpp:1:
+C:\Users\Robotics\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/WPILib.h:14:2: warning: #warning is a GCC extension
+ #warning "Including this header drastically increases compilation times and is bad style. Include only what you use instead."
+  ^~~~~~~
+C:\Users\Robotics\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/WPILib.h:14:2: warning: #warning "Including this header drastically increases compilation times and is bad style. Include only what you use instead." [-Wcpp]
+C:\Users\Robotics\Desktop\FRC2020\src\main\cpp\Drive\DriveBase.cpp: In member function 'void DriveBase::ManualOpenLoopDrive(frc::Joystick*, frc::Joystick*)':
+C:\Users\Robotics\Desktop\FRC2020\src\main\cpp\Drive\DriveBase.cpp:188:18: warning: variable 'right_out' set but not used [-Wunused-but-set-variable]
+  float left_out, right_out;
+                  ^~~~~~~~~
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/Robotics/Desktop/FRC2020/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

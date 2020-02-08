@@ -1,208 +1,71 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "Intake.h"
 
-const int STOP_STATE = 0;
-const int HOLD_STATE = 1;
-const int IN_STATE = 2;
-const int OUT_STATE = 3;
-const int OUT_SLOW_STATE = 4;
-const int IN_SLOW_STATE = 5;
-const int OUT_FAST_STATE = 6;
+#include <iostream>
 
-int out_counter = 0;
+#include <frc/smartdashboard/SmartDashboard.h>
+
+const int STOP_STATE = 0;
+const int IN_STATE = 1;
+const int OUT_STATE = 2;
 
 Intake::Intake() {
 
-  talonIntake1 = new TalonSRX(TALON_ID_TOP);
-  talonIntake2 = new TalonSRX(TALON_ID_BOT);
+ talonIntake = new TalonSRX(0);
 
 }
 
-void Intake::StopTop() {
+void Intake::Stop() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, 0.0);
-
-}
-
-void Intake::HoldTop() {
-
-  talonIntake1->Set(ControlMode::PercentOutput, 0.0 - 0.2);
+  talonIntake->Set(ControlMode::PercentOutput, 0.0);
 
 }
 
-void Intake::InTop() {
+void Intake::In() {
 
-  talonIntake1->Set(ControlMode::PercentOutput, -1.0); //-.6
-
-}
-
-void Intake::OutTop(bool slow) {
-
-  if (!slow) {
-  talonIntake1->Set(ControlMode::PercentOutput, 0.65);
-} else {
-  talonIntake1->Set(ControlMode::PercentOutput, 0.72);
-}
+  talonIntake->Set(ControlMode::PercentOutput, 0.3);
 
 }
 
-void Intake::OutFastTop(bool fast) {
-  if (fast) {
-  talonIntake1->Set(ControlMode::PercentOutput, 0.80);
-} else {
-  talonIntake1->Set(ControlMode::PercentOutput, 0.72);
-}
+void Intake::Out() {
+
+  talonIntake->Set(ControlMode::PercentOutput, -0.3);
 
 }
 
-void Intake::StopBottom() {
+void Intake::IntakeStateMachine() {
 
-  talonIntake2->Set(ControlMode::PercentOutput, 0.0);
+  frc::SmartDashboard::PutString("INTAKE STATE", "yes");
 
-}
-
-void Intake::HoldBottom() {
-
-  talonIntake2->Set(ControlMode::PercentOutput, 0.0 - 0.2);
-
-}
-
-void Intake::InBottom(bool slow) {
-
-  if (!slow) {
-  talonIntake2->Set(ControlMode::PercentOutput, -1.0);
-} else {
-  talonIntake2->Set(ControlMode::PercentOutput, -0.6);
-}
-
-}
-
-void Intake::OutBottom(bool slow) {
-  out_counter++;
-if (!slow) {
-  talonIntake2->Set(ControlMode::PercentOutput, 0.4);
-} else {
-  talonIntake2->Set(ControlMode::PercentOutput, 0.72);
-}
-
-}
-
-void Intake::OutFastBottom(bool fast) {
-  if (fast) {
-  talonIntake2->Set(ControlMode::PercentOutput, 0.80);
-} else {
-  talonIntake2->Set(ControlMode::PercentOutput, 0.72);
-}
-
-}
-
-void Intake::IntakeTopStateMachine() { //TODO: add current limit?
-
-    frc::SmartDashboard::PutString("TOP INTAKE state", "yes");
-
-  switch (top_intake_state) {
+  switch(intake_state) {
 
     case STOP_STATE:
-    StopTop();
-    frc::SmartDashboard::PutString("TOP INTAKE", "stop");
-    break;
-
-    case HOLD_STATE:
-    HoldTop();
-    frc::SmartDashboard::PutString("TOP INTAKE", "hold");
+    Stop();
+    frc::SmartDashboard::PutString("INTAKE", "stop");
     break;
 
     case IN_STATE:
-    InTop();
-    frc::SmartDashboard::PutString("TOP INTAKE", "in");
+    In();
+    frc::SmartDashboard::PutString("INTAKE", "in");
     break;
 
     case OUT_STATE:
-    OutTop(false);
-    frc::SmartDashboard::PutString("TOP INTAKE", "out");
-    break;
-
-    case OUT_SLOW_STATE:
-    OutTop(true);
-    frc::SmartDashboard::PutString("TOP INTAKE", "out");
-    break;
-
-    case OUT_FAST_STATE:
-    OutFastTop(true);
-    frc::SmartDashboard::PutString("TOP INTAKE", "fast out");
+    Out();
+    frc::SmartDashboard::PutString("INTAKE", "out");
     break;
 
   }
 
 }
 
-void Intake::IntakeBottomStateMachine() { //TODO: add current limit?
 
-  frc::SmartDashboard::PutString("BOT INTAKE state", "yes");
 
-  switch (bottom_intake_state) {
-
-    case STOP_STATE:
-    StopBottom();
-    frc::SmartDashboard::PutString("BOT INTAKE", "stop");
-    break;
-
-    case HOLD_STATE:
-    HoldBottom();
-    frc::SmartDashboard::PutString("BOT INTAKE", "hold");
-    break;
-
-    case IN_STATE:
-    InBottom(false);
-    frc::SmartDashboard::PutString("BOT INTAKE", "in");
-    break;
-
-    case OUT_STATE:
-    OutBottom(false);
-    frc::SmartDashboard::PutString("BOT INTAKE", "out");
-    break;
-
-    case OUT_SLOW_STATE:
-    OutBottom(true);
-    frc::SmartDashboard::PutString("BOT INTAKE", "out");
-    break;
-
-    case IN_SLOW_STATE:
-    InBottom(true);
-    frc::SmartDashboard::PutString("BOT INTAKE", "in");
-    break;
-
-    case OUT_FAST_STATE:
-    OutFastBottom(true);
-    frc::SmartDashboard::PutString("BOT INTAKE", "fast out");
-    break;
-
-  }
-
-}
-
-bool Intake::HaveBall() {
-
-  frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
-
-  if ((talonIntake1->GetOutputCurrent() > 23.0) || (talonIntake2->GetOutputCurrent() > 15.0)) { // has to be top because bottom spikes if it hits the ground
-    return true;
-  } else {
-    return false;
-  }
-
-}
-
-bool Intake::ReleasedBall() {
-  frc::SmartDashboard::PutNumber("top cur",talonIntake1->GetOutputCurrent());
-  frc::SmartDashboard::PutNumber("bot cur",talonIntake2->GetOutputCurrent());
-
-  if (out_counter > 20) {
-    out_counter = 0;
-    return true;
-  } else {
-    return false;
-  }
-
-  return false;
-}
+#ifndef RUNNING_FRC_TESTS
+int main() { return frc::StartRobot<Robot>(); }
+#endif

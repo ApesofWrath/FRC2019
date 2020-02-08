@@ -1,0 +1,53 @@
+See file:///C:/Users/andy/OneDrive/Desktop/frc20/frc20/Test/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+compiling Robot.cpp successful.
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Drive/DriveBase.h:5:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Drive/DriveController.h:4,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:18,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/WPILib.h:14:2: warning: #warning is a GCC extension
+ #warning "Including this header drastically increases compilation times and is bad style. Include only what you use instead."
+  ^~~~~~~
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/WPILib.h:14:2: warning: #warning "Including this header drastically increases compilation times and is bad style. Include only what you use instead." [-Wcpp]
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp: In member function 'virtual void Robot::RobotInit()':
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:23:55: warning: 'void frc::SendableChooser<T>::AddDefault(wpi::StringRef, T) [with T = Colors]' is deprecated: use SetDefaultOption() instead [-Wdeprecated-declarations]
+   m_descolor_chooser.AddDefault("None",  Colors::WHITE);
+                                                       ^
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:13:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/smartdashboard/SendableChooser.h:57:8: note: declared here
+   void AddDefault(wpi::StringRef name, T object) {
+        ^~~~~~~~~~
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:24:53: warning: 'void frc::SendableChooser<T>::AddObject(wpi::StringRef, T) [with T = Colors]' is deprecated: use AddOption() instead [-Wdeprecated-declarations]
+   m_descolor_chooser.AddObject("Red",    Colors::RED);
+                                                     ^
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:13:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/smartdashboard/SendableChooser.h:54:8: note: declared here
+   void AddObject(wpi::StringRef name, T object) { AddOption(name, object); }
+        ^~~~~~~~~
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:25:54: warning: 'void frc::SendableChooser<T>::AddObject(wpi::StringRef, T) [with T = Colors]' is deprecated: use AddOption() instead [-Wdeprecated-declarations]
+   m_descolor_chooser.AddObject("Blue",   Colors::BLUE);
+                                                      ^
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:13:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/smartdashboard/SendableChooser.h:54:8: note: declared here
+   void AddObject(wpi::StringRef name, T object) { AddOption(name, object); }
+        ^~~~~~~~~
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:26:55: warning: 'void frc::SendableChooser<T>::AddObject(wpi::StringRef, T) [with T = Colors]' is deprecated: use AddOption() instead [-Wdeprecated-declarations]
+   m_descolor_chooser.AddObject("Green",  Colors::GREEN);
+                                                       ^
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:13:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/smartdashboard/SendableChooser.h:54:8: note: declared here
+   void AddObject(wpi::StringRef name, T object) { AddOption(name, object); }
+        ^~~~~~~~~
+C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:27:56: warning: 'void frc::SendableChooser<T>::AddObject(wpi::StringRef, T) [with T = Colors]' is deprecated: use AddOption() instead [-Wdeprecated-declarations]
+   m_descolor_chooser.AddObject("Yellow", Colors::YELLOW);
+                                                        ^
+In file included from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\include/Robot.h:13:0,
+                 from C:\Users\andy\OneDrive\Desktop\frc20\frc20\Test\src\main\cpp\Robot.cpp:8:
+C:\Users\andy\.gradle\caches\transforms-2\files-2.1\77aec02c88b6cdbbe6ae1baa0d102dbc\wpilibc-cpp-2020.1.2-headers/frc/smartdashboard/SendableChooser.h:54:8: note: declared here
+   void AddObject(wpi::StringRef name, T object) { AddOption(name, object); }
+        ^~~~~~~~~
+
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/andy/OneDrive/Desktop/frc20/frc20/Test/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
